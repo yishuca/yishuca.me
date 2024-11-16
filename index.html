@@ -18,12 +18,12 @@
             background-color: #1e1e1e;
             color: white;
         }
-        .w3-button-dark {
+        .w3-button-dark, .w3-button-black:hover {
             background-color: #444;
             color: white;
             border-radius: 5px;
         }
-        .w3-button-dark:hover {
+        .w3-button-dark:hover, .w3-button-black:hover {
             background-color: #555;
             box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
         }
@@ -169,7 +169,8 @@
                     <img src="https://via.placeholder.com/300x200" alt="Portrait Drawings">
                     <div class="service-card-content">
                         <h3>Portrait Drawings</h3>
-                        <p>Hand-drawn portraits that bring your vision to life with stunning detail.</p>
+                        <p>Hand-drawn portraits with stunning detail that you can cherish forever..</p>
+                        <a href="#services" class="w3-button w3-button-dark w3-large">Get a quote</a>
                     </div>
                 </div>
             </div>
@@ -180,6 +181,7 @@
                     <div class="service-card-content">
                         <h3>Website Development</h3>
                         <p>Visually engaging websites tailored to your business or personal needs.</p>
+                        <a href="#services" class="w3-button w3-button-dark w3-large">Explore Now</a>
                     </div>
                 </div>
             </div>
@@ -190,6 +192,7 @@
                     <div class="service-card-content">
                         <h3>Music Recording</h3>
                         <p>Professional-grade recording services to amplify your creativity.</p>
+                        <a href="#services" class="w3-button w3-button-dark w3-large">Explore Now</a>
                     </div>
                 </div>
             </div>
@@ -212,20 +215,24 @@
         <p class="w3-center animate-reveal">Don't be shy! 😊</p>
         <form class="w3-content" style="max-width:600px;">
             <div class="w3-margin-bottom">
-                <label>Name</label>
-                <input type="text" class="w3-input w3-border" placeholder="Your Name">
+                <label></label>
+                <input class="w3-input w3-border" type="text" placeholder="Your Name" required>            </div>
+            <div class="w3-margin-bottom">
+                <label></label>
+                <input class="w3-input w3-border" type="email" placeholder="Your Email" required>
             </div>
             <div class="w3-margin-bottom">
-                <label>Email</label>
-                <input type="email" class="w3-input w3-border" placeholder="Your Email">
-            </div>
-            <div class="w3-margin-bottom">
-                <label>Message</label>
-                <textarea class="w3-input w3-border" rows="5" placeholder="Your Message"></textarea>
+                <label></label>
+                <textarea class="w3-input w3-border" rows="4" placeholder="Your Message" required></textarea>
             </div>
             <button type="submit" class="w3-button w3-button-dark">Send Message</button>
         </form>
     </div>
+
+<div class="w3-center">
+    <button class="cta-button w3-button w3-button-black w3-large w2-black" onclick="scrollToTop()">Scroll to top</button>
+</div>
+<br>
 
     <!-- Footer -->
     <footer class="w3-container w3-footer w3-center w3-padding-16">
@@ -256,5 +263,13 @@
           overlayBg.style.display = "none";
         }
       </script>
+
+    <!-- JavaScript for Scroll Animation -->
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
 </body>
 </html>
