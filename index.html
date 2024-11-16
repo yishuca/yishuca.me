@@ -7,24 +7,56 @@
     <!-- W3.CSS -->
     <link rel="stylesheet" href="./css/w3.css">
     <style>
+        /* General Styles */
         body {
             background-color: #121212;
             color: #ffffff;
+            font-family: 'Arial', sans-serif;
         }
         .w3-navbar, .w3-footer {
-            background-color: #333333;
-            color: #ffffff;
+            background-color: #1e1e1e;
+            color: white;
         }
+        .w3-button-dark {
+            background-color: #444;
+            color: white;
+            border-radius: 5px;
+        }
+        .w3-button-dark:hover {
+            background-color: #555;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Hero Section */
         .hero {
             background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
             color: white;
-            padding: 80px 20px;
+            padding: 100px 20px;
             text-align: center;
-            animation: fadeIn 2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero h1, .hero p, .hero a {
+            animation: fadeIn 1.5s ease-out;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+        .hero .floating {
+            animation: float 3s infinite ease-in-out;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
         .service-card {
             background-color: #222;
@@ -55,9 +87,9 @@
 
     <!-- Hero Section -->
     <div class="hero">
-        <h1>Welcome to Our Dark-Themed Service Showcase</h1>
-        <p>Discover exclusive services tailored for you.</p>
-        <a href="#services" class="w3-button w3-button-dark w3-round w3-large">Explore Services</a>
+        <h1>Welcome to the Interactive Showcase</h1>
+        <p>Your destination for premium services and captivating experiences.</p>
+        <a href="#services" class="w3-button w3-button-dark w3-large floating">Explore Now</a>
     </div>
 
     <!-- Services Section -->
@@ -70,9 +102,9 @@
                 <div class="w3-card service-card w3-round">
                     <img src="https://via.placeholder.com/350x200" alt="Service 1" class="w3-image">
                     <div class="w3-container">
-                        <h3>Service 1</h3>
-                        <p>High-quality solutions tailored for your success.</p>
-                        <a href="#" class="w3-button w3-button-dark w3-round">Learn More</a>
+                        <h3>Portrait Drawings</h3>
+                        <p>Hand-drawn portraits that bring your vision to life with stunning detail.</p>
+                        <a href="#" class="w3-button w3-button-dark w3-round">Get a quote</a>
                     </div>
                 </div>
             </div>
@@ -81,9 +113,9 @@
                 <div class="w3-card service-card w3-round">
                     <img src="https://via.placeholder.com/350x200" alt="Service 2" class="w3-image">
                     <div class="w3-container">
-                        <h3>Service 2</h3>
-                        <p>Innovative services designed to meet your unique needs.</p>
-                        <a href="#" class="w3-button w3-button-dark w3-round">Learn More</a>
+                        <h3>Website Development</h3>
+                        <p>Visually engaging websites tailored to your business or personal needs.</p>
+                        <a href="#" class="w3-button w3-button-dark w3-round">Start your project</a>
                     </div>
                 </div>
             </div>
@@ -92,9 +124,9 @@
                 <div class="w3-card service-card w3-round">
                     <img src="https://via.placeholder.com/350x200" alt="Service 3" class="w3-image">
                     <div class="w3-container">
-                        <h3>Service 3</h3>
-                        <p>Excellence in every aspect of our services.</p>
-                        <a href="#" class="w3-button w3-button-dark w3-round">Learn More</a>
+                        <h3>Music Recording</h3>
+                        <p>Professional-grade recording services to amplify your creativity..</p>
+                        <a href="#" class="w3-button w3-button-dark w3-round">Book a session</a>
                     </div>
                 </div>
             </div>
@@ -106,7 +138,7 @@
         <h2 class="w3-center animate-reveal">About Us</h2>
         <p class="w3-center animate-reveal">Innovating with a commitment to quality and excellence.</p>
         <div class="w3-content w3-animate-opacity" style="max-width:800px">
-            <p>We are a team of passionate professionals dedicated to delivering exceptional services. With a focus on innovation and customer satisfaction, we strive to bring your vision to life.</p>
+            <p>We are a team of artists, developers, and musicians committed to delivering exceptional creative solutions. Whether you're looking for a custom portrait, a brand-new website, or professional music recording services, we bring passion and expertise to every project.</p>
         </div>
     </div>
 
