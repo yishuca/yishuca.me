@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Showcase</title>
+    <title>Yishuca</title>
     <!-- W3.CSS -->
     <link rel="stylesheet" href="./css/w3.css">
     <style>
+          .pointer {cursor: pointer;}
         /* General Styles */
         body {
             background-color: #121212;
@@ -48,7 +49,7 @@
             margin-bottom: 30px;
         }
         .hero .floating {
-            animation: float 3s infinite ease-in-out;
+            animation: float 5s infinite ease-in-out;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -58,14 +59,33 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
         }
+        
+        
+        .service-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
         .service-card {
             background-color: #222;
             border: 1px solid #444;
-            transition: transform 0.3s, box-shadow 0.3s;
+            width: 300px;
+            margin: 0 auto;
+            transition: transform 0.5s, box-shadow 0.5s;
+            overflow: hidden;
+            position: relative;
         }
         .service-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 15px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 15px rgba(255, 255, 255, 0.3);  
+        }
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease-out;
         }
         .w3-button-dark {
             background-color: #444;
@@ -78,56 +98,75 @@
 </head>
 <body>
     <!-- Navbar -->
-    <div class="w3-bar w3-navbar">
-        <a href="#" class="w3-bar-item w3-button w3-mobile">Service Showcase</a>
+    <div class="w3-bar w3-top w3-navbar w3-hide-small">
+        <a class="w3-bar-item w3-card-4 w3-mobile">Welcome!</a>
         <a href="#services" class="w3-bar-item w3-button w3-mobile">Services</a>
         <a href="#about" class="w3-bar-item w3-button w3-mobile">About Us</a>
         <a href="#contact" class="w3-bar-item w3-button w3-mobile">Contact</a>
     </div>
 
+    <!-- Sidebar (hidden by default) -->
+    <nav class="w3-sidebar w3-card-4 w3-top w3-overlay w3-xlarge w3-animate-left" style="display:none;z-index:2;width:50%;min-width:300px" id="mySidebar">
+        <a href="javascript:void(0)" onclick="w3_close()" class="w3-hover-red w3-ripple w3-right w3-xlarge w3-button w3-hide-large" title="Close Menu">
+          <i class="fa fa-remove">x</i>
+        </a><img class="w3-animate-right w3-mobile w3-card-4 w3-bottombar w3-topbar w3-border-black" style="width: 50%;" src="./img/yishuca (1) - Copy.png" alt="YishucaDesignsLogo"><br>
+        <a href="#about" onclick="w3_close()" class="w3-ripple w3-hover-light-grey w3-bar-item w3-button w3-animate-left">Coming soon</a><br>
+        </nav>
+        <!-- Sidebar (hidden by default) -->
+        
+        <!-- Top mini menu -->
+        <div class="w3-top w3-left w3-hide-medium w3-hide-large">
+        <div class="w3-xlarge" style="max-width:1200px;margin:auto">
+        <div class="w3-container w3-ripple w3-xxlarge w3-text-light-grey w3-xlarge w3-padding-16 w3-left pointer" onclick="w3_open()">&#9776;</div>
+        </div>
+        </div>
+        <!-- Top mini menu -->
+
     <!-- Hero Section -->
     <div class="hero">
-        <h1>Welcome to the Interactive Showcase</h1>
-        <p>Your destination for premium services and captivating experiences.</p>
+        <div class="w3-center w3-mobile">
+        <img class="w3-card-4 w3-border w3-border-white" style="width: 50%;min-width:400px" src="./img/yishuca1-ezgif.com-crop.gif">
+        </div>
+        <p>Unleashing your potential through Art, Technology, and Sound.</p>
         <a href="#services" class="w3-button w3-button-dark w3-large floating">Explore Now</a>
     </div>
 
     <!-- Services Section -->
     <div id="services" class="w3-container w3-padding-64">
-        <h2 class="w3-center">Our Services</h2>
-        <p class="w3-center">We provide exceptional services to meet your needs.</p>
+        <h2 class="w3-center">My Services</h2>
+        <p class="w3-center">Exceptional services to meet your needs.</p>
         <div class="w3-row-padding w3-margin-top">
             <!-- Service 1 -->
             <div class="w3-third w3-container">
                 <div class="w3-card service-card w3-round">
                     <img src="https://via.placeholder.com/350x200" alt="Service 1" class="w3-image">
-                    <div class="w3-container">
+                    <div class="w3-container  w3-center">
                         <h3>Portrait Drawings</h3>
                         <p>Hand-drawn portraits that bring your vision to life with stunning detail.</p>
-                        <a href="#" class="w3-button w3-button-dark w3-round">Get a quote</a>
-                    </div>
-                </div>
+                        <a href="#" class="w3-button w3-center w3-button-dark w3-round">Get a quote</a>
+                    </div><br>
+                </div><br>
             </div>
             <!-- Service 2 -->
             <div class="w3-third w3-container">
                 <div class="w3-card service-card w3-round">
                     <img src="https://via.placeholder.com/350x200" alt="Service 2" class="w3-image">
-                    <div class="w3-container">
+                    <div class="w3-container w3-center">
                         <h3>Website Development</h3>
                         <p>Visually engaging websites tailored to your business or personal needs.</p>
                         <a href="#" class="w3-button w3-button-dark w3-round">Start your project</a>
-                    </div>
-                </div>
+                    </div><br>
+                </div><br>
             </div>
             <!-- Service 3 -->
             <div class="w3-third w3-container">
                 <div class="w3-card service-card w3-round">
                     <img src="https://via.placeholder.com/350x200" alt="Service 3" class="w3-image">
-                    <div class="w3-container">
+                    <div class="w3-container w3-center">
                         <h3>Music Recording</h3>
                         <p>Professional-grade recording services to amplify your creativity..</p>
                         <a href="#" class="w3-button w3-button-dark w3-round">Book a session</a>
-                    </div>
+                    </div><br>
                 </div>
             </div>
         </div>
@@ -135,16 +174,17 @@
 
     <!-- About Section -->
     <div id="about" class="w3-container w3-padding-64 w3-dark-grey">
-        <h2 class="w3-center animate-reveal">About Us</h2>
-        <p class="w3-center animate-reveal">Innovating with a commitment to quality and excellence.</p>
-        <div class="w3-content w3-animate-opacity" style="max-width:800px">
-            <p>We are a team of artists, developers, and musicians committed to delivering exceptional creative solutions. Whether you're looking for a custom portrait, a brand-new website, or professional music recording services, we bring passion and expertise to every project.</p>
+        <h2 class="w3-center w3-xxlarge animate-reveal">About Me</h2>
+        <p class="w3-center animate-reveal w3-xlarge">Nice to meet you!</p>
+        <div class="w3-content w3-center w3-large w3-animate-opacity" style="max-width:800px">
+            <p>I am an artist, website developer, and musician myself, committed to delivering exceptional, creative solutions. Whether you're looking for a custom portrait, a brand-new website, or music recording services, we bring passion and expertise to every project.</p>
         </div>
     </div>
 
     <!-- Contact Section -->
     <div id="contact" class="w3-container w3-padding-64">
-        <h2 class="w3-center animate-reveal">Contact Us</h2>
+        <h2 class="w3-center animate-reveal">Contact Me!</h2>
+        <p class="w3-center animate-reveal">Don't be shy! 😊</p>
         <form class="w3-content" style="max-width:600px;">
             <div class="w3-margin-bottom">
                 <label>Name</label>
@@ -161,9 +201,35 @@
             <button type="submit" class="w3-button w3-button-dark">Send Message</button>
         </form>
     </div>
+
     <!-- Footer -->
     <footer class="w3-container w3-footer w3-center w3-padding-16">
-        <p>&copy; 2024 Service Showcase. All Rights Reserved.</p>
+        <p>&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
     </footer>
+
+    <script>
+        // Get the Sidebar
+        var mySidebar = document.getElementById("mySidebar");
+        
+        // Get the DIV with overlay effect
+        var overlayBg = document.getElementById("myOverlay");
+        
+        // Toggle between showing and hiding the sidebar, and add overlay effect
+        function w3_open() {
+          if (mySidebar.style.display === 'block') {
+            mySidebar.style.display = 'none';
+            overlayBg.style.display = "none";
+          } else {
+            mySidebar.style.display = 'block';
+            overlayBg.style.display = "block";
+          }
+        }
+        
+        // Close the sidebar with the close button
+        function w3_close() {
+          mySidebar.style.display = "none";
+          overlayBg.style.display = "none";
+        }
+      </script>
 </body>
 </html>
