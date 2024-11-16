@@ -32,7 +32,7 @@
         .hero {
             background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
             color: white;
-            padding: 100px 20px;
+            padding: 70px 20px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -59,8 +59,21 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
         }
-        
-        
+
+        /* Reveal Animation */
+        .animate-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            animation: reveal 1.2s ease-out forwards;
+        }
+        @keyframes reveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Service Cards */
         .service-wrapper {
             display: flex;
             flex-wrap: wrap;
@@ -77,9 +90,12 @@
             overflow: hidden;
             position: relative;
         }
+
+
+        
         .service-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 15px rgba(255, 255, 255, 0.3);  
+            box-shadow: 0 12px 30px rgba(255, 255, 255, 0.3);
         }
         .service-card img {
             width: 100%;
@@ -87,18 +103,28 @@
             object-fit: cover;
             transition: transform 0.5s ease-out;
         }
-        .w3-button-dark {
-            background-color: #444;
-            color: #ffffff;
+        .service-card:hover img {
+            transform: scale(1.1);
         }
-        .w3-button-dark:hover {
-            background-color: #555;
+        .service-card-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <div class="w3-bar w3-top w3-navbar w3-hide-small">
+    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small">
         <a class="w3-bar-item w3-card-4 w3-mobile">Welcome!</a>
         <a href="#services" class="w3-bar-item w3-button w3-mobile">Services</a>
         <a href="#about" class="w3-bar-item w3-button w3-mobile">About Us</a>
@@ -123,55 +149,52 @@
         <!-- Top mini menu -->
 
     <!-- Hero Section -->
-    <div class="hero">
+    <div class="hero"><br><br>
         <div class="w3-center w3-mobile">
-        <img class="w3-card-4 w3-border w3-border-white" style="width: 50%;min-width:400px" src="./img/yishuca1-ezgif.com-crop.gif">
+        <img class="w3-card-4 w3-border w3-animate-top" style="width: 50%;min-width:400px" src="./img/yishuca1-ezgif.com-crop.gif">
         </div>
-        <p>Unleashing your potential through Art, Technology, and Sound.</p>
+        <p>Unleash your potential through Art, Technology, and Sound.</p>
         <a href="#services" class="w3-button w3-button-dark w3-large floating">Explore Now</a>
     </div>
 
+
     <!-- Services Section -->
     <div id="services" class="w3-container w3-padding-64">
-        <h2 class="w3-center">My Services</h2>
-        <p class="w3-center">Exceptional services to meet your needs.</p>
-        <div class="w3-row-padding w3-margin-top">
-            <!-- Service 1 -->
-            <div class="w3-third w3-container">
-                <div class="w3-card service-card w3-round">
-                    <img src="https://via.placeholder.com/350x200" alt="Service 1" class="w3-image">
-                    <div class="w3-container  w3-center">
+        <h2 class="w3-center w3-xxlarge animate-reveal">My Services</h2>
+        <p class="w3-center w3-xlarge animate-reveal">Creative solutions tailored for you.</p>
+        <div class="service-wrapper">
+            <!-- Portrait Drawings -->
+            <div class="w3-card service-card w3-round">
+                <div class="service-card animate-reveal">
+                    <img src="https://via.placeholder.com/300x200" alt="Portrait Drawings">
+                    <div class="service-card-content">
                         <h3>Portrait Drawings</h3>
                         <p>Hand-drawn portraits that bring your vision to life with stunning detail.</p>
-                        <a href="#" class="w3-button w3-center w3-button-dark w3-round">Get a quote</a>
-                    </div><br>
-                </div><br>
+                    </div>
+                </div>
             </div>
-            <!-- Service 2 -->
-            <div class="w3-third w3-container">
-                <div class="w3-card service-card w3-round">
-                    <img src="https://via.placeholder.com/350x200" alt="Service 2" class="w3-image">
-                    <div class="w3-container w3-center">
+            <!-- Website Development -->
+            <div class="w3-card service-card w3-round">
+                <div class="service-card animate-reveal">
+                    <img src="https://via.placeholder.com/300x200" alt="Website Development">
+                    <div class="service-card-content">
                         <h3>Website Development</h3>
                         <p>Visually engaging websites tailored to your business or personal needs.</p>
-                        <a href="#" class="w3-button w3-button-dark w3-round">Start your project</a>
-                    </div><br>
-                </div><br>
+                    </div>
+                </div>
             </div>
-            <!-- Service 3 -->
-            <div class="w3-third w3-container">
-                <div class="w3-card service-card w3-round">
-                    <img src="https://via.placeholder.com/350x200" alt="Service 3" class="w3-image">
-                    <div class="w3-container w3-center">
+            <!-- Music Recording -->
+            <div class="w3-card service-card w3-round">
+                <div class="service-card animate-reveal">
+                    <img src="https://via.placeholder.com/300x200" alt="Music Recording">
+                    <div class="service-card-content">
                         <h3>Music Recording</h3>
-                        <p>Professional-grade recording services to amplify your creativity..</p>
-                        <a href="#" class="w3-button w3-button-dark w3-round">Book a session</a>
-                    </div><br>
+                        <p>Professional-grade recording services to amplify your creativity.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- About Section -->
     <div id="about" class="w3-container w3-padding-64 w3-dark-grey">
         <h2 class="w3-center w3-xxlarge animate-reveal">About Me</h2>
