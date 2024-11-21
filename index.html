@@ -3,20 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yishuca</title>
-    <!-- W3.CSS -->
+    <title>Interactive Polygons</title>
     <link rel="stylesheet" href="./css/w3.css">
     <style>
           .pointer {cursor: pointer;}
+          html {
+            scroll-behavior: smooth;
+        }
         /* General Styles */
         body {
             background-color: #121212;
             color: #ffffff;
             font-family: 'Arial', sans-serif;
-        }
-        .w3-navbar, .w3-footer {
-            background-color: #1e1e1e;
-            color: white;
         }
         .w3-button-dark, .w3-button-black:hover {
             background-color: #444;
@@ -28,14 +26,102 @@
             box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
         }
 
+    /* Hamburger Menu */
+    .hamburger {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 30px;
+      cursor: pointer;
+      z-index: 1050;
+      display: none;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .hamburger div {
+      width: 35px;
+      height: 5px;
+      background-color: #656565;
+      margin: 6px 0;
+      transition: 0.4s;
+    }
+
+    /* Remove hover glow effect from Hamburger */
+    .hamburger:hover {
+      color: #1f3a61;
+      transform: scale(1.1);
+      box-shadow: none; /* Remove the glowing effect */
+    }
+
+    /* Hamburger Active State */
+    .hamburger.active div:nth-child(1) {
+      transform: translateY(11px) rotate(45deg);
+    }
+
+    .hamburger.active div:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active div:nth-child(3) {
+      transform: translateY(-11px) rotate(-45deg);
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+      color: white;
+    }
+
+    .sidebar a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #f1f1f1;
+      display: block;
+      transition: 0.3s;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    /* Sidebar Link Hover Effect */
+    .sidebar a:hover {
+      color: #fff;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      box-shadow: 0 0 15px #a13434; /* Glowing */
+      transform: scale(1.05); /* Slight scale-up */
+    }
+
+    /* Media Queries */
+    @media screen and (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+    }
+
+    @media screen and (min-width: 769px) {
+      .hamburger {
+        display: none;
+      }
+    }
+
         /* Hero Section */
         .hero {
-            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-            color: white;
+
             padding: 70px 0px;
             text-align: center;
             position: relative;
             overflow: hidden;
+            z-index: 1;
+            height: 100vh;
         }
         .hero h1, .hero p, .hero a {
             animation: fadeIn 1.5s ease-out;
@@ -89,9 +175,8 @@
             transition: transform 0.5s, box-shadow 0.5s;
             overflow: hidden;
             position: relative;
+            z-index: 1;
         }
-
-
         
         .service-card:hover {
             transform: scale(1.05);
@@ -120,47 +205,45 @@
                 font-size: 1.2rem;
             }
         }
+
+        /* Canvas to draw the polygons */
+        canvas {
+            position: fixed; /* Make canvas fixed relative to the page */
+            top: 0;
+            left: 0;
+            z-index: 0; /* Ensure canvas is below any other content */
+        }
+
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small">
-        <a class="w3-bar-item w3-card-4 w3-mobile">Welcome!</a>
-        <a href="#services" class="w3-bar-item w3-button w3-mobile">Services</a>
-        <a href="#about" class="w3-bar-item w3-button w3-mobile">About Us</a>
-        <a href="#contact" class="w3-bar-item w3-button w3-mobile">Contact</a>
-    </div>
+  <!-- Hamburger Menu -->
+  <div class="hamburger" onclick="toggleSidebar()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 
-    <!-- Sidebar (hidden by default) -->
-    <nav class="w3-sidebar w3-card-4 w3-top w3-overlay w3-xlarge w3-animate-left" style="display:none;z-index:2;width:50%;min-width:300px" id="mySidebar">
-        <a href="javascript:void(0)" onclick="w3_close()" class="w3-hover-red w3-ripple w3-right w3-xlarge w3-button w3-hide-large" title="Close Menu">
-          <i class="fa fa-remove">x</i>
-        </a><img class="w3-animate-right w3-mobile w3-card-4 w3-bottombar w3-topbar w3-border-black" style="width: 50%;" src="./img/yishuca (1) - Copy.png" alt="YishucaDesignsLogo"><br>
-        <a href="#about" onclick="w3_close()" class="w3-ripple w3-hover-light-grey w3-bar-item w3-button w3-animate-left">Coming soon</a><br>
-        </nav>
-        <!-- Sidebar (hidden by default) -->
-        
-        <!-- Top mini menu -->
-        <div class="w3-top w3-left w3-hide-medium w3-hide-large">
-        <div class="w3-xlarge" style="max-width:1200px;margin:auto">
-        <div class="w3-container w3-ripple w3-xxlarge w3-text-light-grey w3-xlarge w3-padding-16 w3-left pointer" onclick="w3_open()">&#9776;</div>
-        </div>
-        </div>
-        <!-- Top mini menu -->
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar w3-card-4"><br>
+    <a href="#" class="w3-animate-opacity" onclick="closeSidebar()">Home</a>
+    <a href="#services" onclick="closeSidebar()">Our Services</a>
+    <a href="#contact" onclick="closeSidebar()">Contact</a>
+  </div>
 
     <!-- Hero Section -->
-    <div class="hero"><br><br>
+    <div class="hero w3-card-4"><br><br><br><br>
         <div class="w3-center w3-mobile">
         <img class="w3-card-4 w3-border floating w3-animate-top" style="width: 50%;min-width:350px" src="./img/yishuca1-ezgif.com-crop.gif">
-        </div>
         <p>Providing art, technology, and sound.</p>
-        <a href="#services" class="w3-button w3-button-dark w3-large floating">Explore Now</a>
+        <a href="#services" class="w3-center w3-button w3-button-dark w3-large floating">Explore Now</a>
+        </div>
     </div>
 
-
     <!-- Services Section -->
-    <div id="services" class="w3-container w3-padding-64">
-        <h2 class="w3-center w3-xxlarge animate-reveal">My Services</h2>
+    <div id="services" class="w3-container w3-padding-64 w3-dark-grey" style="height: 100vh;">
+        <h2 class="w3-center w3-xxlarge animate-reveal" style="text-shadow: 2px 2px 8px #000000;">What can I do for you?</h2>
+        <br>
         <p class="w3-center w3-xlarge animate-reveal"></p>
         <div class="service-wrapper">
             <!-- Portrait Drawings -->
@@ -170,7 +253,7 @@
                     <div class="service-card-content">
                         <h3>Portrait Drawings</h3>
                         <p>Hand-drawn portraits with stunning detail that you can cherish forever.</p>
-                        <a href="#services" class="w3-button w3-button-dark w3-large">Get a quote</a>
+                        <a href="#services" class="w3-button w3-button-dark w3-large">View My Drawings</a>
                     </div>
                 </div>
             </div>
@@ -181,7 +264,7 @@
                     <div class="service-card-content">
                         <h3>Website Development</h3>
                         <p>Visually engaging websites tailored to your business or personal needs.</p>
-                        <a href="#services" class="w3-button w3-button-dark w3-large">Explore Now</a>
+                        <a href="#services" class="w3-button w3-button-dark w3-large">Sites I've Made</a>
                     </div>
                 </div>
             </div>
@@ -198,6 +281,7 @@
             </div>
         </div>
     </div>
+
     <!-- About Section -->
     <div id="about" class="w3-container w3-padding-64 w3-dark-grey">
         <h2 class="w3-center w3-xxlarge animate-reveal">About Me</h2>
@@ -205,7 +289,6 @@
         <div class="w3-content w3-center w3-large w3-animate-opacity" style="max-width:800px">
             <p>I am an artist, website developer, and musician myself, committed to delivering exceptional, creative solutions.</p>
             <p>Whether you're looking for a custom portrait, a brand-new website, or music recording services, I bring passion and expertise to every project.</p>
-
         </div>
     </div>
 
@@ -239,29 +322,30 @@
         <p>&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
     </footer>
 
+    <!-- Canvas Element -->
+    <canvas id="polygonCanvas"></canvas>
+
     <script>
-        // Get the Sidebar
-        var mySidebar = document.getElementById("mySidebar");
-        
-        // Get the DIV with overlay effect
-        var overlayBg = document.getElementById("myOverlay");
-        
-        // Toggle between showing and hiding the sidebar, and add overlay effect
-        function w3_open() {
-          if (mySidebar.style.display === 'block') {
-            mySidebar.style.display = 'none';
-            overlayBg.style.display = "none";
-          } else {
-            mySidebar.style.display = 'block';
-            overlayBg.style.display = "block";
-          }
-        }
-        
-        // Close the sidebar with the close button
-        function w3_close() {
-          mySidebar.style.display = "none";
-          overlayBg.style.display = "none";
-        }
+    // Toggle Sidebar
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const hamburger = document.querySelector('.hamburger');
+      if (sidebar.style.width === '250px') {
+        sidebar.style.width = '0';
+        hamburger.classList.remove('active');
+      } else {
+        sidebar.style.width = '250px';
+        hamburger.classList.add('active');
+      }
+    }
+
+    // Close Sidebar when a link is clicked
+    function closeSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const hamburger = document.querySelector('.hamburger');
+      sidebar.style.width = '0'; // Close the sidebar
+      hamburger.classList.remove('active'); // Reset hamburger icon
+    }
       </script>
 
     <!-- JavaScript for Scroll Animation -->
@@ -271,5 +355,121 @@
         }
     </script>
 
+    <script>
+        // Get the canvas element and its context
+        const canvas = document.getElementById('polygonCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size to fill the window
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Track mouse position
+        let mouseX = canvas.width / 2;
+        let mouseY = canvas.height / 2;
+
+        // Polygon Settings
+        const polygons = [];
+        const numPolygons = 10;
+
+        // Create random polygons
+        function createPolygon(x, y, radius, numVertices) {
+            const vertices = [];
+            for (let i = 0; i < numVertices; i++) {
+                const angle = (i / numVertices) * Math.PI * 2;
+                const vx = x + Math.cos(angle) * radius;
+                const vy = y + Math.sin(angle) * radius;
+                vertices.push({ x: vx, y: vy });
+            }
+
+            polygons.push({
+                x: x,
+                y: y,
+                radius: radius,
+                vertices: vertices,
+                speed: 0.5 + Math.random() * 2, // Random speed for floating
+                direction: Math.random() * Math.PI * 2, // Random initial direction
+            });
+        }
+
+        // Create polygons
+        for (let i = 0; i < numPolygons; i++) {
+            const radius = 50 + Math.random() * 100; // Random radius size
+            const numVertices = 6 + Math.floor(Math.random() * 6); // Random number of vertices
+            createPolygon(
+                Math.random() * canvas.width,
+                Math.random() * canvas.height,
+                radius,
+                numVertices
+            );
+        }
+
+        // Draw the polygons on the canvas
+        function drawPolygon(polygon) {
+            ctx.beginPath();
+            polygon.vertices.forEach((vertex, i) => {
+                if (i === 0) {
+                    ctx.moveTo(vertex.x, vertex.y);
+                } else {
+                    ctx.lineTo(vertex.x, vertex.y);
+                }
+            });
+            ctx.closePath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#fff';
+            ctx.stroke();
+        }
+
+        // Move polygons to simulate floating effect
+        function movePolygon(polygon) {
+            polygon.vertices.forEach(vertex => {
+                const angle = Math.atan2(vertex.y - polygon.y, vertex.x - polygon.x);
+                const force = 0.05;
+                vertex.x += Math.cos(angle) * force;
+                vertex.y += Math.sin(angle) * force;
+            });
+        }
+
+        // Update polygons based on mouse interaction
+        function updatePolygons() {
+            polygons.forEach(polygon => {
+                // Move polygon vertices to create floating effect
+                movePolygon(polygon);
+
+                // React to mouse position
+                polygon.vertices.forEach(vertex => {
+                    const dx = vertex.x - mouseX;
+                    const dy = vertex.y - mouseY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 100) {
+                        const strength = (100 - distance) / 100;
+                        vertex.x += dx * strength * 0.2;
+                        vertex.y += dy * strength * 0.2;
+                    }
+                });
+            });
+        }
+
+        // Mouse move event listener to track mouse position
+        canvas.addEventListener('mousemove', (event) => {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
+        });
+
+        // Animation loop to update and draw the polygons
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
+            updatePolygons(); // Update polygons based on mouse
+
+            polygons.forEach(polygon => {
+                drawPolygon(polygon); // Draw each polygon
+            });
+
+            requestAnimationFrame(animate); // Request next frame
+        }
+
+        animate(); // Start animation loop
+    </script>
 </body>
 </html>
