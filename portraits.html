@@ -20,6 +20,7 @@
         .w3-navbar, .w3-footer {
             background-color: #1e1e1e;
             color: white;
+            z-index: 3;
         }
         .w3-button-dark, .w3-button-black:hover {
             background-color: #444;
@@ -79,7 +80,7 @@
       z-index: 1000;
       top: 0;
       left: 0;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      background:rgb(0, 0, 0);
       overflow-x: hidden;
       transition: 0.5s;
       padding-top: 60px;
@@ -100,8 +101,8 @@
     /* Sidebar Link Hover Effect */
     .sidebar a:hover {
       color: #fff;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      box-shadow: 0 0 15px #a13434; /* Glowing */
+      background: #222;
+      box-shadow: 0 0 15px #ffffff; /* Glowing */
       transform: scale(1.05); /* Slight scale-up */
     }
 
@@ -241,7 +242,7 @@
   <!-- Sidebar -->
   <div id="sidebar" class="sidebar w3-card-4"><br>
     <a href="./index.html" class="w3-animate-opacity" onclick="closeSidebar()">Home</a>
-    <a href="./index.html#services" onclick="closeSidebar()">Our Services</a>
+    <a href="./index.html#services" onclick="closeSidebar()">Services</a>
     <a href="./index.html#about" onclick="closeSidebar()">About</a>
     <a href="./index.html#contact" onclick="closeSidebar()">Contact</a>
   </div>
@@ -285,7 +286,7 @@
 
 
 <div class="w3-center">
-    <button class="cta-button w3-button w3-button-black w3-large w2-black reveal" onclick="scrollToTop()">Scroll to top</button>
+    <button class="w3-dark-grey w3-round w3-button reveal w3-button-black w3-large" onclick="scrollToTop()">Scroll to top</button>
 </div>
 <br>
 
