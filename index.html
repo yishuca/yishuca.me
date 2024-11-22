@@ -79,7 +79,7 @@
       z-index: 1000;
       top: 0;
       left: 0;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      background:rgb(0, 0, 0);
       overflow-x: hidden;
       transition: 0.5s;
       padding-top: 60px;
@@ -100,8 +100,8 @@
     /* Sidebar Link Hover Effect */
     .sidebar a:hover {
       color: #fff;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      box-shadow: 0 0 15px #a13434; /* Glowing */
+      background: #222;
+      box-shadow: 0 0 15px #ffffff; /* Glowing */
       transform: scale(1.05); /* Slight scale-up */
     }
 
@@ -120,7 +120,7 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            background: linear-gradient(to right, #595959, #ffffff);
             padding: 70px 0px;
             text-align: center;
             position: relative;
@@ -255,16 +255,16 @@
   <!-- Sidebar -->
   <div id="sidebar" class="sidebar w3-card-4"><br>
     <a href="#" class="w3-animate-opacity" onclick="closeSidebar()">Home</a>
-    <a href="./index.html#services" onclick="closeSidebar()">Our Services</a>
+    <a href="./index.html#services" onclick="closeSidebar()">Services</a>
     <a href="./index.html#about" onclick="closeSidebar()">About</a>
     <a href="./index.html#contact" onclick="closeSidebar()">Contact</a>
   </div>
 
     <!-- Hero Section -->
-    <div class="hero w3-card-4"><br><br><br><br>
+    <div class="hero w3-card-4"><br><br><br><br><br>
         <div class="w3-center w3-mobile">
         <img class="w3-card-4 w3-border floating w3-animate-top" style="width: 50%;min-width:350px" src="./img/yishuca1-ezgif.com-crop.gif">
-        <p>Welcome!</p>
+        <p class="w3-xxlarge">Welcome!</p>
         <a href="#services" class="w3-center w3-button w3-button-dark w3-large floating">Check out my services</a>
         </div>
     </div>
@@ -342,7 +342,7 @@
     </div>
 
 <div class="w3-center pop w3-display-container w3-padding-64">
-    <button class="cta-button w3-button reveal w3-button-black w3-large" onclick="scrollToTop()">Scroll to top</button>
+    <button class="w3-dark-grey w3-round w3-button reveal w3-button-black w3-large" onclick="scrollToTop()">Scroll to top</button>
 </div>
 
     <!-- Footer -->
