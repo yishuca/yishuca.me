@@ -208,46 +208,36 @@
                 font-size: 1.2rem;
             }
         }
-
         /* Portraits */
-        /* Ensure the page has scrollable content */
-        main {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            flex-direction: column;
-            gap: 50px;
-            padding-bottom: 100px;
-            margin-top: 100px; /* Push content down a bit for better visibility */
-        }
-
         .portraits {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 30px;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Make it responsive */
             margin-top: 50px;
         }
 
         .portrait {
-            width: 400px;
-            height: 700px;
+            width: 20%;
+            height: 20%;
             background: #fff;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             position: relative;
-            transform: rotateX(180deg); /* Initially flipped */
-            opacity: 0; /* Initially invisible */
-            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            margin-bottom: 20px;
+            /* Adjust size for smaller screens */
         }
 
         .portrait img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.2s ease;
         }
 
         .portrait h2 {
@@ -277,7 +267,7 @@
         }
 
         /* Mobile responsiveness */
-        @media (max-width: 100vh) {
+        @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
             }
@@ -287,8 +277,8 @@
             }
 
             .portrait {
-                width: 100vh;
-                height: 100vh;
+                width: 60%;
+                height: 60%;
             }
 
             .portrait h2 {
@@ -296,14 +286,14 @@
             }
         }
 
-        @media (max-width: 100vh) {
+        @media (max-width: 480px) {
             h1 {
                 font-size: 2rem;
             }
 
             .portrait {
-                width: 100vh;
-                height: 100vh;
+                width: 70%;
+                height: 70%;
             }
 
             .portrait h2 {
@@ -334,52 +324,55 @@
     <a href="#services" onclick="closeSidebar()">Our Services</a>
     <a href="#contact" onclick="closeSidebar()">Contact</a>
   </div>
+
+    <!-- Hero Section -->
 <br><br><br><br>
-    <div>
-        <div class="portraits w3-display-container w3-center">
-            <!-- Portrait 1 -->
-            <div class="portrait" id="portrait1">
-                <img src="./img/eyeball.jpg" alt="Portrait 1">
-                <h2>Artist: John Doe</h2>
+    <main>
+        <div>
+            <div class="portraits w3-display-container w3-center">
+                <!-- Portrait 1 -->
+                <div class="portrait" id="portrait1">
+                    <img src="./img/eyeball.jpg" alt="Portrait 1">
+                    <h2>Artist: John Doe</h2>
+                </div>
+            </div>
+            <div class="portraits w3-display-container w3-center">
+                <!-- Portrait 2 -->
+                <div class="portrait" id="portrait2">
+                    <img src="./img/blueeyes.jpg" alt="Portrait 2">
+                    <h2>Artist: Jane Doe</h2>
+                </div>
+            </div>
+            <div class="portraits w3-display-container w3-center">
+                <!-- Portrait 3 -->
+                <div class="portrait" id="portrait3">
+                    <img src="./img/happypill.jpg" alt="Portrait 3">
+                    <h2>Artist: Jane Doe</h2>
+                </div>
+            </div>
+            <div class="portraits w3-display-container w3-center">
+                <!-- Portrait 1 -->
+                <div class="portrait" id="portrait1">
+                    <img src="./img/blindsbody.jpg" alt="Portrait 1">
+                    <h2>Artist: John Doe</h2>
+                </div>
+            </div>
+            <div class="portraits w3-display-container w3-center">
+                <!-- Portrait 2 -->
+                <div class="portrait" id="portrait2">
+                    <img src="./img/kingandqueen.jpg" alt="Portrait 2">
+                    <h2>Artist: Jane Doe</h2>
+                </div>
+            </div>
+            <div class="portraits w3-display-container w3-center">
+                <!-- Portrait 3 -->
+                <div class="portrait" id="portrait3">
+                    <img src="./img/madrabbit.jpg" alt="Portrait 3">
+                    <h2>Artist: Jane Doe</h2>
+                </div>
             </div>
         </div>
-        <div class="portraits w3-display-container w3-center">
-            <!-- Portrait 2 -->
-            <div class="portrait" id="portrait2">
-                <img src="./img/blueeyes.jpg" alt="Portrait 2">
-                <h2>Artist: Jane Doe</h2>
-            </div>
-        </div>
-        <div class="portraits w3-display-container w3-center">
-            <!-- Portrait 3 -->
-            <div class="portrait" id="portrait3">
-                <img src="./img/happypill.jpg" alt="Portrait 3">
-                <h2>Artist: Jane Doe</h2>
-            </div>
-        </div>
-        <div class="portraits w3-display-container w3-center">
-            <!-- Portrait 1 -->
-            <div class="portrait" id="portrait1">
-                <img src="./img/blindsbody.jpg" alt="Portrait 1">
-                <h2>Artist: John Doe</h2>
-            </div>
-        </div>
-        <div class="portraits w3-display-container w3-center">
-            <!-- Portrait 2 -->
-            <div class="portrait" id="portrait2">
-                <img src="./img/kingandqueen.jpg" alt="Portrait 2">
-                <h2>Artist: Jane Doe</h2>
-            </div>
-        </div>
-        <div class="portraits w3-display-container w3-center">
-            <!-- Portrait 3 -->
-            <div class="portrait" id="portrait3">
-                <img src="./img/madrabbit.jpg" alt="Portrait 3">
-                <h2>Artist: Jane Doe</h2>
-            </div>
-        </div>
-    </div>
-    
+    </main>
     <br><br><br><br>
     <!-- About Section -->
     <div id="about" class="w3-container w3-padding-64 w3-dark-grey">
@@ -444,47 +437,64 @@
         }
           </script>
 
-<script>
-    const portraits = document.querySelectorAll('.portrait');
-
-    const handleScroll = () => {
-        const windowHeight = window.innerHeight;
-
+    <script>
+        // Add mouse move event to apply 3D transformation to portraits
+        const portraits = document.querySelectorAll('.portrait');
+    
         portraits.forEach(portrait => {
-            const rect = portrait.getBoundingClientRect();
-            const topPosition = rect.top;
-            const bottomPosition = rect.bottom;
-            const elementHeight = rect.height;
-
-            // Calculate the scroll percentage based on the center of the element
-            const scrollPercentage = Math.min(Math.max(0, (topPosition + elementHeight / 2) / windowHeight), 1);
-
-            // Flip portraits when moving away from the center, but not when centered
-            const flipThreshold = 0.4; // Amount before or after the center where the flip begins
-            let rotation = 0;
-
-            // When portrait is not centered, start flipping
-            if (scrollPercentage < 0.4 || scrollPercentage > 0.6) {
-                rotation = (scrollPercentage - 0.5) * 360; // Flip based on scroll
-            }
-
-            portrait.style.transform = `rotateX(${rotation}deg)`; // Gradually flip when not centered
-
-            // Apply opacity changes based on how visible the portrait is
-            if (scrollPercentage > 0.4 && scrollPercentage < 0.6) {
-                portrait.style.opacity = 1; // Fully visible when centered
-            } else {
-                portrait.style.opacity = 0; // Fade out when not centered
-            }
+            portrait.addEventListener('mousemove', (e) => {
+                const { width, height, left, top } = portrait.getBoundingClientRect();
+                const mouseX = e.clientX - left;
+                const mouseY = e.clientY - top;
+    
+                const centerX = width / 2;
+                const centerY = height / 2;
+    
+                // Calculate mouse position relative to center
+                const offsetX = (mouseX - centerX) / centerX;
+                const offsetY = (mouseY - centerY) / centerY;
+    
+                // Apply 3D rotation and scaling effects based on mouse position
+                portrait.style.transform = `rotateX(${offsetY * 20}deg) rotateY(${offsetX * 20}deg) scale(1.1)`;
+                portrait.querySelector('img').style.transform = `scale(1.1)`;
+                portrait.style.boxShadow = `0px 12px 40px rgba(0, 0, 0, 0.3)`;
+            });
+    
+            portrait.addEventListener('mouseleave', () => {
+                portrait.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                portrait.querySelector('img').style.transform = 'scale(1)';
+                portrait.style.boxShadow = '0px 4px 20px rgba(0, 0, 0, 0.2)';
+            });
         });
-    };
-
-    // Listen for scroll events
-    window.addEventListener('scroll', handleScroll);
-
-    // Initial scroll position check
-    handleScroll();
-</script>
+    
+        // For mobile touch support
+        portraits.forEach(portrait => {
+            portrait.addEventListener('touchmove', (e) => {
+                const { width, height, left, top } = portrait.getBoundingClientRect();
+                const touch = e.touches[0];
+                const mouseX = touch.clientX - left;
+                const mouseY = touch.clientY - top;
+    
+                const centerX = width / 2;
+                const centerY = height / 2;
+    
+                // Calculate touch position relative to center
+                const offsetX = (mouseX - centerX) / centerX;
+                const offsetY = (mouseY - centerY) / centerY;
+    
+                // Apply 3D rotation and scaling effects based on touch position
+                portrait.style.transform = `rotateX(${offsetY * 20}deg) rotateY(${offsetX * 20}deg) scale(1.1)`;
+                portrait.querySelector('img').style.transform = `scale(1.1)`;
+                portrait.style.boxShadow = `0px 12px 40px rgba(0, 0, 0, 0.3)`;
+            });
+    
+            portrait.addEventListener('touchend', () => {
+                portrait.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                portrait.querySelector('img').style.transform = 'scale(1)';
+                portrait.style.boxShadow = '0px 4px 20px rgba(0, 0, 0, 0.2)';
+            });
+        });
+    </script>
 
 </body>
 </html>
