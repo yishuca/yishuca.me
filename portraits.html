@@ -370,7 +370,7 @@
             const portraits = document.querySelectorAll('.portrait');
             portraits.forEach(portrait => {
                 // Apply device rotation to portrait 3D transformation
-                portrait.style.transform = `rotateX(${beta * 0.2}deg) rotateY(${gamma * 0.2}deg) scale(1.1)`;
+                portrait.style.transform = `rotateX(${beta * 1}deg) rotateY(${gamma * 1}deg) scale(1.1)`;
                 portrait.querySelector('img').style.transform = `scale(1.1)`;
                 portrait.style.boxShadow = `0px 12px 40px rgba(0, 0, 0, 0.3)`;
             });
