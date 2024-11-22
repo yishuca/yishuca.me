@@ -444,8 +444,7 @@
         }
           </script>
 
-    <script>
-    // Function to calculate the flip effect based on scroll position
+<script>
     const portraits = document.querySelectorAll('.portrait');
 
     const handleScroll = () => {
@@ -455,35 +454,27 @@
             const rect = portrait.getBoundingClientRect();
             const topPosition = rect.top;
             const bottomPosition = rect.bottom;
+            const elementHeight = rect.height;
 
-            // Calculate percentage of element's visibility within the viewport
-            const percentageVisibleTop = Math.max(0, Math.min(1, (windowHeight - topPosition) / windowHeight));
-            const percentageVisibleBottom = Math.max(0, Math.min(1, (bottomPosition) / windowHeight));
+            // Calculate the scroll percentage based on the center of the element
+            const scrollPercentage = Math.min(Math.max(0, (topPosition + elementHeight / 2) / windowHeight), 1);
 
-            // Use the higher percentage for flip effect and opacity
-            const percentageVisible = Math.max(percentageVisibleTop, percentageVisibleBottom);
+            // Flip portraits when moving away from the center, but not when centered
+            const flipThreshold = 0.4; // Amount before or after the center where the flip begins
+            let rotation = 0;
 
-            // Portraits coming from the bottom of the screen
-            if (topPosition > windowHeight / 2) {
-                portrait.style.transform = `rotateX(180deg)`; // Flip when it's below the center
-                portrait.style.opacity = 0; // Make it invisible when approaching the edge of the screen
-            } else {
-                portrait.style.transform = `rotateX(0deg)`; // Set to normal when it reaches the center
-                portrait.style.opacity = 1; // Fully visible when centered
+            // When portrait is not centered, start flipping
+            if (scrollPercentage < 0.4 || scrollPercentage > 0.6) {
+                rotation = (scrollPercentage - 0.5) * 360; // Flip based on scroll
             }
 
-            // Portraits coming from the top of the screen
-            if (bottomPosition < windowHeight / 2) {
-                portrait.style.transform = `rotateX(180deg)`; // Flip when it's above the center
-                portrait.style.opacity = 0; // Make it invisible when approaching the edge of the screen
-            } else {
-                portrait.style.transform = `rotateX(0deg)`; // Set to normal when it reaches the center
-                portrait.style.opacity = 1; // Fully visible when centered
-            }
+            portrait.style.transform = `rotateX(${rotation}deg)`; // Gradually flip when not centered
 
-            // Apply opacity: fade in when entering, fade out when leaving
-            if (topPosition > windowHeight || bottomPosition < 0) {
-                portrait.style.opacity = 0; // Fade out when it leaves the viewport
+            // Apply opacity changes based on how visible the portrait is
+            if (scrollPercentage > 0.4 && scrollPercentage < 0.6) {
+                portrait.style.opacity = 1; // Fully visible when centered
+            } else {
+                portrait.style.opacity = 0; // Fade out when not centered
             }
         });
     };
@@ -493,7 +484,7 @@
 
     // Initial scroll position check
     handleScroll();
-    </script>
+</script>
 
 </body>
 </html>
