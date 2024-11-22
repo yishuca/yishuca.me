@@ -127,7 +127,7 @@
             justify-content: center;
             align-items: center;
             gap: 30px;
-            flex-wrap: wrap; /* Make it responsive */
+            flex-wrap: wrap;
             margin-top: 50px;
         }
 
@@ -143,7 +143,6 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             cursor: pointer;
             margin-bottom: 20px;
-            /* Adjust size for smaller screens */
         }
 
         .portrait img {
@@ -179,7 +178,6 @@
             font-size: 0.8rem;
         }
 
-        /* Mobile responsiveness */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
@@ -313,60 +311,68 @@
     </footer>
 
     <script>
-        // Add mouse move event to apply 3D transformation to portraits
+        // Function to handle mouse movements (for desktop and touch)
+        function handlePortraitsMovement(e, isTouch = false) {
+            const portraits = document.querySelectorAll('.portrait');
+            portraits.forEach(portrait => {
+                const { width, height, left, top } = portrait.getBoundingClientRect();
+                let mouseX, mouseY;
+    
+                if (isTouch) {
+                    const touch = e.touches[0];
+                    mouseX = touch.clientX - left;
+                    mouseY = touch.clientY - top;
+                } else {
+                    mouseX = e.clientX - left;
+                    mouseY = e.clientY - top;
+                }
+    
+                const centerX = width / 2;
+                const centerY = height / 2;
+                const offsetX = (mouseX - centerX) / centerX;
+                const offsetY = (mouseY - centerY) / centerY;
+    
+                portrait.style.transform = `rotateX(${offsetY * 20}deg) rotateY(${offsetX * 20}deg) scale(1.1)`;
+                portrait.querySelector('img').style.transform = `scale(1.1)`;
+                portrait.style.boxShadow = `0px 12px 40px rgba(0, 0, 0, 0.3)`;
+            });
+        }
+    
+        // Mouse and touch event listeners
         const portraits = document.querySelectorAll('.portrait');
     
         portraits.forEach(portrait => {
-            portrait.addEventListener('mousemove', (e) => {
-                const { width, height, left, top } = portrait.getBoundingClientRect();
-                const mouseX = e.clientX - left;
-                const mouseY = e.clientY - top;
-    
-                const centerX = width / 2;
-                const centerY = height / 2;
-    
-                // Calculate mouse position relative to center
-                const offsetX = (mouseX - centerX) / centerX;
-                const offsetY = (mouseY - centerY) / centerY;
-    
-                // Apply 3D rotation and scaling effects based on mouse position
-                portrait.style.transform = `rotateX(${offsetY * 20}deg) rotateY(${offsetX * 20}deg) scale(1.1)`;
-                portrait.querySelector('img').style.transform = `scale(1.1)`;
-                portrait.style.boxShadow = `0px 12px 40px rgba(0, 0, 0, 0.3)`;
+            portrait.addEventListener('mousemove', (e) => handlePortraitsMovement(e, false));
+            portrait.addEventListener('mouseleave', () => {
+                portraits.forEach(p => {
+                    p.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                    p.querySelector('img').style.transform = 'scale(1)';
+                    p.style.boxShadow = '0px 4px 20px rgba(0, 0, 0, 0.2)';
+                });
             });
     
-            portrait.addEventListener('mouseleave', () => {
-                portrait.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                portrait.querySelector('img').style.transform = 'scale(1)';
-                portrait.style.boxShadow = '0px 4px 20px rgba(0, 0, 0, 0.2)';
+            portrait.addEventListener('touchmove', (e) => handlePortraitsMovement(e, true));
+            portrait.addEventListener('touchend', () => {
+                portraits.forEach(p => {
+                    p.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                    p.querySelector('img').style.transform = 'scale(1)';
+                    p.style.boxShadow = '0px 4px 20px rgba(0, 0, 0, 0.2)';
+                });
             });
         });
     
-        // For mobile touch support
-        portraits.forEach(portrait => {
-            portrait.addEventListener('touchmove', (e) => {
-                const { width, height, left, top } = portrait.getBoundingClientRect();
-                const touch = e.touches[0];
-                const mouseX = touch.clientX - left;
-                const mouseY = touch.clientY - top;
+        // Gyroscope (device orientation) support
+        window.addEventListener('deviceorientation', (e) => {
+            const alpha = e.alpha; // rotation around the Z-axis (left/right tilt)
+            const beta = e.beta;   // rotation around the X-axis (up/down tilt)
+            const gamma = e.gamma; // rotation around the Y-axis (side-to-side tilt)
     
-                const centerX = width / 2;
-                const centerY = height / 2;
-    
-                // Calculate touch position relative to center
-                const offsetX = (mouseX - centerX) / centerX;
-                const offsetY = (mouseY - centerY) / centerY;
-    
-                // Apply 3D rotation and scaling effects based on touch position
-                portrait.style.transform = `rotateX(${offsetY * 20}deg) rotateY(${offsetX * 20}deg) scale(1.1)`;
+            const portraits = document.querySelectorAll('.portrait');
+            portraits.forEach(portrait => {
+                // Apply device rotation to portrait 3D transformation
+                portrait.style.transform = `rotateX(${beta * 0.2}deg) rotateY(${gamma * 0.2}deg) scale(1.1)`;
                 portrait.querySelector('img').style.transform = `scale(1.1)`;
                 portrait.style.boxShadow = `0px 12px 40px rgba(0, 0, 0, 0.3)`;
-            });
-    
-            portrait.addEventListener('touchend', () => {
-                portrait.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                portrait.querySelector('img').style.transform = 'scale(1)';
-                portrait.style.boxShadow = '0px 4px 20px rgba(0, 0, 0, 0.2)';
             });
         });
     </script>
