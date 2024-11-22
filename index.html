@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Polygons</title>
+    <title>Yishuca Designs</title>
     <link rel="stylesheet" href="./css/w3.css">
     <style>
           .pointer {cursor: pointer;}
@@ -15,6 +15,11 @@
             background-color: #121212;
             color: #ffffff;
             font-family: 'Arial', sans-serif;
+        }
+        .w3-navbar, .w3-footer {
+            background-color: #1e1e1e;
+            color: white;
+            z-index: 3;
         }
         .w3-button-dark, .w3-button-black:hover {
             background-color: #444;
@@ -115,7 +120,7 @@
 
         /* Hero Section */
         .hero {
-
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
             padding: 70px 0px;
             text-align: center;
             position: relative;
@@ -214,9 +219,20 @@
             z-index: 0; /* Ensure canvas is below any other content */
         }
 
+        .pop {
+    z-index: 1;
+        }
     </style>
 </head>
 <body>
+    <!-- Navbar -->
+    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small">
+        <a class="w3-bar-item w3-card-4 w3-mobile">Welcome!</a>
+        <a href="#services" class="w3-bar-item w3-button w3-mobile">Services</a>
+        <a href="#about" class="w3-bar-item w3-button w3-mobile">About Us</a>
+        <a href="#contact" class="w3-bar-item w3-button w3-mobile">Contact</a>
+    </div>
+
   <!-- Hamburger Menu -->
   <div class="hamburger" onclick="toggleSidebar()">
     <div></div>
@@ -235,13 +251,13 @@
     <div class="hero w3-card-4"><br><br><br><br>
         <div class="w3-center w3-mobile">
         <img class="w3-card-4 w3-border floating w3-animate-top" style="width: 50%;min-width:350px" src="./img/yishuca1-ezgif.com-crop.gif">
-        <p>Providing art, technology, and sound.</p>
-        <a href="#services" class="w3-center w3-button w3-button-dark w3-large floating">Explore Now</a>
+        <p>Welcome!</p>
+        <a href="#services" class="w3-center w3-button w3-button-dark w3-large floating">Check out my services</a>
         </div>
     </div>
 
     <!-- Services Section -->
-    <div id="services" class="w3-container w3-padding-64 w3-dark-grey" style="height: 100vh;">
+    <div  id="services" class="w3-container w3-padding-64 w3-black">
         <h2 class="w3-center w3-xxlarge animate-reveal" style="text-shadow: 2px 2px 8px #000000;">What can I do for you?</h2>
         <br>
         <p class="w3-center w3-xlarge animate-reveal"></p>
@@ -249,7 +265,7 @@
             <!-- Portrait Drawings -->
             <div class="w3-card service-card w3-round">
                 <div class="service-card animate-reveal">
-                    <img src="https://via.placeholder.com/300x200" alt="Portrait Drawings">
+                    <img src="./img/eyeball.jpg" alt="Portrait Drawings">
                     <div class="service-card-content">
                         <h3>Portrait Drawings</h3>
                         <p>Hand-drawn portraits with stunning detail that you can cherish forever.</p>
@@ -260,7 +276,7 @@
             <!-- Website Development -->
             <div class="w3-card service-card w3-round">
                 <div class="service-card animate-reveal">
-                    <img src="https://via.placeholder.com/300x200" alt="Website Development">
+                    <img src="./img/code.png" alt="Website Development">
                     <div class="service-card-content">
                         <h3>Website Development</h3>
                         <p>Visually engaging websites tailored to your business or personal needs.</p>
@@ -271,7 +287,7 @@
             <!-- Music Recording -->
             <div class="w3-card service-card w3-round">
                 <div class="service-card animate-reveal">
-                    <img src="https://via.placeholder.com/300x200" alt="Music Recording">
+                    <img src="./img/mic.jpg" alt="Music Recording">
                     <div class="service-card-content">
                         <h3>Music Recording</h3>
                         <p>Professional-grade recording services to amplify your creativity.</p>
@@ -279,11 +295,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div><br><br><br><br><br><br>
     </div>
-
+    
     <!-- About Section -->
-    <div id="about" class="w3-container w3-padding-64 w3-dark-grey">
+    <div id="about" class="w3-container w3-card-4 w3-display-container w3-padding-64 w3-black" style="z-index: 2;">
         <h2 class="w3-center w3-xxlarge animate-reveal">About Me</h2>
         <p class="w3-center animate-reveal w3-xlarge">Nice to meet you!</p>
         <div class="w3-content w3-center w3-large w3-animate-opacity" style="max-width:800px">
@@ -293,10 +309,10 @@
     </div>
 
     <!-- Contact Section -->
-    <div id="contact" class="w3-container w3-padding-64">
+    <div id="contact" class=" w3-container w3-padding-64">
         <h2 class="w3-center animate-reveal">Contact Me!</h2>
         <p class="w3-center animate-reveal">Don't be shy! 😊</p>
-        <form class="w3-content" style="max-width:600px;">
+        <form class="w3-content pop w3-display-container" style="max-width:600px;">
             <div class="w3-margin-bottom">
                 <label></label>
                 <input class="w3-input w3-border" type="text" placeholder="Your Name" required>            </div>
@@ -312,16 +328,14 @@
         </form>
     </div>
 
-<div class="w3-center">
-    <button class="cta-button w3-button w3-button-black w3-large w2-black" onclick="scrollToTop()">Scroll to top</button>
+<div class="w3-center pop w3-display-container w3-padding-64">
+    <button class="cta-button w3-button w3-button-black w3-large" onclick="scrollToTop()">Scroll to top</button>
 </div>
-<br>
 
     <!-- Footer -->
-    <footer class="w3-container w3-footer w3-center w3-padding-16">
+    <footer class="w3-footer w3-center w3-padding-32 w3-black">
         <p>&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
     </footer>
-
     <!-- Canvas Element -->
     <canvas id="polygonCanvas"></canvas>
 
