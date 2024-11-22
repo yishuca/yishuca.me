@@ -173,8 +173,8 @@
         }
         .service-card {
             background-color: #222;
-            border: 1px solid #444;
-            width: 300px;
+            border: 1px solid #ffffff;
+            width: 50%;
             margin: 0 auto;
             transition: transform 0.5s, box-shadow 0.5s;
             overflow: hidden;
@@ -187,7 +187,7 @@
         }
         .service-card img {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease-out;
         }
@@ -195,7 +195,7 @@
             transform: scale(1.1);
         }
         .service-card-content {
-            padding: 20px;
+            padding: 0px;
             text-align: center;
         }
 
@@ -208,98 +208,18 @@
                 font-size: 1.2rem;
             }
         }
-        /* Portraits */
-        .portraits {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            flex-wrap: wrap; /* Make it responsive */
-            margin-top: 50px;
-        }
 
-        .portrait {
-            width: 20%;
-            height: 20%;
-            background: #fff;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
-            margin-bottom: 20px;
-            /* Adjust size for smaller screens */
-        }
+    /* Scroll Reveal Effect */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
 
-        .portrait img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.2s ease;
-        }
-
-        .portrait h2 {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.5rem;
-            color: #333;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
-            width: 80%;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            font-size: 1rem;
-            color: #fff;
-        }
-
-        footer p {
-            font-size: 0.8rem;
-        }
-
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .portraits {
-                gap: 20px;
-            }
-
-            .portrait {
-                width: 60%;
-                height: 60%;
-            }
-
-            .portrait h2 {
-                font-size: 1.2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            .portrait {
-                width: 70%;
-                height: 70%;
-            }
-
-            .portrait h2 {
-                font-size: 1rem;
-            }
-        }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
     </style>
 </head>
 <body>
@@ -327,86 +247,45 @@
   </div>
 
     <!-- Hero Section -->
+
+
+    <!-- Services Section -->
 <br><br><br><br>
-    <main>
-        <div>
-            <div class="portraits w3-display-container w3-center">
-                <!-- Portrait 1 -->
-                <div class="portrait" id="portrait1">
-                    <img src="./img/eyeball.jpg" alt="Portrait 1">
-                    <h2>Artist: John Doe</h2>
-                </div>
-            </div>
-            <div class="portraits w3-display-container w3-center">
-                <!-- Portrait 2 -->
-                <div class="portrait" id="portrait2">
-                    <img src="./img/blueeyes.jpg" alt="Portrait 2">
-                    <h2>Artist: Jane Doe</h2>
-                </div>
-            </div>
-            <div class="portraits w3-display-container w3-center">
-                <!-- Portrait 3 -->
-                <div class="portrait" id="portrait3">
-                    <img src="./img/happypill.jpg" alt="Portrait 3">
-                    <h2>Artist: Jane Doe</h2>
-                </div>
-            </div>
-            <div class="portraits w3-display-container w3-center">
-                <!-- Portrait 1 -->
-                <div class="portrait" id="portrait1">
-                    <img src="./img/blindsbody.jpg" alt="Portrait 1">
-                    <h2>Artist: John Doe</h2>
-                </div>
-            </div>
-            <div class="portraits w3-display-container w3-center">
-                <!-- Portrait 2 -->
-                <div class="portrait" id="portrait2">
-                    <img src="./img/kingandqueen.jpg" alt="Portrait 2">
-                    <h2>Artist: Jane Doe</h2>
-                </div>
-            </div>
-            <div class="portraits w3-display-container w3-center">
-                <!-- Portrait 3 -->
-                <div class="portrait" id="portrait3">
-                    <img src="./img/madrabbit.jpg" alt="Portrait 3">
-                    <h2>Artist: Jane Doe</h2>
-                </div>
-            </div>
-        </div>
-    </main>
-    <br><br><br><br>
-    <!-- About Section -->
-    <div id="about" class="w3-container w3-padding-64 w3-dark-grey">
-        <h2 class="w3-center w3-xxlarge animate-reveal">About Me</h2>
-        <p class="w3-center animate-reveal w3-xlarge">Nice to meet you!</p>
-        <div class="w3-content w3-center w3-large w3-animate-opacity" style="max-width:800px">
-            <p>I am an artist, website developer, and musician myself, committed to delivering exceptional, creative solutions.</p>
-            <p>Whether you're looking for a custom portrait, a brand-new website, or music recording services, I bring passion and expertise to every project.</p>
-        </div>
+<h2 class="w3-center w3-xxlarge reveal" style="text-shadow: 2px 2px 8px #000000;">Here's some of my drawings</h2>
+    <!-- Portrait Drawings -->
+    <div class="reveal w3-padding-32 service-wrapper">
+        <img  src="./img/eyeball.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-16 service-wrapper">
+        <img  src="./img/blueeyes.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-32 service-wrapper">
+        <img  src="./img/happypill.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-16 service-wrapper">
+        <img  src="./img/blindsbody.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-16 service-wrapper">
+        <img  src="./img/suckerportrait.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-32 service-wrapper">
+        <img  src="./img/madrabbit.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-16 service-wrapper">
+        <img  src="./img/kingandqueen.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-32 service-wrapper">
+        <img  src="./img/cicimushrooms.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-16 service-wrapper">
+        <img  src="./img/24knecklace.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
     </div>
 
-    <!-- Contact Section -->
-    <div id="contact" class="w3-container w3-padding-64">
-        <h2 class="w3-center animate-reveal">Contact Me!</h2>
-        <p class="w3-center animate-reveal">Don't be shy! 😊</p>
-        <form class="w3-content" style="max-width:600px;">
-            <div class="w3-margin-bottom">
-                <label></label>
-                <input class="w3-input w3-border" type="text" placeholder="Your Name" required>            </div>
-            <div class="w3-margin-bottom">
-                <label></label>
-                <input class="w3-input w3-border" type="email" placeholder="Your Email" required>
-            </div>
-            <div class="w3-margin-bottom">
-                <label></label>
-                <textarea class="w3-input w3-border" rows="4" placeholder="Your Message" required></textarea>
-            </div>
-            <button type="submit" class="w3-button w3-button-dark">Send Message</button>
-        </form>
-    </div>
+    <br><br><br><br>
+
 
 <div class="w3-center">
-    <button class="cta-button w3-button w3-button-black w3-large w2-black" onclick="scrollToTop()">Scroll to top</button>
+    <button class="cta-button w3-button w3-button-black w3-large w2-black reveal" onclick="scrollToTop()">Scroll to top</button>
 </div>
 <br>
 
@@ -438,64 +317,31 @@
         }
           </script>
 
-    <script>
-        // Add mouse move event to apply 3D transformation to portraits
-        const portraits = document.querySelectorAll('.portrait');
-    
-        portraits.forEach(portrait => {
-            portrait.addEventListener('mousemove', (e) => {
-                const { width, height, left, top } = portrait.getBoundingClientRect();
-                const mouseX = e.clientX - left;
-                const mouseY = e.clientY - top;
-    
-                const centerX = width / 2;
-                const centerY = height / 2;
-    
-                // Calculate mouse position relative to center
-                const offsetX = (mouseX - centerX) / centerX;
-                const offsetY = (mouseY - centerY) / centerY;
-    
-                // Apply 3D rotation and scaling effects based on mouse position
-                portrait.style.transform = `rotateX(${offsetY * 20}deg) rotateY(${offsetX * 20}deg) scale(1.1)`;
-                portrait.querySelector('img').style.transform = `scale(1.1)`;
-                portrait.style.boxShadow = `0px 12px 40px rgba(0, 0, 0, 0.3)`;
-            });
-    
-            portrait.addEventListener('mouseleave', () => {
-                portrait.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                portrait.querySelector('img').style.transform = 'scale(1)';
-                portrait.style.boxShadow = '0px 4px 20px rgba(0, 0, 0, 0.2)';
-            });
-        });
-    
-        // For mobile touch support
-        portraits.forEach(portrait => {
-            portrait.addEventListener('touchmove', (e) => {
-                const { width, height, left, top } = portrait.getBoundingClientRect();
-                const touch = e.touches[0];
-                const mouseX = touch.clientX - left;
-                const mouseY = touch.clientY - top;
-    
-                const centerX = width / 2;
-                const centerY = height / 2;
-    
-                // Calculate touch position relative to center
-                const offsetX = (mouseX - centerX) / centerX;
-                const offsetY = (mouseY - centerY) / centerY;
-    
-                // Apply 3D rotation and scaling effects based on touch position
-                portrait.style.transform = `rotateX(${offsetY * 20}deg) rotateY(${offsetX * 20}deg) scale(1.1)`;
-                portrait.querySelector('img').style.transform = `scale(1.1)`;
-                portrait.style.boxShadow = `0px 12px 40px rgba(0, 0, 0, 0.3)`;
-            });
-    
-            portrait.addEventListener('touchend', () => {
-                portrait.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                portrait.querySelector('img').style.transform = 'scale(1)';
-                portrait.style.boxShadow = '0px 4px 20px rgba(0, 0, 0, 0.2)';
-            });
-        });
-    </script>
+<script>
+    // Scroll Reveal Effect
+    const revealElements = document.querySelectorAll('.reveal');
 
+function revealOnScroll() {
+revealElements.forEach(element => {
+const rect = element.getBoundingClientRect();
+if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+  element.classList.add('visible');
+}
+});
+}
+
+// Trigger reveal effect on scroll
+window.addEventListener('scroll', revealOnScroll);
+
+// Initial trigger for elements in viewport
+revealOnScroll();
+</script>
+
+    <!-- JavaScript for Scroll Animation -->
+    <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
