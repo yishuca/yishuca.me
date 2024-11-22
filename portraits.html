@@ -31,6 +31,93 @@
             box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
         }
 
+    /* Hamburger Menu */
+    .hamburger {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 30px;
+      cursor: pointer;
+      z-index: 1050;
+      display: none;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .hamburger div {
+      width: 35px;
+      height: 5px;
+      background-color: #656565;
+      margin: 6px 0;
+      transition: 0.4s;
+    }
+
+    /* Remove hover glow effect from Hamburger */
+    .hamburger:hover {
+      color: #1f3a61;
+      transform: scale(1.1);
+      box-shadow: none; /* Remove the glowing effect */
+    }
+
+    /* Hamburger Active State */
+    .hamburger.active div:nth-child(1) {
+      transform: translateY(11px) rotate(45deg);
+    }
+
+    .hamburger.active div:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active div:nth-child(3) {
+      transform: translateY(-11px) rotate(-45deg);
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+      color: white;
+    }
+
+    .sidebar a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #f1f1f1;
+      display: block;
+      transition: 0.3s;
+      text-align: center;
+      border-radius: 5px;
+    }
+
+    /* Sidebar Link Hover Effect */
+    .sidebar a:hover {
+      color: #fff;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      box-shadow: 0 0 15px #a13434; /* Glowing */
+      transform: scale(1.05); /* Slight scale-up */
+    }
+
+    /* Media Queries */
+    @media screen and (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+    }
+
+    @media screen and (min-width: 769px) {
+      .hamburger {
+        display: none;
+      }
+    }
+
         /* Hero Section */
         .hero {
             background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
@@ -121,7 +208,20 @@
                 font-size: 1.2rem;
             }
         }
+
         /* Portraits */
+        /* Ensure the page has scrollable content */
+        main {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 50px;
+            padding-bottom: 100px;
+            margin-top: 100px; /* Push content down a bit for better visibility */
+        }
+
         .portraits {
             display: flex;
             justify-content: center;
@@ -132,24 +232,22 @@
         }
 
         .portrait {
-            width: 300px;
-            height: 400px;
+            width: 400px;
+            height: 700px;
             background: #fff;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
-            margin-bottom: 20px;
+            transform: rotateX(180deg); /* Initially flipped */
+            opacity: 0; /* Initially invisible */
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
         }
 
         .portrait img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.2s ease;
         }
 
         .portrait h2 {
@@ -178,7 +276,8 @@
             font-size: 0.8rem;
         }
 
-        @media (max-width: 768px) {
+        /* Mobile responsiveness */
+        @media (max-width: 100vh) {
             h1 {
                 font-size: 2.5rem;
             }
@@ -188,8 +287,8 @@
             }
 
             .portrait {
-                width: 250px;
-                height: 350px;
+                width: 100vh;
+                height: 100vh;
             }
 
             .portrait h2 {
@@ -197,14 +296,14 @@
             }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 100vh) {
             h1 {
                 font-size: 2rem;
             }
 
             .portrait {
-                width: 200px;
-                height: 300px;
+                width: 100vh;
+                height: 100vh;
             }
 
             .portrait h2 {
@@ -222,54 +321,66 @@
         <a href="#contact" class="w3-bar-item w3-button w3-mobile">Contact</a>
     </div>
 
-    <!-- Sidebar (hidden by default) -->
-    <nav class="w3-sidebar w3-card-4 w3-top w3-overlay w3-xlarge w3-animate-left" style="display:none;z-index:2;width:50%;min-width:300px" id="mySidebar">
-        <a href="javascript:void(0)" onclick="w3_close()" class="w3-hover-red w3-ripple w3-right w3-xlarge w3-button w3-hide-large" title="Close Menu">
-          <i class="fa fa-remove">x</i>
-        </a><img class="w3-animate-right w3-mobile w3-card-4 w3-bottombar w3-topbar w3-border-black" style="width: 50%;" src="./img/yishuca (1) - Copy.png" alt="YishucaDesignsLogo"><br>
-        <a href="#about" onclick="w3_close()" class="w3-ripple w3-hover-light-grey w3-bar-item w3-button w3-animate-left">Coming soon</a><br>
-        </nav>
-        <!-- Sidebar (hidden by default) -->
-        
-        <!-- Top mini menu -->
-        <div class="w3-top w3-left w3-hide-medium w3-hide-large">
-        <div class="w3-xlarge" style="max-width:1200px;margin:auto">
-        <div class="w3-container w3-ripple w3-xxlarge w3-text-light-grey w3-xlarge w3-padding-16 w3-left pointer" onclick="w3_open()">&#9776;</div>
-        </div>
-        </div>
-        <!-- Top mini menu -->
+  <!-- Hamburger Menu -->
+  <div class="hamburger" onclick="toggleSidebar()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 
-    <!-- Hero Section -->
-    <div class="hero"><br><br>
-        <div class="w3-center w3-mobile">
-        <img class="w3-card-4 w3-border floating w3-animate-top" style="width: 50%;min-width:350px" src="./img/yishuca1-ezgif.com-crop.gif">
-        </div>
-        <p>Providing art, technology, and sound.</p>
-        <a href="#services" class="w3-button w3-button-dark w3-large floating">Explore Now</a>
-    </div>
-
-    <main>
-        <div class="portraits">
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar w3-card-4"><br>
+    <a href="#" class="w3-animate-opacity" onclick="closeSidebar()">Home</a>
+    <a href="#services" onclick="closeSidebar()">Our Services</a>
+    <a href="#contact" onclick="closeSidebar()">Contact</a>
+  </div>
+<br><br><br><br>
+    <div>
+        <div class="portraits w3-display-container w3-center">
             <!-- Portrait 1 -->
             <div class="portrait" id="portrait1">
                 <img src="./img/eyeball.jpg" alt="Portrait 1">
                 <h2>Artist: John Doe</h2>
             </div>
-    
+        </div>
+        <div class="portraits w3-display-container w3-center">
             <!-- Portrait 2 -->
             <div class="portrait" id="portrait2">
                 <img src="./img/blueeyes.jpg" alt="Portrait 2">
                 <h2>Artist: Jane Doe</h2>
             </div>
-    
+        </div>
+        <div class="portraits w3-display-container w3-center">
             <!-- Portrait 3 -->
             <div class="portrait" id="portrait3">
                 <img src="./img/happypill.jpg" alt="Portrait 3">
-                <h2>Artist: Alex Smith</h2>
+                <h2>Artist: Jane Doe</h2>
             </div>
         </div>
-    </main>
+        <div class="portraits w3-display-container w3-center">
+            <!-- Portrait 1 -->
+            <div class="portrait" id="portrait1">
+                <img src="./img/blindsbody.jpg" alt="Portrait 1">
+                <h2>Artist: John Doe</h2>
+            </div>
+        </div>
+        <div class="portraits w3-display-container w3-center">
+            <!-- Portrait 2 -->
+            <div class="portrait" id="portrait2">
+                <img src="./img/kingandqueen.jpg" alt="Portrait 2">
+                <h2>Artist: Jane Doe</h2>
+            </div>
+        </div>
+        <div class="portraits w3-display-container w3-center">
+            <!-- Portrait 3 -->
+            <div class="portrait" id="portrait3">
+                <img src="./img/madrabbit.jpg" alt="Portrait 3">
+                <h2>Artist: Jane Doe</h2>
+            </div>
+        </div>
+    </div>
     
+    <br><br><br><br>
     <!-- About Section -->
     <div id="about" class="w3-container w3-padding-64 w3-dark-grey">
         <h2 class="w3-center w3-xxlarge animate-reveal">About Me</h2>
@@ -311,70 +422,77 @@
     </footer>
 
     <script>
-        // Function to handle mouse movements (for desktop and touch)
-        function handlePortraitsMovement(e, isTouch = false) {
-            const portraits = document.querySelectorAll('.portrait');
-            portraits.forEach(portrait => {
-                const { width, height, left, top } = portrait.getBoundingClientRect();
-                let mouseX, mouseY;
-    
-                if (isTouch) {
-                    const touch = e.touches[0];
-                    mouseX = touch.clientX - left;
-                    mouseY = touch.clientY - top;
-                } else {
-                    mouseX = e.clientX - left;
-                    mouseY = e.clientY - top;
-                }
-    
-                const centerX = width / 2;
-                const centerY = height / 2;
-                const offsetX = (mouseX - centerX) / centerX;
-                const offsetY = (mouseY - centerY) / centerY;
-    
-                portrait.style.transform = `rotateX(${offsetY * 20}deg) rotateY(${offsetX * 20}deg) scale(1.1)`;
-                portrait.querySelector('img').style.transform = `scale(1.1)`;
-                portrait.style.boxShadow = `0px 12px 40px rgba(0, 0, 0, 0.3)`;
-            });
+        // Toggle Sidebar
+        function toggleSidebar() {
+          const sidebar = document.getElementById('sidebar');
+          const hamburger = document.querySelector('.hamburger');
+          if (sidebar.style.width === '250px') {
+            sidebar.style.width = '0';
+            hamburger.classList.remove('active');
+          } else {
+            sidebar.style.width = '250px';
+            hamburger.classList.add('active');
+          }
         }
     
-        // Mouse and touch event listeners
-        const portraits = document.querySelectorAll('.portrait');
-    
+        // Close Sidebar when a link is clicked
+        function closeSidebar() {
+          const sidebar = document.getElementById('sidebar');
+          const hamburger = document.querySelector('.hamburger');
+          sidebar.style.width = '0'; // Close the sidebar
+          hamburger.classList.remove('active'); // Reset hamburger icon
+        }
+          </script>
+
+    <script>
+    // Function to calculate the flip effect based on scroll position
+    const portraits = document.querySelectorAll('.portrait');
+
+    const handleScroll = () => {
+        const windowHeight = window.innerHeight;
+
         portraits.forEach(portrait => {
-            portrait.addEventListener('mousemove', (e) => handlePortraitsMovement(e, false));
-            portrait.addEventListener('mouseleave', () => {
-                portraits.forEach(p => {
-                    p.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                    p.querySelector('img').style.transform = 'scale(1)';
-                    p.style.boxShadow = '0px 4px 20px rgba(0, 0, 0, 0.2)';
-                });
-            });
-    
-            portrait.addEventListener('touchmove', (e) => handlePortraitsMovement(e, true));
-            portrait.addEventListener('touchend', () => {
-                portraits.forEach(p => {
-                    p.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-                    p.querySelector('img').style.transform = 'scale(1)';
-                    p.style.boxShadow = '0px 4px 20px rgba(0, 0, 0, 0.2)';
-                });
-            });
+            const rect = portrait.getBoundingClientRect();
+            const topPosition = rect.top;
+            const bottomPosition = rect.bottom;
+
+            // Calculate percentage of element's visibility within the viewport
+            const percentageVisibleTop = Math.max(0, Math.min(1, (windowHeight - topPosition) / windowHeight));
+            const percentageVisibleBottom = Math.max(0, Math.min(1, (bottomPosition) / windowHeight));
+
+            // Use the higher percentage for flip effect and opacity
+            const percentageVisible = Math.max(percentageVisibleTop, percentageVisibleBottom);
+
+            // Portraits coming from the bottom of the screen
+            if (topPosition > windowHeight / 2) {
+                portrait.style.transform = `rotateX(180deg)`; // Flip when it's below the center
+                portrait.style.opacity = 0; // Make it invisible when approaching the edge of the screen
+            } else {
+                portrait.style.transform = `rotateX(0deg)`; // Set to normal when it reaches the center
+                portrait.style.opacity = 1; // Fully visible when centered
+            }
+
+            // Portraits coming from the top of the screen
+            if (bottomPosition < windowHeight / 2) {
+                portrait.style.transform = `rotateX(180deg)`; // Flip when it's above the center
+                portrait.style.opacity = 0; // Make it invisible when approaching the edge of the screen
+            } else {
+                portrait.style.transform = `rotateX(0deg)`; // Set to normal when it reaches the center
+                portrait.style.opacity = 1; // Fully visible when centered
+            }
+
+            // Apply opacity: fade in when entering, fade out when leaving
+            if (topPosition > windowHeight || bottomPosition < 0) {
+                portrait.style.opacity = 0; // Fade out when it leaves the viewport
+            }
         });
-    
-        // Gyroscope (device orientation) support
-        window.addEventListener('deviceorientation', (e) => {
-            const alpha = e.alpha; // rotation around the Z-axis (left/right tilt)
-            const beta = e.beta;   // rotation around the X-axis (up/down tilt)
-            const gamma = e.gamma; // rotation around the Y-axis (side-to-side tilt)
-    
-            const portraits = document.querySelectorAll('.portrait');
-            portraits.forEach(portrait => {
-                // Apply device rotation to portrait 3D transformation
-                portrait.style.transform = `rotateX(${beta * 1}deg) rotateY(${gamma * 1}deg) scale(1.1)`;
-                portrait.querySelector('img').style.transform = `scale(1.1)`;
-                portrait.style.boxShadow = `0px 12px 40px rgba(0, 0, 0, 0.3)`;
-            });
-        });
+    };
+
+    // Listen for scroll events
+    window.addEventListener('scroll', handleScroll);
+
+    // Initial scroll position check
+    handleScroll();
     </script>
 
 </body>
