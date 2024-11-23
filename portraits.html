@@ -6,6 +6,9 @@
     <title>Yishuca</title>
     <!-- W3.CSS -->
     <link rel="stylesheet" href="./css/w3.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Reenie+Beanie&family=Shadows+Into+Light&display=swap" rel="stylesheet">
     <style>
           .pointer {cursor: pointer;}
           html {
@@ -15,7 +18,7 @@
         body {
             background-color: #121212;
             color: #ffffff;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Gochi Hand';
         }
         .w3-navbar, .w3-footer {
             background-color: #1e1e1e;
@@ -221,6 +224,14 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+        /* Canvas to draw the particles */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -2; /* Default z-index, you can adjust this as needed */
+        }
     </style>
 </head>
 <body>
@@ -252,7 +263,7 @@
 
     <!-- Services Section -->
 <br><br><br><br>
-<h2 class="w3-center w3-xxlarge reveal" style="text-shadow: 2px 2px 8px #000000;">Here's some of my drawings</h2>
+<p class="w3-center w3-jumbo reveal" style="text-shadow: 2px 2px 8px #000000;">Here's some of my drawings</p>
     <!-- Portrait Drawings -->
     <div class="reveal w3-padding-32 service-wrapper">
         <img  src="./img/eyeball.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
@@ -295,6 +306,8 @@
         <p>&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
     </footer>
 
+    <canvas id="particleCanvas"></canvas>
+    
     <script>
         // Toggle Sidebar
         function toggleSidebar() {
@@ -344,5 +357,88 @@ revealOnScroll();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
+    <script>
+    // Wait until the DOM is fully loaded to ensure the canvas is accessible
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById("particleCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Function to resize the canvas to fill the window
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        // Call resizeCanvas to adjust the size initially and whenever the window is resized
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        let particles = [];
+
+        // Particle class to define individual particles
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 1;  // Random size between 1 and 6
+                this.speedX = Math.random() * 1 - 0.5;  // Slower speed (reduced range)
+                this.speedY = Math.random() * 1 - 0.5;  // Slower speed (reduced range)
+                this.color = 'rgba(255, 255, 255, 0.8)';  // White color with transparency
+            }
+
+            // Update particle position and check if out of bounds
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Shrink particle size over time
+                if (this.size > 0.2) this.size -= 0.1;
+
+                // Reset the particle if it goes off-screen
+                if (this.x > canvas.width || this.x < 0 || this.y > canvas.height || this.y < 0) {
+                    this.reset();
+                }
+            }
+
+            // Draw the particle on the canvas
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Reset particle to a new position
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 1 - 0.5;  // Slower speed
+                this.speedY = Math.random() * 1 - 0.5;  // Slower speed
+            }
+        }
+
+        // Create a number of particles
+        function createParticles() {
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
+            }
+        }
+
+        // Animate the particles
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear canvas
+            for (let particle of particles) {
+                particle.update();
+                particle.draw();
+            }
+            requestAnimationFrame(animateParticles);  // Keep animating
+        }
+
+        // Start the particle animation
+        createParticles();
+        animateParticles();
+    });
+</script>
 </body>
 </html>
