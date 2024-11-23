@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yishuca Designs</title>
+    <title>Yishuca</title>
+    <!-- W3.CSS -->
     <link rel="icon" href="./img/equal-svgrepo-com.svg" type="image/x-icon">
     <link rel="stylesheet" href="./css/w3.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,19 +15,11 @@
           html {
             scroll-behavior: smooth;
         }
-
-        .center {
-            margin: auto;
-            width: 95%;
-            padding: 10px;
-        }
-
         /* General Styles */
         body {
             background-color: #121212;
             color: #ffffff;
             font-family: 'Gochi Hand';
-            font-size: 20px;
         }
         .w3-navbar, .w3-footer {
             background-color: #1e1e1e;
@@ -132,12 +125,12 @@
 
         /* Hero Section */
         .hero {
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: white;
             padding: 70px 0px;
             text-align: center;
             position: relative;
             overflow: hidden;
-            z-index: 1;
-            height: 100vh;
         }
         .hero h1, .hero p, .hero a {
             animation: fadeIn 1.5s ease-out;
@@ -185,13 +178,12 @@
         }
         .service-card {
             background-color: #222;
-            border: 1px solid #444;
-            width: 325px;
+            border: 1px solid #ffffff;
+            width: 50%;
             margin: 0 auto;
             transition: transform 0.5s, box-shadow 0.5s;
             overflow: hidden;
             position: relative;
-            z-index: 1;
         }
         
         .service-card:hover {
@@ -200,7 +192,7 @@
         }
         .service-card img {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease-out;
         }
@@ -222,27 +214,6 @@
             }
         }
 
-        /* Canvas to draw the polygons */
-        canvas {
-            position: fixed; /* Make canvas fixed relative to the page */
-            top: 0;
-            left: 0;
-            z-index: 0; /* Ensure canvas is below any other content */        }
-
-        /* Canvas to draw the particles */
-        #particleCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1; /* Default z-index, you can adjust this as needed */
-        }
-
-        /* Canvas to draw the anything */
-        .pop {
-        z-index: 2;
-        opacity: 1;
-        }
-
     /* Scroll Reveal Effect */
     .reveal {
       opacity: 0;
@@ -254,15 +225,23 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+        /* Canvas to draw the particles */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -2; /* Default z-index, you can adjust this as needed */
+        }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small w3-card-4">
-        <a href="#" class="w3-bar-item w3-button w3-mobile">Home</a>
-        <a href="#services" class="w3-bar-item w3-button w3-mobile">Services</a>
-        <a href="#about" class="w3-bar-item w3-button w3-mobile">About Me</a>
-        <a href="#contact" class="w3-bar-item w3-button w3-mobile">Contact</a>
+    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small">
+        <a href="./index.html" class="w3-bar-item w3-button w3-mobile">Home</a>
+        <a href="./index.html#services" class="w3-bar-item w3-button w3-mobile">Services</a>
+        <a href="./index.html#about" class="w3-bar-item w3-button w3-mobile">About Me</a>
+        <a href="./index.html#contact" class="w3-bar-item w3-button w3-mobile">Contact</a>
     </div>
 
   <!-- Hamburger Menu -->
@@ -274,138 +253,101 @@
 
   <!-- Sidebar -->
   <div id="sidebar" class="sidebar w3-card-4"><br>
-    <a href="#" class="w3-animate-opacity" onclick="closeSidebar()">Home</a>
+    <a href="./index.html" class="w3-animate-opacity" onclick="closeSidebar()">Home</a>
     <a href="./index.html#services" onclick="closeSidebar()">Services</a>
     <a href="./index.html#about" onclick="closeSidebar()">About</a>
     <a href="./index.html#contact" onclick="closeSidebar()">Contact</a>
   </div>
 
     <!-- Hero Section -->
-    <div class="hero w3-border-white"><br><br><br>
-        <div class="w3-center w3-mobile">
-        <img class="w3-card-4 w3-border floating w3-animate-top" style="width: 50%;min-width:350px" src="./img/yishuca1-ezgif.com-crop.gif">
-        <br><br><br>
-        <a class="w3-center w3-xxlarge reveal w3-display-container pop w3-black center w3-animate-zoom w3-round w3-card-4" style="z-index: 0;">Hello!</a>
-        <br>
-        <a class="w3-white w3-round w3-button reveal w3-button-black w3-xxlarge w3-card-4" href='#services'>What can I do for you?</a>
-        <br>
-        </div>
-    </div>
-    
+
+
     <!-- Services Section -->
-    <div id="services" class="w3-container"><br>
-        <p class="w3-center w3-jumbo reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">These are my skills</p>
-        <p class="w3-center w3-xlarge"></p>
-        <div class="service-wrapper">
-            <!-- Portrait Drawings -->
-            <div class="w3-card service-card w3-round w3-text-white">
-                <div class="service-card reveal">
-                    <img src="./img/eyeball.jpg" alt="Portrait Drawings">
-                    <div class="service-card-content">
-                        <p class="reveal w3-xlarge">Portrait Drawings</p>
-                        <p class="reveal">Hand-drawn portraits with stunning detail that you can cherish forever.</p>
-                        <a href="./portraits.html" class="reveal w3-button w3-button-dark w3-large">View My Drawings</a>
-                        <br><br>
-                    </div>
-                </div>
-            </div>
-            <!-- Website Development -->
-            <div class="w3-card service-card w3-round w3-text-white">
-                <div class="service-card reveal">
-                    <img src="./img/code.png" alt="Website Development">
-                    <div class="service-card-content">
-                        <p class="reveal w3-xlarge">Website Development</p>
-                        <p class="reveal">Visually engaging websites tailored to your business or personal needs.</p>
-                        <a href="./portraits.html" class="reveal w3-button w3-button-dark w3-large">Sites I've Made</a>
-                        <br><br>
-                    </div>
-                </div>
-            </div>
-            <!-- Music Recording -->
-            <div class="w3-card service-card w3-round w3-text-white">
-                <div class="service-card reveal">
-                    <img src="./img/mic.jpg" alt="Music Recording">
-                    <div class="service-card-content">
-                        <p class="reveal w3-xlarge">Music Recording</p>
-                        <p class="reveal">Professional-grade recording services to amplify your creativity.</p>
-                        <a href="./portraits.html" class="reveal w3-button w3-button-dark w3-large">Explore Now</a>
-                        <br><br>
-                    </div>
-                </div>
-            </div>
-        </div><br><br><br><br>
+<br><br><br>
+<p class="w3-center w3-jumbo reveal" style="text-shadow: 2px 2px 8px #000000;">Here's some of my drawings</p>
+    <!-- Portrait Drawings -->
+    <div class="reveal w3-padding-32 service-wrapper">
+        <img  src="./img/eyeball.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
     </div>
-    
-    <!-- About Section -->
-    <div id="about" class="w3-container w3-padding-64 w3-center center" style="z-index: 2;">
-            <p class="w3-center w3-jumbo reveal w3-display-container pop w3-black w3-border w3-border-white center w3-card-4">About Me</p>
-            <p class="w3-center w3-xxlarge reveal w3-display-container pop w3-white center w3-card-4">Nice to meet you!</p><br>
-        <div class="w3-center w3-jumbo reveal w3-display-container pop center">
-            <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">I am an artist, website developer, and musician myself.</p>
-        </div>
-        <div class=div class="w3-center w3-jumbo reveal w3-display-container pop center">
-            <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">
-                Whether you're looking for a custom portrait, a brand-new website, or music recording services, I bring passion and expertise to every project.</p>
-        </div>
-        <div class=div class="w3-center w3-jumbo reveal w3-display-container pop center">
-            <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">
-                Working with others to help bring our visions to reality is a meaningful experience,
-                one that breeds a unique sense of connection and understanding with others.</p>
-        </div>
-        <br><br><br>
+    <div class="reveal w3-padding-16 service-wrapper">
+        <img  src="./img/blueeyes.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-32 service-wrapper">
+        <img  src="./img/happypill.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-16 service-wrapper">
+        <img  src="./img/blindsbody.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-16 service-wrapper">
+        <img  src="./img/suckerportrait.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-32 service-wrapper">
+        <img  src="./img/madrabbit.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-16 service-wrapper">
+        <img  src="./img/kingandqueen.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    </div>
+    <div class="reveal w3-padding-16 service-wrapper">
+        <img  src="./img/24knecklace.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
     </div>
 
-    <!-- Contact Section -->
-    <div id="contact" class="w3-container w3-padding-64 w3-center center" style="z-index: 2;">
-        <p class="w3-center w3-jumbo reveal w3-display-container pop w3-black w3-border w3-border-white center w3-card-4">Contact Me!</p>
-        <p class="w3-center w3-xxlarge reveal w3-display-container pop w3-white center w3-card-4">Don't be shy! 😊</p><br>
-    <div class="w3-center w3-jumbo reveal w3-display-container pop center">
-        <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">Shoot me a text/call or email!</p>
-    </div>
-    <div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width:800px">
-        <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-hover-text-purple" style="text-shadow: 2px 2px 8px #000000;"><a href="sms:+19869990621">(986) 999 - 0621</a></p>
-    </div>
-    <div class="w3-center w3-xlarge reveal w3-display-container pop center w3-mobile">
-        <p class="w3-center w3-xlarge reveal pop center w3-hover-text-purple w3-mobile" style="text-shadow: 2px 2px 8px #000000;"><a href="mailto:yishuca.biz@gmail.com">yishuca.biz@gmail.com</a></p>
-    </div>
-        <br><br><br>
-    </div>
+    <br><br><br><br>
 
-    <div class="w3-center w3-display-container w3-padding-64 pop">
-        <button class="w3-dark-grey w3-round w3-button reveal w3-button-black w3-large" onclick="scrollToTop()">Scroll to top</button>
-    </div>
-    
+
+<div class="w3-center">
+    <button class="w3-dark-grey w3-round w3-button reveal w3-button-black w3-large" onclick="scrollToTop()">Scroll to top</button>
+</div>
+<br>
+
     <!-- Footer -->
     <footer class="w3-center w3-large reveal w3-display-container pop center w3-mobile">
-        <p>&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
-    </footer>
+      <p>&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
+  </footer>
 
-    <!-- Canvas Element -->
     <canvas id="particleCanvas"></canvas>
-    <canvas id="polygonCanvas"></canvas>
-
+    
     <script>
-    // Toggle Sidebar
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const hamburger = document.querySelector('.hamburger');
-      if (sidebar.style.width === '250px') {
-        sidebar.style.width = '0';
-        hamburger.classList.remove('active');
-      } else {
-        sidebar.style.width = '250px';
-        hamburger.classList.add('active');
-      }
-    }
+        // Toggle Sidebar
+        function toggleSidebar() {
+          const sidebar = document.getElementById('sidebar');
+          const hamburger = document.querySelector('.hamburger');
+          if (sidebar.style.width === '250px') {
+            sidebar.style.width = '0';
+            hamburger.classList.remove('active');
+          } else {
+            sidebar.style.width = '250px';
+            hamburger.classList.add('active');
+          }
+        }
+    
+        // Close Sidebar when a link is clicked
+        function closeSidebar() {
+          const sidebar = document.getElementById('sidebar');
+          const hamburger = document.querySelector('.hamburger');
+          sidebar.style.width = '0'; // Close the sidebar
+          hamburger.classList.remove('active'); // Reset hamburger icon
+        }
+          </script>
 
-    // Close Sidebar when a link is clicked
-    function closeSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const hamburger = document.querySelector('.hamburger');
-      sidebar.style.width = '0'; // Close the sidebar
-      hamburger.classList.remove('active'); // Reset hamburger icon
-    }
-      </script>
+<script>
+    // Scroll Reveal Effect
+    const revealElements = document.querySelectorAll('.reveal');
+
+function revealOnScroll() {
+revealElements.forEach(element => {
+const rect = element.getBoundingClientRect();
+if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+  element.classList.add('visible');
+}
+});
+}
+
+// Trigger reveal effect on scroll
+window.addEventListener('scroll', revealOnScroll);
+
+// Initial trigger for elements in viewport
+revealOnScroll();
+</script>
 
     <!-- JavaScript for Scroll Animation -->
     <script>
@@ -414,27 +356,7 @@
         }
     </script>
 
-<script>
-                // Scroll Reveal Effect
-                const revealElements = document.querySelectorAll('.reveal');
-
-        function revealOnScroll() {
-        revealElements.forEach(element => {
-            const rect = element.getBoundingClientRect();
-            if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-            element.classList.add('visible');
-            }
-        });
-        }
-
-        // Trigger reveal effect on scroll
-        window.addEventListener('scroll', revealOnScroll);
-
-        // Initial trigger for elements in viewport
-        revealOnScroll();
-</script>
-
-<script>
+    <script>
     // Wait until the DOM is fully loaded to ensure the canvas is accessible
     document.addEventListener('DOMContentLoaded', () => {
         const canvas = document.getElementById("particleCanvas");
@@ -516,159 +438,6 @@
         createParticles();
         animateParticles();
     });
-</script>
-
-<script>
-// Get the canvas element and its context
-const canvas = document.getElementById('polygonCanvas');
-const ctx = canvas.getContext('2d');
-
-// Set canvas size to fill the window
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-// Track mouse position
-let mouseX = canvas.width / 2;
-let mouseY = canvas.height / 2;
-
-// Polygon Settings
-const polygons = [];
-const numPolygons = 10;
-
-// Function to generate a random color
-function randomColor() {
-    return {
-        r: Math.floor(Math.random() * 256),
-        g: Math.floor(Math.random() * 256),
-        b: Math.floor(Math.random() * 256),
-        a: 0.8  // Fixed alpha (transparency)
-    };
-}
-
-// Create random polygons
-function createPolygon(x, y, radius, numVertices) {
-    const vertices = [];
-    for (let i = 0; i < numVertices; i++) {
-        const angle = (i / numVertices) * Math.PI * 2;
-        const vx = x + Math.cos(angle) * radius;
-        const vy = y + Math.sin(angle) * radius;
-        vertices.push({ x: vx, y: vy });
-    }
-
-    polygons.push({
-        x: x,
-        y: y,
-        radius: radius,
-        vertices: vertices,
-        speed: 0.5 + Math.random() * 2, // Random speed for floating
-        direction: Math.random() * Math.PI * 2, // Random initial direction
-        color: randomColor(),  // Initial random color
-        colorTarget: randomColor() // Target color for slow transition
-    });
-}
-
-// Create polygons
-for (let i = 0; i < numPolygons; i++) {
-    const radius = 50 + Math.random() * 100; // Random radius size
-    const numVertices = 6 + Math.floor(Math.random() * 6); // Random number of vertices
-    createPolygon(
-        Math.random() * canvas.width,
-        Math.random() * canvas.height,
-        radius,
-        numVertices
-    );
-}
-
-// Function to interpolate color slowly
-function interpolateColor(color1, color2, factor) {
-    return {
-        r: Math.floor(color1.r + (color2.r - color1.r) * factor),
-        g: Math.floor(color1.g + (color2.g - color1.g) * factor),
-        b: Math.floor(color1.b + (color2.b - color1.b) * factor),
-        a: color1.a + (color2.a - color1.a) * factor
-    };
-}
-
-// Draw the polygons on the canvas
-function drawPolygon(polygon) {
-    const color = interpolateColor(polygon.color, polygon.colorTarget, 0.01);  // Adjust 0.01 for slower transitions
-
-    ctx.beginPath();
-    polygon.vertices.forEach((vertex, i) => {
-        if (i === 0) {
-            ctx.moveTo(vertex.x, vertex.y);
-        } else {
-            ctx.lineTo(vertex.x, vertex.y);
-        }
-    });
-    ctx.closePath();
-
-    // Set the color for the polygon
-    ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
-    ctx.fill();  // Fill the polygon
-
-    // Set the stroke color
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
-    ctx.stroke();
-}
-
-// Move polygons to simulate floating effect
-function movePolygon(polygon) {
-    polygon.vertices.forEach(vertex => {
-        const angle = Math.atan2(vertex.y - polygon.y, vertex.x - polygon.x);
-        const force = 0.05;
-        vertex.x += Math.cos(angle) * force;
-        vertex.y += Math.sin(angle) * force;
-    });
-}
-
-// Update polygons based on mouse interaction
-function updatePolygons() {
-    polygons.forEach(polygon => {
-        // Move polygon vertices to create floating effect
-        movePolygon(polygon);
-
-        // React to mouse position
-        polygon.vertices.forEach(vertex => {
-            const dx = vertex.x - mouseX;
-            const dy = vertex.y - mouseY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < 100) {
-                const strength = (100 - distance) / 100;
-                vertex.x += dx * strength * 0.2;
-                vertex.y += dy * strength * 0.2;
-            }
-        });
-
-        // Change the target color randomly
-        if (Math.random() < 0.01) { // 1% chance to change color target each frame
-            polygon.colorTarget = randomColor();  // Set new random color target
-        }
-    });
-}
-
-// Mouse move event listener to track mouse position
-canvas.addEventListener('mousemove', (event) => {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-});
-
-// Animation loop to update and draw the polygons
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-
-    updatePolygons(); // Update polygons based on mouse interaction
-
-    polygons.forEach(polygon => {
-        drawPolygon(polygon); // Draw each polygon
-    });
-
-    requestAnimationFrame(animate); // Request next frame
-}
-
-animate(); // Start animation loop
-
 </script>
 </body>
 </html>
