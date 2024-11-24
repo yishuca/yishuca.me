@@ -741,34 +741,34 @@
                     initialY: y,  // Initial position
                     velocityX: velocityX,
                     velocityY: velocityY,
-                    opacity: 1
+                    opacity: 1,
+                    size: size  // Store the initial size
                 };
 
                 animateParticle(particle);
             }
         }
 
-        // Continuously animate each particle and remove it after traveling a certain distance
+        // Continuously animate each particle, shrinking and fading it
         function animateParticle(particle) {
             let interval = setInterval(() => {
                 // Update the position of the spark based on its velocity
                 particle.element.style.left = parseFloat(particle.element.style.left) + particle.velocityX + 'px';
                 particle.element.style.top = parseFloat(particle.element.style.top) + particle.velocityY + 'px';
 
-                // Calculate the distance traveled from the initial position
-                let distance = Math.sqrt(
-                    (parseFloat(particle.element.style.left) - particle.initialX) ** 2 +
-                    (parseFloat(particle.element.style.top) - particle.initialY) ** 2
-                );
+                // Shrink and fade the particle
+                particle.size -= 0.05;  // Shrink the particle gradually
+                particle.opacity -= 0.01;  // Fade out the particle gradually
 
-                // Remove the particle once it exceeds a set distance
-                if (distance > 50) {  // 50px is the threshold distance for disappearance
+                // Apply the new size and opacity to the particle
+                particle.element.style.width = `${particle.size}px`;
+                particle.element.style.height = `${particle.size}px`;
+                particle.element.style.opacity = particle.opacity;
+
+                // Remove the particle once it gets too small or disappears
+                if (particle.opacity <= 0 || particle.size <= 0) {
                     clearInterval(interval);
                     particle.element.remove();
-                } else {
-                    // Decrease the opacity over time
-                    particle.opacity -= 0.01;
-                    particle.element.style.opacity = particle.opacity;
                 }
             }, 16);  // Update every ~16ms (about 60 FPS)
         }
