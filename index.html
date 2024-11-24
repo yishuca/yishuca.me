@@ -518,157 +518,154 @@
     });
 </script>
 
-<script>
-// Get the canvas element and its context
-const canvas = document.getElementById('polygonCanvas');
-const ctx = canvas.getContext('2d');
-
-// Set canvas size to fill the window
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-// Track mouse position
-let mouseX = canvas.width / 2;
-let mouseY = canvas.height / 2;
-
-// Polygon Settings
-const polygons = [];
-const numPolygons = 10;
-
-// Function to generate a random color
-function randomColor() {
-    return {
-        r: Math.floor(Math.random() * 256),
-        g: Math.floor(Math.random() * 256),
-        b: Math.floor(Math.random() * 256),
-        a: 0.8  // Fixed alpha (transparency)
-    };
-}
-
-// Create random polygons
-function createPolygon(x, y, radius, numVertices) {
-    const vertices = [];
-    for (let i = 0; i < numVertices; i++) {
-        const angle = (i / numVertices) * Math.PI * 2;
-        const vx = x + Math.cos(angle) * radius;
-        const vy = y + Math.sin(angle) * radius;
-        vertices.push({ x: vx, y: vy });
+<script> 
+    // Get the canvas element and its context
+    const canvas = document.getElementById('polygonCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas size to fill the window
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // Track mouse position
+    let mouseX = canvas.width / 2;
+    let mouseY = canvas.height / 2;
+    
+    // Polygon Settings
+    const polygons = [];
+    const numPolygons = 10;
+    
+    // Function to generate a random color
+    function randomColor() {
+        return {
+            r: Math.floor(Math.random() * 256),
+            g: Math.floor(Math.random() * 256),
+            b: Math.floor(Math.random() * 256),
+            a: 0.8  // Fixed alpha (transparency)
+        };
     }
-
-    polygons.push({
-        x: x,
-        y: y,
-        radius: radius,
-        vertices: vertices,
-        speed: 0.5 + Math.random() * 2, // Random speed for floating
-        direction: Math.random() * Math.PI * 2, // Random initial direction
-        color: randomColor(),  // Initial random color
-        colorTarget: randomColor() // Target color for slow transition
-    });
-}
-
-// Create polygons
-for (let i = 0; i < numPolygons; i++) {
-    const radius = 50 + Math.random() * 100; // Random radius size
-    const numVertices = 6 + Math.floor(Math.random() * 6); // Random number of vertices
-    createPolygon(
-        Math.random() * canvas.width,
-        Math.random() * canvas.height,
-        radius,
-        numVertices
-    );
-}
-
-// Function to interpolate color slowly
-function interpolateColor(color1, color2, factor) {
-    return {
-        r: Math.floor(color1.r + (color2.r - color1.r) * factor),
-        g: Math.floor(color1.g + (color2.g - color1.g) * factor),
-        b: Math.floor(color1.b + (color2.b - color1.b) * factor),
-        a: color1.a + (color2.a - color1.a) * factor
-    };
-}
-
-// Draw the polygons on the canvas
-function drawPolygon(polygon) {
-    const color = interpolateColor(polygon.color, polygon.colorTarget, 0.01);  // Adjust 0.01 for slower transitions
-
-    ctx.beginPath();
-    polygon.vertices.forEach((vertex, i) => {
-        if (i === 0) {
-            ctx.moveTo(vertex.x, vertex.y);
-        } else {
-            ctx.lineTo(vertex.x, vertex.y);
+    
+    // Create random polygons
+    function createPolygon(x, y, radius, numVertices) {
+        const vertices = [];
+        for (let i = 0; i < numVertices; i++) {
+            const angle = (i / numVertices) * Math.PI * 2;
+            const vx = x + Math.cos(angle) * radius;
+            const vy = y + Math.sin(angle) * radius;
+            vertices.push({ x: vx, y: vy });
         }
-    });
-    ctx.closePath();
-
-    // Set the color for the polygon
-    ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
-    ctx.fill();  // Fill the polygon
-
-    // Set the stroke color
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
-    ctx.stroke();
-}
-
-// Move polygons to simulate floating effect
-function movePolygon(polygon) {
-    polygon.vertices.forEach(vertex => {
-        const angle = Math.atan2(vertex.y - polygon.y, vertex.x - polygon.x);
-        const force = 0.05;
-        vertex.x += Math.cos(angle) * force;
-        vertex.y += Math.sin(angle) * force;
-    });
-}
-
-// Update polygons based on mouse interaction
-function updatePolygons() {
-    polygons.forEach(polygon => {
-        // Move polygon vertices to create floating effect
-        movePolygon(polygon);
-
-        // React to mouse position
-        polygon.vertices.forEach(vertex => {
-            const dx = vertex.x - mouseX;
-            const dy = vertex.y - mouseY;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < 100) {
-                const strength = (100 - distance) / 100;
-                vertex.x += dx * strength * 0.2;
-                vertex.y += dy * strength * 0.2;
+    
+        polygons.push({
+            x: x,
+            y: y,
+            radius: radius,
+            vertices: vertices,
+            speed: 0.5 + Math.random() * 2, // Random speed for floating
+            direction: Math.random() * Math.PI * 2, // Random initial direction
+            color: randomColor(),  // Initial random color
+            colorTarget: randomColor() // Target color for slow transition
+        });
+    }
+    
+    // Create polygons
+    for (let i = 0; i < numPolygons; i++) {
+        const radius = 50 + Math.random() * 100; // Random radius size
+        const numVertices = 6 + Math.floor(Math.random() * 6); // Random number of vertices
+        createPolygon(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height,
+            radius,
+            numVertices
+        );
+    }
+    
+    // Function to interpolate color slowly
+    function interpolateColor(color1, color2, factor) {
+        return {
+            r: Math.floor(color1.r + (color2.r - color1.r) * factor),
+            g: Math.floor(color1.g + (color2.g - color1.g) * factor),
+            b: Math.floor(color1.b + (color2.b - color1.b) * factor),
+            a: color1.a + (color2.a - color1.a) * factor
+        };
+    }
+    
+    // Draw the polygons on the canvas
+    function drawPolygon(polygon) {
+        const color = interpolateColor(polygon.color, polygon.colorTarget, 0.01);  // Adjust 0.01 for slower transitions
+    
+        ctx.beginPath();
+        polygon.vertices.forEach((vertex, i) => {
+            if (i === 0) {
+                ctx.moveTo(vertex.x, vertex.y);
+            } else {
+                ctx.lineTo(vertex.x, vertex.y);
             }
         });
-
-        // Change the target color randomly
-        if (Math.random() < 0.01) { // 1% chance to change color target each frame
-            polygon.colorTarget = randomColor();  // Set new random color target
-        }
+        ctx.closePath();
+    
+        // Set the stroke color (for outline)
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`; // Outline color
+        ctx.stroke();  // Only outline the polygon, no fill
+    }
+    
+    // Move polygons to simulate floating effect
+    function movePolygon(polygon) {
+        polygon.vertices.forEach(vertex => {
+            const angle = Math.atan2(vertex.y - polygon.y, vertex.x - polygon.x);
+            const force = 0.05;
+            vertex.x += Math.cos(angle) * force;
+            vertex.y += Math.sin(angle) * force;
+        });
+    }
+    
+    // Update polygons based on mouse interaction
+    function updatePolygons() {
+        polygons.forEach(polygon => {
+            // Move polygon vertices to create floating effect
+            movePolygon(polygon);
+    
+            // React to mouse position
+            polygon.vertices.forEach(vertex => {
+                const dx = vertex.x - mouseX;
+                const dy = vertex.y - mouseY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 100) {
+                    const strength = (100 - distance) / 100;
+                    vertex.x += dx * strength * 0.2;
+                    vertex.y += dy * strength * 0.2;
+                }
+            });
+    
+            // Change the target color randomly
+            if (Math.random() < 0.01) { // 1% chance to change color target each frame
+                polygon.colorTarget = randomColor();  // Set new random color target
+            }
+        });
+    }
+    
+    // Mouse move event listener to track mouse position
+    canvas.addEventListener('mousemove', (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
     });
-}
-
-// Mouse move event listener to track mouse position
-canvas.addEventListener('mousemove', (event) => {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-});
-
-// Animation loop to update and draw the polygons
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-
-    updatePolygons(); // Update polygons based on mouse interaction
-
-    polygons.forEach(polygon => {
-        drawPolygon(polygon); // Draw each polygon
-    });
-
-    requestAnimationFrame(animate); // Request next frame
-}
-
-animate(); // Start animation loop
-
-</script>
+    
+    // Animation loop to update and draw the polygons
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+    
+        updatePolygons(); // Update polygons based on mouse interaction
+    
+        polygons.forEach(polygon => {
+            drawPolygon(polygon); // Draw each polygon (only outlines now)
+        });
+    
+        requestAnimationFrame(animate); // Request next frame
+    }
+    
+    animate(); // Start animation loop
+    
+    </script>
+    
 </body>
 </html>
