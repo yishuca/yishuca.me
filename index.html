@@ -691,12 +691,18 @@
         let lastY = 0;
         let lastTime = Date.now();
         
-        // Track cursor movement
-        document.addEventListener('mousemove', (event) => {
-            cursorX = event.clientX;
-            cursorY = event.clientY;
+        // Function to handle mouse movement
+        function onMouseMove(event) {
+            if (event.type === 'mousemove') {
+                cursorX = event.clientX;
+                cursorY = event.clientY;
+            } else if (event.type === 'touchmove') {
+                // Get the touch position for mobile devices
+                cursorX = event.touches[0].clientX;
+                cursorY = event.touches[0].clientY;
+            }
 
-            // Calculate speed of cursor movement
+            // Calculate speed of cursor/touch movement
             let currentTime = Date.now();
             let speed = Math.sqrt((cursorX - lastX) ** 2 + (cursorY - lastY) ** 2) / (currentTime - lastTime) * 1000;
             
@@ -708,7 +714,11 @@
             lastX = cursorX;
             lastY = cursorY;
             lastTime = currentTime;
-        });
+        }
+
+        // Listen for mousemove (desktop) and touchmove (mobile)
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('touchmove', onMouseMove);
 
         // Create a burst of small white spark particles at the cursor position
         function createSparks(x, y, speed) {
