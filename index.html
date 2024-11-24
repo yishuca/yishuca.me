@@ -535,12 +535,16 @@
     const polygons = [];
     const numPolygons = 10;
     
-    // Function to generate a random color
+    // Function to generate a purple-blue color
     function randomColor() {
+        // Generate colors in the purple-blue spectrum
+        const r = Math.floor(Math.random() * 128); // Random value for red between 0 and 127
+        const g = Math.floor(Math.random() * 100); // Random value for green between 0 and 99 (keeping it low)
+        const b = Math.floor(Math.random() * 128) + 127; // Random value for blue between 127 and 255
         return {
-            r: Math.floor(Math.random() * 256),
-            g: Math.floor(Math.random() * 256),
-            b: Math.floor(Math.random() * 256),
+            r: r,
+            g: g,
+            b: b,
             a: 0.8  // Fixed alpha (transparency)
         };
     }
