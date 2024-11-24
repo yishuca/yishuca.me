@@ -687,43 +687,90 @@
     <script>
         let cursorX = 0;
         let cursorY = 0;
-
-        // Track cursor movement (formerly "mouse")
+        let lastX = 0;
+        let lastY = 0;
+        let lastTime = Date.now();
+        
+        // Track cursor movement
         document.addEventListener('mousemove', (event) => {
-            cursorX = event.clientX;  // Use "cursor" instead of "mouse"
-            cursorY = event.clientY;  // Use "cursor" instead of "mouse"
-            createSpark(cursorX, cursorY); // Create spark at the cursor position
+            cursorX = event.clientX;
+            cursorY = event.clientY;
+
+            // Calculate speed of cursor movement
+            let currentTime = Date.now();
+            let speed = Math.sqrt((cursorX - lastX) ** 2 + (cursorY - lastY) ** 2) / (currentTime - lastTime) * 1000;
+            
+            // Create fewer particles for smaller movements
+            if (speed > 30) {  // Lowered threshold for fewer particles
+                createSparks(cursorX, cursorY, speed);  // Speed will influence particle behavior
+            }
+            
+            lastX = cursorX;
+            lastY = cursorY;
+            lastTime = currentTime;
         });
 
-        // Create a floating spark at the cursor position
-        function createSpark(x, y) {  // Changed function name to createSpark
-            const spark = document.createElement('div');
-            spark.classList.add('spark'); // Spark instead of particle
-            document.body.appendChild(spark);
+        // Create a burst of small white spark particles at the cursor position
+        function createSparks(x, y, speed) {
+            // Generate fewer particles for a more subtle effect (e.g., just 1-2 particles)
+            let numParticles = 1;  // Just one particle for a very subtle effect
+            for (let i = 0; i < numParticles; i++) {
+                const spark = document.createElement('div');
+                spark.classList.add('spark');
+                document.body.appendChild(spark);
 
-            // Randomize size of the spark (small but variable)
-            const size = Math.random() * 3 + 2; // Size between 2px and 5px
-            spark.style.width = `${size}px`;
-            spark.style.height = `${size}px`;
+                // Keep the particles small (3px to 5px in size)
+                const size = 3 + Math.random() * 2;  // Particle size remains small
+                spark.style.width = `${size}px`;
+                spark.style.height = `${size}px`;
 
-            // Position the spark at the cursor location
-            spark.style.left = `${x - size / 2}px`; 
-            spark.style.top = `${y - size / 2}px`;
+                // Position the spark at the cursor location
+                spark.style.left = `${x - size / 2}px`;
+                spark.style.top = `${y - size / 2}px`;
 
-            // Random direction for floating away (x and y)
-            const offsetX = (Math.random() - 0.5) * 50; // Random horizontal movement
-            const offsetY = (Math.random() - 0.5) * 50; // Random vertical movement
+                // Add random offsets to simulate spread of sparks
+                const angle = Math.random() * Math.PI * 2; // Random direction
+                const speedFactor = Math.random() * 1 + 0.5; // Reduced speed factor for less distance
+                const velocityX = Math.cos(angle) * speedFactor;
+                const velocityY = Math.sin(angle) * speedFactor;
 
-            // Animate the spark to float away
-            setTimeout(() => {
-                spark.style.transform = `translate(${offsetX}px, ${offsetY}px)`; // Move the spark
-                spark.style.opacity = '0'; // Fade out the spark
-            }, 0);
+                // Particle movement behavior
+                let particle = {
+                    element: spark,
+                    initialX: x,  // Initial position
+                    initialY: y,  // Initial position
+                    velocityX: velocityX,
+                    velocityY: velocityY,
+                    opacity: 1
+                };
 
-            // Remove the spark after animation ends (1 second)
-            setTimeout(() => {
-                spark.remove();
-            }, 1000); // Sparks will disappear after 1 second
+                animateParticle(particle);
+            }
+        }
+
+        // Continuously animate each particle and remove it after traveling a certain distance
+        function animateParticle(particle) {
+            let interval = setInterval(() => {
+                // Update the position of the spark based on its velocity
+                particle.element.style.left = parseFloat(particle.element.style.left) + particle.velocityX + 'px';
+                particle.element.style.top = parseFloat(particle.element.style.top) + particle.velocityY + 'px';
+
+                // Calculate the distance traveled from the initial position
+                let distance = Math.sqrt(
+                    (parseFloat(particle.element.style.left) - particle.initialX) ** 2 +
+                    (parseFloat(particle.element.style.top) - particle.initialY) ** 2
+                );
+
+                // Remove the particle once it exceeds a set distance
+                if (distance > 50) {  // 50px is the threshold distance for disappearance
+                    clearInterval(interval);
+                    particle.element.remove();
+                } else {
+                    // Decrease the opacity over time
+                    particle.opacity -= 0.01;
+                    particle.element.style.opacity = particle.opacity;
+                }
+            }, 16);  // Update every ~16ms (about 60 FPS)
         }
     </script>
 </body>
