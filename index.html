@@ -138,6 +138,7 @@
             overflow: hidden;
             z-index: 1;
             height: 100vh;
+            background-color: #1f3a61;
         }
         .hero h1, .hero p, .hero a {
             animation: fadeIn 1.5s ease-out;
@@ -191,7 +192,7 @@
             transition: transform 0.5s, box-shadow 0.5s;
             overflow: hidden;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
         
         .service-card:hover {
@@ -234,7 +235,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            z-index: -1; /* Default z-index, you can adjust this as needed */
+            z-index: 1; /* Default z-index, you can adjust this as needed */
         }
 
         /* Canvas to draw the anything */
@@ -294,7 +295,7 @@
   </div>
 
     <!-- Hero Section -->
-    <div class="hero w3-border-white"><br><br><br>
+    <div class="hero w3-border-white w3-card-4"><br><br><br>
         <div class="w3-center w3-mobile">
         <img class="w3-card-4 w3-border floating w3-animate-top" style="width: 50%;min-width:350px" src="./img/yishuca1-ezgif.com-crop.gif">
         <br><br><br>
@@ -306,7 +307,7 @@
     </div>
     
     <!-- Services Section -->
-    <div id="services" class="w3-container"><br>
+    <div id="services" class="w3-container w3-blue-grey"><br>
         <p id="typing3" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">Here are some things I do</p>
         <p class="w3-center w3-xlarge"></p>
         <div class="service-wrapper">
