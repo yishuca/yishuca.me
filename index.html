@@ -298,16 +298,16 @@
         <div class="w3-center w3-mobile">
         <img class="w3-card-4 w3-border floating w3-animate-top" style="width: 50%;min-width:350px" src="./img/yishuca1-ezgif.com-crop.gif">
         <br><br><br>
-        <a class="w3-center w3-xxlarge reveal w3-display-container pop w3-black center w3-animate-zoom w3-round w3-card-4" style="z-index: 0;">Hello!</a>
+        <a id="typing1" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-black center w3-animate-zoom w3-round w3-card-4" style="z-index: 0;"></a>
         <br>
-        <a class="w3-white w3-round w3-button reveal w3-button-black w3-xxlarge w3-card-4" href='#services'>What can I do for you?</a>
+        <a id="typing2" class="typing-effect w3-white w3-round w3-button reveal w3-button-black w3-xxlarge w3-card-4" href='#services'></a>
         <br>
         </div>
     </div>
     
     <!-- Services Section -->
     <div id="services" class="w3-container"><br>
-        <p class="w3-center w3-jumbo reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">These are my skills</p>
+        <p id="typing3" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;"></p>
         <p class="w3-center w3-xlarge"></p>
         <div class="service-wrapper">
             <!-- Portrait Drawings -->
@@ -315,7 +315,7 @@
                 <div class="service-card reveal">
                     <img src="./img/eyeball.jpg" alt="Portrait Drawings">
                     <div class="service-card-content">
-                        <p class="reveal w3-xlarge">Portrait Drawings</p>
+                        <p id="typing4" class="typing-effect reveal w3-xlarge"></p>
                         <p class="reveal">Hand-drawn portraits with stunning detail that you can cherish forever.</p>
                         <a href="./portraits.html" class="reveal w3-button w3-button-dark w3-large">View My Drawings</a>
                         <br><br>
@@ -327,7 +327,7 @@
                 <div class="service-card reveal">
                     <img src="./img/code.png" alt="Website Development">
                     <div class="service-card-content">
-                        <p class="reveal w3-xlarge">Website Development</p>
+                        <p id="typing5" class="typing-effect reveal w3-xlarge"></p>
                         <p class="reveal">Visually engaging websites tailored to your business or personal needs.</p>
                         <a href="./portraits.html" class="reveal w3-button w3-button-dark w3-large">Sites I've Made</a>
                         <br><br>
@@ -339,7 +339,7 @@
                 <div class="service-card reveal">
                     <img src="./img/mic.jpg" alt="Music Recording">
                     <div class="service-card-content">
-                        <p class="reveal w3-xlarge">Music Recording</p>
+                        <p id="typing6" class="typing-effect reveal w3-xlarge"></p>
                         <p class="reveal">Professional-grade recording services to amplify your creativity.</p>
                         <a href="./portraits.html" class="reveal w3-button w3-button-dark w3-large">Explore Now</a>
                         <br><br>
@@ -351,8 +351,8 @@
     
     <!-- About Section -->
     <div id="about" class="w3-container w3-padding-64 w3-center center" style="z-index: 2;">
-            <p class="w3-center w3-jumbo reveal w3-display-container pop w3-black w3-border w3-border-white center w3-card-4" style="max-width: 400px;">About Me</p>
-            <p class="w3-center w3-xxlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 300px;">Nice to meet you!</p><br>
+            <p id="typing7" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop w3-black w3-border w3-border-white center w3-card-4" style="max-width: 400px;"></p>
+            <p id="typing8" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 300px;"></p><br>
         <div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 600px;">
             <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">I am an artist, website developer, and musician myself.</p>
         </div>
@@ -370,8 +370,8 @@
 
     <!-- Contact Section -->
     <div id="contact" class="w3-container w3-padding-64 w3-center center" style="z-index: 2; max-width: 400px;">
-        <p class="w3-center w3-xxlarge reveal w3-display-container pop w3-black w3-border w3-border-white center w3-card-4" style="max-width: 300px;">Contact Me!</p>
-        <p class="w3-center w3-xlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 200px;">Don't be shy! 😊</p><br>
+        <p id="typing9" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-black w3-border w3-border-white center w3-card-4" style="max-width: 300px;"></p>
+        <p id="typing10" class="typing-effect w3-center w3-xlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 200px;"></p><br>
     <div class="w3-center w3-jumbo reveal w3-display-container pop center">
         <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;" style="max-width: 200px;">Shoot me a text/call or email!</p>
     </div>
@@ -783,5 +783,78 @@
             }, 16);  // Update every ~16ms (about 60 FPS)
         }
     </script>
+
+<script>
+    // Texts you want to display
+    const texts = [
+        "Hello!",
+        "What can I do for you?",
+        "These are my skills",
+        "Portrait Drawings",
+        "Website Development",
+        "Music Recording",
+        "About Me",
+        "Nice to meet you!",
+        "Contact Me!",
+        "Don't be shy! 😊",
+    ];
+
+    // Delay times (in milliseconds) for each text
+    const delayTimes = [
+        0,        // 1 Hello!
+        1000,     // 2 What can I do for you?
+        1000,        // 3 These are my skills
+        2800,     // 4 Portrait Drawings
+        500,        // 5 Website Development
+        500,        // 6 Music Recording
+        0,        // 7 About Me
+        500,     // 8 Nice to meet you!
+        500,        // 9 Contact Me!
+        1500,        // 9 Don't be shy! 😊
+
+
+    ];
+
+    // Function to simulate typing for each element
+    function typeText(elementId, text, delayTime) {
+        const typingElement = document.getElementById(elementId);
+        let index = 0;
+
+        function typingAnimation() {
+            if (index < text.length) {
+                typingElement.textContent += text[index];
+                index++;
+                setTimeout(typingAnimation, 60); // Adjust typing speed here
+            } else {
+                typingElement.classList.add("typed"); // Remove cursor after typing
+            }
+        }
+
+        // Start the typing animation with the specified delay
+        setTimeout(typingAnimation, delayTime);
+    }
+
+    // Create an intersection observer to trigger the typing effect when an element is in view
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // When the element is in the viewport, start the typing effect
+                const elementId = entry.target.id;
+                const index = parseInt(elementId.replace('typing', '')) - 1; // Get the index for texts array
+                typeText(elementId, texts[index], delayTimes[index]); // Pass delay time for each text
+
+                // Stop observing the element once it's typed
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.5 // Trigger when 50% of the element is in view
+    });
+
+    // Observe the typing elements
+    document.querySelectorAll('.typing-effect').forEach(element => {
+        observer.observe(element);
+    });
+</script>
 </body>
 </html>
