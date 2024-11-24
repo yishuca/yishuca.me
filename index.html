@@ -254,6 +254,17 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    .spark { /* Changed class name to spark */
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8); /* Light spark particles */
+            pointer-events: none; /* Prevent sparks from interfering with cursor events */
+            opacity: 1;
+            transition: transform 0.4s ease-out, opacity 1s ease-out; /* Smooth fading effect */
+        }
     </style>
 </head>
 <body>
@@ -671,5 +682,47 @@
     
     </script>
     
+    <script>
+        let cursorX = 0;
+        let cursorY = 0;
+
+        // Track cursor movement (formerly "mouse")
+        document.addEventListener('mousemove', (event) => {
+            cursorX = event.clientX;  // Use "cursor" instead of "mouse"
+            cursorY = event.clientY;  // Use "cursor" instead of "mouse"
+            createSpark(cursorX, cursorY); // Create spark at the cursor position
+        });
+
+        // Create a floating spark at the cursor position
+        function createSpark(x, y) {  // Changed function name to createSpark
+            const spark = document.createElement('div');
+            spark.classList.add('spark'); // Spark instead of particle
+            document.body.appendChild(spark);
+
+            // Randomize size of the spark (small but variable)
+            const size = Math.random() * 3 + 2; // Size between 2px and 5px
+            spark.style.width = `${size}px`;
+            spark.style.height = `${size}px`;
+
+            // Position the spark at the cursor location
+            spark.style.left = `${x - size / 2}px`; 
+            spark.style.top = `${y - size / 2}px`;
+
+            // Random direction for floating away (x and y)
+            const offsetX = (Math.random() - 0.5) * 50; // Random horizontal movement
+            const offsetY = (Math.random() - 0.5) * 50; // Random vertical movement
+
+            // Animate the spark to float away
+            setTimeout(() => {
+                spark.style.transform = `translate(${offsetX}px, ${offsetY}px)`; // Move the spark
+                spark.style.opacity = '0'; // Fade out the spark
+            }, 0);
+
+            // Remove the spark after animation ends (1 second)
+            setTimeout(() => {
+                spark.remove();
+            }, 1000); // Sparks will disappear after 1 second
+        }
+    </script>
 </body>
 </html>
