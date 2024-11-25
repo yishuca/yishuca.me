@@ -256,27 +256,27 @@
 </head>
 <body>
     <!-- Navbar -->
-    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small w3-card-4">
-      <a href="#" class="w3-bar-item w3-button w3-mobile">Home</a>
-      <a href="#services" class="w3-bar-item w3-button w3-mobile">Services</a>
-      <a href="#contact" class="w3-bar-item w3-button w3-mobile">Contact</a>
-      <a href="#about" class="w3-bar-item w3-button w3-mobile">About Me</a>
+    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small">
+        <a href="./index.html" class="w3-bar-item w3-button w3-mobile">Home</a>
+        <a href="./index.html#services" class="w3-bar-item w3-button w3-mobile">Services</a>
+        <a href="./index.html#contact" class="w3-bar-item w3-button w3-mobile">Contact</a>
+        <a href="./index.html#about" class="w3-bar-item w3-button w3-mobile">About Me</a>
+    </div>
+
+  <!-- Hamburger Menu -->
+  <div class="hamburger" onclick="toggleSidebar()">
+    <div></div>
+    <div></div>
+    <div></div>
   </div>
 
-<!-- Hamburger Menu -->
-<div class="hamburger" onclick="toggleSidebar()">
-  <div></div>
-  <div></div>
-  <div></div>
-</div>
-
-<!-- Sidebar -->
-<div id="sidebar" class="sidebar w3-card-4"><br>
-  <a href="#" class="w3-animate-opacity" onclick="closeSidebar()">Home</a>
-  <a href="./index.html#services" onclick="closeSidebar()">Services</a>
-  <a href="./index.html#contact" onclick="closeSidebar()">Contact</a>
-  <a href="./index.html#about" onclick="closeSidebar()">About</a>
-</div>
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar w3-card-4"><br>
+    <a href="./index.html" onclick="closeSidebar()">Home</a>
+    <a href="./index.html#services" onclick="closeSidebar()">Services</a>
+    <a href="./index.html#contact" onclick="closeSidebar()">Contact</a>
+    <a href="./index.html#about" onclick="closeSidebar()">About</a>
+  </div>
 
     <!-- Hero Section -->
 
@@ -319,7 +319,7 @@
   
   <!-- Footer -->
   <footer class="w3-center w3-large w3-display-container pop center" style="max-width: 400px;">
-      <p class="w3-round reveal w3-large center">&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
+      <p class="w3-round w3-large center">&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
   </footer>
 
     <canvas id="particleCanvas"></canvas>
