@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yishuca</title>
-    <!-- W3.CSS -->
+    <title>Yishuca Designs</title>
     <link rel="icon" href="./img/equal-svgrepo-com.svg" type="image/x-icon">
     <link rel="stylesheet" href="./css/w3.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,12 +26,19 @@
             background-color: #121212;
             color: #ffffff;
             font-family: 'Gochi Hand';
+            font-size: 20px;
         }
         .w3-navbar, .w3-footer {
             background-color: #1e1e1e;
             color: white;
             z-index: 3;
         }
+            
+        .w3-navbar:hover {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); /* Glowing effect */
+        filter: brightness(1.3); /* Brightness increase */
+        }
+
         .w3-button-dark, .w3-button-black:hover {
             background-color: #444;
             color: white;
@@ -58,7 +64,7 @@
     .hamburger div {
       width: 35px;
       height: 5px;
-      background-color: #656565;
+      background-color: #ffffff;
       margin: 6px 0;
       transition: 0.4s;
     }
@@ -66,8 +72,8 @@
     /* Remove hover glow effect from Hamburger */
     .hamburger:hover {
       color: #1f3a61;
-      transform: scale(1.1);
-      box-shadow: none; /* Remove the glowing effect */
+      transform: scale(1.2);
+      box-shadow: red; /* Remove the glowing effect */
     }
 
     /* Hamburger Active State */
@@ -112,9 +118,9 @@
     /* Sidebar Link Hover Effect */
     .sidebar a:hover {
       color: #fff;
-      background: #222;
-      box-shadow: 0 0 15px #ffffff; /* Glowing */
-      transform: scale(1.05); /* Slight scale-up */
+      background: #000000;
+      box-shadow: 0 0 15px #d900ff; /* Glowing */
+      transform: scale(1.2); /* Slight scale-up */
     }
 
     /* Media Queries */
@@ -132,12 +138,12 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-            color: white;
             padding: 70px 0px;
             text-align: center;
             position: relative;
             overflow: hidden;
+            z-index: 1;
+            height: 100vh;
         }
         .hero h1, .hero p, .hero a {
             animation: fadeIn 1.5s ease-out;
@@ -184,22 +190,24 @@
             margin-top: 30px;
         }
         .service-card {
-            background-color: #222;
-            border: 1px solid #ffffff;
-            width: 50%;
+            background-color: #000000;
+            border: 0px solid #580075;
+            width: 375px;
+            max-width: fit-content;
             margin: 0 auto;
             transition: transform 0.5s, box-shadow 0.5s;
             overflow: hidden;
             position: relative;
+            z-index: 1;
         }
         
         .service-card:hover {
-            transform: scale(1.05);
+            transform: scale(0);
             box-shadow: 0 12px 30px rgba(255, 255, 255, 0.3);
         }
         .service-card img {
             width: 100%;
-            height: 100%;
+            height: 200px;
             object-fit: cover;
             transition: transform 0.5s ease-out;
         }
@@ -221,6 +229,27 @@
             }
         }
 
+        /* Canvas to draw the polygons */
+        canvas {
+            position: fixed; /* Make canvas fixed relative to the page */
+            top: 0;
+            left: 0;
+            z-index: 0; /* Ensure canvas is below any other content */        }
+
+        /* Canvas to draw the particles */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Default z-index, you can adjust this as needed */
+        }
+
+        /* Canvas to draw the anything */
+        .pop {
+        z-index: 2;
+        opacity: 1;
+        }
+
     /* Scroll Reveal Effect */
     .reveal {
       opacity: 0;
@@ -233,14 +262,6 @@
       transform: translateY(0);
     }
 
-        /* Canvas to draw the particles */
-        #particleCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -2; /* Default z-index, you can adjust this as needed */
-        }
-
     .spark { /* Changed class name to spark */
             position: fixed;
             width: 5px;
@@ -252,11 +273,32 @@
             transition: transform 0.4s ease-out, opacity 1s ease-out; /* Smooth fading effect */
             z-index: 9999; /* Ensure sparks are in the foreground */
         }
-
+        
     /* Button Hover Effect */
     .button-primary:hover {
       transform: scale(1.1); /* Scale up on hover */
       box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); /* Glowing effect */
+      filter: brightness(1.3); /* Brightness increase */
+    }
+
+        /* Button Hover Effect */
+        .card-hover1:hover {
+      transform: scale(1.05); /* Scale up on hover */
+      box-shadow: 0 0 15px rgba(255, 247, 0, 0.8); /* Glowing effect */
+      filter: brightness(1.3); /* Brightness increase */
+    }
+
+            /* Button Hover Effect */
+            .card-hover2:hover {
+      transform: scale(1.05); /* Scale up on hover */
+      box-shadow: 0 0 15px rgba(255, 83, 255, 0.8); /* Glowing effect */
+      filter: brightness(1.3); /* Brightness increase */
+    }
+
+            /* Button Hover Effect */
+            .card-hover3:hover {
+      transform: scale(1.05); /* Scale up on hover */
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* Glowing effect */
       filter: brightness(1.3); /* Brightness increase */
     }
 
@@ -270,15 +312,15 @@
 </head>
 <body>
     <!-- Navbar -->
-    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small">
-        <a href="./index.html" class="w3-bar-item w3-button w3-mobile">Home</a>
-        <a href="./index.html#services" class="w3-bar-item w3-button w3-mobile">Services</a>
-        <a href="./index.html#contact" class="w3-bar-item w3-button w3-mobile">Contact</a>
-        <a href="./index.html#about" class="w3-bar-item w3-button w3-mobile">About Me</a>
+    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small w3-card-4">
+        <a href="#" class="w3-bar-item w3-button w3-mobile w3-animate-right w3-hover-white">Home</a>
+        <a href="#services" class="w3-bar-item w3-button w3-mobile w3-animate-left w3-hover-white">Services</a>
+        <a href="#contact" class="w3-bar-item w3-button w3-mobile w3-animate-right w3-hover-white">Contact</a>
+        <a href="#about" class="w3-bar-item w3-button w3-mobile w3-animate-left w3-hover-white">About Me</a>
     </div>
 
   <!-- Hamburger Menu -->
-  <div class="hamburger" onclick="toggleSidebar()">
+  <div class="hamburger w3-animate-zoom" onclick="toggleSidebar()">
     <div></div>
     <div></div>
     <div></div>
@@ -286,100 +328,140 @@
 
   <!-- Sidebar -->
   <div id="sidebar" class="sidebar w3-card-4"><br>
-    <a href="./index.html" onclick="closeSidebar()">Home</a>
+    <a href="#" class="w3-animate-opacity" onclick="closeSidebar()">Home</a>
     <a href="./index.html#services" onclick="closeSidebar()">Services</a>
     <a href="./index.html#contact" onclick="closeSidebar()">Contact</a>
     <a href="./index.html#about" onclick="closeSidebar()">About</a>
   </div>
 
     <!-- Hero Section -->
+    <div class="hero w3-border-white"><br>
+        <div class="w3-center w3-mobile w3-animate-top">
+        <img class="floating" style="width: 50%;min-width:350px" src="./img/logo.png">
+        <p id="typing" class="typing-effect w3-center w3-xlarge w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">Portraits ◆ Web Design ◆ Music</p>
+        <br>
+        <a id="typing1" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-black center w3-animate-zoom w3-round w3-card-4" style="z-index: 0;"></a>
+        <br>
+        <a id="typing2" class="typing-effect w3-white w3-round w3-button reveal w3-button-black w3-xxlarge w3-card-4" href='#services'></a>
+        <br>
+        </div>
+    </div>
 
-
+    <br><br id="services"><br>
     <!-- Services Section -->
-<br><br><br>
-<p id="typing1" class="typing-effect w3-center w3-jumbo reveal" style="text-shadow: 2px 2px 8px #000000;"></p>
-    <!-- Portrait Drawings -->
-    <div class="reveal w3-padding-32 service-wrapper">
-        <img  src="./img/eyeball.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
-    </div>
-    <div class="reveal w3-padding-16 service-wrapper">
-        <img  src="./img/blueeyes.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
-    </div>
-    <div class="reveal w3-padding-32 service-wrapper">
-        <img  src="./img/happypill.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
-    </div>
-    <div class="reveal w3-padding-16 service-wrapper">
-        <img  src="./img/blindsbody.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
-    </div>
-    <div class="reveal w3-padding-16 service-wrapper">
-        <img  src="./img/suckerportrait.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
-    </div>
-    <div class="reveal w3-padding-32 service-wrapper">
-        <img  src="./img/madrabbit.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
-    </div>
-    <div class="reveal w3-padding-16 service-wrapper">
-        <img  src="./img/kingandqueen.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
-    </div>
-    <div class="reveal w3-padding-16 service-wrapper">
-        <img  src="./img/24knecklace.jpg" class="service-wrapper button service-card animate-reveal w3-mobile" style="min-width: 300px;" alt="Portrait Drawings">
+    <div  class="w3-container"><br>
+        <p id="typing3" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">Here's what I do</p>
+        <p class="w3-center w3-xlarge"></p>
+        <div class="service-wrapper">
+            <!-- Portrait Drawings -->
+            <div class="w3-card card-hover1 service-card w3-round w3-text-white">
+                <div class="service-card reveal">
+                    <img src="./img/eyeball.jpg" alt="Portrait Drawings">
+                    <div class="service-card-content">
+                        <p id="typing4" class="w3-yellow typing-effect reveal w3-xlarge"></p>
+                        <p class="reveal" style="padding: 10px;">I specialize in hand-drawn portraits with stunning detail that you can cherish forever.</p>
+                        <a href="./portraits.html" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">See My Drawings</a>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+            <!-- Website Development -->
+            <div class="w3-card card-hover2 service-card w3-round w3-text-white">
+                <div class="service-card reveal">
+                    <img src="./img/code.png" alt="Website Development">
+                    <div class="service-card-content">
+                        <p id="typing5" class="w3-purple w3-text-black typing-effect reveal w3-xlarge"></p>
+                        <p class="reveal " style="padding: 10px;">I can create you a visually engaging website tailored to your business or personal needs like this one.</p>
+                        <a href="./portraits.html" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Sites I've Made</a>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+            <!-- Music Recording -->
+            <div class="w3-card card-hover3 service-card w3-round w3-text-white">
+                <div class="service-card reveal">
+                    <img src="./img/mic.jpg" alt="Music Recording">
+                    <div class="service-card-content">
+                        <p id="typing6" class="w3-red w3-text-black typing-effect reveal w3-xlarge"></p>
+                        <p class="reveal" style="padding: 10px;">With my experience and high-grade equipment, we can bring your songs to life.</p>
+                        <a href="./portraits.html" class="button-primary reveal w3-button w3-button-dark w3-white w3-lxarge">Explore My music</a>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+        </div><br><br><br><br>
     </div>
 
-    <br><br><br><br>
+    <br id="contact">
+    <!-- Contact Section -->
+    <div class="w3-container w3-padding-64 w3-center center" style="z-index: 2; max-width: 400px;">
+        <p id="typing9" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-black w3-border w3-border-white center w3-card-4" style="max-width: 300px;"></p>
+        <p id="typing10" class="typing-effect w3-center w3-xlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 200px;"></p><br>
+    <div class="w3-center w3-jumbo reveal w3-display-container pop center">
+        <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;" style="max-width: 200px;"></p>
+    </div>
+    <div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width:800px">
+        <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-hover-text-purple text-large" style="text-shadow: 2px 2px 8px #000000; max-width: 260px;"><a href="sms:+19869990621">(986) 999 - 0621</a></p>
+    </div>
+    <div class="w3-center w3-xlarge reveal w3-display-container pop center w3-mobile">
+        <p class="w3-center w3-xlarge reveal pop center w3-hover-text-purple w3-mobile text-large" style="text-shadow: 2px 2px 8px #000000; max-width: 250px;"><a href="mailto:yishuca.biz@gmail.com">yishuca.biz@gmail.com</a></p>
+    </div>
+        <br><br><br>
+    </div>
 
+    <!-- About Section -->
+    <div  id="about" class="w3-container w3-padding-64 w3-center center" style="z-index: 2;">
+            <p id="typing7" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop w3-black w3-border w3-border-white center w3-card-4" style="max-width: 400px;"></p>
+            <p id="typing8" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 300px;"></p><br>
+        <div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 600px;">
+            <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">I am an artist, website developer, and musician myself.</p>
+        </div>
+        <div class=div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 1400px;">
+            <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">
+                Whether you're looking for a custom drawing, a brand-new website, or music recording services, I bring passion and expertise to every project.</p>
+        </div>
+        <div class=div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 1400px;">
+            <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">
+            These are my hobbies, and I love them. Being able to work with others and bring our visions to reality is a feeling like no other.</p>
+        </div>
+        <br><br><br>
+    </div>
 
     <div class="w3-center w3-display-container center pop" style="max-width: 150px;">
-      <button class="w3-dark-grey w3-round w3-button reveal w3-button-black w3-large center button-primary" onclick="scrollToTop()">Scroll to top</button>
-  </div>
-  
-  <!-- Footer -->
-  <footer class="w3-center w3-large w3-display-container pop center" style="max-width: 400px;">
-      <p class="w3-round w3-large center text-large">&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
-  </footer>
+        <button class="button-primary w3-dark-grey w3-round w3-button reveal w3-button-dark w3-large center" onclick="scrollToTop()">Scroll to top</button>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="w3-center w3-large w3-display-container pop center" style="max-width: 400px;">
+        <p class="w3-round w3-large center text-large">&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
+    </footer>
 
+    <!-- Canvas Element -->
     <canvas id="particleCanvas"></canvas>
-    
+    <canvas id="polygonCanvas"></canvas>
+
     <script>
-        // Toggle Sidebar
-        function toggleSidebar() {
-          const sidebar = document.getElementById('sidebar');
-          const hamburger = document.querySelector('.hamburger');
-          if (sidebar.style.width === '250px') {
-            sidebar.style.width = '0';
-            hamburger.classList.remove('active');
-          } else {
-            sidebar.style.width = '250px';
-            hamburger.classList.add('active');
-          }
-        }
-    
-        // Close Sidebar when a link is clicked
-        function closeSidebar() {
-          const sidebar = document.getElementById('sidebar');
-          const hamburger = document.querySelector('.hamburger');
-          sidebar.style.width = '0'; // Close the sidebar
-          hamburger.classList.remove('active'); // Reset hamburger icon
-        }
-          </script>
+    // Toggle Sidebar
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const hamburger = document.querySelector('.hamburger');
+      if (sidebar.style.width === '250px') {
+        sidebar.style.width = '0';
+        hamburger.classList.remove('active');
+      } else {
+        sidebar.style.width = '250px';
+        hamburger.classList.add('active');
+      }
+    }
 
-<script>
-    // Scroll Reveal Effect
-    const revealElements = document.querySelectorAll('.reveal');
-
-function revealOnScroll() {
-revealElements.forEach(element => {
-const rect = element.getBoundingClientRect();
-if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-  element.classList.add('visible');
-}
-});
-}
-
-// Trigger reveal effect on scroll
-window.addEventListener('scroll', revealOnScroll);
-
-// Initial trigger for elements in viewport
-revealOnScroll();
-</script>
+    // Close Sidebar when a link is clicked
+    function closeSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const hamburger = document.querySelector('.hamburger');
+      sidebar.style.width = '0'; // Close the sidebar
+      hamburger.classList.remove('active'); // Reset hamburger icon
+    }
+      </script>
 
     <!-- JavaScript for Scroll Animation -->
     <script>
@@ -388,7 +470,27 @@ revealOnScroll();
         }
     </script>
 
-    <script>
+<script>
+                // Scroll Reveal Effect
+                const revealElements = document.querySelectorAll('.reveal');
+
+        function revealOnScroll() {
+        revealElements.forEach(element => {
+            const rect = element.getBoundingClientRect();
+            if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+            element.classList.add('visible');
+            }
+        });
+        }
+
+        // Trigger reveal effect on scroll
+        window.addEventListener('scroll', revealOnScroll);
+
+        // Initial trigger for elements in viewport
+        revealOnScroll();
+</script>
+
+<script>
     // Wait until the DOM is fully loaded to ensure the canvas is accessible
     document.addEventListener('DOMContentLoaded', () => {
         const canvas = document.getElementById("particleCanvas");
@@ -472,158 +574,334 @@ revealOnScroll();
     });
 </script>
 
-<script>
-  let cursorX = 0;
-  let cursorY = 0;
-  let lastX = 0;
-  let lastY = 0;
-  let lastTime = Date.now();
-  
-  // Function to handle mouse movement
-  function onMouseMove(event) {
-      if (event.type === 'mousemove') {
-          cursorX = event.clientX;
-          cursorY = event.clientY;
-      } else if (event.type === 'touchmove') {
-          // Get the touch position for mobile devices
-          cursorX = event.touches[0].clientX;
-          cursorY = event.touches[0].clientY;
-      }
-
-      // Calculate speed of cursor/touch movement
-      let currentTime = Date.now();
-      let speed = Math.sqrt((cursorX - lastX) ** 2 + (cursorY - lastY) ** 2) / (currentTime - lastTime) * 1000;
-      
-      // Create fewer particles for smaller movements
-      if (speed > 30) {  // Lowered threshold for fewer particles
-          createSparks(cursorX, cursorY, speed);  // Speed will influence particle behavior
-      }
-      
-      lastX = cursorX;
-      lastY = cursorY;
-      lastTime = currentTime;
-  }
-
-  // Listen for mousemove (desktop) and touchmove (mobile)
-  document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('touchmove', onMouseMove);
-
-  // Create a burst of small white spark particles at the cursor position
-  function createSparks(x, y, speed) {
-      // Generate fewer particles for a more subtle effect (e.g., just 1-2 particles)
-      let numParticles = 1;  // Just one particle for a very subtle effect
-      for (let i = 0; i < numParticles; i++) {
-          const spark = document.createElement('div');
-          spark.classList.add('spark');
-          document.body.appendChild(spark);
-
-          // Keep the particles small (3px to 5px in size)
-          const size = 3 + Math.random() * 2;  // Particle size remains small
-          spark.style.width = `${size}px`;
-          spark.style.height = `${size}px`;
-
-          // Position the spark at the cursor location
-          spark.style.left = `${x - size / 2}px`;
-          spark.style.top = `${y - size / 2}px`;
-
-          // Add random offsets to simulate spread of sparks
-          const angle = Math.random() * Math.PI * 2; // Random direction
-          const speedFactor = Math.random() * 1 + 0.5; // Reduced speed factor for less distance
-          const velocityX = Math.cos(angle) * speedFactor;
-          const velocityY = Math.sin(angle) * speedFactor;
-
-          // Particle movement behavior
-          let particle = {
-              element: spark,
-              initialX: x,  // Initial position
-              initialY: y,  // Initial position
-              velocityX: velocityX,
-              velocityY: velocityY,
-              opacity: 1,
-              size: size  // Store the initial size
-          };
-
-          animateParticle(particle);
-      }
-  }
-
-  // Continuously animate each particle, shrinking and fading it
-  function animateParticle(particle) {
-      let interval = setInterval(() => {
-          // Update the position of the spark based on its velocity
-          particle.element.style.left = parseFloat(particle.element.style.left) + particle.velocityX + 'px';
-          particle.element.style.top = parseFloat(particle.element.style.top) + particle.velocityY + 'px';
-
-          // Shrink and fade the particle
-          particle.size -= 0.05;  // Shrink the particle gradually
-          particle.opacity -= 0.01;  // Fade out the particle gradually
-
-          // Apply the new size and opacity to the particle
-          particle.element.style.width = `${particle.size}px`;
-          particle.element.style.height = `${particle.size}px`;
-          particle.element.style.opacity = particle.opacity;
-
-          // Remove the particle once it gets too small or disappears
-          if (particle.opacity <= 0 || particle.size <= 0) {
-              clearInterval(interval);
-              particle.element.remove();
-          }
-      }, 16);  // Update every ~16ms (about 60 FPS)
-  }
+<script> 
+    // Get the canvas element and its context
+    const canvas = document.getElementById('polygonCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas size to fill the window
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    // Track mouse position
+    let mouseX = canvas.width / 2;
+    let mouseY = canvas.height / 2;
+    
+    // Polygon Settings
+    const polygons = [];
+    const numPolygons = 10;
+    
+    // Function to generate a purple-blue color
+    function randomColor() {
+        // Generate colors in the purple-blue spectrum
+        const r = Math.floor(Math.random() * 128); // Random value for red between 0 and 127
+        const g = Math.floor(Math.random() * 100); // Random value for green between 0 and 99 (keeping it low)
+        const b = Math.floor(Math.random() * 128) + 127; // Random value for blue between 127 and 255
+        return {
+            r: r,
+            g: g,
+            b: b,
+            a: 0.8  // Fixed alpha (transparency)
+        };
+    }
+    
+    // Create random polygons
+    function createPolygon(x, y, radius, numVertices) {
+        const vertices = [];
+        for (let i = 0; i < numVertices; i++) {
+            const angle = (i / numVertices) * Math.PI * 2;
+            const vx = x + Math.cos(angle) * radius;
+            const vy = y + Math.sin(angle) * radius;
+            vertices.push({ x: vx, y: vy });
+        }
+    
+        polygons.push({
+            x: x,
+            y: y,
+            radius: radius,
+            vertices: vertices,
+            speed: 0.5 + Math.random() * 2, // Random speed for floating
+            direction: Math.random() * Math.PI * 2, // Random initial direction
+            color: randomColor(),  // Initial random color
+            colorTarget: randomColor() // Target color for slow transition
+        });
+    }
+    
+    // Create polygons
+    for (let i = 0; i < numPolygons; i++) {
+        const radius = 50 + Math.random() * 100; // Random radius size
+        const numVertices = 6 + Math.floor(Math.random() * 6); // Random number of vertices
+        createPolygon(
+            Math.random() * canvas.width,
+            Math.random() * canvas.height,
+            radius,
+            numVertices
+        );
+    }
+    
+    // Function to interpolate color slowly
+    function interpolateColor(color1, color2, factor) {
+        return {
+            r: Math.floor(color1.r + (color2.r - color1.r) * factor),
+            g: Math.floor(color1.g + (color2.g - color1.g) * factor),
+            b: Math.floor(color1.b + (color2.b - color1.b) * factor),
+            a: color1.a + (color2.a - color1.a) * factor
+        };
+    }
+    
+    // Draw the polygons on the canvas
+    function drawPolygon(polygon) {
+        const color = interpolateColor(polygon.color, polygon.colorTarget, 0.01);  // Adjust 0.01 for slower transitions
+    
+        ctx.beginPath();
+        polygon.vertices.forEach((vertex, i) => {
+            if (i === 0) {
+                ctx.moveTo(vertex.x, vertex.y);
+            } else {
+                ctx.lineTo(vertex.x, vertex.y);
+            }
+        });
+        ctx.closePath();
+    
+        // Set the fill color
+        ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+        ctx.fill();  // Fill the polygon with the color
+    
+        // Set the stroke color (for outline)
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`; // Outline color
+        ctx.stroke();  // Outline the polygon
+    }
+    
+    // Move polygons to simulate floating effect
+    function movePolygon(polygon) {
+        polygon.vertices.forEach(vertex => {
+            const angle = Math.atan2(vertex.y - polygon.y, vertex.x - polygon.x);
+            const force = 0.05;
+            vertex.x += Math.cos(angle) * force;
+            vertex.y += Math.sin(angle) * force;
+        });
+    }
+    
+    // Update polygons based on mouse interaction
+    function updatePolygons() {
+        polygons.forEach(polygon => {
+            // Move polygon vertices to create floating effect
+            movePolygon(polygon);
+    
+            // React to mouse position
+            polygon.vertices.forEach(vertex => {
+                const dx = vertex.x - mouseX;
+                const dy = vertex.y - mouseY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 100) {
+                    const strength = (100 - distance) / 100;
+                    vertex.x += dx * strength * 0.2;
+                    vertex.y += dy * strength * 0.2;
+                }
+            });
+    
+            // Change the target color randomly
+            if (Math.random() < 0.01) { // 1% chance to change color target each frame
+                polygon.colorTarget = randomColor();  // Set new random color target
+            }
+        });
+    }
+    
+    // Mouse move event listener to track mouse position
+    canvas.addEventListener('mousemove', (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+    });
+    
+    // Animation loop to update and draw the polygons
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+    
+        updatePolygons(); // Update polygons based on mouse interaction
+    
+        polygons.forEach(polygon => {
+            drawPolygon(polygon); // Draw each polygon (with fill and outline)
+        });
+    
+        requestAnimationFrame(animate); // Request next frame
+    }
+    
+    animate(); // Start animation loop
 </script>
 
+    
+    <script>
+        let cursorX = 0;
+        let cursorY = 0;
+        let lastX = 0;
+        let lastY = 0;
+        let lastTime = Date.now();
+        
+        // Function to handle mouse movement
+        function onMouseMove(event) {
+            if (event.type === 'mousemove') {
+                cursorX = event.clientX;
+                cursorY = event.clientY;
+            } else if (event.type === 'touchmove') {
+                // Get the touch position for mobile devices
+                cursorX = event.touches[0].clientX;
+                cursorY = event.touches[0].clientY;
+            }
+
+            // Calculate speed of cursor/touch movement
+            let currentTime = Date.now();
+            let speed = Math.sqrt((cursorX - lastX) ** 2 + (cursorY - lastY) ** 2) / (currentTime - lastTime) * 1000;
+            
+            // Create fewer particles for smaller movements
+            if (speed > 30) {  // Lowered threshold for fewer particles
+                createSparks(cursorX, cursorY, speed);  // Speed will influence particle behavior
+            }
+            
+            lastX = cursorX;
+            lastY = cursorY;
+            lastTime = currentTime;
+        }
+
+        // Listen for mousemove (desktop) and touchmove (mobile)
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('touchmove', onMouseMove);
+
+        // Create a burst of small white spark particles at the cursor position
+        function createSparks(x, y, speed) {
+            // Generate fewer particles for a more subtle effect (e.g., just 1-2 particles)
+            let numParticles = 1;  // Just one particle for a very subtle effect
+            for (let i = 0; i < numParticles; i++) {
+                const spark = document.createElement('div');
+                spark.classList.add('spark');
+                document.body.appendChild(spark);
+
+                // Keep the particles small (3px to 5px in size)
+                const size = 3 + Math.random() * 2;  // Particle size remains small
+                spark.style.width = `${size}px`;
+                spark.style.height = `${size}px`;
+
+                // Position the spark at the cursor location
+                spark.style.left = `${x - size / 2}px`;
+                spark.style.top = `${y - size / 2}px`;
+
+                // Add random offsets to simulate spread of sparks
+                const angle = Math.random() * Math.PI * 2; // Random direction
+                const speedFactor = Math.random() * 1 + 0.5; // Reduced speed factor for less distance
+                const velocityX = Math.cos(angle) * speedFactor;
+                const velocityY = Math.sin(angle) * speedFactor;
+
+                // Particle movement behavior
+                let particle = {
+                    element: spark,
+                    initialX: x,  // Initial position
+                    initialY: y,  // Initial position
+                    velocityX: velocityX,
+                    velocityY: velocityY,
+                    opacity: 1,
+                    size: size  // Store the initial size
+                };
+
+                animateParticle(particle);
+            }
+        }
+
+        // Continuously animate each particle, shrinking and fading it
+        function animateParticle(particle) {
+            let interval = setInterval(() => {
+                // Update the position of the spark based on its velocity
+                particle.element.style.left = parseFloat(particle.element.style.left) + particle.velocityX + 'px';
+                particle.element.style.top = parseFloat(particle.element.style.top) + particle.velocityY + 'px';
+
+                // Shrink and fade the particle
+                particle.size -= 0.05;  // Shrink the particle gradually
+                particle.opacity -= 0.01;  // Fade out the particle gradually
+
+                // Apply the new size and opacity to the particle
+                particle.element.style.width = `${particle.size}px`;
+                particle.element.style.height = `${particle.size}px`;
+                particle.element.style.opacity = particle.opacity;
+
+                // Remove the particle once it gets too small or disappears
+                if (particle.opacity <= 0 || particle.size <= 0) {
+                    clearInterval(interval);
+                    particle.element.remove();
+                }
+            }, 16);  // Update every ~16ms (about 60 FPS)
+        }
+    </script>
+
 <script>
-  // Texts you want to display
-  const texts = [
-      "Here's some of my drawings",
-  ];
+    // Texts you want to display
+    const texts = [
+        "Hello!",
+        "What can I do for you?",
+        "",
+        "WANT A DRAWING?",
+        "WANT A WEBSITE?",
+        "WANT TO MAKE MUSIC?",
+        "About Me",
+        "Nice to meet you!",
+        "Want to work with me?",
+        "Contact me!",
+    ];
 
-  // Delay times (in milliseconds) for each text
-  const delayTimes = [
-      0,        // 1 Here's some of my drawings!
+    // Delay times (in milliseconds) for each text
+    const delayTimes = [
+        0,        // 1 Hello!
+        2200,     // 2 What can I do for you?
+        1000,        // 3 These are my skills
+        500,     // 4 Portrait Drawings
+        500,        // 5 Website Development
+        500,        // 6 Music Recording
+        1000,        // 7 About Me
+        2000,     // 8 Nice to meet you!
+        1000,        // 9 Contact Me!
+        2000,        // 9 Don't be shy! 😊
 
-  ];
 
-  // Function to simulate typing for each element
-  function typeText(elementId, text, delayTime) {
-      const typingElement = document.getElementById(elementId);
-      let index = 0;
+    ];
 
-      function typingAnimation() {
-          if (index < text.length) {
-              typingElement.textContent += text[index];
-              index++;
-              setTimeout(typingAnimation, 60); // Adjust typing speed here
-          } else {
-              typingElement.classList.add("typed"); // Remove cursor after typing
-          }
-      }
+    // Function to simulate typing for each element
+    function typeText(elementId, text, delayTime) {
+        const typingElement = document.getElementById(elementId);
+        let index = 0;
 
-      // Start the typing animation with the specified delay
-      setTimeout(typingAnimation, delayTime);
-  }
+        function typingAnimation() {
+            if (index < text.length) {
+                typingElement.textContent += text[index];
+                index++;
+                setTimeout(typingAnimation, 60); // Adjust typing speed here
+            } else {
+                typingElement.classList.add("typed"); // Remove cursor after typing
+            }
+        }
 
-  // Create an intersection observer to trigger the typing effect when an element is in view
-  const observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-          if (entry.isIntersecting) {
-              // When the element is in the viewport, start the typing effect
-              const elementId = entry.target.id;
-              const index = parseInt(elementId.replace('typing', '')) - 1; // Get the index for texts array
-              typeText(elementId, texts[index], delayTimes[index]); // Pass delay time for each text
+        // Start the typing animation with the specified delay
+        setTimeout(typingAnimation, delayTime);
+    }
 
-              // Stop observing the element once it's typed
-              observer.unobserve(entry.target);
-          }
-      });
-  }, {
-      threshold: 0.5 // Trigger when 50% of the element is in view
-  });
+    // Create an intersection observer to trigger the typing effect when an element is in view
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // When the element is in the viewport, start the typing effect
+                const elementId = entry.target.id;
+                const index = parseInt(elementId.replace('typing', '')) - 1; // Get the index for texts array
+                typeText(elementId, texts[index], delayTimes[index]); // Pass delay time for each text
 
-  // Observe the typing elements
-  document.querySelectorAll('.typing-effect').forEach(element => {
-      observer.observe(element);
-  });
+                // Stop observing the element once it's typed
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.5 // Trigger when 50% of the element is in view
+    });
+
+    // Observe the typing elements
+    document.querySelectorAll('.typing-effect').forEach(element => {
+        observer.observe(element);
+    });
 </script>
 </body>
 </html>
