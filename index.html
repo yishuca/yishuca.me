@@ -184,9 +184,10 @@
             margin-top: 30px;
         }
         .service-card {
-            background-color: #222;
-            border: 1px solid #444;
-            width: 325px;
+            background-color: #000000;
+            border: 0px solid #580075;
+            width: 375px;
+            max-width: fit-content;
             margin: 0 auto;
             transition: transform 0.5s, box-shadow 0.5s;
             overflow: hidden;
@@ -267,15 +268,49 @@
             z-index: 9999; /* Ensure sparks are in the foreground */
         }
         
+    /* Button Hover Effect */
+    .button-primary:hover {
+      transform: scale(1.1); /* Scale up on hover */
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); /* Glowing effect */
+      filter: brightness(1.3); /* Brightness increase */
+    }
+
+        /* Button Hover Effect */
+        .card-hover1:hover {
+      transform: scale(1.1); /* Scale up on hover */
+      box-shadow: 0 0 15px rgba(255, 247, 0, 0.8); /* Glowing effect */
+      filter: brightness(1.3); /* Brightness increase */
+    }
+
+            /* Button Hover Effect */
+            .card-hover2:hover {
+      transform: scale(1.1); /* Scale up on hover */
+      box-shadow: 0 0 15px rgba(255, 83, 255, 0.8); /* Glowing effect */
+      filter: brightness(1.3); /* Brightness increase */
+    }
+
+            /* Button Hover Effect */
+            .card-hover3:hover {
+      transform: scale(1.1); /* Scale up on hover */
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* Glowing effect */
+      filter: brightness(1.3); /* Brightness increase */
+    }
+
+            /* Text Hover Effect */
+            .text-large:hover {
+      transform: scale(1.1); /* Scale up on hover */
+      text-shadow: 2px, 2px, 15px rgba(255, 0, 0, 0.8); /* Glowing effect */
+      filter: brightness(1.3); /* Brightness increase */
+    }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small w3-card-4 w3-animate-left">
-        <a href="#" class="w3-bar-item w3-button w3-mobile">Home</a>
-        <a href="#services" class="w3-bar-item w3-button w3-mobile">Services</a>
-        <a href="#contact" class="w3-bar-item w3-button w3-mobile">Contact</a>
-        <a href="#about" class="w3-bar-item w3-button w3-mobile">About Me</a>
+    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small w3-card-4">
+        <a href="#" class="w3-bar-item w3-button w3-mobile w3-animate-right">Home</a>
+        <a href="#services" class="w3-bar-item w3-button w3-mobile w3-animate-left">Services</a>
+        <a href="#contact" class="w3-bar-item w3-button w3-mobile w3-animate-right">Contact</a>
+        <a href="#about" class="w3-bar-item w3-button w3-mobile w3-animate-left">About Me</a>
     </div>
 
   <!-- Hamburger Menu -->
@@ -305,6 +340,7 @@
         <br>
         </div>
     </div>
+
     <br><br id="services"><br>
     <!-- Services Section -->
     <div  class="w3-container"><br>
@@ -312,37 +348,37 @@
         <p class="w3-center w3-xlarge"></p>
         <div class="service-wrapper">
             <!-- Portrait Drawings -->
-            <div class="w3-card service-card w3-round w3-text-white">
+            <div class="w3-card card-hover1 service-card w3-round w3-text-white">
                 <div class="service-card reveal">
                     <img src="./img/eyeball.jpg" alt="Portrait Drawings">
                     <div class="service-card-content">
-                        <b><p id="typing4" class="typing-effect reveal w3-xlarge"></p></b>
-                        <p class="reveal">Hand-drawn portraits with stunning detail that you can cherish forever.</p>
-                        <a href="./portraits.html" class="reveal w3-button w3-button-dark w3-large">View My Drawings</a>
+                        <p id="typing4" class="w3-yellow typing-effect reveal w3-xlarge"></p>
+                        <p class="reveal" style="padding: 10px;">I specialize in hand-drawn portraits with stunning detail that you can cherish forever.</p>
+                        <a href="./portraits.html" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">See My Drawings</a>
                         <br><br>
                     </div>
                 </div>
             </div>
             <!-- Website Development -->
-            <div class="w3-card service-card w3-round w3-text-white">
+            <div class="w3-card card-hover2 service-card w3-round w3-text-white">
                 <div class="service-card reveal">
                     <img src="./img/code.png" alt="Website Development">
                     <div class="service-card-content">
-                        <b><p id="typing5" class="typing-effect reveal w3-xlarge"></p></b>
-                        <p class="reveal">Visually engaging websites tailored to your business or personal needs.</p>
-                        <a href="./portraits.html" class="reveal w3-button w3-button-dark w3-large">Sites I've Made</a>
+                        <p id="typing5" class="w3-purple w3-text-black typing-effect reveal w3-xlarge"></p>
+                        <p class="reveal " style="padding: 10px;">I can create you a visually engaging website tailored to your business or personal needs like this one.</p>
+                        <a href="./portraits.html" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Sites I've Made</a>
                         <br><br>
                     </div>
                 </div>
             </div>
             <!-- Music Recording -->
-            <div class="w3-card service-card w3-round w3-text-white">
+            <div class="w3-card card-hover3 service-card w3-round w3-text-white">
                 <div class="service-card reveal">
                     <img src="./img/mic.jpg" alt="Music Recording">
                     <div class="service-card-content">
-                        <b><p id="typing6" class="typing-effect reveal w3-xlarge"></p></b>
-                        <p class="reveal">Professional-grade recording services to amplify your creativity.</p>
-                        <a href="./portraits.html" class="reveal w3-button w3-button-dark w3-large">Explore Now</a>
+                        <p id="typing6" class="w3-red w3-text-black typing-effect reveal w3-xlarge"></p>
+                        <p class="reveal" style="padding: 10px;">With my experience and high-grade equipment, we can bring your songs to life.</p>
+                        <a href="./portraits.html" class="button-primary reveal w3-button w3-button-dark w3-white w3-lxarge">Explore My music</a>
                         <br><br>
                     </div>
                 </div>
@@ -359,10 +395,10 @@
         <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;" style="max-width: 200px;"></p>
     </div>
     <div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width:800px">
-        <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-hover-text-purple" style="text-shadow: 2px 2px 8px #000000; max-width: 260px;"><a href="sms:+19869990621">(986) 999 - 0621</a></p>
+        <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-hover-text-purple text-large" style="text-shadow: 2px 2px 8px #000000; max-width: 260px;"><a href="sms:+19869990621">(986) 999 - 0621</a></p>
     </div>
     <div class="w3-center w3-xlarge reveal w3-display-container pop center w3-mobile">
-        <p class="w3-center w3-xlarge reveal pop center w3-hover-text-purple w3-mobile" style="text-shadow: 2px 2px 8px #000000; max-width: 250px;"><a href="mailto:yishuca.biz@gmail.com">yishuca.biz@gmail.com</a></p>
+        <p class="w3-center w3-xlarge reveal pop center w3-hover-text-purple w3-mobile text-large" style="text-shadow: 2px 2px 8px #000000; max-width: 250px;"><a href="mailto:yishuca.biz@gmail.com">yishuca.biz@gmail.com</a></p>
     </div>
         <br><br><br>
     </div>
@@ -386,7 +422,7 @@
     </div>
 
     <div class="w3-center w3-display-container center pop" style="max-width: 150px;">
-        <button class="w3-dark-grey w3-round w3-button reveal w3-button-black w3-large center" onclick="scrollToTop()">Scroll to top</button>
+        <button class="button-primary w3-dark-grey w3-round w3-button reveal w3-button-dark w3-large center" onclick="scrollToTop()">Scroll to top</button>
     </div>
     
     <!-- Footer -->
@@ -795,9 +831,9 @@
         "Hello!",
         "What can I do for you?",
         "",
-        "Portrait Drawings",
-        "Website Development",
-        "Music Recording",
+        "WANT A DRAWING?",
+        "WANT A WEBSITE?",
+        "WANT TO MAKE MUSIC?",
         "About Me",
         "Nice to meet you!",
         "Want to work with me?",
