@@ -266,6 +266,31 @@
       text-shadow: 2px, 2px, 15px rgba(255, 0, 0, 0.8); /* Glowing effect */
       filter: brightness(1.3); /* Brightness increase */
     }
+
+    /* Style the container to center the button */
+    .accordion-container {
+      display: flex;
+      justify-content: center; /* Horizontally center */
+      align-items: center;     /* Vertically center */
+    }
+
+    /* Style the accordion button */
+    .accordion {
+      color: rgb(0, 0, 0);
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: 0.4s;
+    }
+
+    /* Style the accordion content (hidden by default) */
+    .accordion-content {
+      background-color: #000000;
+      height: 0; /* Initially collapsed height */
+      opacity: 0; /* Initially hidden */
+      overflow: hidden; /* Hide content */
+      transition: height 2s ease-out, opacity 1s ease-out; /* Transition time for height and opacity */
+    }
     </style>
 </head>
 <body>
@@ -287,8 +312,14 @@
   <!-- Sidebar -->
   <div id="sidebar" class="sidebar w3-card-4"><br>
     <a href="./index.html" onclick="closeSidebar()">Home</a>
-    <a href="./index.html#services" onclick="closeSidebar()">Services</a>
-    <a href="./index.html#contact" onclick="closeSidebar()">Contact</a>
+    <a class="accordion">Services</a>
+        <div class="accordion-content">
+            <br>
+            <a class="w3-text-yellow" href="./index.html#services" onclick="closeSidebar()">Portraits</a>
+            <a class="w3-text-purple" href="./index.html#services" onclick="closeSidebar()">Websites</a>
+            <a class="w3-text-red" href="./index.html#services" onclick="closeSidebar()">Music</a>
+            <br>
+        </div>    <a href="./index.html#contact" onclick="closeSidebar()">Contact</a>
     <a href="./index.html#about" onclick="closeSidebar()">About</a>
   </div>
 
@@ -625,5 +656,48 @@ revealOnScroll();
       observer.observe(element);
   });
 </script>
+
+<script>
+    // Get the accordion button and the content
+    var accordion = document.querySelector(".accordion");
+    var content = document.querySelector(".accordion-content");
+    var closeButton = document.querySelector(".close-btn");
+
+    // Add event listener for the accordion button to toggle open and close
+    accordion.addEventListener("click", function() {
+      // Toggle the active class on this button to change its text
+      this.classList.toggle("active");
+
+      // If content is already open, collapse it
+      if (content.style.height && content.style.height !== "0px") {
+        content.style.height = "0";  // Collapse
+        content.style.opacity = 0;   // Fade out
+      } else {
+        // Otherwise, expand the content
+        content.style.height = content.scrollHeight + "px";  // Expand to content height
+        content.style.opacity = 1;  // Fade in
+
+        // Smooth scroll to the expanded content
+        setTimeout(function() {
+          content.scrollIntoView({ behavior: "smooth" });
+        }, 200);  // Add slight delay to ensure expanding happens first
+      }
+    });
+
+    // Close button functionality (close the content)
+    closeButton.addEventListener("click", function() {
+      content.style.height = "0";  // Collapse
+      content.style.opacity = 0;   // Fade out
+      accordion.classList.remove("active");  // Optionally remove the active state from the button
+      
+      // Smooth scroll back to the accordion button
+      setTimeout(function() {
+        window.scrollTo({
+          top: accordion.offsetTop,  // Scroll to the top of the accordion button
+          behavior: 'smooth'         // Smooth scroll
+        });
+      }, 200);  // Add slight delay to ensure collapsing happens first
+    });
+  </script>
 </body>
 </html>
