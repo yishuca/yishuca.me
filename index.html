@@ -23,7 +23,7 @@
 
         /* General Styles */
         body {
-            background-color: #2f2f2f;
+            background-color: #ffffff;
             color: #ffffff;
             font-family: 'Gochi Hand';
             font-size: 20px;
@@ -64,7 +64,7 @@
     .hamburger div {
       width: 35px;
       height: 5px;
-      background-color: #ffffff;
+      background-color: #000000;
       margin: 6px 0;
       transition: 0.4s;
     }
@@ -97,7 +97,7 @@
       z-index: 1000;
       top: 0;
       left: 0;
-      background:rgb(0, 0, 0);
+      background:rgb(255, 255, 255);
       overflow-x: hidden;
       transition: 0.5s;
       padding-top: 60px;
@@ -241,6 +241,7 @@
             top: 0;
             left: 0;
             z-index: -1; /* Default z-index, you can adjust this as needed */
+            color: #000000;
         }
 
         /* Canvas to draw the anything */
@@ -271,6 +272,7 @@
             opacity: 1;
             transition: transform 0.4s ease-out, opacity 1s ease-out; /* Smooth fading effect */
             z-index: 9999; /* Ensure sparks are in the foreground */
+            color: black;
         }
         
     /* Button Hover Effect */
@@ -356,10 +358,8 @@
     <a class="accordion">Services</a>
         <div class="accordion-content">
             <br>
-            <a class="w3-black w3-text-yellow" href="./portraits.html" onclick="closeSidebar()">Portraits</a>
-            <a class="w3-black w3-text-purple" href="./index.html#services" onclick="closeSidebar()">Websites</a>
-            <a class="w3-black w3-text-red" href="./index.html#services" onclick="closeSidebar()">Music</a>
-            <br>
+            <a class="w3-black w3-text-yellow" href="https://buy.stripe.com/9AQ14QcVk3Le3vydQS" onclick="closeSidebar()">Basic Landing Page</a>
+            <a class="w3-black w3-text-purple" href="https://buy.stripe.com/bIY9Bmf3s1D61nq6or" onclick="closeSidebar()">Standard Package</a>            <br>
         </div>
     <a href="./index.html#contact" onclick="closeSidebar()">Contact</a>
     <a href="./index.html#about" onclick="closeSidebar()">About</a>
@@ -367,9 +367,9 @@
 
     <!-- Hero Section -->
     <div class="hero w3-border-white"><br>
-        <div class="w3-center w3-mobile w3-animate-top">
-        <img class="floating w3-mobile" style="width: 50%;" src="./img/logo.png">
-        <p id="typing" class="typing-effect w3-center w3-xlarge w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">Portraits ◆ Web Design ◆ Music</p>
+        <div class="w3-center w3-mobile w3-animate-top" style="padding: 20px;">
+        <a class="w3-text-black w3-jumbo w3-border w3-card-4" style="padding: 20px;">YISHUCA DESIGNS</a>
+        <p id="typing" class="typing-effect w3-center w3-xlarge w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;"></p>
         <br>
         <a id="typing1" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-black center w3-animate-zoom w3-round w3-card-4" style="z-index: 0;"></a>
         <br>
@@ -381,17 +381,23 @@
     <br><br id="services"><br>
     <!-- Services Section -->
     <div  class="w3-container"><br>
-        <p id="typing3" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">Here's what I do</p>
+        <p id="typing3" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop center w3-text-black" style="text-shadow: 2px 2px 8px #000000;">Website Packages</p>
         <p class="w3-center w3-xlarge"></p>
         <div class="service-wrapper">
             <!-- Portrait Drawings -->
             <div class="w3-card card-hover1 service-card w3-round w3-text-white w3-round-xlarge">
                 <div class="service-card reveal">
-                    <img src="./img/eyeball.jpg" alt="Portrait Drawings">
+                    <img src="./img/mmmex.png" alt="Portrait Drawings">
                     <div class="service-card-content">
                         <p id="typing4" class="w3-yellow typing-effect reveal w3-xlarge"></p>
-                        <p class="reveal" style="padding: 10px;">I specialize in hand-drawn portraits with stunning detail that you can cherish forever.</p>
-                        <a href="./portraits.html" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">See My Drawings</a>
+                        <p class="reveal" style="padding: 10px;">
+                            ✓ 1 page <br>
+                            ✓ Functional website <br>
+                            ✓ Custom Images <br>
+                            ✓ Logo and branding <br>
+                            ✓ Social media icons<br>
+                            ✓ Responsive design <br><br>
+                        <a href="https://buy.stripe.com/9AQ14QcVk3Le3vydQS" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Choose Package</a>
                         <br><br>
                     </div>
                 </div>
@@ -402,20 +408,16 @@
                     <img src="./img/programming-background-with-person-working-with-codes-computer_23-2150010150.avif" alt="Website Development">
                     <div class="service-card-content">
                         <p id="typing5" class="w3-purple w3-text-black typing-effect reveal w3-xlarge"></p>
-                        <p class="reveal " style="padding: 10px;">I can create you a visually engaging website like this one, tailored to your business or personal needs.</p>
-                        <a href="./portraits.html" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Sites I've Made</a>
-                        <br><br>
-                    </div>
-                </div>
-            </div>
-            <!-- Music Recording -->
-            <div class="w3-card card-hover3 service-card w3-round w3-text-white w3-round-xlarge">
-                <div class="service-card reveal">
-                    <img src="./img/mic.jpg" alt="Music Recording">
-                    <div class="service-card-content">
-                        <p id="typing6" class="w3-red w3-text-black typing-effect reveal w3-xlarge"></p>
-                        <p class="reveal" style="padding: 10px;">With my experience and high-grade equipment, we can bring your songs to life.</p>
-                        <a href="./portraits.html" class="button-primary reveal w3-button w3-button-dark w3-white w3-lxarge">Explore My music</a>
+                        <p class="reveal " style="padding: 10px;">
+                            ✓ Up to 3 pages <br>
+                            ✓ Including product page <br>
+                            ✓ Custom Images <br>
+                            ✓ Functional website <br>
+                            ✓ Logo and branding <br>
+                            ✓ Social media icons<br>
+                            ✓ Responsive design <br>
+                        </p>
+                        <a href="https://buy.stripe.com/bIY9Bmf3s1D61nq6or" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Choose Package</a>
                         <br><br>
                     </div>
                 </div>
@@ -432,10 +434,10 @@
         <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;" style="max-width: 200px;"></p>
     </div>
     <div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width:800px">
-        <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-hover-text-purple text-large" style="text-shadow: 2px 2px 8px #000000; max-width: 260px;"><a href="sms:+19869990621">(986) 999 - 0621</a></p>
+        <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-hover-text-purple text-large w3-text-black" style="max-width: 260px;"><a href="sms:+19869990621">(986) 999 - 0621</a></p>
     </div>
     <div class="w3-center w3-xlarge reveal w3-display-container pop center w3-mobile">
-        <p class="w3-center w3-xlarge reveal pop center w3-hover-text-purple w3-mobile text-large" style="text-shadow: 2px 2px 8px #000000; max-width: 250px;"><a href="mailto:yishuca.biz@gmail.com">yishuca.biz@gmail.com</a></p>
+        <p class="w3-center w3-xlarge reveal pop center w3-hover-text-purple w3-mobile text-large w3-text-black" style="max-width: 250px;"><a href="mailto:yishuca.biz@gmail.com">yishuca.biz@gmail.com</a></p>
     </div>
         <br><br><br>
     </div>
@@ -445,15 +447,15 @@
             <p id="typing7" class="typing-effect w3-round-xlarge w3-center w3-jumbo reveal w3-display-container pop w3-black w3-border w3-border-white center w3-card-4" style="max-width: 400px;"></p>
             <p id="typing8" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 300px;"></p><br>
         <div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 600px;">
-            <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">I am an artist, website developer, and musician myself.</p>
+            <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-text-black" style="text-shadow: 2px 2px 8px #000000;">I am an artist and website developer, based in Boise, Idaho.</p>
         </div>
         <div class=div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 1400px;">
-            <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">
-                Whichever you're looking for, I bring passion and expertise to every project.</p>
+            <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-text-black" style="text-shadow: 2px 2px 8px #000000;">
+                Whatever you're looking for, I bring passion and expertise to every project.</p>
         </div>
         <div class=div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 1400px;">
-            <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;">
-            These are my hobbies, and I love them. Being able to work with others and bring our visions to reality is a feeling like no other.</p>
+            <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-text-black" style="text-shadow: 2px 2px 8px #000000;">
+            This is my hobby, and I love it. Being able to work with others and bring our visions to reality is a feeling like no other.</p>
         </div>
         <br><br><br>
     </div>
@@ -464,7 +466,7 @@
     
     <!-- Footer -->
     <footer class="w3-center w3-large w3-display-container pop center" style="max-width: 400px;">
-        <p class="w3-round w3-large center text-large">&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
+        <p class="w3-round w3-large center text-large w3-text-black">&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
     </footer>
 
     <!-- Canvas Element -->
@@ -546,7 +548,7 @@
                 this.size = Math.random() * 5 + 1;  // Random size between 1 and 6
                 this.speedX = Math.random() * 1 - 0.5;  // Slower speed (reduced range)
                 this.speedY = Math.random() * 1 - 0.5;  // Slower speed (reduced range)
-                this.color = 'rgba(255, 255, 255, 0.8)';  // White color with transparency
+                this.color = 'color black';  // White color with transparency
             }
 
             // Update particle position and check if out of bounds
@@ -865,10 +867,10 @@
     // Texts you want to display
     const texts = [
         "Hello!",
-        "What can I do for you?",
+        "Looking for a website?",
         "",
-        "WANT A DRAWING?",
-        "WANT A WEBSITE?",
+        "Basic Landing Page $500",
+        "Standard Package $1000",
         "WANT TO MAKE MUSIC?",
         "About Me",
         "Nice to meet you!",
