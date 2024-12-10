@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="./css/w3.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Reenie+Beanie&family=Shadows+Into+Light&display=swap" rel="stylesheet">
-    <style>
+    <link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+   <style>
           .pointer {cursor: pointer;}
           html {
             scroll-behavior: smooth;
@@ -25,7 +25,7 @@
         body {
             background-color: #ffffff;
             color: #ffffff;
-            font-family: 'Gochi Hand';
+            font-family: 'Shantell Sans';
             font-size: 20px;
         }
         .w3-navbar, .w3-footer {
@@ -53,7 +53,7 @@
     .hamburger {
       position: fixed;
       top: 20px;
-      left: 20px;
+      right: 20px;
       font-size: 30px;
       cursor: pointer;
       z-index: 1050;
@@ -64,7 +64,7 @@
     .hamburger div {
       width: 35px;
       height: 5px;
-      background-color: #000000;
+      background-color: #848484;
       margin: 6px 0;
       transition: 0.4s;
     }
@@ -96,7 +96,7 @@
       position: fixed;
       z-index: 1000;
       top: 0;
-      left: 0;
+      right: 0;
       background:rgb(255, 255, 255);
       overflow-x: hidden;
       transition: 0.5s;
@@ -119,7 +119,7 @@
     .sidebar a:hover {
       color: #fff;
       background: #000000;
-      box-shadow: 0 0 15px #d900ff; /* Glowing */
+      box-shadow: 0 0 50px #08009a; /* Glowing */
       transform: scale(1.2); /* Slight scale-up */
     }
 
@@ -168,6 +168,18 @@
             50% { transform: translateY(-15px); }
         }
 
+        .floating {
+            animation: float 5s infinite ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
         /* Reveal Animation */
         .animate-reveal {
             opacity: 0;
@@ -190,7 +202,7 @@
             margin-top: 30px;
         }
         .service-card {
-            background-color: #000000;
+            background-color: #05005d;
             border: 0px solid #580075;
             width: 375px;
             max-width: fit-content;
@@ -278,7 +290,7 @@
     /* Button Hover Effect */
     .button-primary:hover {
       transform: scale(1.1); /* Scale up on hover */
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); /* Glowing effect */
+      box-shadow: 0 0 15px rgba(255, 251, 0, 0.8); /* Glowing effect */
       filter: brightness(1.3); /* Brightness increase */
     }
 
@@ -334,6 +346,34 @@
       overflow: hidden; /* Hide content */
       transition: height 2s ease-out, opacity 1s ease-out; /* Transition time for height and opacity */
     }
+
+    .arrow-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    svg {
+      width: 100px;
+      height: 200px;
+      stroke-width: 4;
+      stroke: #000;
+      fill: none;
+      animation: draw 4s infinite ease-in-out; /* Slower animation (4s) */
+    }
+
+    /* Arrow drawing animation */
+    @keyframes draw {
+      0% {
+        stroke-dasharray: 0, 400;
+      }
+      50% {
+        stroke-dasharray: 400, 0;
+      }
+      100% {
+        stroke-dasharray: 0, 400;
+      }
+    }
     </style>
 </head>
 <body>
@@ -341,6 +381,7 @@
     <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small w3-card-4">
         <a href="#" class="w3-bar-item w3-button w3-mobile w3-animate-right w3-hover-white">Home</a>
         <a href="#services" class="w3-bar-item w3-button w3-mobile w3-animate-left w3-hover-white">Services</a>
+        <a href="#howitworks" class="w3-bar-item w3-button w3-mobile w3-animate-right w3-hover-white">How it works</a>
         <a href="#contact" class="w3-bar-item w3-button w3-mobile w3-animate-right w3-hover-white">Contact</a>
         <a href="#about" class="w3-bar-item w3-button w3-mobile w3-animate-left w3-hover-white">About Me</a>
     </div>
@@ -358,9 +399,10 @@
     <a class="accordion">Services</a>
         <div class="accordion-content">
             <br>
-            <a class="w3-black w3-text-yellow" href="https://buy.stripe.com/9AQ14QcVk3Le3vydQS" onclick="closeSidebar()">Basic Landing Page</a>
-            <a class="w3-black w3-text-purple" href="https://buy.stripe.com/bIY9Bmf3s1D61nq6or" onclick="closeSidebar()">Standard Package</a>            <br>
+            <a class="w3-black w3-text-yellow" href="#basic" onclick="closeSidebar()">Basic Landing Page</a>
+            <a class="w3-black w3-text-purple" href="#standard" onclick="closeSidebar()">Standard Package</a>            <br>
         </div>
+    <a href="./index.html#howitworks" onclick="closeSidebar()">How it works</a>
     <a href="./index.html#contact" onclick="closeSidebar()">Contact</a>
     <a href="./index.html#about" onclick="closeSidebar()">About</a>
   </div>
@@ -368,20 +410,20 @@
     <!-- Hero Section -->
     <div class="hero w3-border-white"><br>
         <div class="w3-center w3-mobile w3-animate-top" style="padding: 20px;">
-        <a class="w3-text-black w3-jumbo w3-border w3-card-4" style="padding: 20px;">YISHUCA DESIGNS</a>
+        <img class="floating w3-mobile w3-round w3-blue w3-border w3-border-black" style="width: 50%;" src="./img/logo.png">
         <p id="typing" class="typing-effect w3-center w3-xlarge w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;"></p>
         <br>
         <a id="typing1" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-black center w3-animate-zoom w3-round w3-card-4" style="z-index: 0;"></a>
         <br>
-        <a id="typing2" class="typing-effect w3-white w3-round w3-button reveal w3-button-black w3-xxlarge w3-card-4 button-primary" href='#services'></a>
+        <a id="typing2" class="typing-effect w3-blue w3-round w3-button reveal w3-button-black w3-xxlarge w3-hover-blue w3-card-4 button-primary" href='#services'></a>
         <br>
         </div>
     </div>
 
     <br><br id="services"><br>
     <!-- Services Section -->
-    <div  class="w3-container"><br>
-        <p id="typing3" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop center w3-text-black" style="text-shadow: 2px 2px 8px #000000;">Website Packages</p>
+    <div id="basic" class="w3-container"><br>
+        <p id="typing3" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop center w3-text-black">Website Packages</p>
         <p class="w3-center w3-xlarge"></p>
         <div class="service-wrapper">
             <!-- Portrait Drawings -->
@@ -389,25 +431,27 @@
                 <div class="service-card reveal">
                     <img src="./img/mmmex.png" alt="Portrait Drawings">
                     <div class="service-card-content">
-                        <p id="typing4" class="w3-yellow typing-effect reveal w3-xlarge"></p>
+                        <p id="typing4" class="w3-yellow typing-effect reveal w3-xlarge" style="padding: 20px;"></p>
                         <p class="reveal" style="padding: 10px;">
                             ✓ 1 page <br>
                             ✓ Functional website <br>
                             ✓ Custom Images <br>
                             ✓ Logo and branding <br>
                             ✓ Social media icons<br>
-                            ✓ Responsive design <br><br>
+                            ✓ Responsive design <br>
+                            ✓ $20/month unlimited maintenence
+                            <br><br>
                         <a href="https://buy.stripe.com/9AQ14QcVk3Le3vydQS" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Choose Package</a>
                         <br><br>
                     </div>
                 </div>
             </div>
             <!-- Website Development -->
-            <div class="w3-card card-hover2 service-card w3-round w3-text-white w3-round-xlarge">
+            <div id="standard" class="w3-card card-hover2 service-card w3-round w3-text-white w3-round-xlarge">
                 <div class="service-card reveal">
                     <img src="./img/programming-background-with-person-working-with-codes-computer_23-2150010150.avif" alt="Website Development">
                     <div class="service-card-content">
-                        <p id="typing5" class="w3-purple w3-text-black typing-effect reveal w3-xlarge"></p>
+                        <p id="typing5" class="w3-purple w3-text-black typing-effect reveal w3-xlarge" style="padding: 20px;"></p>
                         <p class="reveal " style="padding: 10px;">
                             ✓ Up to 3 pages <br>
                             ✓ Including product page <br>
@@ -416,52 +460,123 @@
                             ✓ Logo and branding <br>
                             ✓ Social media icons<br>
                             ✓ Responsive design <br>
+                            ✓ $40/month unlimited maintenence
                         </p>
                         <a href="https://buy.stripe.com/bIY9Bmf3s1D61nq6or" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Choose Package</a>
                         <br><br>
                     </div>
                 </div>
             </div>
-        </div><br><br><br><br>
+        </div><br><br><br><br id="howitworks">
+    </div>
+
+    <!-- How it works Section -->
+    <div class="w3-container"><br>
+        <p class="typing-effect w3-center w3-jumbo reveal w3-display-container pop floating center w3-text-black">How it works</p>
+        <p class="w3-center w3-xlarge"></p>
+        <div class="service-wrapper">
+    </div>
+
+    <div class="w3-center w3-jumbo reveal w3-display-container pop">
+        <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
+            <b class="w3-xxlarge w3-text-blue">1</b> <br>
+            <b class="w3-xlarge w3-text-blue">Initial Consultation</b> <br>
+            We’ll start with a call to discuss your project in detail. This will allow us to align on goals, objectives, and expectations.
+        </p>
+    </div>
+
+    <div class="arrow-container reveal">
+        <svg >
+          <path d="M 50 20 L 50 150 L 30 130 L 50 150 L 70 130 L 50 150" />
+        </svg>
+    </div>
+
+    <div class="w3-center w3-jumbo reveal w3-display-container pop">
+        <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
+            <b class="w3-xxlarge w3-text-blue">2</b> <br>
+            <b class="w3-xlarge w3-text-blue">Gathering Requirements</b> <br>
+            Next, we’ll work together to ensure that I have all the necessary information, resources, and materials required to complete the project to your specifications.
+        </p>
+    </div>
+
+    <div class="arrow-container reveal">
+        <svg >
+          <path d="M 50 20 L 50 150 L 30 130 L 50 150 L 70 130 L 50 150" />
+        </svg>
+    </div>
+
+    <div class="w3-center w3-jumbo reveal w3-display-container pop">
+        <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
+            <b class="w3-xxlarge w3-text-blue">3</b> <br>
+            <b class="w3-xlarge w3-text-blue">Progress Check-In</b> <br>
+            We’ll schedule a follow-up session to address any questions or feedback you may have, ensuring we're on track and everything meets your expectations.        </p>
+    </div>
+
+    <div class="arrow-container reveal">
+        <svg >
+          <path d="M 50 20 L 50 150 L 30 130 L 50 150 L 70 130 L 50 150" />
+        </svg>
+    </div>
+
+    <div class="w3-center w3-jumbo reveal w3-display-container pop">
+        <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
+            <b class="w3-xxlarge w3-text-blue">4</b> <br>
+            <b class="w3-xlarge w3-text-blue">Final Delivery</b> <br>
+            Once everything is finalized, I’ll send you the completed project for review and feedback, ensuring you’re fully satisfied before concluding the work.
+        </p>
+    </div>
+
+    <div class="arrow-container reveal">
+        <svg >
+          <path d="M 50 20 L 50 150 L 30 130 L 50 150 L 70 130 L 50 150" />
+        </svg>
+    </div>
+
+    <div class="w3-center w3-jumbo reveal w3-display-container pop">
+        <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
+            <b class="w3-xxlarge w3-text-blue">5</b> <br>
+            <b class="w3-xlarge w3-text-blue">Website Maintenance</b> <br>
+            After the project is complete, I offer ongoing website maintenance to ensure your site remains up-to-date, secure, and running smoothly. This can include updates, backups, troubleshooting, and more.
+        </p>
     </div>
 
     <br id="contact">
     <!-- Contact Section -->
     <div class="w3-container w3-padding-64 w3-center center" style="z-index: 2; max-width: 400px;">
-        <p id="typing9" class="typing-effect w3-round-xlarge w3-center w3-xxlarge reveal w3-display-container pop w3-black w3-border w3-border-white center w3-card-4" style="max-width: 300px;"></p>
+        <p id="typing9" class="typing-effect w3-round-xlarge w3-center w3-xxlarge reveal w3-display-container pop w3-blue w3-border w3-border-black center w3-card-4" style="max-width: 300px;"></p>
         <p id="typing10" class="typing-effect w3-center w3-xlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 200px;"></p><br>
     <div class="w3-center w3-jumbo reveal w3-display-container pop center">
         <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;" style="max-width: 200px;"></p>
     </div>
     <div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width:800px">
-        <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-hover-text-purple text-large w3-text-black" style="max-width: 260px;"><a href="sms:+19869990621">(986) 999 - 0621</a></p>
+        <p class="w3-center w3-xlarge reveal pop center w3-hover-text-blue w3-mobile text-large w3-text-black" style="max-width: 260px;"><a href="sms:+19869990621">(986) 999 - 0621</a></p>
     </div>
     <div class="w3-center w3-xlarge reveal w3-display-container pop center w3-mobile">
-        <p class="w3-center w3-xlarge reveal pop center w3-hover-text-purple w3-mobile text-large w3-text-black" style="max-width: 250px;"><a href="mailto:yishuca.biz@gmail.com">yishuca.biz@gmail.com</a></p>
+        <p class="w3-center w3-xlarge reveal pop center w3-hover-text-blue w3-mobile text-large w3-text-black" style="max-width: 250px;"><a href="mailto:yishuca.biz@gmail.com">yishuca.biz@gmail.com</a></p>
     </div>
         <br><br><br>
     </div>
 
     <!-- About Section -->
     <div  id="about" class="w3-container w3-padding-64 w3-center center" style="z-index: 2;">
-            <p id="typing7" class="typing-effect w3-round-xlarge w3-center w3-jumbo reveal w3-display-container pop w3-black w3-border w3-border-white center w3-card-4" style="max-width: 400px;"></p>
-            <p id="typing8" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 300px;"></p><br>
+            <p id="typing7" class="typing-effect w3-round-large w3-center w3-xxlarge reveal w3-display-container pop w3-blue w3-border w3-border-black center w3-card-4" style="max-width: 400px;"></p>
+            <p id="typing8" class="typing-effect w3-center w3-xlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 300px;"></p><br>
         <div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 600px;">
-            <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-text-black" style="text-shadow: 2px 2px 8px #000000;">I am an artist and website developer, based in Boise, Idaho.</p>
-        </div>
+            <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">I am an artist and website developer, based in Boise, Idaho.</p>
+        </div><br>
         <div class=div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 1400px;">
-            <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-text-black" style="text-shadow: 2px 2px 8px #000000;">
+            <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
                 Whatever you're looking for, I bring passion and expertise to every project.</p>
-        </div>
+        </div><br>
         <div class=div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 1400px;">
-            <p class="w3-center w3-xxlarge reveal w3-display-container pop center w3-text-black" style="text-shadow: 2px 2px 8px #000000;">
-            This is my hobby, and I love it. Being able to work with others and bring our visions to reality is a feeling like no other.</p>
+            <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
+            This is my hobby, and I love it. Being able to work with others and bring our visions to reality is what I strive for.</p>
         </div>
         <br><br><br>
     </div>
 
     <div class="w3-center w3-display-container center pop" style="max-width: 150px;">
-        <button class="button-primary w3-black w3-round w3-button reveal w3-button-dark w3-large center" onclick="scrollToTop()">Scroll to top</button>
+        <button class="button-primary w3-black w3-round w3-button reveal w3-button-dark w3-large center w3-hover-blue" onclick="scrollToTop()">Scroll to top</button>
     </div>
     
     <!-- Footer -->
@@ -548,7 +663,7 @@
                 this.size = Math.random() * 5 + 1;  // Random size between 1 and 6
                 this.speedX = Math.random() * 1 - 0.5;  // Slower speed (reduced range)
                 this.speedY = Math.random() * 1 - 0.5;  // Slower speed (reduced range)
-                this.color = 'color black';  // White color with transparency
+                this.color = '#05005d';  // White color with transparency
             }
 
             // Update particle position and check if out of bounds
@@ -867,14 +982,14 @@
     // Texts you want to display
     const texts = [
         "Hello!",
-        "Looking for a website?",
+        "Need a website?",
         "",
         "Basic Landing Page $500",
         "Standard Package $1000",
         "WANT TO MAKE MUSIC?",
         "About Me",
         "Nice to meet you!",
-        "Let's work together",
+        "Any Questions?",
         "Contact me!",
     ];
 
