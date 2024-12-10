@@ -410,7 +410,7 @@
     <!-- Hero Section -->
     <div class="hero w3-border-white"><br>
         <div class="w3-center w3-mobile w3-animate-top" style="padding: 20px;">
-        <img class="floating w3-mobile w3-round w3-blue w3-border w3-border-black" style="width: 50%;" src="./img/logo.png">
+        <img class="floating w3-mobile w3-round w3-blue w3-border w3-border-black w3-card-4" style="width: 50%;" src="./img/logo.png">
         <p id="typing" class="typing-effect w3-center w3-xlarge w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;"></p>
         <br>
         <a id="typing1" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-black center w3-animate-zoom w3-round w3-card-4" style="z-index: 0;"></a>
@@ -425,11 +425,11 @@
     <br><br id="services"><br>
     <!-- Services Section -->
     <div id="basic" class="w3-container"><br>
-        <p id="typing3" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop center w3-text-black">Website Packages</p>
+        <p id="typing3" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop center w3-text-black">What do you need?</p>
         <br>
         <p class="w3-center w3-xlarge"></p>
         <div class="service-wrapper">
-            <!-- Portrait Drawings -->
+            <!-- Basic -->
             <div class="w3-card card-hover1 service-card w3-round w3-text-white w3-round-xlarge">
                 <div class="service-card reveal">
                     <img src="./img/basic.gif" alt="Portrait Drawings">
@@ -442,14 +442,30 @@
                             ✓ Logo and branding <br>
                             ✓ Social media icons<br>
                             ✓ Responsive design <br>
-                            ✓ $20/month unlimited maintenence
+                            ✓ $20/month unlimited maintenence (optional)
                             <br><br>
-                        <a href="https://buy.stripe.com/3cs7tecVkftW7LO8wC" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Choose Package</a>
+                            <a onclick="document.getElementById('myModal').style.display='block'" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Choose Package</a>
                         <br><br>
                     </div>
                 </div>
             </div>
-            <!-- Website Development -->
+
+                            <!-- Modal -->
+                            <div id="myModal" class="w3-modal" style="display:none;">
+                                <div class="w3-modal-content w3-card-4 w3-animate-zoom w3-round-xlarge w3-center" style=" margin-top: 100px; max-width: 400px;">
+                                    <header class="w3-container w3-blue w3-round-xlarge w3-center">
+                                        <span onclick="document.getElementById('myModal').style.display='none'" class="w3-ripple w3-button w3-round-xlarge w3-display-topright">&times;</span>
+                                        <p class="w3-xlarge w3-center">Choose Package</p>
+                                        <a href="https://buy.stripe.com/5kA8xi4oOepSd684gn" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge w3-center">Basic Landing Page <br> $500</a>
+                                        <br><br>
+                                        <a href="https://buy.stripe.com/3cs7tecVkftW7LO8wC" class="button-primary reveal w3-button w3-button-dark w3-white w3-large w3-center">Basic $500 + $20/month <br>unlimited maintenance</a>  
+                                        <br><br>
+                                    </header>
+                                </div>
+                            </div>
+                            <!-- Modal -->
+
+            <!-- Standard -->
             <div id="standard" class="w3-card card-hover2 service-card w3-round w3-text-white w3-round-xlarge">
                 <div class="service-card reveal">
                     <img src="./img/standard.gif" alt="Website Development">
@@ -463,19 +479,35 @@
                             ✓ Logo and branding <br>
                             ✓ Social media icons<br>
                             ✓ Responsive design <br>
-                            ✓ $40/month unlimited maintenence
+                            ✓ $40/month unlimited maintenence (optional)
                         </p>
-                        <a href="https://buy.stripe.com/00g6pa1cCepS8PScMQ" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Choose Package</a>
+                        <a onclick="document.getElementById('myModal1').style.display='block'" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Choose Package</a>
                         <br><br>
                     </div>
                 </div>
             </div>
+
+                            <!-- Modal -->
+                            <div id="myModal1" class="w3-modal" style="display:none;">
+                                <div class="w3-modal-content w3-card-4 w3-animate-zoom w3-round-xlarge w3-center" style=" margin-top: 100px; max-width: 400px;">
+                                    <header class="w3-container w3-blue w3-round-xlarge w3-center">
+                                        <span onclick="document.getElementById('myModal1').style.display='none'" class="w3-ripple w3-button w3-round-xlarge w3-display-topright">&times;</span>
+                                        <p class="w3-xlarge w3-center">Choose Package</p>
+                                        <a href="https://buy.stripe.com/6oE8xi7B0dlOd685ks" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge w3-center">Standard $1000</a>
+                                        <br><br>
+                                        <a href="https://buy.stripe.com/00g6pa1cCepS8PScMQ" class="button-primary reveal w3-button w3-button-dark w3-white w3-large w3-center">Standard $1000 + $40/month <br>unlimited maintenance</a>  
+                                        <br><br>
+                                    </header>
+                                </div>
+                            </div>
+                            <!-- Modal -->
+
         </div><br><br><br><br id="howitworks">
     </div>
 
     <!-- How it works Section -->
     <div class="w3-container"><br>
-        <p class="typing-effect reveal w3-center w3-jumbo reveal w3-display-container pop floating center w3-text-black">How it works</p>
+        <p id="typing6" class="typing-effect reveal w3-center w3-jumbo reveal w3-display-container pop floating center w3-text-black"></p>
         <p class="w3-center w3-xlarge"></p>
         <div class="service-wrapper">
     </div>
@@ -989,7 +1021,7 @@
         "",
         "Basic Landing Page $500",
         "Standard Package $1000",
-        "WANT TO MAKE MUSIC?",
+        "How it works",
         "About Me",
         "Nice to meet you!",
         "Any Questions?",
@@ -1003,7 +1035,7 @@
         1000,        // 3 These are my skills
         500,     // 4 Portrait Drawings
         500,        // 5 Website Development
-        500,        // 6 Music Recording
+        1000,        // 6 Music Recording
         1000,        // 7 About Me
         2000,     // 8 Nice to meet you!
         1000,        // 9 Contact Me!
@@ -1085,5 +1117,14 @@
       
     });
   </script>
+
+<script>
+    // Close the modal if the user clicks anywhere outside the modal content
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('myModal')) {
+            document.getElementById('myModal').style.display = 'none';
+        }
+    }
+</script>
 </body>
 </html>
