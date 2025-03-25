@@ -72,29 +72,32 @@
         }
 
         .logo {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Poppins', sans-serif; /* Changed to Poppins */
             font-size: 4rem;
-            font-weight: bold;
+            font-weight: 500; /* Medium weight for sleekness */
             color: white;
             margin-bottom: 1rem;
             text-shadow: var(--text-glow);
+            letter-spacing: 1px;
         }
 
         .hero-content h1 {
             font-size: 3.5rem;
             margin-bottom: 1rem;
             color: var(--light);
-            font-weight: 800;
+            font-weight: 500; /* Medium weight */
             letter-spacing: 1px;
             text-transform: uppercase;
-            font-family: 'Montserrat', 'Segoe UI', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         .hero-content h2 {
             font-size: 1.8rem;
-            font-weight: 400;
+            font-weight: 400; /* Regular weight */
             margin-bottom: 1.5rem;
-            color: var(--neon-primary); /* Changed to neon blue */
+            color: var(--neon-primary);
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
         }
 
         .tagline {
@@ -102,6 +105,7 @@
             max-width: 600px;
             margin: 0 auto 2rem;
             color: var(--light-gray);
+            font-family: 'Segoe UI', sans-serif;
         }
 
         .btn {
@@ -112,13 +116,13 @@
             border: none;
             border-radius: 30px;
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600; /* Semi-bold */
             cursor: pointer;
             transition: var(--transition);
             box-shadow: var(--shadow);
+            font-family: 'Poppins', sans-serif;
         }
 
-        /* New transparent blur effect for View Site buttons */
         .portfolio-overlay .btn {
             background: rgba(0, 247, 255, 0.2);
             backdrop-filter: blur(10px);
@@ -137,6 +141,15 @@
             color: var(--darker);
         }
 
+        /* Section Headings - Made lighter */
+        .services h3,
+        .portfolio-section h2,
+        .pricing-section h2,
+        .contact-info h2 {
+            font-weight: 500 !important; /* Medium weight instead of bold */
+        }
+
+        /* Rest of your CSS remains the same */
         .hero-image {
             position: relative;
             width: 100%;
@@ -189,6 +202,7 @@
             position: relative;
             display: inline-block;
             color: var(--neon-primary);
+            font-family: 'Poppins', sans-serif;
         }
 
         .services h3::after {
@@ -233,6 +247,8 @@
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
         }
 
         .portfolio-section {
@@ -247,6 +263,7 @@
             margin-bottom: 3rem;
             position: relative;
             color: var(--neon-primary);
+            font-family: 'Poppins', sans-serif;
         }
 
         .portfolio-section h2::after {
@@ -303,6 +320,8 @@
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
             color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
         }
 
         .portfolio-overlay p {
@@ -325,6 +344,7 @@
             font-size: 2.5rem;
             margin-bottom: 1rem;
             color: var(--neon-primary);
+            font-family: 'Poppins', sans-serif;
         }
 
         .subtitle {
@@ -371,11 +391,13 @@
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
         }
 
         .price {
             font-size: 2.5rem;
-            font-weight: bold;
+            font-weight: 500; /* Medium instead of bold */
             margin-bottom: 1.5rem;
             color: var(--neon-primary);
         }
@@ -417,6 +439,7 @@
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
             color: var(--neon-primary);
+            font-family: 'Poppins', sans-serif;
         }
 
         .contact-info p {
@@ -440,6 +463,8 @@
             font-size: 1.2rem;
             margin-bottom: 0.3rem;
             color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
         }
 
         .contact-method a {
@@ -596,7 +621,7 @@
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="page-container">
