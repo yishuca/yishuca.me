@@ -3,1128 +3,916 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yishuca Designs</title>
-    <link rel="icon" href="./img/equal-svgrepo-com.svg" type="image/x-icon">
-    <link rel="stylesheet" href="./css/w3.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-   <style>
-          .pointer {cursor: pointer;}
-          html {
-            scroll-behavior: smooth;
-        }
-
-        .center {
-            margin: auto;
-            width: 95%;
-            padding: 10px;
-        }
-
-        /* General Styles */
-        body {
-            background-color: #ffffff;
-            color: #ffffff;
-            font-family: 'Shantell Sans';
-            font-size: 20px;
-        }
-        .w3-navbar, .w3-footer {
-            background-color: #1e1e1e;
-            color: white;
-            z-index: 3;
-        }
+    <title>Yishuca Designs | Web Designer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-primary: #00f7ff;  /* Bright cyan */
+            --neon-secondary: #ff00f7; /* Bright pink */
+            --neon-accent: #00ff2a;   /* Bright green */
+            --dark: #1a1a1a;          /* Dark grey background */
+            --darker: #0d0d0d;        /* Darker elements */
+            --light: #f0f0f0;         /* Light text */
+            --gray: #666666;          /* Secondary text */
+            --light-gray: #cccccc;    /* Lighter text */
+            --border-gray: #666666;   /* Gray for borders */
             
-        .w3-navbar:hover {
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); /* Glowing effect */
-        filter: brightness(1.3); /* Brightness increase */
+            --transition: all 0.3s ease;
+            --shadow: 0 0 8px rgba(0, 247, 255, 0.2);
+            --shadow-lg: 0 0 15px rgba(0, 247, 255, 0.3);
+            --text-glow: 0 0 5px rgba(255, 255, 255, 0.7);
         }
 
-        .w3-button-dark, .w3-button-black:hover {
-            background-color: #444;
-            color: white;
-            border-radius: 5px;
-        }
-        .w3-button-dark:hover, .w3-button-black:hover {
-            background-color: #555;
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-    /* Hamburger Menu */
-    .hamburger {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      font-size: 30px;
-      cursor: pointer;
-      z-index: 1050;
-      display: none;
-      transition: transform 0.3s ease, color 0.3s ease;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    .hamburger div {
-      width: 35px;
-      height: 5px;
-      background-color: #848484;
-      margin: 6px 0;
-      transition: 0.4s;
-    }
-
-    /* Remove hover glow effect from Hamburger */
-    .hamburger:hover {
-      color: #1f3a61;
-      transform: scale(1.2);
-      box-shadow: red; /* Remove the glowing effect */
-    }
-
-    /* Hamburger Active State */
-    .hamburger.active div:nth-child(1) {
-      transform: translateY(11px) rotate(45deg);
-    }
-
-    .hamburger.active div:nth-child(2) {
-      opacity: 0;
-    }
-
-    .hamburger.active div:nth-child(3) {
-      transform: translateY(-11px) rotate(-45deg);
-    }
-
-    /* Sidebar Styles */
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      z-index: 1000;
-      top: 0;
-      right: 0;
-      background:rgb(255, 255, 255);
-      overflow-x: hidden;
-      transition: 0.5s;
-      padding-top: 60px;
-      color: white;
-    }
-
-    .sidebar a {
-      padding: 10px 15px;
-      text-decoration: none;
-      font-size: 25px;
-      color: #f1f1f1;
-      display: block;
-      transition: 0.3s;
-      text-align: center;
-      border-radius: 5px;
-    }
-
-    /* Sidebar Link Hover Effect */
-    .sidebar a:hover {
-      color: #fff;
-      background: #000000;
-      box-shadow: 0 0 50px #08009a; /* Glowing */
-      transform: scale(1.2); /* Slight scale-up */
-    }
-
-    /* Media Queries */
-    @media screen and (max-width: 768px) {
-      .hamburger {
-        display: block;
-      }
-    }
-
-    @media screen and (min-width: 769px) {
-      .hamburger {
-        display: none;
-      }
-    }
-
-        /* Hero Section */
-        .hero {
-            padding: 70px 0px;
-            text-align: center;
+        .page-container {
             position: relative;
-            overflow: hidden;
-            z-index: 1;
-            height: 100vh;
-        }
-        .hero h1, .hero p, .hero a {
-            animation: fadeIn 1.5s ease-out;
-        }
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-        }
-        .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-        }
-        .hero .floating {
-            animation: float 5s infinite ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            min-height: 100vh;
+            padding-bottom: 80px;
         }
 
-        .floating {
-            animation: float 5s infinite ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        /* Reveal Animation */
-        .animate-reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            animation: reveal 1.2s ease-out forwards;
-        }
-        @keyframes reveal {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Service Cards */
-        .service-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 30px;
-        }
-        .service-card {
-            background-color: #05005d;
-            border: 0px solid #580075;
-            width: 375px;
-            max-width: fit-content;
-            margin: 0 auto;
-            transition: transform 0.5s, box-shadow 0.5s;
-            overflow: hidden;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .service-card:hover {
-            transform: scale(0);
-        }
-        .service-card img {
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
+            padding: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+            height: calc(100vh - 80px);
+        }
+
+        .page.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: var(--text-glow);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        }
+
+        .hero-content h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            color: var(--neon-primary); /* Changed to neon blue */
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: var(--light-gray);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--neon-primary);
+            color: var(--darker);
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        /* New transparent blur effect for View Site buttons */
+        .portfolio-overlay .btn {
+            background: rgba(0, 247, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 1px solid var(--neon-primary);
+        }
+
+        .portfolio-overlay .btn:hover {
+            background: rgba(0, 247, 255, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            background-color: white;
+            color: var(--darker);
+        }
+
+        .hero-image {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 300px;
+            margin-top: 3rem;
+        }
+
+        .design-element {
+            position: absolute;
+            border-radius: 20px;
+            background: linear-gradient(45deg, var(--neon-primary), var(--neon-secondary));
+            opacity: 0.6;
+            filter: blur(10px);
+        }
+
+        .design-element:nth-child(1) {
+            width: 200px;
             height: 200px;
-            object-fit: cover;
-            transition: transform 0.5s ease-out;
+            top: 0;
+            left: 0;
+            transform: rotate(15deg);
         }
-        .service-card:hover img {
-            transform: scale(1.1);
+
+        .design-element:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: 0;
+            right: 50px;
+            transform: rotate(-10deg);
         }
-        .service-card-content {
-            padding: 0px;
+
+        .design-element:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .services {
+            max-width: 1200px;
+            margin: 5rem auto;
             text-align: center;
         }
 
-        /* Responsive Design */
+        .services h3 {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+            color: var(--neon-primary);
+        }
+
+        .services h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, var(--neon-primary), var(--neon-secondary));
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: rgba(26, 26, 26, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            transition: var(--transition);
+            border: 1px solid var(--neon-primary);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--neon-secondary);
+        }
+
+        .service-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--neon-primary);
+        }
+
+        .service-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .portfolio-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .portfolio-section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            color: var(--neon-primary);
+        }
+
+        .portfolio-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--neon-primary), var(--neon-secondary));
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .portfolio-item {
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            height: 250px;
+            border: 1px solid var(--border-gray);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: var(--transition);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transition: var(--transition);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .portfolio-overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .portfolio-overlay p {
+            margin-bottom: 1.5rem;
+            color: var(--light-gray);
+        }
+
+        .portfolio-item:hover .portfolio-image {
+            transform: scale(1.05);
+        }
+
+        .pricing-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .pricing-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--neon-primary);
+        }
+
+        .subtitle {
+            color: var(--light-gray);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .pricing-card {
+            background: rgba(26, 26, 26, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            transition: var(--transition);
+            position: relative;
+            border: 1px solid var(--neon-primary);
+        }
+
+        .pricing-card.featured {
+            transform: scale(1.05);
+            background: rgba(26, 26, 26, 0.9);
+            border: 1px solid var(--neon-secondary);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: var(--neon-secondary);
+            color: var(--darker);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: var(--neon-primary);
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .pricing-card ul li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+            color: var(--light-gray);
+        }
+
+        .pricing-card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--neon-accent);
+        }
+
+        .contact-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--neon-primary);
+        }
+
+        .contact-info p {
+            margin-bottom: 2rem;
+            color: var(--light-gray);
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-method i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--neon-primary);
+        }
+
+        .contact-method h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+            color: var(--light);
+        }
+
+        .contact-method a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-method a:hover {
+            color: var(--neon-primary);
+            text-decoration: underline;
+        }
+
+        .contact-form {
+            background: rgba(26, 26, 26, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-gray);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            color: var(--light);
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--neon-secondary);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--darker);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0 1rem;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.8rem;
+            position: relative;
+            z-index: 1;
+            padding: 0.5rem 1rem;
+            transition: var(--transition);
+            flex: 1;
+            text-align: center;
+        }
+
+        .nav-link i {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-link.active {
+            color: var(--neon-primary);
+            transform: translateY(-5px);
+        }
+
+        .nav-link span {
+            display: block;
+            font-size: 0.7rem;
+        }
+
+        .nav-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--neon-primary);
+            border-radius: 5px;
+            transition: var(--transition);
+            transform: translateX(0);
+        }
+
         @media (max-width: 768px) {
-            .hero h1 {
+            .hero-content h1 {
                 font-size: 2.5rem;
             }
-            .hero p {
-                font-size: 1.2rem;
+            
+            .hero-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .services-grid, .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-link i {
+                font-size: 1.5rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .nav-link span {
+                font-size: 0.6rem;
+            }
+
+            .nav-indicator {
+                width: 40px;
             }
         }
 
-        /* Canvas to draw the polygons */
-        canvas {
-            position: fixed; /* Make canvas fixed relative to the page */
-            top: 0;
-            left: 0;
-            z-index: 0; /* Ensure canvas is below any other content */        }
-
-        /* Canvas to draw the particles */
-        #particleCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1; /* Default z-index, you can adjust this as needed */
-            color: #000000;
+        @media (max-width: 480px) {
+            .hero {
+                padding: 2rem 1rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .page {
+                padding: 1rem;
+            }
+            
+            .bottom-nav {
+                padding: 0.5rem 0 0.8rem;
+            }
         }
-
-        /* Canvas to draw the anything */
-        .pop {
-        z-index: 2;
-        opacity: 1;
-        }
-
-    /* Scroll Reveal Effect */
-    .reveal {
-      opacity: 0;
-      transform: translateY(50px);
-      transition: opacity 1s ease, transform 1s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .spark { /* Changed class name to spark */
-            position: fixed;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.8); /* Light spark particles */
-            pointer-events: none; /* Prevent sparks from interfering with cursor events */
-            opacity: 1;
-            transition: transform 0.4s ease-out, opacity 1s ease-out; /* Smooth fading effect */
-            z-index: 9999; /* Ensure sparks are in the foreground */
-            color: black;
-        }
-        
-    /* Button Hover Effect */
-    .button-primary:hover {
-      transform: scale(1.1); /* Scale up on hover */
-      box-shadow: 0 0 15px rgba(0, 234, 255, 0.8); /* Glowing effect */
-      filter: brightness(1.3); /* Brightness increase */
-    }
-
-        /* Button Hover Effect */
-        .card-hover1:hover {
-      transform: scale(1); /* Scale up on hover */
-      box-shadow: 0 0 15px rgba(0, 234, 255, 0.8); /* Glowing effect */
-      filter: brightness(1.3); /* Brightness increase */
-    }
-
-            /* Button Hover Effect */
-            .card-hover2:hover {
-      transform: scale(1); /* Scale up on hover */
-      box-shadow: 0 0 15px rgba(255, 83, 255, 0.8); /* Glowing effect */
-      filter: brightness(1.3); /* Brightness increase */
-    }
-
-            /* Button Hover Effect */
-            .card-hover3:hover {
-      transform: scale(1.05); /* Scale up on hover */
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* Glowing effect */
-      filter: brightness(1.3); /* Brightness increase */
-    }
-
-            /* Text Hover Effect */
-            .text-large:hover {
-      transform: scale(1.1); /* Scale up on hover */
-      text-shadow: 2px, 2px, 15px rgba(255, 0, 0, 0.8); /* Glowing effect */
-      filter: brightness(1.3); /* Brightness increase */
-    }
-
-    /* Style the container to center the button */
-    .accordion-container {
-      display: flex;
-      justify-content: center; /* Horizontally center */
-      align-items: center;     /* Vertically center */
-    }
-
-    /* Style the accordion button */
-    .accordion {
-      color: rgb(0, 0, 0);
-      cursor: pointer;
-      border: none;
-      outline: none;
-      transition: 0.4s;
-    }
-
-    /* Style the accordion content (hidden by default) */
-    .accordion-content {
-      background-color: #000000;
-      height: 0; /* Initially collapsed height */
-      opacity: 0; /* Initially hidden */
-      overflow: hidden; /* Hide content */
-      transition: height 2s ease-out, opacity 1s ease-out; /* Transition time for height and opacity */
-    }
-
-    .arrow-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    svg {
-      width: 100px;
-      height: 200px;
-      stroke-width: 4;
-      stroke: #000;
-      fill: none;
-      animation: draw 4s infinite ease-in-out; /* Slower animation (4s) */
-    }
-
-    /* Arrow drawing animation */
-    @keyframes draw {
-      0% {
-        stroke-dasharray: 0, 400;
-      }
-      50% {
-        stroke-dasharray: 400, 0;
-      }
-      100% {
-        stroke-dasharray: 0, 400;
-      }
-    }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navbar -->
-    <div class="w3-bar w3-top w3-xlarge w3-navbar w3-hide-small w3-card-4">
-        <a href="#" class="w3-bar-item w3-button w3-mobile w3-animate-right w3-hover-white">Home</a>
-        <a href="#services" class="w3-bar-item w3-button w3-mobile w3-animate-left w3-hover-white">Services</a>
-        <a href="#howitworks" class="w3-bar-item w3-button w3-mobile w3-animate-right w3-hover-white">How it works</a>
-        <a href="#contact" class="w3-bar-item w3-button w3-mobile w3-animate-left w3-hover-white">Contact</a>
-        <a href="#about" class="w3-bar-item w3-button w3-mobile w3-animate-right w3-hover-white">About Me</a>
-    </div>
+    <div class="page-container">
+        <!-- Home Page (default visible) -->
+        <div class="page active" id="home">
+            <header class="hero">
+                <div class="hero-content">
+                    <div class="logo">[=]</div>
+                    <h1>Yishuca Designs</h1>
+                    <h2>Web Design & Development</h2>
+                    <p class="tagline">Creating immersive digital experiences with clean code and thoughtful design</p>
+                </div>
+                <div class="hero-image">
+                    <div class="design-element"></div>
+                    <div class="design-element"></div>
+                    <div class="design-element"></div>
+                </div>
+            </header>
 
-  <!-- Hamburger Menu -->
-  <div class="hamburger w3-animate-zoom close-btn" onclick="toggleSidebar()">
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-
-  <!-- Sidebar -->
-  <div id="sidebar" class="sidebar w3-card-4 w3-black"><br>
-    <a href="#" class="w3-animate-opacity" onclick="closeSidebar()">Home</a>
-    <a class="accordion">Services</a>
-        <div class="accordion-content">
-            <br>
-            <a class="w3-black w3-text-teal" href="#basic" onclick="closeSidebar()">Basic Landing Page</a>
-            <a class="w3-black w3-text-purple" href="#standard" onclick="closeSidebar()">Standard Package</a>            <br>
-        </div>
-    <a href="./index.html#howitworks" onclick="closeSidebar()">How it works</a>
-    <a href="./index.html#contact" onclick="closeSidebar()">Contact</a>
-    <a href="./index.html#about" onclick="closeSidebar()">About</a>
-  </div>
-
-    <!-- Hero Section -->
-    <div class="hero w3-border-white"><br>
-        <div class="w3-center w3-mobile w3-animate-top" style="padding: 20px;">
-        <img class="floating w3-mobile w3-round w3-blue w3-border w3-border-black w3-card-4" style="width: 50%;" src="./img/logo.png">
-        <p id="typing" class="typing-effect w3-center w3-xlarge w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;"></p>
-        <br>
-        <a id="typing1" class="typing-effect w3-center w3-xxlarge reveal w3-display-container pop w3-black center w3-animate-zoom w3-round w3-card-4" style="z-index: 0;"></a>
-        <br>
-        <a id="typing2" class="typing-effect w3-blue w3-round w3-button reveal w3-button-black w3-xxlarge w3-hover-blue w3-card-4 button-primary" href='#services'></a>
-        <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">I am an artist and website developer, based in Boise, Idaho.</p>
-
-        <br>
-        </div>
-    </div>
-
-    <br><br id="services"><br>
-    <!-- Services Section -->
-    <div id="basic" class="w3-container"><br>
-        <p id="typing3" class="typing-effect w3-center w3-jumbo reveal w3-display-container pop center w3-text-black">What do you need?</p>
-        <br>
-        <p class="w3-center w3-xlarge"></p>
-        <div class="service-wrapper">
-            <!-- Basic -->
-            <div class="w3-card card-hover1 service-card w3-round w3-text-white w3-round-xlarge">
-                <div class="service-card reveal">
-                    <img src="./img/basic.gif" alt="Portrait Drawings">
-                    <div class="service-card-content">
-                        <p id="typing4" class="w3-light-blue typing-effect reveal w3-xlarge" style="padding: 20px;"></p>
-                        <p class="reveal" style="padding: 10px;">
-                            ✓ 1 page <br>
-                            ✓ Functional website <br>
-                            ✓ Custom Images <br>
-                            ✓ Logo and branding <br>
-                            ✓ Social media icons<br>
-                            ✓ Responsive design <br>
-                            ✓ $20/month unlimited maintenence (optional)
-                            <br><br>
-                            <a onclick="document.getElementById('myModal').style.display='block'" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Choose Package</a>
-                        <br><br>
+            <section class="services">
+                <h3>What I Offer</h3>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <i class="fas fa-paint-brush"></i>
+                        <h4>UI/UX Design</h4>
+                        <p>Thoughtful interfaces that prioritize user experience and conversion.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-code"></i>
+                        <h4>Web Development</h4>
+                        <p>Clean, efficient code that brings designs to life across all devices.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h4>Responsive Design</h4>
+                        <p>Flawless performance on any screen size or device.</p>
                     </div>
                 </div>
-            </div>
+            </section>
+        </div>
 
-                            <!-- Modal -->
-                            <div id="myModal" class="w3-modal" style="display:none;">
-                                <div class="w3-modal-content w3-card-4 w3-animate-zoom w3-round-xlarge w3-center" style=" margin-top: 100px; max-width: 400px;">
-                                    <header class="w3-container w3-blue w3-round-xlarge w3-center">
-                                        <span onclick="document.getElementById('myModal').style.display='none'" class="w3-ripple w3-button w3-round-xlarge w3-display-topright">&times;</span>
-                                        <p class="w3-xlarge w3-center">Choose Package</p>
-                                        <a href="https://buy.stripe.com/5kA8xi4oOepSd684gn" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge w3-center">Basic Landing Page <br> $500</a>
-                                        <br><br>
-                                        <a href="https://buy.stripe.com/3cs7tecVkftW7LO8wC" class="button-primary reveal w3-button w3-button-dark w3-white w3-large w3-center">Basic $500 + $20/month <br>unlimited maintenance</a>  
-                                        <br><br>
-                                    </header>
-                                </div>
+        <!-- Portfolio Page -->
+        <div class="page" id="portfolio">
+            <section class="portfolio-section">
+                <h2>Recent Projects</h2>
+                <div class="portfolio-grid">
+                    <div class="portfolio-item">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                            <div class="portfolio-overlay">
+                                <h3>Nexus Financial</h3>
+                                <p>Fintech Dashboard UI</p>
+                                <a href="#" class="btn">View Site</a>
                             </div>
-                            <!-- Modal -->
-
-            <!-- Standard -->
-            <div id="standard" class="w3-card card-hover2 service-card w3-round w3-text-white w3-round-xlarge">
-                <div class="service-card reveal">
-                    <img src="./img/standard.gif" alt="Website Development">
-                    <div class="service-card-content">
-                        <p id="typing5" class="w3-purple w3-text-black typing-effect reveal w3-xlarge" style="padding: 20px;"></p>
-                        <p class="reveal " style="padding: 10px;">
-                            ✓ Up to 3 pages <br>
-                            ✓ Includes product pages <br>
-                            ✓ Custom Images <br>
-                            ✓ Functional website <br>
-                            ✓ Logo and branding <br>
-                            ✓ Social media icons<br>
-                            ✓ Responsive design <br>
-                            ✓ $40/month unlimited maintenence (optional)
-                        </p>
-                        <a onclick="document.getElementById('myModal1').style.display='block'" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge">Choose Package</a>
-                        <br><br>
+                        </div>
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80');">
+                            <div class="portfolio-overlay">
+                                <h3>Bloom Cosmetics</h3>
+                                <p>E-commerce Website</p>
+                                <a href="#" class="btn">View Site</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                            <div class="portfolio-overlay">
+                                <h3>Urban Bikes</h3>
+                                <p>Brand Identity & Website</p>
+                                <a href="#" class="btn">View Site</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portfolio-item">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                            <div class="portfolio-overlay">
+                                <h3>Zen Space</h3>
+                                <p>Meditation App UI</p>
+                                <a href="#" class="btn">View Site</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
+        </div>
 
-                            <!-- Modal -->
-                            <div id="myModal1" class="w3-modal" style="display:none;">
-                                <div class="w3-modal-content w3-card-4 w3-animate-zoom w3-round-xlarge w3-center" style=" margin-top: 100px; max-width: 400px;">
-                                    <header class="w3-container w3-blue w3-round-xlarge w3-center">
-                                        <span onclick="document.getElementById('myModal1').style.display='none'" class="w3-ripple w3-button w3-round-xlarge w3-display-topright">&times;</span>
-                                        <p class="w3-xlarge w3-center">Choose Package</p>
-                                        <a href="https://buy.stripe.com/6oE8xi7B0dlOd685ks" class="button-primary reveal w3-button w3-button-dark w3-white w3-xlarge w3-center">Standard $1000</a>
-                                        <br><br>
-                                        <a href="https://buy.stripe.com/00g6pa1cCepS8PScMQ" class="button-primary reveal w3-button w3-button-dark w3-white w3-large w3-center">Standard $1000 + $40/month <br>unlimited maintenance</a>  
-                                        <br><br>
-                                    </header>
+        <!-- Pricing Page -->
+        <div class="page" id="pricing">
+            <section class="pricing-section">
+                <h2>Pricing Plans</h2>
+                <p class="subtitle">Flexible options for every project size</p>
+                
+                <div class="pricing-cards">
+                    <div class="pricing-card">
+                        <h3>Basic</h3>
+                        <div class="price">$1,200</div>
+                        <ul>
+                            <li>Single Page Website</li>
+                            <li>Responsive Design</li>
+                            <li>Basic SEO Setup</li>
+                            <li>1 Revision Round</li>
+                            <li>2 Week Delivery</li>
+                        </ul>
+                        <a href="#contact" class="btn nav-link" data-target="contact">Get Started</a>
+                    </div>
+                    
+                    <div class="pricing-card featured">
+                        <div class="popular-badge">Most Popular</div>
+                        <h3>Standard</h3>
+                        <div class="price">$2,800</div>
+                        <ul>
+                            <li>3-5 Page Website</li>
+                            <li>Custom UI/UX Design</li>
+                            <li>Advanced SEO</li>
+                            <li>3 Revision Rounds</li>
+                            <li>4 Week Delivery</li>
+                        </ul>
+                        <a href="#contact" class="btn nav-link" data-target="contact">Get Started</a>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <h3>Premium</h3>
+                        <div class="price">$5,500+</div>
+                        <ul>
+                            <li>Complex Web Application</li>
+                            <li>Full Brand Identity</li>
+                            <li>Ongoing Maintenance</li>
+                            <li>Unlimited Revisions</li>
+                            <li>Custom Timeline</li>
+                        </ul>
+                        <a href="#contact" class="btn nav-link" data-target="contact">Get Started</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Contact Page -->
+        <div class="page" id="contact">
+            <section class="contact-section">
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <h2>Let's Work Together</h2>
+                        <p>Have a project in mind or want to discuss potential collaboration? I'd love to hear from you.</p>
+                        
+                        <div class="contact-methods">
+                            <div class="contact-method">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <h4>Email</h4>
+                                    <p><a href="mailto:Yishuca.designs@gmail.com">Yishuca.designs@gmail.com</a></p>
                                 </div>
                             </div>
-                            <!-- Modal -->
-
-        </div><br><br><br><br id="howitworks">
-    </div>
-
-    <!-- How it works Section -->
-    <div class="w3-container"><br>
-        <p id="typing6" class="typing-effect reveal w3-center w3-jumbo reveal w3-display-container pop floating center w3-text-black"></p>
-        <p class="w3-center w3-xlarge"></p>
-        <div class="service-wrapper">
-    </div>
-
-    <div class="w3-center w3-jumbo reveal w3-display-container pop">
-        <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
-            <b class="w3-xxlarge w3-text-blue">1</b> <br>
-            <b class="w3-xlarge w3-text-blue">Initial Consultation</b> <br>
-            We’ll start with a call to discuss your project in detail. This will allow me to align on goals, objectives, and expectations.
-        </p>
-    </div>
-
-    <div class="arrow-container reveal">
-        <svg >
-          <path d="M 50 20 L 50 150 L 30 130 L 50 150 L 70 130 L 50 150" />
-        </svg>
-    </div>
-
-    <div class="w3-center w3-jumbo reveal w3-display-container pop">
-        <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
-            <b class="w3-xxlarge w3-text-blue">2</b> <br>
-            <b class="w3-xlarge w3-text-blue">Gathering Requirements</b> <br>
-            Next, we’ll work together to ensure that I have all the necessary information, resources, and materials required to complete the project to your specifications.
-        </p>
-    </div>
-
-    <div class="arrow-container reveal">
-        <svg >
-          <path d="M 50 20 L 50 150 L 30 130 L 50 150 L 70 130 L 50 150" />
-        </svg>
-    </div>
-
-    <div class="w3-center w3-jumbo reveal w3-display-container pop">
-        <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
-            <b class="w3-xxlarge w3-text-blue">3</b> <br>
-            <b class="w3-xlarge w3-text-blue">Progress Check-In</b> <br>
-            We’ll schedule a follow-up session to address any questions or feedback you may have, ensuring we're on track and everything meets your expectations.        </p>
-    </div>
-
-    <div class="arrow-container reveal">
-        <svg >
-          <path d="M 50 20 L 50 150 L 30 130 L 50 150 L 70 130 L 50 150" />
-        </svg>
-    </div>
-
-    <div class="w3-center w3-jumbo reveal w3-display-container pop">
-        <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
-            <b class="w3-xxlarge w3-text-blue">4</b> <br>
-            <b class="w3-xlarge w3-text-blue">Final Delivery</b> <br>
-            Once everything is finalized, I’ll send you the completed project for review and feedback, ensuring you’re fully satisfied before concluding the work.
-        </p>
-    </div>
-
-    <div class="arrow-container reveal">
-        <svg >
-          <path d="M 50 20 L 50 150 L 30 130 L 50 150 L 70 130 L 50 150" />
-        </svg>
-    </div>
-
-    <div class="w3-center w3-jumbo reveal w3-display-container pop">
-        <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
-            <b class="w3-xxlarge w3-text-blue">5</b> <br>
-            <b class="w3-xlarge w3-text-blue">Website Maintenance</b> <br>
-            After the project is complete, I offer ongoing website maintenance to ensure your site remains up-to-date, secure, and running smoothly. This can include updates, backups, troubleshooting, and more.
-        </p>
-    </div>
-
-    <br id="contact">
-    <!-- Contact Section -->
-    <div class="w3-container w3-padding-64 w3-center center" style="z-index: 2; max-width: 400px;">
-        <p id="typing9" class="typing-effect w3-round-xlarge w3-center w3-xxlarge reveal w3-display-container pop w3-blue w3-border w3-border-black center w3-card-4" style="max-width: 300px;"></p>
-        <p id="typing10" class="typing-effect w3-center w3-xlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 200px;"></p><br>
-    <div class="w3-center w3-jumbo reveal w3-display-container pop center">
-        <p class="w3-center w3-xxlarge reveal w3-display-container pop center" style="text-shadow: 2px 2px 8px #000000;" style="max-width: 200px;"></p>
-    </div>
-    <div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width:800px">
-        <p class="w3-center w3-xlarge reveal pop center w3-hover-text-teal w3-mobile text-large w3-text-black" style="max-width: 260px;"><a href="sms:+19869990621">(986) 999 - 0621</a></p>
-    </div>
-    <div class="w3-center w3-xlarge reveal w3-display-container pop center w3-mobile">
-        <p class="w3-center w3-xlarge reveal pop center w3-hover-text-teal w3-mobile text-large w3-text-black"><a href="mailto:yishuca.biz@gmail.com">yishuca.biz@gmail.com</a></p>
-    </div>
-        <br><br><br>
-    </div>
-
-    <!-- About Section -->
-    <div  id="about" class="w3-container w3-padding-64 w3-center center" style="z-index: 2;">
-            <p id="typing7" class="typing-effect w3-round-large w3-center w3-xxlarge reveal w3-display-container pop w3-blue w3-border w3-border-black center w3-card-4" style="max-width: 400px;"></p>
-            <p id="typing8" class="typing-effect w3-center w3-xlarge reveal w3-display-container pop w3-white center w3-card-4" style="max-width: 250px;"></p><br>
-        <div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 600px;">
-            <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">My name is Nick, and I'm based in Boise, Idaho.</p>
-        </div><br>
-        <div class=div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 1400px;">
-            <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
-                Whatever you're looking for, I bring passion and expertise to every project to bring your business to life.</p>
-        </div><br>
-        <div class=div class="w3-center w3-jumbo reveal w3-display-container pop center" style="max-width: 1400px;">
-            <p class="w3-center w3-xlarge reveal w3-display-container pop center w3-text-black">
-            This is my hobby, and I love it. Being able to work with others and bring our visions to reality is what I strive for.</p>
+                            <div class="contact-method">
+                                <i class="fas fa-phone-alt"></i>
+                                <div>
+                                    <h4>Phone</h4>
+                                    <p><a href="tel:9869990621">(986) 999-0621</a></p>
+                                </div>
+                            </div>
+                            <div class="contact-method">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <h4>Location</h4>
+                                    <p>Boise, ID</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Subject">
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+            </section>
         </div>
-        <br><br><br>
     </div>
 
-    <div class="w3-center w3-display-container center pop" style="max-width: 150px;">
-        <button class="button-primary w3-black w3-round w3-button reveal w3-button-dark w3-large center w3-hover-blue" onclick="scrollToTop()">Scroll to top</button>
-    </div>
-    
-    <!-- Footer -->
-    <footer class="w3-center w3-large w3-display-container pop center" style="max-width: 400px;">
-        <p class="w3-round w3-large center text-large w3-text-black">&copy; 2024 Yishuca Designs. All Rights Reserved.</p>
-    </footer>
-
-    <!-- Canvas Element -->
-    <canvas id="particleCanvas"></canvas>
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-indicator"></div>
+        <a href="#home" class="nav-link active" data-target="home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#portfolio" class="nav-link" data-target="portfolio">
+            <i class="fas fa-briefcase"></i>
+            <span>Portfolio</span>
+        </a>
+        <a href="#pricing" class="nav-link" data-target="pricing">
+            <i class="fas fa-tags"></i>
+            <span>Pricing</span>
+        </a>
+        <a href="#contact" class="nav-link" data-target="contact">
+            <i class="fas fa-envelope"></i>
+            <span>Contact</span>
+        </a>
+    </nav>
 
     <script>
-    // Toggle Sidebar
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const hamburger = document.querySelector('.hamburger');
-      if (sidebar.style.width === '250px') {
-        sidebar.style.width = '0';
-        hamburger.classList.remove('active');
-      } else {
-        sidebar.style.width = '250px';
-        hamburger.classList.add('active');
-      }
-    }
-
-    // Close Sidebar when a link is clicked
-    function closeSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const hamburger = document.querySelector('.hamburger');
-      sidebar.style.width = '0'; // Close the sidebar
-      hamburger.classList.remove('active'); // Reset hamburger icon
-    }
-      </script>
-
-    <!-- JavaScript for Scroll Animation -->
-    <script>
-        function scrollToTop() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
-
-<script>
-                // Scroll Reveal Effect
-                const revealElements = document.querySelectorAll('.reveal');
-
-        function revealOnScroll() {
-        revealElements.forEach(element => {
-            const rect = element.getBoundingClientRect();
-            if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-            element.classList.add('visible');
-            }
-        });
-        }
-
-        // Trigger reveal effect on scroll
-        window.addEventListener('scroll', revealOnScroll);
-
-        // Initial trigger for elements in viewport
-        revealOnScroll();
-</script>
-
-<script>
-    // Wait until the DOM is fully loaded to ensure the canvas is accessible
-    document.addEventListener('DOMContentLoaded', () => {
-        const canvas = document.getElementById("particleCanvas");
-        const ctx = canvas.getContext("2d");
-
-        // Function to resize the canvas to fill the window
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        // Call resizeCanvas to adjust the size initially and whenever the window is resized
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        let particles = [];
-
-        // Particle class to define individual particles
-        class Particle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.random() * 5 + 1;  // Random size between 1 and 6
-                this.speedX = Math.random() * 1 - 0.5;  // Slower speed (reduced range)
-                this.speedY = Math.random() * 1 - 0.5;  // Slower speed (reduced range)
-                this.color = '#05005d';  // White color with transparency
-            }
-
-            // Update particle position and check if out of bounds
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                // Shrink particle size over time
-                if (this.size > 0.2) this.size -= 0.1;
-
-                // Reset the particle if it goes off-screen
-                if (this.x > canvas.width || this.x < 0 || this.y > canvas.height || this.y < 0) {
-                    this.reset();
+        document.addEventListener('DOMContentLoaded', function() {
+            // Page navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+            const navIndicator = document.querySelector('.nav-indicator');
+            
+            // Store scroll positions for each page
+            const scrollPositions = {};
+            
+            // Set initial active page
+            let activePage = document.querySelector('.page.active');
+            let activeNavLink = document.querySelector('.nav-link.active');
+            
+            // Function to update indicator position
+            function updateIndicatorPosition(link) {
+                const linkRect = link.getBoundingClientRect();
+                const navRect = document.querySelector('.bottom-nav').getBoundingClientRect();
+                const indicatorWidth = 60; // Fixed width for desktop
+                const indicatorLeft = linkRect.left - navRect.left + (linkRect.width - indicatorWidth) / 2;
+                
+                navIndicator.style.width = `${indicatorWidth}px`;
+                navIndicator.style.transform = `translateX(${indicatorLeft}px)`;
+                
+                // Adjust for mobile view
+                if (window.innerWidth <= 768) {
+                    const mobileIndicatorWidth = 40;
+                    const mobileIndicatorLeft = linkRect.left - navRect.left + (linkRect.width - mobileIndicatorWidth) / 2;
+                    navIndicator.style.width = `${mobileIndicatorWidth}px`;
+                    navIndicator.style.transform = `translateX(${mobileIndicatorLeft}px)`;
                 }
             }
-
-            // Draw the particle on the canvas
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            // Reset particle to a new position
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 5 + 1;
-                this.speedX = Math.random() * 1 - 0.5;  // Slower speed
-                this.speedY = Math.random() * 1 - 0.5;  // Slower speed
-            }
-        }
-
-        // Create a number of particles
-        function createParticles() {
-            for (let i = 0; i < 100; i++) {
-                particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height));
-            }
-        }
-
-        // Animate the particles
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear canvas
-            for (let particle of particles) {
-                particle.update();
-                particle.draw();
-            }
-            requestAnimationFrame(animateParticles);  // Keep animating
-        }
-
-        // Start the particle animation
-        createParticles();
-        animateParticles();
-    });
-</script>
-
-<script> 
-    // Get the canvas element and its context
-    const canvas = document.getElementById('polygonCanvas');
-    const ctx = canvas.getContext('2d');
-    
-    // Set canvas size to fill the window
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    // Track mouse position
-    let mouseX = canvas.width / 2;
-    let mouseY = canvas.height / 2;
-    
-    // Polygon Settings
-    const polygons = [];
-    const numPolygons = 10;
-    
-    // Function to generate a purple-blue color
-    function randomColor() {
-        // Generate colors in the purple-blue spectrum
-        const r = Math.floor(Math.random() * 128); // Random value for red between 0 and 127
-        const g = Math.floor(Math.random() * 100); // Random value for green between 0 and 99 (keeping it low)
-        const b = Math.floor(Math.random() * 128) + 127; // Random value for blue between 127 and 255
-        return {
-            r: r,
-            g: g,
-            b: b,
-            a: 0.8  // Fixed alpha (transparency)
-        };
-    }
-    
-    // Create random polygons
-    function createPolygon(x, y, radius, numVertices) {
-        const vertices = [];
-        for (let i = 0; i < numVertices; i++) {
-            const angle = (i / numVertices) * Math.PI * 2;
-            const vx = x + Math.cos(angle) * radius;
-            const vy = y + Math.sin(angle) * radius;
-            vertices.push({ x: vx, y: vy });
-        }
-    
-        polygons.push({
-            x: x,
-            y: y,
-            radius: radius,
-            vertices: vertices,
-            speed: 0.5 + Math.random() * 2, // Random speed for floating
-            direction: Math.random() * Math.PI * 2, // Random initial direction
-            color: randomColor(),  // Initial random color
-            colorTarget: randomColor() // Target color for slow transition
-        });
-    }
-    
-    // Create polygons
-    for (let i = 0; i < numPolygons; i++) {
-        const radius = 50 + Math.random() * 100; // Random radius size
-        const numVertices = 6 + Math.floor(Math.random() * 6); // Random number of vertices
-        createPolygon(
-            Math.random() * canvas.width,
-            Math.random() * canvas.height,
-            radius,
-            numVertices
-        );
-    }
-    
-    // Function to interpolate color slowly
-    function interpolateColor(color1, color2, factor) {
-        return {
-            r: Math.floor(color1.r + (color2.r - color1.r) * factor),
-            g: Math.floor(color1.g + (color2.g - color1.g) * factor),
-            b: Math.floor(color1.b + (color2.b - color1.b) * factor),
-            a: color1.a + (color2.a - color1.a) * factor
-        };
-    }
-    
-    // Draw the polygons on the canvas
-    function drawPolygon(polygon) {
-        const color = interpolateColor(polygon.color, polygon.colorTarget, 0.01);  // Adjust 0.01 for slower transitions
-    
-        ctx.beginPath();
-        polygon.vertices.forEach((vertex, i) => {
-            if (i === 0) {
-                ctx.moveTo(vertex.x, vertex.y);
-            } else {
-                ctx.lineTo(vertex.x, vertex.y);
-            }
-        });
-        ctx.closePath();
-    
-        // Set the fill color
-        ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
-        ctx.fill();  // Fill the polygon with the color
-    
-        // Set the stroke color (for outline)
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`; // Outline color
-        ctx.stroke();  // Outline the polygon
-    }
-    
-    // Move polygons to simulate floating effect
-    function movePolygon(polygon) {
-        polygon.vertices.forEach(vertex => {
-            const angle = Math.atan2(vertex.y - polygon.y, vertex.x - polygon.x);
-            const force = 0.05;
-            vertex.x += Math.cos(angle) * force;
-            vertex.y += Math.sin(angle) * force;
-        });
-    }
-    
-    // Update polygons based on mouse interaction
-    function updatePolygons() {
-        polygons.forEach(polygon => {
-            // Move polygon vertices to create floating effect
-            movePolygon(polygon);
-    
-            // React to mouse position
-            polygon.vertices.forEach(vertex => {
-                const dx = vertex.x - mouseX;
-                const dy = vertex.y - mouseY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < 100) {
-                    const strength = (100 - distance) / 100;
-                    vertex.x += dx * strength * 0.2;
-                    vertex.y += dy * strength * 0.2;
-                }
+            
+            // Initialize indicator position
+            updateIndicatorPosition(activeNavLink);
+            
+            // Handle navigation clicks
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('data-target');
+                    const targetPage = document.getElementById(targetId);
+                    
+                    if (targetPage && targetPage !== activePage) {
+                        // Save current scroll position
+                        scrollPositions[activePage.id] = window.scrollY || activePage.scrollTop;
+                        
+                        // Update active states
+                        activePage.classList.remove('active');
+                        activeNavLink.classList.remove('active');
+                        
+                        targetPage.classList.add('active');
+                        this.classList.add('active');
+                        
+                        // Update references
+                        activePage = targetPage;
+                        activeNavLink = this;
+                        
+                        // Update indicator position
+                        updateIndicatorPosition(this);
+                        
+                        // Restore scroll position or scroll to top
+                        if (scrollPositions[targetPage.id]) {
+                            window.scrollTo(0, scrollPositions[targetPage.id]);
+                        } else {
+                            window.scrollTo(0, 0);
+                        }
+                    }
+                });
             });
-    
-            // Change the target color randomly
-            if (Math.random() < 0.01) { // 1% chance to change color target each frame
-                polygon.colorTarget = randomColor();  // Set new random color target
-            }
-        });
-    }
-    
-    // Mouse move event listener to track mouse position
-    canvas.addEventListener('mousemove', (event) => {
-        mouseX = event.clientX;
-        mouseY = event.clientY;
-    });
-    
-    // Animation loop to update and draw the polygons
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-    
-        updatePolygons(); // Update polygons based on mouse interaction
-    
-        polygons.forEach(polygon => {
-            drawPolygon(polygon); // Draw each polygon (with fill and outline)
-        });
-    
-        requestAnimationFrame(animate); // Request next frame
-    }
-    
-    animate(); // Start animation loop
-</script>
-
-    
-    <script>
-        let cursorX = 0;
-        let cursorY = 0;
-        let lastX = 0;
-        let lastY = 0;
-        let lastTime = Date.now();
-        
-        // Function to handle mouse movement
-        function onMouseMove(event) {
-            if (event.type === 'mousemove') {
-                cursorX = event.clientX;
-                cursorY = event.clientY;
-            } else if (event.type === 'touchmove') {
-                // Get the touch position for mobile devices
-                cursorX = event.touches[0].clientX;
-                cursorY = event.touches[0].clientY;
-            }
-
-            // Calculate speed of cursor/touch movement
-            let currentTime = Date.now();
-            let speed = Math.sqrt((cursorX - lastX) ** 2 + (cursorY - lastY) ** 2) / (currentTime - lastTime) * 1000;
             
-            // Create fewer particles for smaller movements
-            if (speed > 30) {  // Lowered threshold for fewer particles
-                createSparks(cursorX, cursorY, speed);  // Speed will influence particle behavior
-            }
-            
-            lastX = cursorX;
-            lastY = cursorY;
-            lastTime = currentTime;
-        }
-
-        // Listen for mousemove (desktop) and touchmove (mobile)
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('touchmove', onMouseMove);
-
-        // Create a burst of small white spark particles at the cursor position
-        function createSparks(x, y, speed) {
-            // Generate fewer particles for a more subtle effect (e.g., just 1-2 particles)
-            let numParticles = 1;  // Just one particle for a very subtle effect
-            for (let i = 0; i < numParticles; i++) {
-                const spark = document.createElement('div');
-                spark.classList.add('spark');
-                document.body.appendChild(spark);
-
-                // Keep the particles small (3px to 5px in size)
-                const size = 3 + Math.random() * 2;  // Particle size remains small
-                spark.style.width = `${size}px`;
-                spark.style.height = `${size}px`;
-
-                // Position the spark at the cursor location
-                spark.style.left = `${x - size / 2}px`;
-                spark.style.top = `${y - size / 2}px`;
-
-                // Add random offsets to simulate spread of sparks
-                const angle = Math.random() * Math.PI * 2; // Random direction
-                const speedFactor = Math.random() * 1 + 0.5; // Reduced speed factor for less distance
-                const velocityX = Math.cos(angle) * speedFactor;
-                const velocityY = Math.sin(angle) * speedFactor;
-
-                // Particle movement behavior
-                let particle = {
-                    element: spark,
-                    initialX: x,  // Initial position
-                    initialY: y,  // Initial position
-                    velocityX: velocityX,
-                    velocityY: velocityY,
-                    opacity: 1,
-                    size: size  // Store the initial size
-                };
-
-                animateParticle(particle);
-            }
-        }
-
-        // Continuously animate each particle, shrinking and fading it
-        function animateParticle(particle) {
-            let interval = setInterval(() => {
-                // Update the position of the spark based on its velocity
-                particle.element.style.left = parseFloat(particle.element.style.left) + particle.velocityX + 'px';
-                particle.element.style.top = parseFloat(particle.element.style.top) + particle.velocityY + 'px';
-
-                // Shrink and fade the particle
-                particle.size -= 0.05;  // Shrink the particle gradually
-                particle.opacity -= 0.01;  // Fade out the particle gradually
-
-                // Apply the new size and opacity to the particle
-                particle.element.style.width = `${particle.size}px`;
-                particle.element.style.height = `${particle.size}px`;
-                particle.element.style.opacity = particle.opacity;
-
-                // Remove the particle once it gets too small or disappears
-                if (particle.opacity <= 0 || particle.size <= 0) {
-                    clearInterval(interval);
-                    particle.element.remove();
+            // Handle initial hash in URL
+            if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+                const targetLink = document.querySelector(`.nav-link[data-target="${hash}"]`);
+                
+                if (targetLink) {
+                    targetLink.click();
                 }
-            }, 16);  // Update every ~16ms (about 60 FPS)
-        }
-    </script>
-
-<script>
-    // Texts you want to display
-    const texts = [
-        "Hello!",
-        "Need a website?",
-        "",
-        "Basic Landing Page $500",
-        "Standard Package $1000",
-        "How it works",
-        "About Me",
-        "Nice to meet you!",
-        "Any Questions?",
-        "Contact me!",
-    ];
-
-    // Delay times (in milliseconds) for each text
-    const delayTimes = [
-        0,        // 1 Hello!
-        2200,     // 2 What can I do for you?
-        1000,        // 3 These are my skills
-        500,     // 4 Portrait Drawings
-        500,        // 5 Website Development
-        1000,        // 6 Music Recording
-        1000,        // 7 About Me
-        2000,     // 8 Nice to meet you!
-        1000,        // 9 Contact Me!
-        2000,        // 9 Don't be shy! 😊
-
-
-    ];
-
-    // Function to simulate typing for each element
-    function typeText(elementId, text, delayTime) {
-        const typingElement = document.getElementById(elementId);
-        let index = 0;
-
-        function typingAnimation() {
-            if (index < text.length) {
-                typingElement.textContent += text[index];
-                index++;
-                setTimeout(typingAnimation, 60); // Adjust typing speed here
-            } else {
-                typingElement.classList.add("typed"); // Remove cursor after typing
             }
-        }
+            
+            // Smooth scroll for internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    if (this.classList.contains('nav-link')) return;
+                    
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
 
-        // Start the typing animation with the specified delay
-        setTimeout(typingAnimation, delayTime);
-    }
-
-    // Create an intersection observer to trigger the typing effect when an element is in view
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // When the element is in the viewport, start the typing effect
-                const elementId = entry.target.id;
-                const index = parseInt(elementId.replace('typing', '')) - 1; // Get the index for texts array
-                typeText(elementId, texts[index], delayTimes[index]); // Pass delay time for each text
-
-                // Stop observing the element once it's typed
-                observer.unobserve(entry.target);
-            }
+            // Update indicator on resize
+            window.addEventListener('resize', function() {
+                updateIndicatorPosition(document.querySelector('.nav-link.active'));
+            });
         });
-    }, {
-        threshold: 0.5 // Trigger when 50% of the element is in view
-    });
-
-    // Observe the typing elements
-    document.querySelectorAll('.typing-effect').forEach(element => {
-        observer.observe(element);
-    });
-</script>
-
-<script>
-    // Get the accordion button and the content
-    var accordion = document.querySelector(".accordion");
-    var content = document.querySelector(".accordion-content");
-    var closeButton = document.querySelector(".close-btn");
-
-    // Add event listener for the accordion button to toggle open and close
-    accordion.addEventListener("click", function() {
-      // Toggle the active class on this button to change its text
-      this.classList.toggle("active");
-
-      // If content is already open, collapse it
-      if (content.style.height && content.style.height !== "0px") {
-        content.style.height = "0";  // Collapse
-        content.style.opacity = 0;   // Fade out
-      } else {
-        // Otherwise, expand the content
-        content.style.height = content.scrollHeight + "px";  // Expand to content height
-        content.style.opacity = 1;  // Fade in
-
-      }
-    });
-
-    // Close button functionality (close the content)
-    closeButton.addEventListener("click", function() {
-      content.style.height = "0";  // Collapse
-      content.style.opacity = 0;   // Fade out
-      accordion.classList.remove("active");  // Optionally remove the active state from the button
-      
-    });
-  </script>
-
-<script>
-    // Close the modal if the user clicks anywhere outside the modal content
-    window.onclick = function(event) {
-        if (event.target == document.getElementById('myModal')) {
-            document.getElementById('myModal').style.display = 'none';
-        }
-    }
-</script>
+    </script>
 </body>
 </html>
