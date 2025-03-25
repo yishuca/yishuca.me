@@ -72,32 +72,52 @@
         }
 
         .logo {
-            font-family: 'Poppins', sans-serif; /* Changed to Poppins */
+            font-family: 'Poppins', sans-serif;
             font-size: 4rem;
-            font-weight: 500; /* Medium weight for sleekness */
+            font-weight: 500;
             color: white;
             margin-bottom: 1rem;
             text-shadow: var(--text-glow);
             letter-spacing: 1px;
+            position: relative;
+            animation: flicker 1.5s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow:
+                    0 0 4px #fff,
+                    0 0 11px #fff,
+                    0 0 19px #fff,
+                    0 0 40px var(--neon-primary),
+                    0 0 80px var(--neon-primary),
+                    0 0 90px var(--neon-primary),
+                    0 0 100px var(--neon-primary),
+                    0 0 150px var(--neon-primary);
+            }
+            20%, 24%, 55% {        
+                text-shadow: none;
+            }
         }
 
         .hero-content h1 {
-            font-size: 3.5rem;
+            font-size: 2.8rem; /* Smaller size */
             margin-bottom: 1rem;
             color: var(--light);
-            font-weight: 500; /* Medium weight */
-            letter-spacing: 1px;
+            font-weight: 500;
+            letter-spacing: 8px; /* Increased letter spacing */
             text-transform: uppercase;
             font-family: 'Poppins', sans-serif;
+            margin-left: 8px; /* Compensate for letter spacing */
         }
 
         .hero-content h2 {
             font-size: 1.8rem;
-            font-weight: 400; /* Regular weight */
+            font-weight: 400;
             margin-bottom: 1.5rem;
             color: var(--neon-primary);
             font-family: 'Poppins', sans-serif;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .tagline {
@@ -108,6 +128,7 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
+        /* Rest of your CSS remains the same */
         .btn {
             display: inline-block;
             padding: 0.8rem 1.8rem;
@@ -116,7 +137,7 @@
             border: none;
             border-radius: 30px;
             text-decoration: none;
-            font-weight: 600; /* Semi-bold */
+            font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
             box-shadow: var(--shadow);
@@ -141,15 +162,6 @@
             color: var(--darker);
         }
 
-        /* Section Headings - Made lighter */
-        .services h3,
-        .portfolio-section h2,
-        .pricing-section h2,
-        .contact-info h2 {
-            font-weight: 500 !important; /* Medium weight instead of bold */
-        }
-
-        /* Rest of your CSS remains the same */
         .hero-image {
             position: relative;
             width: 100%;
@@ -203,6 +215,7 @@
             display: inline-block;
             color: var(--neon-primary);
             font-family: 'Poppins', sans-serif;
+            font-weight: 500;
         }
 
         .services h3::after {
@@ -264,6 +277,7 @@
             position: relative;
             color: var(--neon-primary);
             font-family: 'Poppins', sans-serif;
+            font-weight: 500;
         }
 
         .portfolio-section h2::after {
@@ -345,6 +359,7 @@
             margin-bottom: 1rem;
             color: var(--neon-primary);
             font-family: 'Poppins', sans-serif;
+            font-weight: 500;
         }
 
         .subtitle {
@@ -397,7 +412,7 @@
 
         .price {
             font-size: 2.5rem;
-            font-weight: 500; /* Medium instead of bold */
+            font-weight: 500;
             margin-bottom: 1.5rem;
             color: var(--neon-primary);
         }
@@ -440,6 +455,7 @@
             margin-bottom: 1.5rem;
             color: var(--neon-primary);
             font-family: 'Poppins', sans-serif;
+            font-weight: 500;
         }
 
         .contact-info p {
@@ -570,7 +586,8 @@
 
         @media (max-width: 768px) {
             .hero-content h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
+                letter-spacing: 4px;
             }
             
             .hero-content h2 {
@@ -609,7 +626,8 @@
             }
             
             .hero-content h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+                letter-spacing: 3px;
             }
             
             .page {
@@ -630,7 +648,7 @@
             <header class="hero">
                 <div class="hero-content">
                     <div class="logo">[=]</div>
-                    <h1>Yishuca Designs</h1>
+                    <h1>YISHUCA DESIGNS</h1>
                     <h2>Web Design & Development</h2>
                     <p class="tagline">Creating immersive digital experiences with clean code and thoughtful design</p>
                 </div>
