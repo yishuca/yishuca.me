@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
     <title>Yishuca Designs | Web Development</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -217,10 +217,12 @@
 
         .portfolio-overlay .btn:hover {
             background: rgba(0, 247, 255, 0.4);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.5);
         }
 
         .btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.05);
             box-shadow: var(--shadow-lg);
             background-color: white;
             color: var(--darker);
@@ -302,8 +304,8 @@
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 247, 255, 0.3);
             border-color: var(--neon-secondary);
         }
 
@@ -311,6 +313,12 @@
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
             color: var(--neon-primary);
+            transition: var(--transition);
+        }
+
+        .service-card:hover i {
+            transform: scale(1.2);
+            color: var(--neon-secondary);
         }
 
         .service-card h4 {
@@ -444,10 +452,19 @@
             border: 1px solid var(--neon-primary);
         }
 
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 247, 255, 0.3);
+        }
+
         .pricing-card.featured {
             transform: scale(1.05);
             background: rgba(26, 26, 26, 0.9);
             border: 1px solid var(--neon-secondary);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.08);
         }
 
         .popular-badge {
@@ -533,6 +550,12 @@
             font-size: 1.5rem;
             margin-right: 1rem;
             color: var(--neon-primary);
+            transition: var(--transition);
+        }
+
+        .contact-method:hover i {
+            transform: scale(1.2);
+            color: var(--neon-secondary);
         }
 
         .contact-method h4 {
@@ -559,6 +582,12 @@
             padding: 2rem;
             border-radius: 15px;
             border: 1px solid var(--border-gray);
+            transition: var(--transition);
+        }
+
+        .contact-form:hover {
+            border-color: var(--neon-primary);
+            box-shadow: var(--shadow);
         }
 
         .form-group {
@@ -582,6 +611,7 @@
             outline: none;
             border-color: var(--neon-secondary);
             background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255, 0, 247, 0.2);
         }
 
         .form-group textarea {
@@ -597,7 +627,7 @@
             background: var(--darker);
             display: flex;
             justify-content: space-around;
-            padding: 0.5rem 0 0.8rem; /* Original padding */
+            padding: 0.5rem 0 0.8rem;
             z-index: 1000;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
         }
@@ -615,17 +645,27 @@
             transition: var(--transition);
             flex: 1;
             text-align: center;
-            margin-bottom: -10px; /* Added to push icons closer to bottom */
+            margin-bottom: -10px;
         }
 
         .nav-link i {
             font-size: 1.2rem;
             margin-bottom: 0.3rem;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover i {
+            transform: scale(1.2);
+            color: var(--neon-secondary);
         }
 
         .nav-link.active {
             color: var(--neon-primary);
             transform: translateY(-5px);
+        }
+
+        .nav-link.active i {
+            transform: scale(1.3);
         }
 
         .nav-link span {
@@ -661,6 +701,10 @@
             
             .pricing-card.featured {
                 transform: scale(1);
+            }
+            
+            .pricing-card.featured:hover {
+                transform: scale(1.03);
             }
             
             .portfolio-grid {
@@ -708,6 +752,16 @@
                 width: 300px;
                 height: 300px;
                 filter: blur(40px);
+            }
+
+            .contact-method {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-method i {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
             }
         }
     </style>
@@ -763,7 +817,7 @@
                 <h2>Recent Projects</h2>
                 <div class="portfolio-grid">
                     <div class="portfolio-item">
-                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');" aria-label="Nexus Financial Dashboard Screenshot">
                             <div class="portfolio-overlay">
                                 <h3>Nexus Financial</h3>
                                 <p>Fintech Dashboard UI</p>
@@ -772,7 +826,7 @@
                         </div>
                     </div>
                     <div class="portfolio-item">
-                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80');">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80');" aria-label="Bloom Cosmetics E-commerce Website">
                             <div class="portfolio-overlay">
                                 <h3>Bloom Cosmetics</h3>
                                 <p>E-commerce Website</p>
@@ -781,7 +835,7 @@
                         </div>
                     </div>
                     <div class="portfolio-item">
-                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');" aria-label="Urban Bikes Brand Website">
                             <div class="portfolio-overlay">
                                 <h3>Urban Bikes</h3>
                                 <p>Brand Identity & Website</p>
@@ -790,7 +844,7 @@
                         </div>
                     </div>
                     <div class="portfolio-item">
-                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');" aria-label="Zen Space Meditation App Interface">
                             <div class="portfolio-overlay">
                                 <h3>Zen Space</h3>
                                 <p>Meditation App UI</p>
@@ -872,7 +926,7 @@
                                 <i class="fas fa-phone-alt"></i>
                                 <div>
                                     <h4>Phone</h4>
-                                    <p><a href="tel:9869990621">(986) 999-0621</a></p>
+                                    <p><a href="tel:+19869990621">(986) 999-0621</a></p>
                                 </div>
                             </div>
                             <div class="contact-method">
@@ -885,18 +939,18 @@
                         </div>
                     </div>
                     
-                    <form class="contact-form">
+                    <form class="contact-form" id="contactForm">
                         <div class="form-group">
-                            <input type="text" placeholder="Your Name" required>
+                            <input type="text" placeholder="Your Name" required aria-label="Your Name">
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="Your Email" required>
+                            <input type="email" placeholder="Your Email" required aria-label="Your Email">
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Subject">
+                            <input type="text" placeholder="Subject" aria-label="Message Subject">
                         </div>
                         <div class="form-group">
-                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                            <textarea placeholder="Your Message" rows="5" required aria-label="Your Message"></textarea>
                         </div>
                         <button type="submit" class="btn">Send Message</button>
                     </form>
@@ -906,21 +960,21 @@
     </div>
 
     <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
+    <nav class="bottom-nav" aria-label="Main navigation">
         <div class="nav-indicator"></div>
-        <a href="#home" class="nav-link active" data-target="home">
+        <a href="#home" class="nav-link active" data-target="home" aria-label="Home">
             <i class="fas fa-home"></i>
             <span>Home</span>
         </a>
-        <a href="#portfolio" class="nav-link" data-target="portfolio">
+        <a href="#portfolio" class="nav-link" data-target="portfolio" aria-label="Portfolio">
             <i class="fas fa-briefcase"></i>
             <span>Portfolio</span>
         </a>
-        <a href="#pricing" class="nav-link" data-target="pricing">
+        <a href="#pricing" class="nav-link" data-target="pricing" aria-label="Pricing">
             <i class="fas fa-tags"></i>
             <span>Pricing</span>
         </a>
-        <a href="#contact" class="nav-link" data-target="contact">
+        <a href="#contact" class="nav-link" data-target="contact" aria-label="Contact">
             <i class="fas fa-envelope"></i>
             <span>Contact</span>
         </a>
@@ -1086,6 +1140,17 @@
             window.addEventListener('resize', function() {
                 updateIndicatorPosition(document.querySelector('.nav-link.active'));
             });
+
+            // Form submission handling
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Here you would normally send the form data to a server
+                    alert('Thank you for your message! I will get back to you soon.');
+                    this.reset();
+                });
+            }
         });
     </script>
 </body>
