@@ -212,7 +212,7 @@
             font-size: 1.8rem;
             font-weight: 400;
             margin-bottom: 1.5rem;
-            color: var(--neon-primary);
+            color: var(--light); /* Changed to white */
             font-family: 'Poppins', sans-serif;
             letter-spacing: 1px;
             text-shadow: 
@@ -385,6 +385,8 @@
                 0 0 30px var(--neon-primary),
                 0 0 40px var(--neon-primary);
             letter-spacing: 1px;
+            word-break: keep-all; /* Prevent word breaking */
+            white-space: nowrap; /* Prevent wrapping by default */
         }
 
         /* Flicker effect for the 'e' in Projects */
@@ -600,6 +602,10 @@
             color: var(--light-gray);
         }
 
+        .contact-methods {
+            width: 100%;
+        }
+
         .contact-method {
             display: flex;
             align-items: center;
@@ -611,10 +617,13 @@
             margin-right: 1rem;
             color: var(--neon-primary);
             transition: var(--transition);
+            min-width: 30px; /* Ensure consistent width */
+            text-align: center; /* Center icons */
         }
 
         .contact-method:hover i {
             transform: scale(1.2);
+            color: var(--neon-secondary); /* Pink on hover */
         }
 
         .contact-method h4 {
@@ -771,6 +780,12 @@
                 grid-template-columns: 1fr;
             }
             
+            .portfolio-section h2 {
+                white-space: normal; /* Allow wrapping on smaller screens */
+                word-break: normal;
+                font-size: 2rem;
+            }
+            
             .nav-link i {
                 font-size: 1.5rem;
                 margin-bottom: 0.3rem;
@@ -787,6 +802,16 @@
             .gradient-orb {
                 width: 400px;
                 height: 400px;
+            }
+
+            .contact-method {
+                flex-direction: row; /* Keep horizontal layout on medium screens */
+                text-align: left;
+            }
+
+            .contact-method i {
+                margin-right: 1rem;
+                margin-bottom: 0;
             }
         }
 
