@@ -145,10 +145,10 @@
             text-shadow: var(--text-glow);
             letter-spacing: 1px;
             position: relative;
-            animation: flicker 3s infinite alternate;
+            animation: logoFlicker 3s infinite alternate;
         }
 
-        @keyframes flicker {
+        @keyframes logoFlicker {
             0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 72%, 100% {
                 text-shadow:
                     0 0 4px #fff,
@@ -180,24 +180,30 @@
                 0 0 20px var(--neon-primary),
                 0 0 30px var(--neon-primary),
                 0 0 40px var(--neon-primary);
-            animation: textGlow 2s ease-in-out infinite alternate;
         }
 
-        @keyframes textGlow {
-            from {
+        .sign-flicker {
+            display: inline-block;
+            animation: signFlicker 2.5s infinite alternate;
+        }
+
+        @keyframes signFlicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 72%, 100% {
+                opacity: 1;
                 text-shadow: 
                     0 0 5px #fff,
                     0 0 10px #fff,
                     0 0 20px var(--neon-primary),
-                    0 0 30px var(--neon-primary);
-            }
-            to {
-                text-shadow: 
-                    0 0 10px #fff,
-                    0 0 20px #fff,
                     0 0 30px var(--neon-primary),
-                    0 0 40px var(--neon-primary),
-                    0 0 50px var(--neon-primary);
+                    0 0 40px var(--neon-primary);
+            }
+            20%, 21.999%, 63%, 63.999%, 65%, 71.999% {        
+                opacity: 0.7;
+                text-shadow: 
+                    0 0 2px #fff,
+                    0 0 5px #fff,
+                    0 0 10px var(--neon-primary),
+                    0 0 15px var(--neon-primary);
             }
         }
 
@@ -583,7 +589,6 @@
 
         .contact-method:hover i {
             transform: scale(1.2);
-            color: var(--neon-secondary);
         }
 
         .contact-method h4 {
@@ -680,11 +685,11 @@
             font-size: 1.2rem;
             margin-bottom: 0.3rem;
             transition: var(--transition);
+            color: var(--gray);
         }
 
         .nav-link:hover i {
             transform: scale(1.2);
-            color: var(--neon-secondary);
         }
 
         .nav-link.active {
@@ -694,6 +699,7 @@
 
         .nav-link.active i {
             transform: scale(1.3);
+            color: var(--neon-primary);
         }
 
         .nav-link span {
@@ -811,7 +817,7 @@
             <header class="hero">
                 <div class="hero-content">
                     <div class="logo">[=]</div>
-                    <h1>YISHUCA DESIGNS</h1>
+                    <h1>YISHUCA DE<span class="sign-flicker">SIGN</span>S</h1>
                     <h2>Web Development</h2>
                     <p class="tagline">Creating immersive digital experiences with clean code and thoughtful design</p>
                 </div>
