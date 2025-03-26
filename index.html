@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yishuca Designs | Web Development</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50%' y='50%' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='white'>[=]</text></svg>">    <style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50%' y='50%' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='white'>[=]</text></svg>">
+    <style>
         :root {
             --neon-primary: #00f7ff;  /* Bright cyan */
             --neon-secondary: #ff00f7; /* Bright pink */
@@ -35,14 +37,77 @@
             color: var(--light);
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Shooting stars with parallax effect */
+        .shooting-star-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: -1;
+            animation: shooting linear;
+            transform-origin: left center;
+        }
+
+        @keyframes shooting {
+            0% {
+                transform: translateX(0) translateY(0) rotate(var(--angle));
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(var(--distance)) translateY(calc(var(--distance) * 0.5)) rotate(var(--angle));
+                opacity: 0;
+            }
+        }
+
+        /* Parallax layers */
+        .star-layer-1 {
+            /* Fastest moving (closest) stars */
+            animation-duration: 1.5s;
+            transform: translateZ(-100px);
+        }
+
+        .star-layer-2 {
+            /* Medium speed stars */
+            animation-duration: 3s;
+            transform: translateZ(-200px);
+        }
+
+        .star-layer-3 {
+            /* Slowest moving (farthest) stars */
+            animation-duration: 4.5s;
+            transform: translateZ(-300px);
         }
 
         .page-container {
             position: relative;
             min-height: 100vh;
             padding-bottom: 80px;
+            overflow: hidden;
         }
 
+        /* Rest of your existing CSS remains exactly the same */
         .page {
             position: absolute;
             top: 0;
@@ -69,6 +134,7 @@
             padding: 4rem 1rem;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
         }
 
         .logo {
@@ -101,14 +167,14 @@
         }
 
         .hero-content h1 {
-            font-size: 2.8rem; /* Smaller size */
+            font-size: 2.8rem;
             margin-bottom: 1rem;
             color: var(--light);
             font-weight: 500;
-            letter-spacing: 8px; /* Increased letter spacing */
+            letter-spacing: 8px;
             text-transform: uppercase;
             font-family: 'Poppins', sans-serif;
-            margin-left: 8px; /* Compensate for letter spacing */
+            margin-left: 8px;
         }
 
         .hero-content h2 {
@@ -128,7 +194,6 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
-        /* Rest of your CSS remains the same */
         .btn {
             display: inline-block;
             padding: 0.8rem 1.8rem;
@@ -645,6 +710,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Shooting stars container -->
+    <div class="shooting-star-container" id="starContainer"></div>
+
     <div class="page-container">
         <!-- Home Page (default visible) -->
         <div class="page active" id="home">
@@ -855,6 +923,61 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Create subtle shooting stars with parallax effect
+            const starContainer = document.getElementById('starContainer');
+            const starCount = 15; // Increased number of stars
+            
+            function createShootingStars() {
+                // Clear existing stars
+                starContainer.innerHTML = '';
+                
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'shooting-star';
+                    
+                    // Random layer (1-3 for parallax effect)
+                    const layer = Math.floor(Math.random() * 3) + 1;
+                    star.classList.add(`star-layer-${layer}`);
+                    
+                    // Random start position (distributed across screen)
+                    const startX = Math.random() * window.innerWidth;
+                    const startY = Math.random() * window.innerHeight;
+                    
+                    // Random angle (30-60 degrees for diagonal movement)
+                    const angle = 30 + Math.random() * 30;
+                    
+                    // Distance based on layer (closer = faster = longer distance)
+                    const distance = 500 + (layer * 300);
+                    
+                    // Random delay (0-10s)
+                    const delay = Math.random() * 10;
+                    
+                    // Apply properties
+                    star.style.setProperty('--angle', `${angle}deg`);
+                    star.style.setProperty('--distance', `${distance}px`);
+                    star.style.left = `${startX}px`;
+                    star.style.top = `${startY}px`;
+                    star.style.animationDelay = `${delay}s`;
+                    
+                    // Random size (1-3px)
+                    const size = 1 + Math.random() * 2;
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    
+                    // Random opacity (0.5-1)
+                    const opacity = 0.5 + Math.random() * 0.5;
+                    star.style.opacity = opacity;
+                    
+                    starContainer.appendChild(star);
+                }
+            }
+            
+            // Create initial stars
+            createShootingStars();
+            
+            // Recreate stars periodically (every 15 seconds)
+            setInterval(createShootingStars, 15000);
+
             // Page navigation
             const navLinks = document.querySelectorAll('.nav-link');
             const pages = document.querySelectorAll('.page');
