@@ -247,8 +247,6 @@
                 rgba(255, 0, 247, 0.1) 50%, 
                 rgba(0, 0, 0, 0) 70%);
             filter: blur(60px);
-            will-change: transform;
-            transition: transform 0.1s linear;
         }
 
         .gradient-orb:nth-child(1) {
@@ -599,7 +597,7 @@
             background: var(--darker);
             display: flex;
             justify-content: space-around;
-            padding: 0.8rem 0 1rem;
+            padding: 0.5rem 0 0.8rem; /* Original padding */
             z-index: 1000;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
         }
@@ -617,6 +615,7 @@
             transition: var(--transition);
             flex: 1;
             text-align: center;
+            margin-bottom: -10px; /* Added to push icons closer to bottom */
         }
 
         .nav-link i {
@@ -733,7 +732,6 @@
                     <h1>YISHUCA DESIGNS</h1>
                     <h2>Web Development</h2>
                     <p class="tagline">Creating immersive digital experiences with clean code and thoughtful design</p>
-                    <a href="#contact" class="btn nav-link" data-target="contact">Get in Touch</a>
                 </div>
             </header>
 
@@ -759,7 +757,6 @@
             </section>
         </div>
 
-        <!-- Rest of your page content remains the same -->
         <!-- Portfolio Page -->
         <div class="page" id="portfolio">
             <section class="portfolio-section">
@@ -985,25 +982,6 @@
             
             // Recreate stars periodically (every 15 seconds)
             setInterval(createShootingStars, 15000);
-
-            // Animate gradient orbs on scroll
-            const orbs = document.querySelectorAll('.gradient-orb');
-            
-            function animateOrbs() {
-                const scrollY = window.scrollY;
-                const scrollFactor = scrollY * 0.3; // Adjust this value for more/less movement
-                
-                // First orb moves up and to the right
-                orbs[0].style.transform = `translate(${scrollFactor * 0.5}px, ${-scrollFactor * 0.7}px)`;
-                
-                // Second orb moves down and to the left
-                orbs[1].style.transform = `translate(${-scrollFactor * 0.3}px, ${scrollFactor * 0.5}px)`;
-                
-                requestAnimationFrame(animateOrbs);
-            }
-            
-            // Start animation
-            animateOrbs();
 
             // Page navigation
             const navLinks = document.querySelectorAll('.nav-link');
