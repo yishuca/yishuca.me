@@ -80,11 +80,11 @@
             text-shadow: var(--text-glow);
             letter-spacing: 1px;
             position: relative;
-            animation: flicker 1.5s infinite alternate;
+            animation: flicker 3s infinite alternate;
         }
 
         @keyframes flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 72%, 100% {
                 text-shadow:
                     0 0 4px #fff,
                     0 0 11px #fff,
@@ -95,7 +95,7 @@
                     0 0 100px var(--neon-primary),
                     0 0 150px var(--neon-primary);
             }
-            20%, 24%, 55% {        
+            20%, 21.999%, 63%, 63.999%, 65%, 71.999% {        
                 text-shadow: none;
             }
         }
@@ -275,9 +275,12 @@
             text-align: center;
             margin-bottom: 3rem;
             position: relative;
-            color: var(--neon-primary);
+            color: white; /* Changed to white */
             font-family: 'Poppins', sans-serif;
             font-weight: 500;
+            animation: flicker 3s infinite alternate;
+            text-shadow: var(--text-glow);
+            letter-spacing: 1px;
         }
 
         .portfolio-section h2::after {
