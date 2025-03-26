@@ -107,7 +107,6 @@
             overflow: hidden;
         }
 
-        /* Rest of your existing CSS remains exactly the same */
         .page {
             position: absolute;
             top: 0;
@@ -227,44 +226,39 @@
             color: var(--darker);
         }
 
-        .hero-image {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            height: 300px;
-            margin-top: 3rem;
-        }
-
-        .design-element {
+        /* New animated gradient background element */
+        .hero-background {
             position: absolute;
-            border-radius: 20px;
-            background: linear-gradient(45deg, var(--neon-primary), var(--neon-secondary));
-            opacity: 0.6;
-            filter: blur(10px);
-        }
-
-        .design-element:nth-child(1) {
-            width: 200px;
-            height: 200px;
             top: 0;
             left: 0;
-            transform: rotate(15deg);
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
         }
 
-        .design-element:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            bottom: 0;
-            right: 50px;
-            transform: rotate(-10deg);
+        .gradient-orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(0, 247, 255, 0.15) 0%, 
+                rgba(255, 0, 247, 0.1) 50%, 
+                rgba(0, 0, 0, 0) 70%);
+            filter: blur(60px);
+            will-change: transform;
+            transition: transform 0.1s linear;
         }
 
-        .design-element:nth-child(3) {
-            width: 100px;
-            height: 100px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
+        .gradient-orb:nth-child(1) {
+            top: -200px;
+            left: -200px;
+        }
+
+        .gradient-orb:nth-child(2) {
+            bottom: -200px;
+            right: -200px;
         }
 
         .services {
@@ -686,6 +680,11 @@
             .nav-indicator {
                 width: 40px;
             }
+
+            .gradient-orb {
+                width: 400px;
+                height: 400px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -705,6 +704,12 @@
             .bottom-nav {
                 padding: 0.5rem 0 0.8rem;
             }
+
+            .gradient-orb {
+                width: 300px;
+                height: 300px;
+                filter: blur(40px);
+            }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -712,6 +717,12 @@
 <body>
     <!-- Shooting stars container -->
     <div class="shooting-star-container" id="starContainer"></div>
+
+    <!-- New animated background element -->
+    <div class="hero-background">
+        <div class="gradient-orb"></div>
+        <div class="gradient-orb"></div>
+    </div>
 
     <div class="page-container">
         <!-- Home Page (default visible) -->
@@ -722,11 +733,7 @@
                     <h1>YISHUCA DESIGNS</h1>
                     <h2>Web Development</h2>
                     <p class="tagline">Creating immersive digital experiences with clean code and thoughtful design</p>
-                </div>
-                <div class="hero-image">
-                    <div class="design-element"></div>
-                    <div class="design-element"></div>
-                    <div class="design-element"></div>
+                    <a href="#contact" class="btn nav-link" data-target="contact">Get in Touch</a>
                 </div>
             </header>
 
@@ -752,6 +759,7 @@
             </section>
         </div>
 
+        <!-- Rest of your page content remains the same -->
         <!-- Portfolio Page -->
         <div class="page" id="portfolio">
             <section class="portfolio-section">
@@ -977,6 +985,25 @@
             
             // Recreate stars periodically (every 15 seconds)
             setInterval(createShootingStars, 15000);
+
+            // Animate gradient orbs on scroll
+            const orbs = document.querySelectorAll('.gradient-orb');
+            
+            function animateOrbs() {
+                const scrollY = window.scrollY;
+                const scrollFactor = scrollY * 0.3; // Adjust this value for more/less movement
+                
+                // First orb moves up and to the right
+                orbs[0].style.transform = `translate(${scrollFactor * 0.5}px, ${-scrollFactor * 0.7}px)`;
+                
+                // Second orb moves down and to the left
+                orbs[1].style.transform = `translate(${-scrollFactor * 0.3}px, ${scrollFactor * 0.5}px)`;
+                
+                requestAnimationFrame(animateOrbs);
+            }
+            
+            // Start animation
+            animateOrbs();
 
             // Page navigation
             const navLinks = document.querySelectorAll('.nav-link');
