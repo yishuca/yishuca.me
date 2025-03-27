@@ -73,78 +73,6 @@
         }
     </script>
     
-    <!-- Cookie Consent Banner CSS -->
-    <style>
-        #cookie-consent {
-            position: fixed;
-            bottom: 80px;
-            left: 0;
-            right: 0;
-            background: var(--darker);
-            color: var(--light);
-            padding: 1rem;
-            z-index: 1001;
-            display: none;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-            border-top: 1px solid var(--neon-primary);
-        }
-        
-        #cookie-consent.show {
-            display: block;
-        }
-        
-        .cookie-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .cookie-btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        #accept-cookies {
-            background: var(--neon-primary);
-            color: var(--darker);
-        }
-        
-        #decline-cookies {
-            background: transparent;
-            color: var(--light);
-            border: 1px solid var(--light);
-        }
-
-        /* Scroll indicator arrow */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--neon-primary);
-            font-size: 2rem;
-            animation: bounce 2s infinite;
-            cursor: pointer;
-            z-index: 10;
-            opacity: 0.8;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0) translateX(-50%);
-            }
-            40% {
-                transform: translateY(-10px) translateX(-50%);
-            }
-            60% {
-                transform: translateY(-5px) translateX(-50%);
-            }
-        }
-    </style>
-    
     <!-- Main CSS -->
     <style>
         :root {
@@ -177,6 +105,30 @@
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
+        }
+
+        /* Reduced motion styles */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            
+            .sign-flicker,
+            .flicker-e,
+            .shooting-star,
+            .gradient-orb {
+                animation: none !important;
+            }
+            
+            .service-card:hover,
+            .portfolio-item:hover .portfolio-image,
+            .pricing-card:hover,
+            .contact-form:hover {
+                transform: none !important;
+            }
         }
 
         /* Shooting stars with parallax effect */
@@ -274,11 +226,11 @@
             margin: 0 auto;
             position: relative;
             height: 90vh;
-            padding-bottom: 50px; /* Make space for the arrow */
+            padding-bottom: 50px;
         }
 
         .hero-content {
-            margin-top: -40px; /* Pull content up a bit */
+            margin-top: -40px;
         }
 
         .logo {
@@ -388,6 +340,11 @@
             font-family: 'Poppins', sans-serif;
         }
 
+        .btn:focus {
+            outline: 2px solid var(--neon-secondary);
+            outline-offset: 2px;
+        }
+
         .portfolio-overlay .btn {
             background: rgba(0, 247, 255, 0.2);
             backdrop-filter: blur(10px);
@@ -408,10 +365,10 @@
             color: var(--darker);
         }
 
-        /* Loading spinner for form submission */
         .btn.loading {
             position: relative;
             pointer-events: none;
+            color: transparent;
         }
         
         .btn.loading::after {
@@ -433,7 +390,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* New animated gradient background element */
+        /* Animated gradient background element */
         .hero-background {
             position: absolute;
             top: 0;
@@ -454,6 +411,12 @@
                 rgba(255, 0, 247, 0.1) 50%, 
                 rgba(0, 0, 0, 0) 70%);
             filter: blur(60px);
+            animation: orbFloat 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-20px) translateX(20px); }
         }
 
         .gradient-orb:nth-child(1) {
@@ -464,6 +427,7 @@
         .gradient-orb:nth-child(2) {
             bottom: -200px;
             right: -200px;
+            animation-delay: 2s;
         }
 
         .services {
@@ -887,19 +851,89 @@
             color: var(--neon-accent);
         }
 
-        /* Updated bottom navigation with frosty glass effect */
+        /* Cookie Consent Banner CSS */
+        #cookie-consent {
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            background: var(--darker);
+            color: var(--light);
+            padding: 1rem;
+            z-index: 1001;
+            display: none;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            border-top: 1px solid var(--neon-primary);
+        }
+        
+        #cookie-consent.show {
+            display: block;
+        }
+        
+        .cookie-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .cookie-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        #accept-cookies {
+            background: var(--neon-primary);
+            color: var(--darker);
+        }
+        
+        #decline-cookies {
+            background: transparent;
+            color: var(--light);
+            border: 1px solid var(--light);
+        }
+
+        /* Scroll indicator arrow */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--neon-primary);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0.8;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-5px) translateX(-50%);
+            }
+        }
+
+        /* Bottom navigation */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: rgba(13, 13, 13, 0.7); /* Semi-transparent dark background */
-            backdrop-filter: blur(5px); /* Frosty glass effect */
-            -webkit-backdrop-filter: blur(10px); /* For Safari */
+            background: rgba(13, 13, 13, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(10px);
             display: flex;
             justify-content: space-around;
             padding: 15px;
-            z-index: 1000;
+            z-index: 100;
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
         }
 
@@ -917,6 +951,11 @@
             flex: 1;
             text-align: center;
             margin-bottom: -10px;
+        }
+
+        .nav-link:focus {
+            outline: 2px solid var(--neon-primary);
+            outline-offset: 2px;
         }
 
         .nav-link i {
@@ -1041,7 +1080,6 @@
                 padding: 1rem;
             }
             
-
             .gradient-orb {
                 width: 300px;
                 height: 300px;
@@ -1078,7 +1116,7 @@
     <!-- Shooting stars container -->
     <div class="shooting-star-container" id="starContainer"></div>
 
-    <!-- New animated background element -->
+    <!-- Animated background element -->
     <div class="hero-background">
         <div class="gradient-orb"></div>
         <div class="gradient-orb"></div>
@@ -1103,7 +1141,7 @@
                     <h2>Web Development</h2>
                     <p class="tagline">Creating immersive digital experiences with clean code and thoughtful design</p>
                 </div>
-                <div class="scroll-indicator" id="scrollIndicator">
+                <div class="scroll-indicator" id="scrollIndicator" aria-hidden="true">
                     <i class="fas fa-chevron-down"></i>
                 </div>
             </header>
@@ -1131,12 +1169,12 @@
         </div>
 
         <!-- Portfolio Page -->
-        <div class="page" id="portfolio">
+        <div class="page" id="portfolio" tabindex="-1">
             <section class="portfolio-section">
                 <h2>Recent <span class="flicker-e">Pro</span>jects</h2>
                 <div class="portfolio-grid">
                     <div class="portfolio-item">
-                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1595747644932-abb68f85f419?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8dGF0dG9vJTIwc2hvcHxlbnwwfHwwfHx8MA%3D%3D');" aria-label="Nexus Financial Dashboard Screenshot">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1595747644932-abb68f85f419?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8dGF0dG9vJTIwc2hvcHxlbnwwfHwwfHx8MA%3D%3D');" aria-label="Ink & Soul Tattoo Studio Website" loading="lazy">
                             <div class="portfolio-overlay">
                                 <h3>Ink & Soul</h3>
                                 <p>Premium Tattoo Studio Website</p>
@@ -1145,7 +1183,7 @@
                         </div>
                     </div>
                     <div class="portfolio-item">
-                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1493859923015-f05bc8960fa0?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');" aria-label="Bloom Cosmetics E-commerce Website">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1493859923015-f05bc8960fa0?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');" aria-label="My Cozy Corner Blog Website" loading="lazy">
                             <div class="portfolio-overlay">
                                 <h3>My Cozy Corner</h3>
                                 <p>Personal Blog Website</p>
@@ -1154,7 +1192,7 @@
                         </div>
                     </div>
                     <div class="portfolio-item">
-                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');" aria-label="Urban Bikes Brand Website">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');" aria-label="Eternal Moments Wedding Photography Website" loading="lazy">
                             <div class="portfolio-overlay">
                                 <h3>Eternal Moments</h3>
                                 <p>Wedding Photography Website</p>
@@ -1163,7 +1201,7 @@
                         </div>
                     </div>
                     <div class="portfolio-item">
-                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2Fsb258ZW58MHx8MHx8fDA%3D');" aria-label="Zen Space Meditation App Interface">
+                        <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2Fsb258ZW58MHx8MHx8fDA%3D');" aria-label="Lumière Luxury Salon & Spa Website" loading="lazy">
                             <div class="portfolio-overlay">
                                 <h3>Lumière</h3>
                                 <p>Luxury Salon & Spa Website</p>
@@ -1176,7 +1214,7 @@
         </div>
 
         <!-- Pricing Page -->
-        <div class="page" id="pricing">
+        <div class="page" id="pricing" tabindex="-1">
             <section class="pricing-section">
                 <h3 style="font-size: xx-large;">Pricing Plans</h3>
                 <p class="subtitle">Flexible options for every project size</p>
@@ -1223,7 +1261,7 @@
         </div>
 
         <!-- Contact Page -->
-        <div class="page" id="contact">
+        <div class="page" id="contact" tabindex="-1">
             <section class="contact-section">
                 <div class="contact-container">
                     <div class="contact-info">
@@ -1320,7 +1358,7 @@
             apiKey: "AIzaSyCnTCeBO7NtRjIZm7YZFGsctf35VXLD0cU",
             authDomain: "yishucadesigns-fbdf1.firebaseapp.com",
             projectId: "yishucadesigns-fbdf1",
-            storageBucket: "yishucadesigns-fbdf1.firebasestorage.app",
+            storageBucket: "yishucadesigns-fbdf1.appspot.com", // Fixed storageBucket URL
             messagingSenderId: "1023416257305",
             appId: "1:1023416257305:web:645c91e979a32ea3e61388"
         };
@@ -1461,6 +1499,9 @@
                         } else {
                             window.scrollTo(0, 0);
                         }
+                        
+                        // Focus the page for keyboard navigation
+                        targetPage.focus();
                     }
                 });
             });
@@ -1573,8 +1614,6 @@
                         // Show success message
                         successMessage.style.display = 'block';
                         contactForm.reset();
-                        submitBtn.classList.remove('loading');
-                        submitBtn.disabled = false;
                         
                         // Hide message after 5 seconds
                         setTimeout(() => {
@@ -1584,6 +1623,7 @@
                     } catch (error) {
                         console.error("Error submitting form:", error);
                         alert("Error sending message. Please try again later.");
+                    } finally {
                         submitBtn.classList.remove('loading');
                         submitBtn.disabled = false;
                     }
