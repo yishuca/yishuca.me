@@ -886,12 +886,15 @@
             color: var(--neon-accent);
         }
 
+        /* Updated bottom navigation with frosty glass effect */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: var(--darker);
+            background: rgba(13, 13, 13, 0.7); /* Semi-transparent dark background */
+            backdrop-filter: blur(0px); /* Frosty glass effect */
+            -webkit-backdrop-filter: blur(10px); /* For Safari */
             display: flex;
             justify-content: space-around;
             padding: 15px;
