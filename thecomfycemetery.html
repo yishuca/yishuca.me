@@ -27,10 +27,51 @@
         body {
             font-family: 'Cormorant Garamond', serif;
             color: var(--text);
-            background-color: var(--darker);
             overflow-x: hidden;
             line-height: 1.8;
             font-weight: 300;
+        }
+
+        /* Fixed Video Background */
+        .video-background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .video-background {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.7), rgba(5, 5, 5, 0.9));
+            z-index: -1;
+        }
+
+        /* Main Content Container */
+        .content-container {
+            position: relative;
+            z-index: 1;
+            background-color: transparent;
+        }
+
+        /* Semi-transparent content sections */
+        section {
+            background-color: rgba(10, 10, 10, 0.50);
+            margin: 20px 0;
+            padding: 80px 0;
+            border-top: 1px solid var(--blood-red);
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -108,13 +149,13 @@
             z-index: 1000;
             padding: 25px 0;
             transition: all 0.3s ease;
+            background-color: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(5px);
         }
 
         header.scrolled {
-            background-color: rgba(10, 10, 10, 0.95);
-            padding: 15px 0;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(5px);
+            padding: 15px 0;
         }
 
         .header-container {
@@ -176,35 +217,14 @@
             cursor: pointer;
         }
 
-        /* Hero Section with Parallax Video */
+        /* Hero Section */
         .hero {
-            position: relative;
             height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            overflow: hidden;
-        }
-
-        .video-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.5), rgba(5, 5, 5, 0.9));
-            z-index: -1;
+            background-color: transparent;
         }
 
         .hero-content {
@@ -227,18 +247,7 @@
             margin-right: auto;
         }
 
-        /* Main Content */
-        main {
-            position: relative;
-            z-index: 1;
-            background-color: var(--darker);
-        }
-
         /* Blog Posts Section */
-        .blog-posts {
-            padding: 100px 0;
-        }
-
         .posts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -309,11 +318,6 @@
         }
 
         /* About Section */
-        .about {
-            padding: 100px 0;
-            background-color: rgba(15, 15, 15, 0.7);
-        }
-
         .about-content {
             display: flex;
             align-items: center;
@@ -339,12 +343,6 @@
         }
 
         /* Newsletter Section */
-        .newsletter {
-            padding: 80px 0;
-            text-align: center;
-            background-color: rgba(10, 10, 10, 0.9);
-        }
-
         .newsletter-form {
             max-width: 600px;
             margin: 40px auto 0;
@@ -368,10 +366,9 @@
 
         /* Footer */
         footer {
-            background-color: var(--darker);
             padding: 80px 0 30px;
             text-align: center;
-            border-top: 1px solid #222;
+            border-top: 1px solid var(--blood-red);
         }
 
         .footer-content {
@@ -486,7 +483,7 @@
                 width: 80%;
                 max-width: 300px;
                 height: 100vh;
-                background-color: var(--darker);
+                background-color: rgba(10, 10, 10, 0.95);
                 padding: 80px 30px;
                 transition: all 0.5s ease;
                 z-index: 999;
@@ -538,7 +535,7 @@
                 font-size: 2.2rem;
             }
 
-            .blog-posts, .about {
+            section {
                 padding: 60px 0;
             }
 
@@ -568,61 +565,62 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header id="header">
-        <div class="container header-container">
-            <a href="#" class="logo">THE COMFY <span>CEMETERY</span></a>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-            <nav id="nav">
-                <button class="close-menu-btn" id="closeMenuBtn">×</button>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#newsletter">Newsletter</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section with Parallax Video -->
-    <section class="hero" id="home">
-        <!-- Replace "your-video.mp4" with your actual video file -->
+    <!-- Fixed Video Background -->
+    <div class="video-background-container">
         <video class="video-background" autoplay muted loop>
             <source src="./188950-884185329.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1>Welcome to The Comfy Cemetery</h1>
-            <p>A cozy corner for dark thoughts, eerie tales, and midnight musings.</p>
-            <a href="#blog" class="btn">Read the Blog</a>
-        </div>
-    </section>
+        <div class="video-overlay"></div>
+    </div>
 
-    <!-- Main Content -->
-    <main>
+    <!-- Main Content Container -->
+    <div class="content-container">
+        <!-- Header -->
+        <header id="header">
+            <div class="container header-container">
+                <a href="#" class="logo">THE COMFY <span>CEMETERY</span></a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                <nav id="nav">
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#about">About</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1>Welcome to The Comfy Cemetery</h1>
+                <p>A cozy corner for dark thoughts, eerie tales, and midnight musings.</p>
+                <a href="#blog" class="btn">Enter if you dare.</a>
+            </div>
+        </section>
+
         <!-- Blog Posts Section -->
-        <section class="blog-posts" id="blog">
+        <section id="blog">
             <div class="container">
                 <h2>Latest Epitaphs</h2>
                 <div class="posts-grid">
                     <!-- Post 1 -->
                     <article class="post-card">
                         <div class="post-image">
-                            <img src="https://source.unsplash.com/random/600x400/?graveyard" alt="Midnight in the Graveyard">
+                            <img src="https://m.media-amazon.com/images/M/MV5BMjEzNTg0MzM2N15BMl5BanBnXkFtZTgwMzU4ODM0OTE@._V1_.jpg" alt="Midnight in the Graveyard">
                         </div>
                         <div class="post-content">
                             <div class="post-meta">
                                 <span>October 31, 2023</span>
                                 <span>7 min read</span>
                             </div>
-                            <h3>Midnight in the Graveyard</h3>
+                            <h3>Gothic Queen: Why Morticia Addams Will Always Be Iconic</h3>
                             <div class="post-tags">
-                                <span class="post-tag">Dark Tales</span>
-                                <span class="post-tag">Poetry</span>
+                                <span class="post-tag">Shows</span>
+                                <span class="post-tag">Comfort</span>
                             </div>
-                            <p class="post-excerpt">The graveyard is most alive when the world is asleep. In this piece, I explore the whispers between tombstones and the comfort of eternal rest...</p>
+                            <p class="post-excerpt">I can’t get over how effortlessly cool and elegant Morticia Addams was in the 1960s Addams Family series. Carolyn Jones brought her to life with such grace, wit, and a touch of mystery that no one has ever quite matched. The way she floated through scenes, her sharp humor, and that undeniable gothic glamour—she’s truly one of a kind. Morticia wasn’t just a character; she was a vibe, a mood, and a timeless icon I’ll always admire.</p>
                             <a href="#" class="read-more">Continue Reading →</a>
                         </div>
                     </article>
@@ -630,19 +628,18 @@
                     <!-- Post 2 -->
                     <article class="post-card">
                         <div class="post-image">
-                            <img src="https://source.unsplash.com/random/600x400/?gothic" alt="Gothic Comfort">
+                            <img src="https://i.pinimg.com/736x/f1/68/01/f16801bd6ae9ae5cac26c3c7d5796353.jpg" alt="Gothic Comfort">
                         </div>
                         <div class="post-content">
                             <div class="post-meta">
                                 <span>September 15, 2023</span>
                                 <span>10 min read</span>
                             </div>
-                            <h3>Gothic Comfort</h3>
+                            <h3>Jungkook: The Golden Maknae Who Owns My Heart</h3>
                             <div class="post-tags">
-                                <span class="post-tag">Lifestyle</span>
-                                <span class="post-tag">Aesthetics</span>
+                                <span class="post-tag">Music</span>
                             </div>
-                            <p class="post-excerpt">How to make darkness feel like home—candles, velvet, and the perfect playlist for a stormy night. A guide to embracing the macabre with warmth...</p>
+                            <p class="post-excerpt">Listen, I could talk about Jungkook forever. His voice? Unreal. His dance skills? Insane. His presence? Absolutely magnetic. From the moment he stepped into the spotlight, he’s been nothing short of incredible, constantly pushing himself to be even better. Whether he’s hitting those high notes, performing like it’s his last stage, or just being his adorable, humble self—he’s everything. Jungkook isn’t just talented; he’s special, and I’ll always be in awe of him.</p>
                             <a href="#" class="read-more">Continue Reading →</a>
                         </div>
                     </article>
@@ -650,19 +647,19 @@
                     <!-- Post 3 -->
                     <article class="post-card">
                         <div class="post-image">
-                            <img src="https://source.unsplash.com/random/600x400/?haunted" alt="Ghost Stories for the Soul">
+                            <img src="https://images.pexels.com/photos/30681571/pexels-photo-30681571/free-photo-of-mysterious-silhouette-with-dramatic-backlighting.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Ghost Stories for the Soul">
                         </div>
                         <div class="post-content">
                             <div class="post-meta">
                                 <span>August 7, 2023</span>
                                 <span>12 min read</span>
                             </div>
-                            <h3>Ghost Stories for the Soul</h3>
+                            <h3>The Legend, The Myth, The Most Awesome Guy Ever</h3>
                             <div class="post-tags">
-                                <span class="post-tag">Fiction</span>
-                                <span class="post-tag">Horror</span>
+                                <span class="post-tag">Awesome</span>
+                                <span class="post-tag">Guy</span>
                             </div>
-                            <p class="post-excerpt">Not all ghosts are scary—some just want tea and company. A collection of short, cozy ghost stories to read by candlelight...</p>
+                            <p class="post-excerpt">Some say greatness is born, others say it's made—but in Nick’s case, it’s both. Whether he’s conquering challenges, inspiring those around him, or just being effortlessly cool, Nick is the definition of awesome. Dive into the story of a guy who turns ordinary moments into epic adventures and proves that being amazing isn’t just a skill—it’s a way of life..</p>
                             <a href="#" class="read-more">Continue Reading →</a>
                         </div>
                     </article>
@@ -671,69 +668,46 @@
         </section>
 
         <!-- About Section -->
-        <section class="about" id="about">
+        <section id="about">
             <div class="container">
-                <h2>The Graveyard Keeper</h2>
+                <h2>Karime: The One, The Only, The Absolutely Unforgettable</h2>
                 <div class="about-content">
                     <div class="about-text">
-                        <p>Hello, wanderer. I’m the caretaker of this cozy cemetery—where dark thoughts are welcome, and the tea is always brewing.</p>
-                        <p>I’ve always found comfort in the macabre. There’s something beautiful about the quiet of a graveyard, the elegance of decay, and the stories whispered by shadows.</p>
-                        <p>When I’m not writing, I’m probably reading Victorian horror novels, collecting antique skulls, or brewing the perfect cup of Earl Grey for a midnight séance.</p>
+                        <p>Okay, let’s be real—I’m kind of amazing. Not to brag (okay, maybe a little), but I bring the perfect mix of charm, humor, and just the right amount of chaos to keep life interesting. Whether I’m making people laugh, chasing my dreams, or just being my effortlessly cool self, I know how to make an impact. I’m the friend you can count on, the energy in the room, and honestly? Life’s just better with me in it.</p>
                         <a href="#" class="btn">My Full Story</a>
                     </div>
                     <div class="about-image">
-                        <img src="https://source.unsplash.com/random/600x800/?gothic" alt="The Graveyard Keeper">
+                        <img src="https://i.pinimg.com/736x/6a/db/5c/6adb5c9bb9aa994a04e19e13d54966fb.jpg" alt="The Graveyard Keeper">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Newsletter Section -->
-        <section class="newsletter" id="newsletter">
+        <!-- Footer -->
+        <footer>
             <div class="container">
-                <h2>Join the Midnight Society</h2>
-                <p>Subscribe for eerie tales, dark poetry, and cozy graveyard musings delivered straight to your coffin.</p>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Your email address" required>
-                    <button type="submit" class="btn">Subscribe</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>The Comfy Cemetery</h3>
-                    <p>A resting place for dark thoughts, eerie tales, and midnight comfort.</p>
-                </div>
-                <div class="footer-column">
-                    <h3>Explore</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#blog">Blog</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#newsletter">Newsletter</a></li>
-                        <li><a href="#">Archives</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Connect</h3>
-                    <div class="social-links">
-                        <a href="#" aria-label="Twitter">t</a>
-                        <a href="#" aria-label="Instagram">i</a>
-                        <a href="#" aria-label="Goodreads">g</a>
-                        <a href="#" aria-label="Email">@</a>
+                <div class="footer-content">
+                    <div class="footer-column">
+                        <h3>The Comfy Cemetery</h3>
+                        <p>A resting place for dark thoughts, eerie tales, and midnight comfort.</p>
                     </div>
+                    <div class="footer-column">
+                        <h3>Explore</h3>
+                        <ul class="footer-links">
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#blog">Blog</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#">Archives</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2023 The Comfy Cemetery. All rights reserved.</p>
                 </div>
             </div>
-            <div class="copyright">
-                <p>&copy; 2023 The Comfy Cemetery. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script>
         // Mobile Menu Toggle
@@ -756,16 +730,6 @@
             });
         });
 
-        // Header scroll effect
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -782,15 +746,6 @@
             e.preventDefault();
             alert('Welcome to The Comfy Cemetery. Your coffin awaits.');
             newsletterForm.reset();
-        });
-
-        // Parallax effect for video background
-        window.addEventListener('scroll', function() {
-            const scrollPosition = window.pageYOffset;
-            const video = document.querySelector('.video-background');
-            if (video) {
-                video.style.transform = 'translateY(' + scrollPosition * 0.5 + 'px)';
-            }
         });
     </script>
 </body>
