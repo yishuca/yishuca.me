@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Yishuca Designs | Terms & Conditions | Privacy Policy</title>
+    
+    <!-- Preload and Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50%' y='50%' font-size='80' text-anchor='middle' dominant-baseline='middle' fill='white'>[=]</text></svg>">
+    
+    <style>
+        /* CSS Variables */
+        :root {
+            --neon-primary: #00f7ff;  /* Bright cyan */
+            --neon-secondary: #ff00f7; /* Bright pink */
+            --neon-accent: #00ff2a;   /* Bright green */
+            --dark: #1a1a1a;          /* Dark grey background */
+            --darker: #0d0d0d;        /* Darker elements */
+            --light: #f8f9fa;         /* Brighter light text for better contrast */
+            --gray: #666666;          /* Secondary text */
+            --light-gray: #cccccc;     /* Lighter text */
+            --border-gray: #666666;   /* Gray for borders */
+            
+            --transition: all 0.3s ease;
+            --shadow: 0 0 8px rgba(0, 247, 255, 0.2);
+            --shadow-lg: 0 0 15px rgba(0, 247, 255, 0.3);
+            --text-glow: 0 0 10px rgba(0, 247, 255, 0.8);
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            outline: none !important;
+        }
+
+        body {
+            font-family: var(--font-secondary);
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Shooting stars container */
+        .shooting-star-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: -1;
+            animation: shooting linear;
+            transform-origin: left center;
+            will-change: transform, opacity;
+        }
+
+        @keyframes shooting {
+            0% {
+                transform: translateX(0) translateY(0) rotate(var(--angle));
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(var(--distance)) translateY(calc(var(--distance) * 0.5)) rotate(var(--angle));
+                opacity: 0;
+            }
+        }
+
+        /* Parallax layers */
+        .star-layer-1 {
+            animation-duration: 1.5s;
+        }
+
+        .star-layer-2 {
+            animation-duration: 3s;
+        }
+
+        .star-layer-3 {
+            animation-duration: 4.5s;
+        }
+
+        /* Animated gradient background element - NOW FIXED POSITION */
+        .hero-background {
+            position: fixed; /* Changed from absolute to fixed */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(0, 247, 255, 0.15) 0%, 
+                rgba(255, 0, 247, 0.1) 50%, 
+                rgba(0, 0, 0, 0) 70%);
+            filter: blur(60px);
+            animation: orbFloat 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-20px) translateX(20px); }
+        }
+
+        .gradient-orb:nth-child(1) {
+            top: -100px;
+            left: -100px;
+        }
+
+        .gradient-orb:nth-child(2) {
+            bottom: -100px;
+            right: -100px;
+            animation-delay: 2s;
+        }
+
+        /* Main container */
+        .legal-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header styles */
+        .legal-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .legal-header .logo {
+            font-family: var(--font-primary);
+            font-size: 4rem;
+            font-weight: 500;
+            color: white;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            position: relative;
+            animation: logoPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% {
+                text-shadow:
+                    0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 20px var(--neon-primary),
+                    0 0 30px var(--neon-primary),
+                    0 0 40px var(--neon-primary);
+            }
+            50% {
+                text-shadow:
+                    0 0 10px #fff,
+                    0 0 20px #fff,
+                    0 0 30px var(--neon-primary),
+                    0 0 50px var(--neon-primary),
+                    0 0 60px var(--neon-primary);
+            }
+        }
+
+        .legal-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+            font-weight: 500;
+            letter-spacing: 1px;
+            font-family: var(--font-primary);
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-primary),
+                0 0 30px var(--neon-primary),
+                0 0 40px var(--neon-primary);
+        }
+
+        .legal-header p {
+            color: var(--light-gray);
+            font-size: 1rem;
+        }
+
+        /* Last updated */
+        .last-updated {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--neon-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Legal content */
+        .legal-content {
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 15px;
+            padding: 3rem;
+            border: 1px solid var(--neon-primary);
+            box-shadow: var(--shadow);
+        }
+
+        .legal-section {
+            margin-bottom: 3rem;
+        }
+
+        .legal-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--neon-primary);
+            font-family: var(--font-primary);
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .legal-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--neon-secondary);
+        }
+
+        .legal-section h3 {
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--light);
+            font-family: var(--font-primary);
+            font-weight: 500;
+        }
+
+        .legal-section p {
+            margin-bottom: 1rem;
+            color: var(--light-gray);
+        }
+
+        .legal-section ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .legal-section li {
+            margin-bottom: 0.5rem;
+            color: var(--light-gray);
+            position: relative;
+        }
+
+        .legal-section li::before {
+            content: '•';
+            color: var(--neon-primary);
+            position: absolute;
+            left: -1rem;
+        }
+
+        /* Highlight boxes */
+        .highlight-box {
+            background: rgba(0, 247, 255, 0.1);
+            border-left: 3px solid var(--neon-primary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--neon-primary);
+            margin-bottom: 0.5rem;
+            font-family: var(--font-primary);
+        }
+
+        /* Back button */
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--neon-primary);
+            color: var(--darker);
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            font-family: var(--font-primary);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+            background-color: white;
+            color: var(--darker);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .legal-container {
+                padding: 3rem 1.5rem;
+            }
+            
+            .legal-header h1 {
+                font-size: 2rem;
+            }
+            
+            .legal-content {
+                padding: 2rem;
+            }
+            
+            .legal-section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .legal-section h3 {
+                font-size: 1.2rem;
+            }
+            
+            .gradient-orb {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .legal-container {
+                padding: 2rem 1rem;
+            }
+            
+            .legal-header .logo {
+                font-size: 3rem;
+            }
+            
+            .legal-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .legal-content {
+                padding: 1.5rem;
+            }
+            
+            .gradient-orb {
+                width: 300px;
+                height: 300px;
+                filter: blur(40px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Shooting stars container -->
+    <div class="shooting-star-container" id="starContainer"></div>
+
+    <!-- Animated background element - NOW FIXED POSITION -->
+    <div class="hero-background">
+        <div class="gradient-orb"></div>
+        <div class="gradient-orb"></div>
+    </div>
+
+    <div class="legal-container">
+        <header class="legal-header">
+            <div class="logo">[=]</div>
+            <h1>Terms & Conditions</h1>
+            <p>Privacy Policy for Yishuca Designs</p>
+        </header>
+
+        <div class="last-updated">
+            Last Updated: March 28, 2025
+        </div>
+
+        <div class="legal-content">
+            <div class="legal-section">
+                <h2>1. Privacy Policy</h2>
+                
+                <h3>Information We Collect</h3>
+                <ul>
+                    <li>Contact details (name, email, phone)</li>
+                    <li>Project requirements and content</li>
+                    <li>Payment information (processed securely via Stripe/PayPal)</li>
+                    <li>Website usage data (via anonymous analytics)</li>
+                </ul>
+                
+                <div class="highlight-box">
+                    <h4>How We Use Your Data</h4>
+                    <p>Solely for project completion and communication. Never sold or shared with third parties. Stored securely with encryption.</p>
+                </div>
+                
+                <h3>Your Rights</h3>
+                <ul>
+                    <li>Request data access/deletion</li>
+                    <li>Opt out of marketing communications</li>
+                    <li>Request information about data storage</li>
+                </ul>
+            </div>
+
+            <div class="legal-section">
+                <h2>2. Terms of Service</h2>
+                
+                <h3>Payment Terms</h3>
+                <ul>
+                    <li>100% payment required before project begins</li>
+                    <li>All payments processed through Stripe/PayPal</li>
+                    <li>Invoices provided for all transactions</li>
+                </ul>
+                
+                <h3>Refund Policy</h3>
+                <div class="highlight-box">
+                    <p>Refunds based on work completed:</p>
+                    <ul>
+                        <li>0-25% completed: 75% refund</li>
+                        <li>26-50% completed: 50% refund</li>
+                        <li>51-75% completed: 25% refund</li>
+                        <li>76-100% completed: No refund</li>
+                    </ul>
+                    <p>Processing time: 7-10 business days</p>
+                </div>
+                
+                <h3>Project Timeline</h3>
+                <ul>
+                    <li>Begins after payment + all materials received</li>
+                    <li>Standard delivery:
+                        <ul>
+                            <li>Single Page: 2 weeks</li>
+                            <li>Standard (3-5 pages): 4 weeks</li>
+                            <li>Premium: Custom timeline</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h3>Client Responsibilities</h3>
+                <ul>
+                    <li>Provide all content within 5 business days</li>
+                    <li>Respond to feedback requests within 48 hours</li>
+                    <li>One round of revisions included</li>
+                    <li>Additional revisions billed at $75/hour</li>
+                </ul>
+                
+                <h3>Intellectual Property</h3>
+                <ul>
+                    <li>Full rights transfer upon final payment</li>
+                    <li>We retain portfolio rights</li>
+                    <li>Client guarantees all provided materials are rights-cleared</li>
+                </ul>
+                
+                <h3>Limitations</h3>
+                <ul>
+                    <li>Not liable for third-party services</li>
+                    <li>Maximum liability = project fee</li>
+                    <li>Not responsible for domain/hosting issues</li>
+                </ul>
+            </div>
+
+            <div class="legal-section">
+                <h2>3. Acceptance</h2>
+                <p>By making payment, client agrees to these terms.</p>
+                
+                <div class="highlight-box">
+                    <h4>Contact Information</h4>
+                    <p><strong>Yishuca Designs</strong></p>
+                    <p><i class="fas fa-envelope"></i> <a style="color: #00f7ff;" href="mailto:Yishuca.designs@gmail.com">Yishuca.designs@gmail.com</a></p>
+                    <p><i class="fas fa-phone-alt"></i> <a style="color: #00f7ff;" href="tel:+19869990621">(986) 999-0621</a></p>
+                    <p><i class="fas fa-globe"></i> <a style="color: #00f7ff;" href="https://www.yishuca.me">www.yishuca.me</a></p>
+                </div>
+            </div>
+            
+            <a href="javascript:history.back()" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Site
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Create shooting stars with parallax effect
+        function createShootingStars() {
+            const starContainer = document.getElementById('starContainer');
+            const starCount = 15;
+            starContainer.innerHTML = '';
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'shooting-star';
+                
+                const layer = Math.floor(Math.random() * 3) + 1;
+                star.classList.add(`star-layer-${layer}`);
+                
+                const startX = Math.random() * window.innerWidth;
+                const startY = Math.random() * window.innerHeight;
+                
+                const angle = 30 + Math.random() * 30;
+                const distance = 500 + (layer * 300);
+                const delay = Math.random() * 10;
+                
+                star.style.setProperty('--angle', `${angle}deg`);
+                star.style.setProperty('--distance', `${distance}px`);
+                star.style.left = `${startX}px`;
+                star.style.top = `${startY}px`;
+                star.style.animationDelay = `${delay}s`;
+                
+                const size = 1 + Math.random() * 2;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                const opacity = 0.5 + Math.random() * 0.5;
+                star.style.opacity = opacity;
+                
+                starContainer.appendChild(star);
+            }
+        }
+        
+        // Initialize stars
+        createShootingStars();
+        setInterval(createShootingStars, 15000);
+
+        // Reduced motion preference
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.querySelectorAll('.shooting-star, .gradient-orb').forEach(el => {
+                el.style.animation = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
