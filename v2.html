@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Comfy Cemetery | A Dark & Cozy Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --blood-red: #6a0000;
+            --light-blood: #8b0000;
+            --text: #e0e0e0;
+            --text-light: #ffffff;
+            --cozy-gold: #c9a66b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--text);
+            background-color: var(--darker);
+            overflow-x: hidden;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            background: var(--blood-red);
+            bottom: -10px;
+            left: 0;
+        }
+
+        a {
+            color: var(--cozy-gold);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--light-blood);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--blood-red);
+            border-radius: 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--blood-red);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 25px 0;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(10, 10, 10, 0.95);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: var(--blood-red);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            position: relative;
+        }
+
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            background: var(--blood-red);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section with Parallax Video */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10, 10, 10, 0.5), rgba(5, 5, 5, 0.9));
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            font-weight: 300;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Main Content */
+        main {
+            position: relative;
+            z-index: 1;
+            background-color: var(--darker);
+        }
+
+        /* Blog Posts Section */
+        .blog-posts {
+            padding: 100px 0;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .post-card {
+            background-color: rgba(20, 20, 20, 0.7);
+            border: 1px solid #222;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .post-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--blood-red);
+        }
+
+        .post-image {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .post-card:hover .post-image img {
+            transform: scale(1.05);
+        }
+
+        .post-content {
+            padding: 30px;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .post-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            background-color: var(--blood-red);
+            color: var(--text-light);
+            font-size: 0.8rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .post-excerpt {
+            margin: 20px 0;
+        }
+
+        .read-more {
+            display: inline-block;
+            margin-top: 15px;
+            font-weight: 600;
+            color: var(--cozy-gold);
+        }
+
+        /* About Section */
+        .about {
+            padding: 100px 0;
+            background-color: rgba(15, 15, 15, 0.7);
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 40px;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            padding: 80px 0;
+            text-align: center;
+            background-color: rgba(10, 10, 10, 0.9);
+        }
+
+        .newsletter-form {
+            max-width: 600px;
+            margin: 40px auto 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            min-width: 300px;
+            padding: 15px 20px;
+            background-color: rgba(20, 20, 20, 0.7);
+            border: 1px solid #333;
+            color: var(--text);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--darker);
+            padding: 80px 0 30px;
+            text-align: center;
+            border-top: 1px solid #222;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 60px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background: var(--blood-red);
+            bottom: -10px;
+            left: 0;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--cozy-gold);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(20, 20, 20, 0.7);
+            border-radius: 50%;
+            margin-right: 15px;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--blood-red);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            border-top: 1px solid #333;
+            padding-top: 30px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            h1 {
+                font-size: 3rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            .posts-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background-color: var(--darker);
+                padding: 80px 30px;
+                transition: all 0.5s ease;
+                z-index: 999;
+            }
+
+            nav.active {
+                right: 0;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 20px 0;
+            }
+
+            .close-menu-btn {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: none;
+                border: none;
+                color: var(--text-light);
+                font-size: 1.5rem;
+                cursor: pointer;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .about-text, .about-image {
+                flex: 100%;
+            }
+
+            .about-text {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .blog-posts, .about {
+                padding: 60px 0;
+            }
+
+            .newsletter-form input {
+                min-width: 100%;
+                margin-right: 0;
+            }
+
+            .footer-column {
+                flex: 100%;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .footer-links {
+                text-align: center;
+            }
+
+            .footer-column h3:after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <a href="#" class="logo">THE COMFY <span>CEMETERY</span></a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <nav id="nav">
+                <button class="close-menu-btn" id="closeMenuBtn">×</button>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#newsletter">Newsletter</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section with Parallax Video -->
+    <section class="hero" id="home">
+        <!-- Replace "your-video.mp4" with your actual video file -->
+        <video class="video-background" autoplay muted loop>
+            <source src="./188950-884185329.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Welcome to The Comfy Cemetery</h1>
+            <p>A cozy corner for dark thoughts, eerie tales, and midnight musings.</p>
+            <a href="#blog" class="btn">Read the Blog</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Blog Posts Section -->
+        <section class="blog-posts" id="blog">
+            <div class="container">
+                <h2>Latest Epitaphs</h2>
+                <div class="posts-grid">
+                    <!-- Post 1 -->
+                    <article class="post-card">
+                        <div class="post-image">
+                            <img src="https://source.unsplash.com/random/600x400/?graveyard" alt="Midnight in the Graveyard">
+                        </div>
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>October 31, 2023</span>
+                                <span>7 min read</span>
+                            </div>
+                            <h3>Midnight in the Graveyard</h3>
+                            <div class="post-tags">
+                                <span class="post-tag">Dark Tales</span>
+                                <span class="post-tag">Poetry</span>
+                            </div>
+                            <p class="post-excerpt">The graveyard is most alive when the world is asleep. In this piece, I explore the whispers between tombstones and the comfort of eternal rest...</p>
+                            <a href="#" class="read-more">Continue Reading →</a>
+                        </div>
+                    </article>
+
+                    <!-- Post 2 -->
+                    <article class="post-card">
+                        <div class="post-image">
+                            <img src="https://source.unsplash.com/random/600x400/?gothic" alt="Gothic Comfort">
+                        </div>
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>September 15, 2023</span>
+                                <span>10 min read</span>
+                            </div>
+                            <h3>Gothic Comfort</h3>
+                            <div class="post-tags">
+                                <span class="post-tag">Lifestyle</span>
+                                <span class="post-tag">Aesthetics</span>
+                            </div>
+                            <p class="post-excerpt">How to make darkness feel like home—candles, velvet, and the perfect playlist for a stormy night. A guide to embracing the macabre with warmth...</p>
+                            <a href="#" class="read-more">Continue Reading →</a>
+                        </div>
+                    </article>
+
+                    <!-- Post 3 -->
+                    <article class="post-card">
+                        <div class="post-image">
+                            <img src="https://source.unsplash.com/random/600x400/?haunted" alt="Ghost Stories for the Soul">
+                        </div>
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>August 7, 2023</span>
+                                <span>12 min read</span>
+                            </div>
+                            <h3>Ghost Stories for the Soul</h3>
+                            <div class="post-tags">
+                                <span class="post-tag">Fiction</span>
+                                <span class="post-tag">Horror</span>
+                            </div>
+                            <p class="post-excerpt">Not all ghosts are scary—some just want tea and company. A collection of short, cozy ghost stories to read by candlelight...</p>
+                            <a href="#" class="read-more">Continue Reading →</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about" id="about">
+            <div class="container">
+                <h2>The Graveyard Keeper</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>Hello, wanderer. I’m the caretaker of this cozy cemetery—where dark thoughts are welcome, and the tea is always brewing.</p>
+                        <p>I’ve always found comfort in the macabre. There’s something beautiful about the quiet of a graveyard, the elegance of decay, and the stories whispered by shadows.</p>
+                        <p>When I’m not writing, I’m probably reading Victorian horror novels, collecting antique skulls, or brewing the perfect cup of Earl Grey for a midnight séance.</p>
+                        <a href="#" class="btn">My Full Story</a>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://source.unsplash.com/random/600x800/?gothic" alt="The Graveyard Keeper">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter" id="newsletter">
+            <div class="container">
+                <h2>Join the Midnight Society</h2>
+                <p>Subscribe for eerie tales, dark poetry, and cozy graveyard musings delivered straight to your coffin.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" class="btn">Subscribe</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>The Comfy Cemetery</h3>
+                    <p>A resting place for dark thoughts, eerie tales, and midnight comfort.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Explore</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#newsletter">Newsletter</a></li>
+                        <li><a href="#">Archives</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter">t</a>
+                        <a href="#" aria-label="Instagram">i</a>
+                        <a href="#" aria-label="Goodreads">g</a>
+                        <a href="#" aria-label="Email">@</a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 The Comfy Cemetery. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const nav = document.getElementById('nav');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            nav.classList.add('active');
+        });
+
+        closeMenuBtn.addEventListener('click', () => {
+            nav.classList.remove('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+            });
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Newsletter form submission
+        const newsletterForm = document.querySelector('.newsletter-form');
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Welcome to The Comfy Cemetery. Your coffin awaits.');
+            newsletterForm.reset();
+        });
+
+        // Parallax effect for video background
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.pageYOffset;
+            const video = document.querySelector('.video-background');
+            if (video) {
+                video.style.transform = 'translateY(' + scrollPosition * 0.5 + 'px)';
+            }
+        });
+    </script>
+</body>
+</html>
