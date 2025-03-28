@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=.0, minimum-scale=1.0">
     <!-- Primary Meta Tags -->
     <meta name="description" content="Yishuca Designs creates stunning, professional websites and apps tailored to your brand. Fully customizable, fully for you.">
     <meta name="keywords" content="Boise web design, boise web developer, professional, boise software engineer, Boise, Idaho, web designer, website designer, web design services, custom website development, website development, web development, responsive web design, custom, application, UX/UI design, yishuca me, yishuca.me">
@@ -36,17 +36,14 @@
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
-          "@type": ["ProfessionalService", "LocalBusiness"],
+          "@type": "ProfessionalService",
           "name": "Yishuca Designs",
           "image": "https://avatars.githubusercontent.com/u/185610572?v=4",
           "@id": "https://www.yishuca.me",
           "url": "https://www.yishuca.me",
           "telephone": "+19869990621",
-          "priceRange": "$$",
-          "description": "Professional website design and development services",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "",
             "addressLocality": "Boise",
             "addressRegion": "Idaho",
             "postalCode": "83702",
@@ -66,7 +63,7 @@
               "Thursday",
               "Friday"
             ],
-            "opens": "13:00",
+            "opens": "1:00",
             "closes": "24:00"
           },
           "sameAs": [
@@ -78,7 +75,6 @@
     
     <!-- Main CSS -->
     <style>
-        /* CSS Variables */
         :root {
             --neon-primary: #00f7ff;  /* Bright cyan */
             --neon-secondary: #ff00f7; /* Bright pink */
@@ -94,35 +90,21 @@
             --shadow: 0 0 8px rgba(0, 247, 255, 0.2);
             --shadow-lg: 0 0 15px rgba(0, 247, 255, 0.3);
             --text-glow: 0 0 10px rgba(0, 247, 255, 0.8);
-            --font-primary: 'Poppins', sans-serif;
-            --font-secondary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            outline: none !important; /* Remove focus outlines */
         }
 
         body {
-            font-family: var(--font-secondary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--dark);
             color: var(--light);
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
-        }
-
-        /* Remove focus styles since they're not needed */
-        a:focus,
-        button:focus,
-        input:focus,
-        textarea:focus {
-            outline: none !important;
         }
 
         /* Reduced motion styles */
@@ -172,8 +154,6 @@
             animation: shooting linear;
             transform-origin: left center;
             will-change: transform, opacity;
-            -webkit-animation: shooting linear;
-            -webkit-transform-origin: left center;
         }
 
         @keyframes shooting {
@@ -197,19 +177,16 @@
         .star-layer-1 {
             animation-duration: 1.5s;
             transform: translateZ(-100px);
-            -webkit-transform: translateZ(-100px);
         }
 
         .star-layer-2 {
             animation-duration: 3s;
             transform: translateZ(-200px);
-            -webkit-transform: translateZ(-200px);
         }
 
         .star-layer-3 {
             animation-duration: 4.5s;
             transform: translateZ(-300px);
-            -webkit-transform: translateZ(-300px);
         }
 
         .page-container {
@@ -238,7 +215,6 @@
             pointer-events: all;
         }
 
-        /* Hero Section */
         .hero {
             display: flex;
             flex-direction: column;
@@ -258,7 +234,7 @@
         }
 
         .logo {
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
             font-size: 4rem;
             font-weight: 500;
             color: white;
@@ -294,7 +270,7 @@
             font-weight: 500;
             letter-spacing: 8px;
             text-transform: uppercase;
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
             margin-left: 8px;
             text-shadow: 
                 0 0 5px #fff,
@@ -308,7 +284,6 @@
             display: inline-block;
             z-index: -3;
             animation: signFlicker 2.5s infinite alternate;
-            -webkit-animation: signFlicker 2.5s infinite alternate;
         }
 
         @keyframes signFlicker {
@@ -336,7 +311,7 @@
             font-weight: 400;
             margin-bottom: 1.5rem;
             color: var(--light);
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
             letter-spacing: 1px;
             text-shadow: 
                 0 0 5px rgba(255, 255, 255, 0.594),
@@ -348,10 +323,9 @@
             max-width: 600px;
             margin: 0 auto 2rem;
             color: var(--light-gray);
-            font-family: var(--font-secondary);
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        /* Buttons */
         .btn {
             display: inline-block;
             padding: 0.8rem 1.8rem;
@@ -364,13 +338,12 @@
             cursor: pointer;
             transition: var(--transition);
             box-shadow: var(--shadow);
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
         }
 
         .portfolio-overlay .btn {
             background: rgba(0, 247, 255, 0.2);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             color: white;
             border: 1px solid var(--neon-primary);
         }
@@ -406,7 +379,6 @@
             border-top-color: var(--darker);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            -webkit-animation: spin 0.8s linear infinite;
         }
         
         @keyframes spin {
@@ -435,9 +407,7 @@
                 rgba(255, 0, 247, 0.1) 50%, 
                 rgba(0, 0, 0, 0) 70%);
             filter: blur(60px);
-            -webkit-filter: blur(60px);
             animation: orbFloat 15s infinite alternate ease-in-out;
-            -webkit-animation: orbFloat 15s infinite alternate ease-in-out;
         }
 
         @keyframes orbFloat {
@@ -454,10 +424,8 @@
             bottom: -100px;
             right: -100px;
             animation-delay: 2s;
-            -webkit-animation-delay: 2s;
         }
 
-        /* Services Section */
         .services {
             max-width: 1200px;
             margin: 3rem auto;
@@ -470,7 +438,7 @@
             position: relative;
             display: inline-block;
             color: var(--light);
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
             font-weight: 500;
         }
 
@@ -511,11 +479,10 @@
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--light);
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
             font-weight: 500;
         }
 
-        /* Portfolio Section */
         .portfolio-section {
             max-width: 1200px;
             margin: 0 auto;
@@ -528,7 +495,7 @@
             margin-bottom: 3rem;
             position: relative;
             color: white;
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
             font-weight: 500;
             text-shadow: 
                 0 0 5px #fff,
@@ -545,7 +512,6 @@
         .flicker-e {
             display: inline-block;
             animation: flickerE 3s infinite alternate;
-            -webkit-animation: flickerE 3s infinite alternate;
             text-shadow: 
                 0 0 5px #fff,
                 0 0 10px #fff,
@@ -562,6 +528,8 @@
                 opacity: 0.7;
             }
         }
+
+
 
         .portfolio-grid {
             display: grid;
@@ -583,28 +551,6 @@
             background-size: cover;
             background-position: center;
             transition: var(--transition);
-            position: relative;
-        }
-
-        /* Loading spinner for portfolio images */
-        .portfolio-image::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 30px;
-            height: 30px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--neon-primary);
-            animation: spin 1s linear infinite;
-            -webkit-animation: spin 1s linear infinite;
-            z-index: 1;
-            display: none;
-        }
-
-        .portfolio-image.loading::before {
-            display: block;
         }
 
         .portfolio-overlay {
@@ -628,7 +574,7 @@
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
             color: var(--light);
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
             font-weight: 500;
         }
 
@@ -641,7 +587,6 @@
             transform: scale(1.05);
         }
 
-        /* Pricing Section */
         .pricing-section {
             max-width: 1200px;
             margin: 0 auto;
@@ -653,8 +598,35 @@
             font-size: 2.5rem;
             margin-bottom: 1rem;
             color: var(--neon-primary);
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
             font-weight: 500;
+        }
+
+        /* Privacy Policy Link */
+        .privacy-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color:#666666;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .privacy-link:hover {
+            color: var(--neon-primary);
+            text-decoration: underline;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: var(--neon-secondary);
+            color: var(--darker);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
         }
 
         .subtitle {
@@ -710,7 +682,7 @@
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: var(--light);
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
             font-weight: 500;
         }
 
@@ -741,11 +713,11 @@
             color: var(--neon-accent);
         }
 
-        /* Contact Section */
         .contact-section {
+            margin-top: 0px;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 3rem;
+            padding: rem 3rem;
         }
 
         .contact-container {
@@ -760,7 +732,7 @@
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
             color: var(--neon-primary);
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
             font-weight: 500;
         }
 
@@ -797,7 +769,7 @@
             font-size: 1.2rem;
             margin-bottom: 0.3rem;
             color: var(--light);
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
             font-weight: 500;
         }
 
@@ -828,12 +800,6 @@
         .form-group {
             margin-bottom: 1.5rem;
             position: relative;
-        }
-
-        /* Honeypot field - hidden from users but visible to bots */
-        .form-group.honeypot {
-            position: absolute;
-            left: -9999px;
         }
 
         .form-group input,
@@ -920,7 +886,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-family: var(--font-primary);
+            font-family: 'Poppins', sans-serif;
         }
         
         #accept-cookies {
@@ -943,7 +909,6 @@
             color: var(--neon-primary);
             font-size: 2rem;
             animation: bounce 2s infinite;
-            -webkit-animation: bounce 2s infinite;
             z-index: 10;
             opacity: 0.7;
         }
@@ -1028,11 +993,8 @@
             border-radius: 5px;
             transition: var(--transition);
             transform: translateX(0);
-            -webkit-transition: var(--transition);
-            -webkit-transform: translateX(0);
         }
 
-        /* Media Queries */
         @media (max-width: 768px) {
             .hero-content h1 {
                 font-size: 2rem;
@@ -1114,14 +1076,13 @@
             }
             
             .page {
-                padding: 1rem;
+                padding: rem;
             }
             
             .gradient-orb {
                 width: 300px;
                 height: 300px;
                 filter: blur(40px);
-                -webkit-filter: blur(40px);
             }
 
             .contact-method {
@@ -1131,7 +1092,7 @@
 
             .contact-method i {
                 margin-right: 0;
-                margin-bottom: 1rem;
+                margin-bottom: 3rem;
             }
             
             #cookie-consent {
@@ -1146,10 +1107,6 @@
             .scroll-indicator {
                 bottom: 80px;
                 font-size: 1.5rem;
-            }
-            
-            .contact-section {
-                padding: 1rem;
             }
         }
     </style>
@@ -1188,41 +1145,41 @@
                 </div>
             </header>
 
-<!-- In the services section, replace the existing services-grid with this updated version -->
-<section class="services">
-    <h3>What I Offer</h3>
-    <div class="services-grid">
-        <div class="service-card">
-            <i class="fas fa-code"></i>
-            <h4>Web Development</h4>
-            <p>Website creations to bring your brand to life.</p>
-        </div>
-        <div class="service-card">
-            <i class="fas fa-paint-brush"></i>
-            <h4>UI/UX Design</h4>
-            <p>Immersive & interactive user interfaces to prioritize user experience.</p>
-        </div>
-        <div class="service-card">
-            <i class="fas fa-palette"></i>
-            <h4>Branding & Identity</h4>
-            <p>Comprehensive visual identity development including logos, colors, and brand guidelines.</p>
-        </div>
-        <div class="service-card">
-            <i class="fas fa-mobile-alt"></i>
-            <h4>Responsive Design</h4>
-            <p>Flawless performance on any screen size or device.</p>
-        </div>
-        <div class="service-card">
-            <i class="fas fa-layer-group"></i>
-            <h4>Full Stack Development</h4>
-            <p>Complete front-end and back-end solutions for robust web applications.</p>
-        </div>
-        <div class="service-card">
-            <i class="fas fa-tools"></i>
-            <h4>Ongoing Maintenance</h4>
-            <p>Continuous support, updates, and optimizations to keep your site running smoothly.</p>
-        </div>
-</section>
+            <section class="services">
+                <h3>What I Offer</h3>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <i class="fas fa-code"></i>
+                        <h4>Web Development</h4>
+                        <p>Website creations to bring your brand to life.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-paint-brush"></i>
+                        <h4>UI/UX Design</h4>
+                        <p>Immersive & interactive user interfaces to prioritize user experience.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-palette"></i>
+                        <h4>Branding & Identity</h4>
+                        <p>Comprehensive visual identity development including logos, colors, and brand guidelines.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h4>Responsive Design</h4>
+                        <p>Flawless performance on any screen size or device.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-layer-group"></i>
+                        <h4>Full Stack Development</h4>
+                        <p>Complete front-end and back-end solutions for robust web applications.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-tools"></i>
+                        <h4>Ongoing Maintenance</h4>
+                        <p>Continuous support, updates, and optimizations to keep your site running smoothly.</p>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <!-- Portfolio Page -->
@@ -1230,53 +1187,6 @@
             <section class="portfolio-section">
                 <h2>Recent <br><span class="flicker-e">Pro</span>jects</h2>
                 <div class="portfolio-grid">
-                    <div class="portfolio-item">
-                        <div class="portfolio-image loading" style="background-image: url('https://images.unsplash.com/photo-1595747644932-abb68f85f419?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8dGF0dG9vJTIwc2hvcHxlbnwwfHwwfHx8MA%3D%3D');" aria-label="Ink & Soul Tattoo Studio Website" loading="lazy" data-alt="Ink & Soul Tattoo Studio Website Preview">
-                            <div class="portfolio-overlay">
-                                <h3>Ink & Soul</h3>
-                                <p>Premium Tattoo Studio Website</p>
-                                <a href="./tattooshopexample.html" class="btn">View Site</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="portfolio-item">
-                        <div class="portfolio-image loading" style="background-image: url('https://images.unsplash.com/photo-1493859923015-f05bc8960fa0?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');" aria-label="My Cozy Corner Blog Website" loading="lazy" data-alt="My Cozy Corner Blog Website Preview">
-                            <div class="portfolio-overlay">
-                                <h3>My Cozy Corner</h3>
-                                <p>Personal Blog Website</p>
-                                <a href="./blogexample.html" class="btn">View Site</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="portfolio-item">
-                        <div class="portfolio-image loading" style="background-image: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');" aria-label="Eternal Moments Wedding Photography Website" loading="lazy" data-alt="Eternal Moments Wedding Photography Website Preview">
-                            <div class="portfolio-overlay">
-                                <h3>Eternal Moments</h3>
-                                <p>Wedding Photography Website</p>
-                                <a href="./weddingphotographyexample.html" class="btn">View Site</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="portfolio-item">
-                        <div class="portfolio-image loading" style="background-image: url('https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2Fsb258ZW58MHx8MHx8fDA%3D');" aria-label="Lumière Luxury Salon & Spa Website" loading="lazy" data-alt="Lumière Luxury Salon & Spa Website Preview">
-                            <div class="portfolio-overlay">
-                                <h3>Lumière</h3>
-                                <p>Luxury Salon & Spa Website</p>
-                                <a href="./salonandspaexample.html" class="btn">View Site</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Pricing Page -->
-        <div class="page" id="pricing" tabindex="-1">
-            <section class="pricing-section">
-                <h3 style="font-size: xx-large;">Pricing Plans</h3>
-                <p class="subtitle">Flexible options for every project size</p>
-                
-                <div class="pricing-cards">
                     <div class="pricing-card">
                         <h3>Basic</h3>
                         <div class="price">$500</div>
@@ -1284,7 +1194,7 @@
                             <li>Single Page Website</li>
                             <li>Custom UI/UX Design</li>
                             <li>Limited Server Side Integration</li>
-                            <li>Ongoing Support</li>
+                            <li>Ongoing upport</li>
                             <li>2 Week Delivery</li>
                         </ul>
                     </div>
@@ -1314,6 +1224,54 @@
                         </ul>
                     </div>
                 </div>
+            </section>
+        </div>
+
+        <!-- Pricing Page -->
+        <div class="page" id="pricing" tabindex="-1">
+            <section class="pricing-section">
+                <h3 style="font-size: xx-large;">Pricing Plans</h3>
+                <p class="subtitle">Flexible options for every project size</p>
+                
+                <div class="pricing-cards">
+                    <div class="pricing-card">
+                        <h3>Basic</h3>
+                        <div class="price">$500</div>
+                        <ul>
+                            <li>Single Page Website</li>
+                            <li>Responsive Design</li>
+                            <li>Basic SEO Setup</li>
+                            <li>1 Revision Round</li>
+                            <li>2 Week Delivery</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pricing-card featured">
+                        <div class="popular-badge">Most Popular</div>
+                        <h3>Standard</h3>
+                        <div class="price">$1,000</div>
+                        <ul>
+                            <li>3-5 Page Website</li>
+                            <li>Custom UI/UX Design</li>
+                            <li>Advanced SEO</li>
+                            <li>3 Revision Rounds</li>
+                            <li>4 Week Delivery</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <h3>Premium</h3>
+                        <div class="price">$1,500+</div>
+                        <ul>
+                            <li>Complex Web Application</li>
+                            <li>Full Brand Identity</li>
+                            <li>Ongoing Maintenance</li>
+                            <li>Unlimited Revisions</li>
+                            <li>Custom Timeline</li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="./termsandconditions.html" class="privacy-link" id="privacyPolicyLink">Terms & Conditions | Privacy Policy</a>
             </section>
         </div>
 
@@ -1355,32 +1313,27 @@
                         <div id="successMessage" class="success-message">
                             Thank you for your message! I will get back to you soon.
                         </div>
-                        <!-- Honeypot field for spam prevention -->
-                        <div class="form-group honeypot">
-                            <label for="website">Website</label>
-                            <input type="text" id="website" name="website" tabindex="-1">
-                        </div>
                         <div class="form-group">
                             <input type="text" id="name" name="name" placeholder="Your Name" required aria-label="Your Name">
-                            <div class="error-message" id="name-error">Please enter your name (2-50 characters)</div>
+                            <div class="error-message" id="name-error">Please enter your name</div>
                         </div>
                         <div class="form-group">
                             <input type="text" id="company" name="company" placeholder="Brand/Company Name" aria-label="Brand/Company Name">
                         </div>
                         <div class="form-group">
                             <input type="email" id="email" name="email" placeholder="Your Email" required aria-label="Your Email">
-                            <div class="error-message" id="email-error">Please enter a valid email address</div>
+                            <div class="error-message" id="email-error">Please enter a valid email</div>
                         </div>
                         <div class="form-group">
                             <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" aria-label="Your Phone Number">
-                            <div class="error-message" id="phone-error">Please enter a valid 10-digit phone number</div>
+                            <div class="error-message" id="phone-error">Please enter a valid phone number</div>
                         </div>
                         <div class="form-group">
                             <input type="text" id="subject" name="subject" placeholder="Subject" aria-label="Message Subject">
                         </div>
                         <div class="form-group">
                             <textarea id="message" name="message" placeholder="Your Message" rows="5" required aria-label="Your Message"></textarea>
-                            <div class="error-message" id="message-error">Please enter your message (10-1000 characters)</div>
+                            <div class="error-message" id="message-error">Please enter your message</div>
                         </div>
                         <button type="submit" class="btn" id="submitBtn">Send Message</button>
                     </form>
@@ -1420,7 +1373,7 @@
             apiKey: "AIzaSyCnTCeBO7NtRjIZm7YZFGsctf35VXLD0cU",
             authDomain: "yishucadesigns-fbdf1.firebaseapp.com",
             projectId: "yishucadesigns-fbdf1",
-            storageBucket: "yishucadesigns-fbdf1.appspot.com",
+            storageBucket: "yishucadesigns-fbdf1.appspot.com", // Fixed storageBucket URL
             messagingSenderId: "1023416257305",
             appId: "1:1023416257305:web:645c91e979a32ea3e61388"
         };
@@ -1429,16 +1382,7 @@
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // CSRF token generation
-        function generateCsrfToken() {
-            return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
-            // Generate and store CSRF token
-            const csrfToken = generateCsrfToken();
-            sessionStorage.setItem('csrfToken', csrfToken);
-
             // Cookie Consent
             const cookieConsent = document.getElementById('cookie-consent');
             const acceptCookies = document.getElementById('accept-cookies');
@@ -1472,13 +1416,11 @@
                 });
             }
 
-            /**
-             * Creates shooting stars with parallax effect
-             * Generates random stars with different layers for depth
-             */
+            // Create subtle shooting stars with parallax effect
+            const starContainer = document.getElementById('starContainer');
+            const starCount = 15;
+            
             function createShootingStars() {
-                const starContainer = document.getElementById('starContainer');
-                const starCount = 15;
                 starContainer.innerHTML = '';
                 
                 for (let i = 0; i < starCount; i++) {
@@ -1492,7 +1434,9 @@
                     const startY = Math.random() * window.innerHeight;
                     
                     const angle = 30 + Math.random() * 30;
+                    
                     const distance = 500 + (layer * 300);
+                    
                     const delay = Math.random() * 10;
                     
                     star.style.setProperty('--angle', `${angle}deg`);
@@ -1515,31 +1459,6 @@
             createShootingStars();
             setInterval(createShootingStars, 15000);
 
-            // Handle lazy loading of portfolio images
-            function lazyLoadPortfolioImages() {
-                const portfolioImages = document.querySelectorAll('.portfolio-image');
-                
-                portfolioImages.forEach(img => {
-                    // Remove loading class when image is loaded
-                    const imageUrl = img.style.backgroundImage.replace('url("', '').replace('")', '');
-                    const tempImg = new Image();
-                    
-                    tempImg.onload = () => {
-                        img.classList.remove('loading');
-                    };
-                    
-                    tempImg.onerror = () => {
-                        img.classList.remove('loading');
-                        console.error('Error loading portfolio image:', imageUrl);
-                    };
-                    
-                    tempImg.src = imageUrl;
-                });
-            }
-
-            // Initialize lazy loading
-            lazyLoadPortfolioImages();
-
             // Page navigation
             const navLinks = document.querySelectorAll('.nav-link');
             const pages = document.querySelectorAll('.page');
@@ -1550,10 +1469,6 @@
             let activePage = document.querySelector('.page.active');
             let activeNavLink = document.querySelector('.nav-link.active');
             
-            /**
-             * Updates the position of the navigation indicator
-             * @param {HTMLElement} link - The active navigation link
-             */
             function updateIndicatorPosition(link) {
                 const linkRect = link.getBoundingClientRect();
                 const navRect = document.querySelector('.bottom-nav').getBoundingClientRect();
@@ -1652,33 +1567,15 @@
                     const email = document.getElementById('email');
                     const phone = document.getElementById('phone');
                     const message = document.getElementById('message');
-                    const honeypot = document.getElementById('website');
                     
                     // Reset error states
                     document.querySelectorAll('.form-group').forEach(group => {
                         group.classList.remove('error');
                     });
                     
-                    // Honeypot check
-                    if (honeypot.value.trim() !== '') {
-                        console.log('Bot detected');
-                        return false;
-                    }
-                    
-                    // Verify CSRF token
-                    const storedToken = sessionStorage.getItem('csrfToken');
-                    if (!storedToken) {
-                        alert('Session expired. Please refresh the page.');
-                        return false;
-                    }
-                    
                     // Name validation
                     if (!name.value.trim()) {
                         document.getElementById('name-error').textContent = 'Please enter your name';
-                        name.closest('.form-group').classList.add('error');
-                        isValid = false;
-                    } else if (name.value.trim().length < 2 || name.value.trim().length > 50) {
-                        document.getElementById('name-error').textContent = 'Name must be between 2-50 characters';
                         name.closest('.form-group').classList.add('error');
                         isValid = false;
                     }
@@ -1689,14 +1586,14 @@
                         email.closest('.form-group').classList.add('error');
                         isValid = false;
                     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-                        document.getElementById('email-error').textContent = 'Please enter a valid email address';
+                        document.getElementById('email-error').textContent = 'Please enter a valid email';
                         email.closest('.form-group').classList.add('error');
                         isValid = false;
                     }
                     
                     // Phone validation (optional but if provided, validate)
                     if (phone.value.trim() && !/^[\d\s\-()+]{10,}$/.test(phone.value)) {
-                        document.getElementById('phone-error').textContent = 'Please enter a valid 10-digit phone number';
+                        document.getElementById('phone-error').textContent = 'Please enter a valid phone number';
                         phone.closest('.form-group').classList.add('error');
                         isValid = false;
                     }
@@ -1704,10 +1601,6 @@
                     // Message validation
                     if (!message.value.trim()) {
                         document.getElementById('message-error').textContent = 'Please enter your message';
-                        message.closest('.form-group').classList.add('error');
-                        isValid = false;
-                    } else if (message.value.trim().length < 10 || message.value.trim().length > 1000) {
-                        document.getElementById('message-error').textContent = 'Message must be between 10-1000 characters';
                         message.closest('.form-group').classList.add('error');
                         isValid = false;
                     }
@@ -1726,7 +1619,6 @@
                         phone: phone.value.trim() || null,
                         subject: document.getElementById('subject').value.trim() || null,
                         message: message.value.trim(),
-                        csrfToken: storedToken,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     };
                     
@@ -1755,7 +1647,7 @@
                 // Real-time validation
                 document.getElementById('email').addEventListener('input', function() {
                     if (this.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) {
-                        document.getElementById('email-error').textContent = 'Please enter a valid email address';
+                        document.getElementById('email-error').textContent = 'Please enter a valid email';
                         this.closest('.form-group').classList.add('error');
                     } else {
                         this.closest('.form-group').classList.remove('error');
@@ -1764,7 +1656,7 @@
                 
                 document.getElementById('phone').addEventListener('input', function() {
                     if (this.value.trim() && !/^[\d\s\-()+]{10,}$/.test(this.value)) {
-                        document.getElementById('phone-error').textContent = 'Please enter a valid 10-digit phone number';
+                        document.getElementById('phone-error').textContent = 'Please enter a valid phone number';
                         this.closest('.form-group').classList.add('error');
                     } else {
                         this.closest('.form-group').classList.remove('error');
