@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Comfy Cemetery - A dark & cozy blog for eerie tales, gothic comfort, and midnight musings">
+    <meta property="og:title" content="The Comfy Cemetery | A Dark & Cozy Blog">
+    <meta property="og:description" content="A resting place for dark thoughts, eerie tales, and midnight comfort">
+    <meta property="og:type" content="website">
     <title>The Comfy Cemetery | A Dark & Cozy Blog</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,6 +34,7 @@
             overflow-x: hidden;
             line-height: 1.8;
             font-weight: 300;
+            background-color: var(--darker);
         }
 
         /* Fixed Video Background */
@@ -69,9 +74,8 @@
         /* Semi-transparent content sections */
         section {
             background-color: rgba(10, 10, 10, 0.50);
-            margin: 20px 0;
             padding: 80px 0;
-            border-top: 1px solid var(--blood-red);
+            border-top: 5px solid var(--blood-red);
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -109,7 +113,7 @@
             transition: all 0.3s ease;
         }
 
-        a:hover {
+        a:hover, a:focus-visible {
             color: var(--light-blood);
         }
 
@@ -128,9 +132,16 @@
             transition: all 0.3s ease;
         }
 
-        .btn:hover {
+        .btn:hover, .btn:focus-visible {
             background-color: var(--blood-red);
+            color: var(--text-light);
             transform: translateY(-2px);
+            outline: none;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--cozy-gold);
+            outline-offset: 3px;
         }
 
         .container {
@@ -176,45 +187,134 @@
             color: var(--blood-red);
         }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 30px;
-        }
-
-        nav ul li a {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: var(--text-light);
-            position: relative;
-        }
-
-        nav ul li a:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            background: var(--blood-red);
-            bottom: -5px;
-            left: 0;
-            transition: width 0.3s ease;
-        }
-
-        nav ul li a:hover:after {
-            width: 100%;
-        }
-
+        /* Modern Mobile Menu System */
         .mobile-menu-btn {
             display: none;
             background: none;
             border: none;
-            color: var(--text-light);
-            font-size: 1.5rem;
+            padding: 10px;
             cursor: pointer;
+            z-index: 1001;
+            position: relative;
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 3px;
+            background: var(--text-light);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:before,
+        .hamburger:after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 3px;
+            background: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:before {
+            top: -8px;
+        }
+
+        .hamburger:after {
+            top: 8px;
+        }
+
+        .mobile-menu-btn.active .hamburger {
+            background: transparent;
+        }
+
+        .mobile-menu-btn.active .hamburger:before {
+            top: 0;
+            transform: rotate(45deg);
+            background: var(--blood-red);
+        }
+
+        .mobile-menu-btn.active .hamburger:after {
+            top: 0;
+            transform: rotate(-45deg);
+            background: var(--blood-red);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 350px;
+            height: 100vh;
+            background: rgba(15, 15, 15, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 100px 30px 30px;
+            transition: all 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+            z-index: 1000;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+        }
+
+        nav.active {
+            right: 0;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            flex-direction: column;
+            padding-top: 20px;
+        }
+
+        nav ul li {
+            margin: 0;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s ease;
+        }
+
+        nav.active ul li {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        nav ul li:nth-child(1) { transition-delay: 0.1s; }
+        nav ul li:nth-child(2) { transition-delay: 0.2s; }
+        nav ul li:nth-child(3) { transition-delay: 0.3s; }
+
+        nav ul li a {
+            display: block;
+            padding: 15px 0;
+            font-size: 1.3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        nav ul li a:after {
+            display: none;
+        }
+
+        /* Menu Overlay */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(2px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* Hero Section */
@@ -260,6 +360,7 @@
             border: 1px solid #222;
             transition: all 0.3s ease;
             overflow: hidden;
+            will-change: transform;
         }
 
         .post-card:hover {
@@ -414,7 +515,7 @@
             transition: all 0.3s ease;
         }
 
-        .footer-links a:hover {
+        .footer-links a:hover, .footer-links a:focus-visible {
             color: var(--cozy-gold);
             padding-left: 5px;
         }
@@ -438,7 +539,7 @@
             transition: all 0.3s ease;
         }
 
-        .social-links a:hover {
+        .social-links a:hover, .social-links a:focus-visible {
             background-color: var(--blood-red);
             transform: translateY(-3px);
         }
@@ -473,43 +574,15 @@
 
         @media (max-width: 768px) {
             .mobile-menu-btn {
-                display: block;
-            }
-
-            nav {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 80%;
-                max-width: 300px;
-                height: 100vh;
-                background-color: rgba(10, 10, 10, 0.95);
-                padding: 80px 30px;
-                transition: all 0.5s ease;
-                z-index: 999;
-            }
-
-            nav.active {
-                right: 0;
-            }
-
-            nav ul {
+                display: flex;
                 flex-direction: column;
+                justify-content: center;
+                align-items: center;
             }
 
-            nav ul li {
-                margin: 20px 0;
-            }
-
-            .close-menu-btn {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                background: none;
-                border: none;
-                color: var(--text-light);
-                font-size: 1.5rem;
-                cursor: pointer;
+            /* Adjust header padding when menu is open */
+            header.active {
+                padding-right: 70px;
             }
 
             .hero h1 {
@@ -567,7 +640,7 @@
 <body>
     <!-- Fixed Video Background -->
     <div class="video-background-container">
-        <video class="video-background" autoplay muted loop>
+        <video class="video-background" autoplay muted loop playsinline preload="auto">
             <source src="./188950-884185329.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -580,7 +653,9 @@
         <header id="header">
             <div class="container header-container">
                 <a href="#" class="logo">THE COMFY <span>CEMETERY</span></a>
-                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu">
+                    <span class="hamburger"></span>
+                </button>
                 <nav id="nav">
                     <ul>
                         <li><a href="#home">Home</a></li>
@@ -588,6 +663,7 @@
                         <li><a href="#about">About</a></li>
                     </ul>
                 </nav>
+                <div class="menu-overlay" id="menuOverlay"></div>
             </div>
         </header>
 
@@ -596,7 +672,7 @@
             <div class="hero-content">
                 <h1>Welcome to The Comfy Cemetery</h1>
                 <p>A cozy corner for dark thoughts, eerie tales, and midnight musings.</p>
-                <a href="" class="btn">Enter if you dare.</a>
+                <a href="#blog" class="btn">Enter if you dare.</a>
             </div>
         </section>
 
@@ -608,7 +684,7 @@
                     <!-- Post 1 -->
                     <article class="post-card">
                         <div class="post-image">
-                            <img src="https://m.media-amazon.com/images/M/MV5BMjEzNTg0MzM2N15BMl5BanBnXkFtZTgwMzU4ODM0OTE@._V1_.jpg" alt="Midnight in the Graveyard">
+                            <img src="https://m.media-amazon.com/images/M/MV5BMjEzNTg0MzM2N15BMl5BanBnXkFtZTgwMzU4ODM0OTE@._V1_.jpg" alt="Midnight in the Graveyard" loading="lazy">
                         </div>
                         <div class="post-content">
                             <div class="post-meta">
@@ -620,7 +696,7 @@
                                 <span class="post-tag">Shows</span>
                                 <span class="post-tag">Comfort</span>
                             </div>
-                            <p class="post-excerpt">I can’t get over how effortlessly cool and elegant Morticia Addams was in the 1960s Addams Family series. Carolyn Jones brought her to life with such grace, wit, and a touch of mystery that no one has ever quite matched. The way she floated through scenes, her sharp humor, and that undeniable gothic glamour—she’s truly one of a kind. Morticia wasn’t just a character; she was a vibe, a mood, and a timeless icon I’ll always admire.</p>
+                            <p class="post-excerpt">I can't get over how effortlessly cool and elegant Morticia Addams was in the 1960s Addams Family series. Carolyn Jones brought her to life with such grace, wit, and a touch of mystery that no one has ever quite matched. The way she floated through scenes, her sharp humor, and that undeniable gothic glamour—she's truly one of a kind. Morticia wasn't just a character; she was a vibe, a mood, and a timeless icon I'll always admire.</p>
                             <a href="#" class="read-more">Continue Reading →</a>
                         </div>
                     </article>
@@ -628,7 +704,7 @@
                     <!-- Post 2 -->
                     <article class="post-card">
                         <div class="post-image">
-                            <img src="https://i.pinimg.com/736x/f1/68/01/f16801bd6ae9ae5cac26c3c7d5796353.jpg" alt="Gothic Comfort">
+                            <img src="https://i.pinimg.com/736x/f1/68/01/f16801bd6ae9ae5cac26c3c7d5796353.jpg" alt="Gothic Comfort" loading="lazy">
                         </div>
                         <div class="post-content">
                             <div class="post-meta">
@@ -639,7 +715,7 @@
                             <div class="post-tags">
                                 <span class="post-tag">Music</span>
                             </div>
-                            <p class="post-excerpt">Listen, I could talk about Jungkook forever. His voice? Unreal. His dance skills? Insane. His presence? Absolutely magnetic. From the moment he stepped into the spotlight, he’s been nothing short of incredible, constantly pushing himself to be even better. Whether he’s hitting those high notes, performing like it’s his last stage, or just being his adorable, humble self—he’s everything. Jungkook isn’t just talented; he’s special, and I’ll always be in awe of him.</p>
+                            <p class="post-excerpt">Listen, I could talk about Jungkook forever. His voice? Unreal. His dance skills? Insane. His presence? Absolutely magnetic. From the moment he stepped into the spotlight, he's been nothing short of incredible, constantly pushing himself to be even better. Whether he's hitting those high notes, performing like it's his last stage, or just being his adorable, humble self—he's everything. Jungkook isn't just talented; he's special, and I'll always be in awe of him.</p>
                             <a href="#" class="read-more">Continue Reading →</a>
                         </div>
                     </article>
@@ -647,7 +723,7 @@
                     <!-- Post 3 -->
                     <article class="post-card">
                         <div class="post-image">
-                            <img src="https://images.pexels.com/photos/30681571/pexels-photo-30681571/free-photo-of-mysterious-silhouette-with-dramatic-backlighting.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Ghost Stories for the Soul">
+                            <img src="https://images.pexels.com/photos/30681571/pexels-photo-30681571/free-photo-of-mysterious-silhouette-with-dramatic-backlighting.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Ghost Stories for the Soul" loading="lazy">
                         </div>
                         <div class="post-content">
                             <div class="post-meta">
@@ -659,7 +735,7 @@
                                 <span class="post-tag">Awesome</span>
                                 <span class="post-tag">Guy</span>
                             </div>
-                            <p class="post-excerpt">Some say greatness is born, others say it's made—but in Nick’s case, it’s both. Whether he’s conquering challenges, inspiring those around him, or just being effortlessly cool, Nick is the definition of awesome. Dive into the story of a guy who turns ordinary moments into epic adventures and proves that being amazing isn’t just a skill—it’s a way of life..</p>
+                            <p class="post-excerpt">Some say greatness is born, others say it's made—but in Nick's case, it's both. Whether he's conquering challenges, inspiring those around him, or just being effortlessly cool, Nick is the definition of awesome. Dive into the story of a guy who turns ordinary moments into epic adventures and proves that being amazing isn't just a skill—it's a way of life.</p>
                             <a href="#" class="read-more">Continue Reading →</a>
                         </div>
                     </article>
@@ -673,11 +749,11 @@
                 <h2>Karime: The One, The Only, The Absolutely Unforgettable</h2>
                 <div class="about-content">
                     <div class="about-text">
-                        <p>Okay, let’s be real—I’m kind of amazing. Not to brag (okay, maybe a little), but I bring the perfect mix of charm, humor, and just the right amount of chaos to keep life interesting. Whether I’m making people laugh, chasing my dreams, or just being my effortlessly cool self, I know how to make an impact. I’m the friend you can count on, the energy in the room, and honestly? Life’s just better with me in it.</p>
-                        <a href="#" class="btn">My Full Story</a>
+                        <p>Okay, let's be real—I'm kind of amazing. Not to brag (okay, maybe a little), but I bring the perfect mix of charm, humor, and just the right amount of chaos to keep life interesting. Whether I'm making people laugh, chasing my dreams, or just being my effortlessly cool self, I know how to make an impact. I'm the friend you can count on, the energy in the room, and honestly? Life's just better with me in it.</p>
+                        <a href="#about" class="btn">My Full Story</a>
                     </div>
                     <div class="about-image">
-                        <img src="https://i.pinimg.com/736x/6a/db/5c/6adb5c9bb9aa994a04e19e13d54966fb.jpg" alt="The Graveyard Keeper">
+                        <img src="https://i.pinimg.com/736x/6a/db/5c/6adb5c9bb9aa994a04e19e13d54966fb.jpg" alt="Karime - The creator of The Comfy Cemetery" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -700,7 +776,6 @@
                             <li><a href="#">Archives</a></li>
                         </ul>
                     </div>
-
                 </div>
                 <div class="copyright">
                     <p>&copy; 2023 The Comfy Cemetery. All rights reserved.</p>
@@ -710,25 +785,33 @@
     </div>
 
     <script>
-        // Mobile Menu Toggle
+        // Modern Mobile Menu Functionality
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const closeMenuBtn = document.getElementById('closeMenuBtn');
         const nav = document.getElementById('nav');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const header = document.getElementById('header');
 
         mobileMenuBtn.addEventListener('click', () => {
-            nav.classList.add('active');
+            mobileMenuBtn.classList.toggle('active');
+            nav.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            header.classList.toggle('active');
+            document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
         });
 
-        closeMenuBtn.addEventListener('click', () => {
+        // Close menu when clicking on overlay or links
+        menuOverlay.addEventListener('click', closeMenu);
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        function closeMenu() {
+            mobileMenuBtn.classList.remove('active');
             nav.classList.remove('active');
-        });
-
-        // Close menu when clicking on a link
-        document.querySelectorAll('nav ul li a').forEach(link => {
-            link.addEventListener('click', () => {
-                nav.classList.remove('active');
-            });
-        });
+            menuOverlay.classList.remove('active');
+            header.classList.remove('active');
+            document.body.style.overflow = '';
+        }
 
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -740,12 +823,13 @@
             });
         });
 
-        // Newsletter form submission
-        const newsletterForm = document.querySelector('.newsletter-form');
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Welcome to The Comfy Cemetery. Your coffin awaits.');
-            newsletterForm.reset();
+        // Add scroll effect to header
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
     </script>
 </body>
