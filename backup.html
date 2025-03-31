@@ -10,7 +10,12 @@
     <title>The Comfy Cemetery | A Dark & Cozy Blog</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Shadows+Into+Light&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@300;400;600&family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
         :root {
             --dark: #0a0a0a;
@@ -20,11 +25,16 @@
             --text: #ffffff;
             --text-light: #ffffff;
             --cozy-gold: #ffffff;
+            --main-font: 'Cormorant Garamond', serif;
+            --heading-font: 'Cinzel Decorative', serif;
+            --nick-font: 'Shadows Into Light', cursive;
         }
 
         [data-theme="forest"] {
             --accent: #1a4d1a;
             --light-accent: #2a6e2a;
+            --main-font: var(--nick-font);
+            --heading-font: var(--nick-font);
         }
 
         * {
@@ -34,7 +44,7 @@
         }
 
         body {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: var(--main-font);
             color: var(--text);
             overflow-x: hidden;
             line-height: 1.8;
@@ -44,6 +54,15 @@
             font-size: clamp(1rem, 1.5vw, 1.1rem);
         }
 
+        /* Smooth font transitions */
+        body, h1, h2, h3, h4, h5, h6, .btn, nav ul li a, .toggle-label, .logo {
+            transition: font-family 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), 
+                        color 0.5s ease, 
+                        background-color 0.5s ease, 
+                        border-color 0.5s ease;
+        }
+
+        /* Rest of your existing CSS styles... */
         .video-background-container {
             position: fixed;
             top: 0;
@@ -95,7 +114,7 @@
         }
 
         h1, h2, h3, h4, h5, h6 {
-            font-family: 'Cinzel Decorative', serif;
+            font-family: var(--heading-font);
             font-weight: 700;
             color: var(--text-light);
             margin-bottom: 1.5rem;
@@ -143,7 +162,7 @@
             color: var(--text-light);
             border: 2px solid var(--accent);
             border-radius: 0;
-            font-family: 'Cormorant Garamond', serif;
+            font-family: var(--main-font);
             font-weight: 600;
             font-size: clamp(1rem, 1.5vw, 1.2rem);
             letter-spacing: 1px;
@@ -204,7 +223,7 @@
         }
 
         .logo {
-            font-family: 'Cinzel Decorative', serif;
+            font-family: var(--heading-font);
             font-size: clamp(1.5rem, 3vw, 2rem);
             font-weight: 700;
             color: var(--text-light);
@@ -271,7 +290,7 @@
         }
 
         .toggle-label {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: var(--main-font);
             font-size: clamp(0.8rem, 1.5vw, 1rem);
             color: var(--text-light);
             white-space: nowrap;
@@ -377,7 +396,7 @@
             padding: 15px 0;
             font-size: clamp(1.2rem, 3vw, 1.4rem);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-family: 'Cormorant Garamond', serif;
+            font-family: var(--main-font);
             font-weight: 600;
             color: var(--text-light);
         }
@@ -442,7 +461,7 @@
             margin-left: auto;
             margin-right: auto;
             opacity: 0;
-            transition: opacity 1s ease-out 4s, transform 1s ease-out 4s;
+            transition: opacity 1s ease-out 3s, transform 1s ease-out 3s;
             color: var(--text-light);
             text-shadow:
             2px 2px 1px rgba(0, 0, 0, 0.5);
@@ -455,7 +474,7 @@
 
         .hero .btn {
             opacity: 0;
-            transition: all 1s ease-out 5s, border-color 1s ease, background-color 2s ease;
+            transition: all 1s ease-out 3.5s, border-color 1s ease, background-color 2s ease;
         }
 
         .hero .btn.fade-in {
@@ -825,6 +844,108 @@
             50% { transform: translateY(10px); }
         }
 
+        /* Admin Panel Styles */
+        .admin-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .admin-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .admin-panel-expanded {
+            background-color: rgba(10, 10, 10, 0.9);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 300px;
+            backdrop-filter: blur(5px);
+        }
+
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .admin-form input, 
+        .admin-form textarea, 
+        .admin-form select {
+            padding: 8px;
+            background-color: rgba(20, 20, 20, 0.8);
+            border: 1px solid #333;
+            color: white;
+            font-family: var(--main-font);
+        }
+
+        .admin-form button {
+            padding: 8px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .admin-form button:hover {
+            background-color: var(--light-accent);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+            background-color: rgba(10, 10, 10, 0.9);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        .login-form input {
+            padding: 8px;
+            background-color: rgba(20, 20, 20, 0.8);
+            border: 1px solid #333;
+            color: white;
+        }
+
+        .login-form button {
+            padding: 8px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+
         /* Extra large screens */
         @media (min-width: 2000px) {
             .container, .header-container {
@@ -940,11 +1061,11 @@
     <div class="content" id="mainContent">
         <!-- Fixed Video Backgrounds -->
         <div class="video-background-container">
-            <video class="video-background active" id="video1" autoplay muted loop playsinline>
+            <video class="video-background active" id="video1" autoplay muted loop playsinline webkit-playsinline preload="auto">
                 <source src="./vid1.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <video class="video-background inactive" id="video2" autoplay muted loop playsinline>
+            <video class="video-background inactive" id="video2" autoplay muted loop playsinline webkit-playsinline preload="auto">
                 <source src="./vid2.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -1040,7 +1161,50 @@
         </div>
     </div>
 
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <button class="admin-btn" id="adminToggleBtn">👻</button>
+        <div class="admin-panel-expanded hidden" id="adminPanelExpanded">
+            <div id="loginForm" class="login-form">
+                <h3>Admin Login</h3>
+                <input type="email" id="adminEmail" placeholder="Email">
+                <input type="password" id="adminPassword" placeholder="Password">
+                <button id="loginBtn">Login</button>
+            </div>
+            <div id="adminControls" class="hidden">
+                <h3>Admin Controls</h3>
+                <button id="addPostBtn">Add New Post</button>
+                <button id="logoutBtn">Logout</button>
+                <div id="postForm" class="admin-form hidden">
+                    <input type="text" id="postTitle" placeholder="Post Title">
+                    <textarea id="postContent" placeholder="Post Content"></textarea>
+                    <input type="text" id="postImage" placeholder="Image URL">
+                    <input type="text" id="postTags" placeholder="Tags (comma separated)">
+                    <button id="savePostBtn">Save Post</button>
+                    <button id="cancelPostBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // ======================
+        // Firebase Configuration
+        // ======================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDB56BEg05CryAgi0FJyteide8mnSycFHU",
+            authDomain: "thecomfycemetery.firebaseapp.com",
+            projectId: "thecomfycemetery",
+            storageBucket: "thecomfycemetery.appspot.com",
+            messagingSenderId: "860660738178",
+            appId: "1:860660738178:web:a26913b7f1e07d8e79ec9b"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
         // ======================
         // Constants & Config
         // ======================
@@ -1050,73 +1214,44 @@
                 tileCount: 32,
                 cols: 8,
                 messages: [
-                "Polishing the headstones...",
-                "This delay is killer...",
-                "Putting the ‘fun’ in funeral...",
-                "Chanting forbidden verses...",
-                "Death is patient. Are you?...",
-                "You’re alive to see this? Lucky...",
-                "Raising this page from the dead...",
-                "Sweeping the cobwebs off your page...",
-                "Digging up your content...",
-                "Summoning ancient spirits...",
-                "Brewing the dark elixir...",
-                "Carving the pentagram...",
-                "Awakening the undead...",
-                "Conjuring the shadows...",
-                "Preparing the sacrificial altar...",
-                "The skeleton crew is on strike for better bandwidth...",  
-                "Bribing the cemetery raccoons to run the server...",  
-                "Loading... or is this a government afterlife simulation?",  
-                "We’d load faster, but the office ouija board keeps spelling ‘NOPE.’",  
-                "This is definitely not a screensaver for the underworld.",  
-                "100% not haunted. Promise.",  
-                "This delay is training you for eternity.",
-                "Unrolling the blood-red carpet...",
-                "Waiting for the skeleton crew to wake up...",
-                "Finding a spot for you in the graveyard...",
-                "Fluffing the cobwebs...",
-                "Warming up the tomb...",
-                "The loading bar is haunted (it moves on its own)",
-                "The end is near... of this loading screen",
-                "3% alive, 97% undead, 100% loading...",
-                "Entering the cemetery... watch your step"
+                    "Polishing the headstones...",
+                    "This delay is killer...",
+                    "Putting the 'fun' in funeral...",
+                    "Chanting forbidden verses...",
+                    "Death is patient. Are you?...",
+                    "You're alive to see this? Lucky...",
+                    "Raising this page from the dead...",
+                    "Sweeping the cobwebs off your page...",
+                    "Digging up your content...",
+                    "Summoning ancient spirits...",
+                    "Brewing the dark elixir...",
+                    "Carving the pentagram...",
+                    "Awakening the undead...",
+                    "Conjuring the shadows...",
+                    "Preparing the sacrificial altar...",
+                    "The skeleton crew is on strike for better bandwidth...",  
+                    "Bribing the cemetery raccoons to run the server...",  
+                    "Loading... or is this a government afterlife simulation?",  
+                    "We'd load faster, but the office ouija board keeps spelling 'NOPE.'",  
+                    "This is definitely not a screensaver for the underworld.",  
+                    "100% not haunted. Promise.",  
+                    "This delay is training you for eternity.",
+                    "Unrolling the blood-red carpet...",
+                    "Waiting for the skeleton crew to wake up...",
+                    "Finding a spot for you in the graveyard...",
+                    "Fluffing the cobwebs...",
+                    "Warming up the tomb...",
+                    "The loading bar is haunted (it moves on its own)",
+                    "The end is near... of this loading screen",
+                    "3% alive, 97% undead, 100% loading...",
+                    "Entering the cemetery... watch your step"
                 ]
             },
             videos: {
                 video1: "./vid1.mp4",
                 video2: "./vid2.mp4",
                 fallbackImage: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450'%3E%3Crect width='800' height='450' fill='%23050505'/%3E%3Ctext x='50%' y='50%' fill='%23ffffff' font-family='Cormorant Garamond' font-size='24' text-anchor='middle'%3EVideo not loaded%3C/text%3E%3C/svg%3E"
-            },
-            posts: [
-                {
-                    id: 1,
-                    title: "Gothic Queen: Why Morticia Addams Will Always Be Iconic",
-                    date: "October 31, 2023",
-                    readTime: "7 min read",
-                    image: "https://m.media-amazon.com/images/M/MV5BMjEzNTg0MzM2N15BMl5BanBnXkFtZTgwMzU4ODM0OTE@._V1_.jpg",
-                    tags: ["Shows", "Comfort"],
-                    excerpt: "I can't get over how effortlessly cool and elegant Morticia Addams was in the 1960s Addams Family series. Carolyn Jones brought her to life with such grace, wit, and a touch of mystery that no one has ever quite matched."
-                },
-                {
-                    id: 2,
-                    title: "Jungkook: The Golden Maknae Who Owns My Heart",
-                    date: "September 15, 2023",
-                    readTime: "10 min read",
-                    image: "https://i.pinimg.com/736x/f1/68/01/f16801bd6ae9ae5cac26c3c7d5796353.jpg",
-                    tags: ["Music"],
-                    excerpt: "Listen, I could talk about Jungkook forever. His voice? Unreal. His dance skills? Insane. His presence? Absolutely magnetic."
-                },
-                {
-                    id: 3,
-                    title: "The Legend, The Myth, The Most Awesome Guy Ever",
-                    date: "August 7, 2023",
-                    readTime: "12 min read",
-                    image: "https://images.pexels.com/photos/30681571/pexels-photo-30681571/free-photo-of-mysterious-silhouette-with-dramatic-backlighting.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-                    tags: ["Awesome", "Guy"],
-                    excerpt: "Some say greatness is born, others say it's made—but in Nick's case, it's both."
-                }
-            ]
+            }
         };
 
         // ======================
@@ -1144,7 +1279,26 @@
             mainTitle: document.getElementById('main-title'),
             subtitle: document.getElementById('subtitle'),
             ctaButton: document.getElementById('cta-button'),
-            postsGrid: document.querySelector('.posts-grid')
+            postsGrid: document.querySelector('.posts-grid'),
+            
+            // Admin Panel
+            adminPanel: document.getElementById('adminPanel'),
+            adminToggleBtn: document.getElementById('adminToggleBtn'),
+            adminPanelExpanded: document.getElementById('adminPanelExpanded'),
+            loginForm: document.getElementById('loginForm'),
+            adminControls: document.getElementById('adminControls'),
+            adminEmail: document.getElementById('adminEmail'),
+            adminPassword: document.getElementById('adminPassword'),
+            loginBtn: document.getElementById('loginBtn'),
+            logoutBtn: document.getElementById('logoutBtn'),
+            addPostBtn: document.getElementById('addPostBtn'),
+            postForm: document.getElementById('postForm'),
+            postTitle: document.getElementById('postTitle'),
+            postContent: document.getElementById('postContent'),
+            postImage: document.getElementById('postImage'),
+            postTags: document.getElementById('postTags'),
+            savePostBtn: document.getElementById('savePostBtn'),
+            cancelPostBtn: document.getElementById('cancelPostBtn')
         };
 
         // ======================
@@ -1363,10 +1517,30 @@
             
             async loadBlogPosts() {
                 try {
-                    this.renderPosts(CONFIG.posts);
+                    const postsSnapshot = await db.collection('posts').orderBy('date', 'desc').get();
+                    const posts = postsSnapshot.docs.map(doc => {
+                        const data = doc.data();
+                        return {
+                            id: doc.id,
+                            title: data.title,
+                            date: this.formatDate(data.date.toDate()),
+                            readTime: data.readTime || '5 min read',
+                            image: data.image || 'https://via.placeholder.com/400x250?text=No+Image',
+                            tags: data.tags || [],
+                            excerpt: data.excerpt || 'No content available',
+                            content: data.content || ''
+                        };
+                    });
+                    
+                    this.renderPosts(posts);
                 } catch (error) {
                     console.error("Failed to load posts:", error);
                 }
+            },
+            
+            formatDate(date) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return date.toLocaleDateString('en-US', options);
             },
             
             renderPosts(posts) {
@@ -1397,6 +1571,105 @@
             }
         };
 
+        // 5. Admin Panel Module
+        const adminPanel = {
+            init() {
+                this.setupEventListeners();
+                this.checkAuthState();
+            },
+            
+            setupEventListeners() {
+                dom.adminToggleBtn.addEventListener('click', this.toggleAdminPanel.bind(this));
+                dom.loginBtn.addEventListener('click', this.handleLogin.bind(this));
+                dom.logoutBtn.addEventListener('click', this.handleLogout.bind(this));
+                dom.addPostBtn.addEventListener('click', this.showPostForm.bind(this));
+                dom.savePostBtn.addEventListener('click', this.savePost.bind(this));
+                dom.cancelPostBtn.addEventListener('click', this.hidePostForm.bind(this));
+            },
+            
+            toggleAdminPanel() {
+                dom.adminPanelExpanded.classList.toggle('hidden');
+            },
+            
+            async checkAuthState() {
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        this.showAdminControls();
+                    } else {
+                        this.showLoginForm();
+                    }
+                });
+            },
+            
+            async handleLogin() {
+                const email = dom.adminEmail.value;
+                const password = dom.adminPassword.value;
+                
+                try {
+                    await auth.signInWithEmailAndPassword(email, password);
+                    this.showAdminControls();
+                } catch (error) {
+                    alert('Login failed: ' + error.message);
+                    console.error('Login error:', error);
+                }
+            },
+            
+            async handleLogout() {
+                try {
+                    await auth.signOut();
+                    this.showLoginForm();
+                    this.hidePostForm();
+                } catch (error) {
+                    console.error('Logout error:', error);
+                }
+            },
+            
+            showAdminControls() {
+                dom.loginForm.classList.add('hidden');
+                dom.adminControls.classList.remove('hidden');
+            },
+            
+            showLoginForm() {
+                dom.adminControls.classList.add('hidden');
+                dom.loginForm.classList.remove('hidden');
+                dom.adminEmail.value = '';
+                dom.adminPassword.value = '';
+            },
+            
+            showPostForm() {
+                dom.postForm.classList.remove('hidden');
+                dom.postTitle.value = '';
+                dom.postContent.value = '';
+                dom.postImage.value = '';
+                dom.postTags.value = '';
+            },
+            
+            hidePostForm() {
+                dom.postForm.classList.add('hidden');
+            },
+            
+            async savePost() {
+                const postData = {
+                    title: dom.postTitle.value,
+                    content: dom.postContent.value,
+                    excerpt: dom.postContent.value.substring(0, 150) + '...',
+                    image: dom.postImage.value,
+                    tags: dom.postTags.value.split(',').map(tag => tag.trim()),
+                    date: new Date()
+                };
+                
+                try {
+                    await db.collection('posts').add(postData);
+                    alert('Post saved successfully!');
+                    this.hidePostForm();
+                    contentLoader.loadBlogPosts();
+                } catch (error) {
+                    alert('Error saving post: ' + error.message);
+                    console.error('Save post error:', error);
+                }
+            }
+        };
+
         // ======================
         // Initialize Everything
         // ======================
@@ -1405,6 +1678,7 @@
             videoController.init();
             navigation.init();
             contentLoader.init();
+            adminPanel.init();
         });
     </script>
 </body>
