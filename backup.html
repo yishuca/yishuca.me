@@ -844,7 +844,7 @@
             50% { transform: translateY(10px); }
         }
 
-        /* Admin Panel Styles */
+        /* Enhanced Admin Panel Styles */
         .admin-panel {
             position: fixed;
             bottom: 20px;
@@ -872,78 +872,225 @@
         }
 
         .admin-btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.1);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
         }
 
+        .admin-panel-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .admin-panel-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         .admin-panel-expanded {
-            background-color: rgba(10, 10, 10, 0.9);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background-color: rgba(10, 10, 10, 0.95);
             border: 1px solid var(--accent);
             border-radius: 8px;
-            padding: 15px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-width: 300px;
-            backdrop-filter: blur(5px);
+            gap: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 2001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .admin-panel-expanded.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
         }
 
         .admin-form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
+        }
+
+        .admin-form h3 {
+            color: var(--cozy-gold);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .admin-form label {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: -10px;
         }
 
         .admin-form input, 
         .admin-form textarea, 
         .admin-form select {
-            padding: 8px;
+            padding: 12px;
             background-color: rgba(20, 20, 20, 0.8);
             border: 1px solid #333;
             color: white;
             font-family: var(--main-font);
+            font-size: 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-form input:focus, 
+        .admin-form textarea:focus, 
+        .admin-form select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(138, 0, 0, 0.3);
+        }
+
+        .admin-form textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .admin-form .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 10px;
         }
 
         .admin-form button {
-            padding: 8px;
+            padding: 12px 20px;
             background-color: var(--accent);
             color: white;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            font-family: var(--main-font);
+            font-weight: 600;
+            font-size: 1rem;
         }
 
         .admin-form button:hover {
             background-color: var(--light-accent);
+            transform: translateY(-2px);
+        }
+
+        .admin-form button.secondary {
+            background-color: transparent;
+            border: 1px solid #444;
+        }
+
+        .admin-form button.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: #666;
+        }
+
+        .admin-form button.danger {
+            background-color: #8b0000;
+        }
+
+        .admin-form button.danger:hover {
+            background-color: #a00000;
         }
 
         .login-form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            padding: 15px;
-            background-color: rgba(10, 10, 10, 0.9);
+            gap: 15px;
+            padding: 25px;
+            background-color: rgba(10, 10, 10, 0.95);
             border: 1px solid var(--accent);
             border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .login-form h3 {
+            color: var(--cozy-gold);
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .login-form input {
-            padding: 8px;
+            padding: 12px;
             background-color: rgba(20, 20, 20, 0.8);
             border: 1px solid #333;
             color: white;
+            font-family: var(--main-font);
+            border-radius: 4px;
         }
 
         .login-form button {
-            padding: 8px;
+            padding: 12px;
             background-color: var(--accent);
             color: white;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
+            font-family: var(--main-font);
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .login-form button:hover {
+            background-color: var(--light-accent);
         }
 
         .hidden {
             display: none;
+        }
+
+        .posts-list {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .posts-list th, .posts-list td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .posts-list th {
+            background-color: rgba(138, 0, 0, 0.2);
+            color: var(--cozy-gold);
+            font-family: var(--heading-font);
+        }
+
+        .posts-list tr:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .post-actions button {
+            padding: 6px 10px;
+            font-size: 0.9rem;
+            border-radius: 3px;
         }
 
         /* Extra large screens */
@@ -1010,6 +1157,16 @@
             .nav-right {
                 gap: 10px;
             }
+
+            .admin-panel-expanded {
+                width: 95%;
+                padding: 15px;
+            }
+
+            .posts-list {
+                display: block;
+                overflow-x: auto;
+            }
         }
 
         @media (max-width: 576px) {
@@ -1043,6 +1200,10 @@
 
             .toggle-label {
                 width: auto;
+            }
+
+            .post-actions {
+                flex-direction: column;
             }
         }
     </style>
@@ -1164,7 +1325,8 @@
     <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
         <button class="admin-btn" id="adminToggleBtn">👻</button>
-        <div class="admin-panel-expanded hidden" id="adminPanelExpanded">
+        <div class="admin-panel-overlay" id="adminPanelOverlay"></div>
+        <div class="admin-panel-expanded" id="adminPanelExpanded">
             <div id="loginForm" class="login-form">
                 <h3>Admin Login</h3>
                 <input type="email" id="adminEmail" placeholder="Email">
@@ -1173,15 +1335,43 @@
             </div>
             <div id="adminControls" class="hidden">
                 <h3>Admin Controls</h3>
-                <button id="addPostBtn">Add New Post</button>
-                <button id="logoutBtn">Logout</button>
+                <div class="form-actions">
+                    <button id="addPostBtn" class="btn">Add New Post</button>
+                    <button id="logoutBtn" class="btn secondary">Logout</button>
+                </div>
+                
+                <div id="postsListContainer" class="hidden">
+                    <h4>Manage Posts</h4>
+                    <table class="posts-list">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="postsList">
+                            <!-- Posts will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+                
                 <div id="postForm" class="admin-form hidden">
+                    <h3 id="formTitle">Create New Post</h3>
+                    <input type="hidden" id="postId">
+                    <label for="postTitle">Title</label>
                     <input type="text" id="postTitle" placeholder="Post Title">
+                    <label for="postContent">Content</label>
                     <textarea id="postContent" placeholder="Post Content"></textarea>
+                    <label for="postImage">Image URL</label>
                     <input type="text" id="postImage" placeholder="Image URL">
+                    <label for="postTags">Tags (comma separated)</label>
                     <input type="text" id="postTags" placeholder="Tags (comma separated)">
-                    <button id="savePostBtn">Save Post</button>
-                    <button id="cancelPostBtn">Cancel</button>
+                    <div class="form-actions">
+                        <button id="savePostBtn" class="btn">Save Post</button>
+                        <button id="cancelPostBtn" class="btn secondary">Cancel</button>
+                        <button id="deletePostBtn" class="btn danger hidden">Delete Post</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1284,6 +1474,7 @@
             // Admin Panel
             adminPanel: document.getElementById('adminPanel'),
             adminToggleBtn: document.getElementById('adminToggleBtn'),
+            adminPanelOverlay: document.getElementById('adminPanelOverlay'),
             adminPanelExpanded: document.getElementById('adminPanelExpanded'),
             loginForm: document.getElementById('loginForm'),
             adminControls: document.getElementById('adminControls'),
@@ -1292,13 +1483,18 @@
             loginBtn: document.getElementById('loginBtn'),
             logoutBtn: document.getElementById('logoutBtn'),
             addPostBtn: document.getElementById('addPostBtn'),
+            postsListContainer: document.getElementById('postsListContainer'),
+            postsList: document.getElementById('postsList'),
             postForm: document.getElementById('postForm'),
+            formTitle: document.getElementById('formTitle'),
+            postId: document.getElementById('postId'),
             postTitle: document.getElementById('postTitle'),
             postContent: document.getElementById('postContent'),
             postImage: document.getElementById('postImage'),
             postTags: document.getElementById('postTags'),
             savePostBtn: document.getElementById('savePostBtn'),
-            cancelPostBtn: document.getElementById('cancelPostBtn')
+            cancelPostBtn: document.getElementById('cancelPostBtn'),
+            deletePostBtn: document.getElementById('deletePostBtn')
         };
 
         // ======================
@@ -1573,6 +1769,8 @@
 
         // 5. Admin Panel Module
         const adminPanel = {
+            currentPost: null,
+            
             init() {
                 this.setupEventListeners();
                 this.checkAuthState();
@@ -1580,21 +1778,34 @@
             
             setupEventListeners() {
                 dom.adminToggleBtn.addEventListener('click', this.toggleAdminPanel.bind(this));
+                dom.adminPanelOverlay.addEventListener('click', this.toggleAdminPanel.bind(this));
                 dom.loginBtn.addEventListener('click', this.handleLogin.bind(this));
                 dom.logoutBtn.addEventListener('click', this.handleLogout.bind(this));
-                dom.addPostBtn.addEventListener('click', this.showPostForm.bind(this));
+                dom.addPostBtn.addEventListener('click', () => {
+                    this.showPostForm();
+                    this.hidePostsList();
+                });
                 dom.savePostBtn.addEventListener('click', this.savePost.bind(this));
-                dom.cancelPostBtn.addEventListener('click', this.hidePostForm.bind(this));
+                dom.cancelPostBtn.addEventListener('click', () => {
+                    this.hidePostForm();
+                    this.showPostsList();
+                });
+                dom.deletePostBtn.addEventListener('click', this.deletePost.bind(this));
             },
             
             toggleAdminPanel() {
-                dom.adminPanelExpanded.classList.toggle('hidden');
+                dom.adminPanelOverlay.classList.toggle('active');
+                dom.adminPanelExpanded.classList.toggle('active');
+                
+                // Add/remove body scroll lock when panel is open
+                document.body.style.overflow = dom.adminPanelExpanded.classList.contains('active') ? 'hidden' : '';
             },
             
             async checkAuthState() {
                 auth.onAuthStateChanged(user => {
                     if (user) {
                         this.showAdminControls();
+                        this.loadPostsList();
                     } else {
                         this.showLoginForm();
                     }
@@ -1608,6 +1819,7 @@
                 try {
                     await auth.signInWithEmailAndPassword(email, password);
                     this.showAdminControls();
+                    this.loadPostsList();
                 } catch (error) {
                     alert('Login failed: ' + error.message);
                     console.error('Login error:', error);
@@ -1619,6 +1831,7 @@
                     await auth.signOut();
                     this.showLoginForm();
                     this.hidePostForm();
+                    this.hidePostsList();
                 } catch (error) {
                     console.error('Logout error:', error);
                 }
@@ -1636,16 +1849,121 @@
                 dom.adminPassword.value = '';
             },
             
+            async loadPostsList() {
+                try {
+                    const postsSnapshot = await db.collection('posts').orderBy('date', 'desc').get();
+                    const posts = postsSnapshot.docs.map(doc => {
+                        const data = doc.data();
+                        return {
+                            id: doc.id,
+                            title: data.title,
+                            date: contentLoader.formatDate(data.date.toDate())
+                        };
+                    });
+                    
+                    this.renderPostsList(posts);
+                    this.showPostsList();
+                } catch (error) {
+                    console.error("Failed to load posts list:", error);
+                }
+            },
+            
+            renderPostsList(posts) {
+                dom.postsList.innerHTML = '';
+                
+                if (posts.length === 0) {
+                    dom.postsList.innerHTML = '<tr><td colspan="3" style="text-align: center;">No posts found</td></tr>';
+                    return;
+                }
+                
+                posts.forEach(post => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${post.title}</td>
+                        <td>${post.date}</td>
+                        <td class="post-actions">
+                            <button class="btn edit-post" data-id="${post.id}">Edit</button>
+                            <button class="btn danger delete-post" data-id="${post.id}">Delete</button>
+                        </td>
+                    `;
+                    dom.postsList.appendChild(row);
+                });
+                
+                // Add event listeners to the new buttons
+                document.querySelectorAll('.edit-post').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const postId = e.target.getAttribute('data-id');
+                        this.editPost(postId);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-post').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const postId = e.target.getAttribute('data-id');
+                        if (confirm('Are you sure you want to delete this post?')) {
+                            this.deletePost(postId);
+                        }
+                    });
+                });
+            },
+            
+            showPostsList() {
+                dom.postsListContainer.classList.remove('hidden');
+                dom.postForm.classList.add('hidden');
+            },
+            
+            hidePostsList() {
+                dom.postsListContainer.classList.add('hidden');
+            },
+            
+            async editPost(postId) {
+                try {
+                    const doc = await db.collection('posts').doc(postId).get();
+                    if (doc.exists) {
+                        const post = doc.data();
+                        this.currentPost = { id: postId, ...post };
+                        
+                        dom.formTitle.textContent = 'Edit Post';
+                        dom.postId.value = postId;
+                        dom.postTitle.value = post.title;
+                        dom.postContent.value = post.content;
+                        dom.postImage.value = post.image || '';
+                        dom.postTags.value = post.tags ? post.tags.join(', ') : '';
+                        
+                        dom.deletePostBtn.classList.remove('hidden');
+                        this.showPostForm();
+                        this.hidePostsList();
+                        
+                        // Scroll to the form
+                        dom.adminPanelExpanded.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error loading post for editing:", error);
+                    alert('Failed to load post for editing');
+                }
+            },
+            
             showPostForm() {
+                if (!this.currentPost) {
+                    // New post
+                    dom.formTitle.textContent = 'Create New Post';
+                    dom.postId.value = '';
+                    dom.postTitle.value = '';
+                    dom.postContent.value = '';
+                    dom.postImage.value = '';
+                    dom.postTags.value = '';
+                    dom.deletePostBtn.classList.add('hidden');
+                }
+                
                 dom.postForm.classList.remove('hidden');
-                dom.postTitle.value = '';
-                dom.postContent.value = '';
-                dom.postImage.value = '';
-                dom.postTags.value = '';
             },
             
             hidePostForm() {
                 dom.postForm.classList.add('hidden');
+                this.currentPost = null;
             },
             
             async savePost() {
@@ -1655,17 +1973,63 @@
                     excerpt: dom.postContent.value.substring(0, 150) + '...',
                     image: dom.postImage.value,
                     tags: dom.postTags.value.split(',').map(tag => tag.trim()),
-                    date: new Date()
+                    date: this.currentPost?.date ? this.currentPost.date : new Date()
                 };
                 
                 try {
-                    await db.collection('posts').add(postData);
-                    alert('Post saved successfully!');
-                    this.hidePostForm();
+                    if (dom.postId.value) {
+                        // Update existing post
+                        await db.collection('posts').doc(dom.postId.value).update(postData);
+                    } else {
+                        // Create new post
+                        await db.collection('posts').add(postData);
+                    }
+                    
+                    // Show success message with smooth animation
+                    const originalText = dom.savePostBtn.textContent;
+                    dom.savePostBtn.textContent = '✓ Saved!';
+                    dom.savePostBtn.style.backgroundColor = '#1a4d1a';
+                    
+                    setTimeout(() => {
+                        dom.savePostBtn.textContent = originalText;
+                        dom.savePostBtn.style.backgroundColor = '';
+                    }, 2000);
+                    
+                    // Reload posts
+                    this.loadPostsList();
                     contentLoader.loadBlogPosts();
+                    
+                    // Return to posts list after a delay
+                    setTimeout(() => {
+                        this.hidePostForm();
+                        this.showPostsList();
+                    }, 500);
                 } catch (error) {
+                    console.error('Error saving post:', error);
                     alert('Error saving post: ' + error.message);
-                    console.error('Save post error:', error);
+                }
+            },
+            
+            async deletePost(postId = null) {
+                const idToDelete = postId || dom.postId.value;
+                if (!idToDelete) return;
+                
+                try {
+                    await db.collection('posts').doc(idToDelete).delete();
+                    
+                    // Show success message
+                    alert('Post deleted successfully');
+                    
+                    // Reload posts
+                    this.loadPostsList();
+                    contentLoader.loadBlogPosts();
+                    
+                    // Hide form and show list
+                    this.hidePostForm();
+                    this.showPostsList();
+                } catch (error) {
+                    console.error('Error deleting post:', error);
+                    alert('Error deleting post: ' + error.message);
                 }
             }
         };
