@@ -1067,10 +1067,14 @@
             margin-top: 20px;
         }
 
-        .posts-list th, .posts-list td {
+        .posts-list th {
             padding: 12px 15px;
             text-align: left;
-            border-bottom: 1px solid #333;
+        }
+
+        .posts-list td {
+            padding: 12px 15px;
+            text-align: left;
         }
 
         .posts-list th {
@@ -1336,13 +1340,12 @@
             </div>
             <div id="adminControls" class="hidden">
                 <h3>Admin Controls</h3>
-                <div class="form-actions">
-                    <button id="addPostBtn" class="btn">Add New Post</button>
-                    <button id="logoutBtn" class="btn secondary">Logout</button>
-                </div>
                 
                 <div id="postsListContainer" class="hidden">
                     <h4>Manage Posts</h4>
+                <div class="form-actions">
+                    <button id="addPostBtn" class="btn">Add New Post</button>
+                </div>
                     <table class="posts-list">
                         <thead>
                             <tr>
@@ -1355,6 +1358,8 @@
                             <!-- Posts will be loaded here -->
                         </tbody>
                     </table>
+                    <br>
+                    <button id="logoutBtn" class="btn secondary">Logout</button>
                 </div>
                 
                 <div id="postForm" class="admin-form hidden">
