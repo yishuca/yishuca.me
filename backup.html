@@ -570,6 +570,11 @@
             max-width: 400px;
         }
 
+        .post-card .read-more {
+            pointer-events: auto; /* Re-enable clicks only on this element */
+        }
+
+
         .post-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
@@ -578,8 +583,11 @@
 
         .post-image {
             position: relative;
-            height: clamp(200px, 25vw, 250px); /* Ensure fixed height */
-            overflow: hidden; /* Contain the absolutely positioned elements */
+            overflow: hidden;
+            height: clamp(200px, 25vw, 250px);
+            /* Force GPU acceleration for the container */
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         .post-image img {
@@ -587,9 +595,16 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
+            /* Prevent subpixel rendering artifacts */
+            transform: translateZ(0) scale(1);
+            backface-visibility: hidden;
         }
 
-        /* Gradient overlay (separate element) */
+        .post-image:hover img {
+            transform: translateZ(0) scale(1.05);
+        }
+
+        /* Overlay solution - no scaling needed */
         .post-image::after {
             content: '';
             position: absolute;
@@ -597,16 +612,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Adjust opacity (0.5 = 50% dark) */
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1;
+            /* These prevent the glitch */
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
-        /* Style for the title over the image */
         .post-title-overlay {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) translateZ(0);
             width: 100%;
             padding: 0 20px;
             color: white;
@@ -614,14 +631,17 @@
             font-family: var(--heading-font);
             font-size: clamp(1.2rem, 3vw, 1.8rem);
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
-            z-index: 2; /* Ensures text appears above overlay */
+            z-index: 2;
             margin: 0;
+            backface-visibility: hidden;
+            /* Smooth any remaining glitches */
+            will-change: transform;
         }
 
-        @media (max-width: 768px) {
-            .post-title-overlay {
-                padding: 10px;
-                font-size: 1.1rem;
+                @media (hover: hover) {
+            .post-image {
+                /* Only apply hover effects on devices that support them */
+                transition: transform 0.5s ease;
             }
         }
 
@@ -2343,14 +2363,14 @@
             
             setupEventListeners() {
                 dom.postsGrid.addEventListener('click', (e) => {
-                    if (e.target.closest('.read-more') || e.target.closest('.post-card')) {
-                        e.preventDefault();
-                        const postCard = e.target.closest('.post-card');
-                        if (postCard) {
-                            const postId = postCard.dataset.id;
-                            this.showSinglePost(postId);
-                        }
-                    }
+                    // Only proceed if clicking the "Continue Reading" link
+                    const readMoreLink = e.target.closest('.read-more');
+                    if (!readMoreLink) return;
+                    
+                    e.preventDefault();
+                    const postCard = readMoreLink.closest('.post-card');
+                    const postId = postCard.dataset.id;
+                    contentLoader.showSinglePost(postId);
                 });
                 
                 dom.backToBlog.addEventListener('click', (e) => {
