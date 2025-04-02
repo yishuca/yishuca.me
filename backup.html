@@ -1168,18 +1168,21 @@
         }
 
         .single-post .post-content-text h1 {
-            font-size: 2.2rem;
+            font-size: 1.8rem; /* Smaller single post title */
             margin: 2.5rem 0 1.5rem;
+            color: var(--cozy-gold);
         }
 
         .single-post .post-content-text h2 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             margin: 2rem 0 1rem;
+            color: var(--cozy-gold);
         }
 
         .single-post .post-content-text h3 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin: 1.8rem 0 0.8rem;
+            color: var(--cozy-gold);
         }
 
         .single-post .post-content-text a {
@@ -1242,6 +1245,22 @@
             color: #6bff6b;
         }
 
+        .single-post .post-content-text .text-blue {
+            color: #6bb5ff;
+        }
+
+        .single-post .post-content-text .text-pink {
+            color: #ff6b9e;
+        }
+
+        .single-post .post-content-text .text-orange {
+            color: #ffa500;
+        }
+
+        .single-post .post-content-text .text-cyan {
+            color: #00ffff;
+        }
+
         /* Text alignment */
         .single-post .post-content-text .text-center {
             text-align: center;
@@ -1251,13 +1270,134 @@
             text-align: right;
         }
 
+        .single-post .post-content-text .text-left {
+            text-align: left;
+        }
+
         /* Text size */
-        .single-post .post-content-text .text-small {
+        .single-post .post-content-text .text-xs {
+            font-size: 0.8rem;
+        }
+
+        .single-post .post-content-text .text-sm {
             font-size: 0.9rem;
         }
 
-        .single-post .post-content-text .text-large {
+        .single-post .post-content-text .text-md {
+            font-size: 1.1rem;
+        }
+
+        .single-post .post-content-text .text-lg {
             font-size: 1.3rem;
+        }
+
+        .single-post .post-content-text .text-xl {
+            font-size: 1.5rem;
+        }
+
+        .single-post .post-content-text .text-xxl {
+            font-size: 1.8rem;
+        }
+
+        /* Text decoration */
+        .single-post .post-content-text .underline {
+            text-decoration: underline;
+        }
+
+        .single-post .post-content-text .line-through {
+            text-decoration: line-through;
+        }
+
+        /* Formatting toolbar styles */
+        .formatting-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: rgba(20, 20, 20, 0.8);
+            border-radius: 4px;
+        }
+
+        .formatting-button {
+            padding: 5px 10px;
+            background-color: rgba(30, 30, 30, 0.8);
+            border: 1px solid #444;
+            color: white;
+            cursor: pointer;
+            border-radius: 3px;
+            font-family: var(--main-font);
+            transition: all 0.2s ease;
+        }
+
+        .formatting-button:hover {
+            background-color: rgba(50, 50, 50, 0.8);
+        }
+
+        .formatting-button.active {
+            background-color: var(--accent);
+            border-color: var(--light-accent);
+        }
+
+        .color-picker {
+            position: relative;
+            display: inline-block;
+        }
+
+        .color-options {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            display: none;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            padding: 10px;
+            background-color: rgba(20, 20, 20, 0.95);
+            border: 1px solid #444;
+            border-radius: 4px;
+            z-index: 100;
+        }
+
+        .color-option {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .size-picker {
+            position: relative;
+            display: inline-block;
+        }
+
+        .size-options {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+            background-color: rgba(20, 20, 20, 0.95);
+            border: 1px solid #444;
+            border-radius: 4px;
+            z-index: 100;
+        }
+
+        .size-option {
+            padding: 5px 10px;
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .size-option:hover {
+            background-color: rgba(50, 50, 50, 0.8);
         }
 
         /* Extra large screens */
@@ -1349,15 +1489,21 @@
             }
 
             .single-post .post-content-text h1 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
 
             .single-post .post-content-text h2 {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
             }
 
             .single-post .post-content-text h3 {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
+            }
+
+            .formatting-toolbar {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding: 8px;
             }
         }
 
@@ -1408,15 +1554,15 @@
             }
 
             .single-post .post-content-text h1 {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
             }
 
             .single-post .post-content-text h2 {
-                font-size: 1.4rem;
+                font-size: 1.3rem;
             }
 
             .single-post .post-content-text h3 {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -1594,6 +1740,41 @@
                     <label for="postTitle">Title</label>
                     <input type="text" id="postTitle" placeholder="Post Title">
                     <label for="postContent">Content</label>
+                    <div class="formatting-toolbar" id="formattingToolbar">
+                        <button type="button" class="formatting-button" data-command="bold" title="Bold"><strong>B</strong></button>
+                        <button type="button" class="formatting-button" data-command="italic" title="Italic"><em>I</em></button>
+                        <button type="button" class="formatting-button" data-command="underline" title="Underline"><u>U</u></button>
+                        <button type="button" class="formatting-button" data-command="insertUnorderedList" title="Bullet List">• List</button>
+                        <button type="button" class="formatting-button" data-command="insertOrderedList" title="Numbered List">1. List</button>
+                        <button type="button" class="formatting-button" data-command="createLink" title="Link">🔗</button>
+                        
+                        <div class="color-picker">
+                            <button type="button" class="formatting-button" id="colorPickerBtn">Color</button>
+                            <div class="color-options" id="colorOptions">
+                                <div class="color-option" style="background-color: #ffffff;" data-color="white"></div>
+                                <div class="color-option" style="background-color: #ff6b6b;" data-color="red"></div>
+                                <div class="color-option" style="background-color: #ffd700;" data-color="gold"></div>
+                                <div class="color-option" style="background-color: #b388ff;" data-color="purple"></div>
+                                <div class="color-option" style="background-color: #6bff6b;" data-color="green"></div>
+                                <div class="color-option" style="background-color: #6bb5ff;" data-color="blue"></div>
+                                <div class="color-option" style="background-color: #ff6b9e;" data-color="pink"></div>
+                                <div class="color-option" style="background-color: #ffa500;" data-color="orange"></div>
+                                <div class="color-option" style="background-color: #00ffff;" data-color="cyan"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="size-picker">
+                            <button type="button" class="formatting-button" id="sizePickerBtn">Size</button>
+                            <div class="size-options" id="sizeOptions">
+                                <div class="size-option" data-size="xs">Extra Small</div>
+                                <div class="size-option" data-size="sm">Small</div>
+                                <div class="size-option" data-size="md">Medium</div>
+                                <div class="size-option" data-size="lg">Large</div>
+                                <div class="size-option" data-size="xl">Extra Large</div>
+                                <div class="size-option" data-size="xxl">XX Large</div>
+                            </div>
+                        </div>
+                    </div>
                     <textarea id="postContent" placeholder="Post Content"></textarea>
                     <label for="postImage">Image URL</label>
                     <input type="text" id="postImage" placeholder="Image URL">
@@ -1736,7 +1917,14 @@
             postImage: document.getElementById('postImage'),
             postTags: document.getElementById('postTags'),
             savePostBtn: document.getElementById('savePostBtn'),
-            cancelPostBtn: document.getElementById('cancelPostBtn')
+            cancelPostBtn: document.getElementById('cancelPostBtn'),
+            
+            // Formatting toolbar
+            formattingToolbar: document.getElementById('formattingToolbar'),
+            colorPickerBtn: document.getElementById('colorPickerBtn'),
+            colorOptions: document.getElementById('colorOptions'),
+            sizePickerBtn: document.getElementById('sizePickerBtn'),
+            sizeOptions: document.getElementById('sizeOptions')
         };
 
         // ======================
@@ -1803,6 +1991,16 @@
                 } else {
                     element.classList.remove('loading');
                 }
+            },
+            
+            // Formatting functions
+            formatText(command, value = null) {
+                document.execCommand(command, false, value);
+                dom.postContent.focus();
+            },
+            
+            toggleFormattingButton(button) {
+                button.classList.toggle('active');
             }
         };
 
@@ -2246,6 +2444,7 @@
             
             init() {
                 this.setupEventListeners();
+                this.setupFormattingToolbar();
                 this.checkAuthState();
             },
             
@@ -2262,6 +2461,52 @@
                 dom.cancelPostBtn.addEventListener('click', () => {
                     this.hidePostForm();
                     this.showPostsList();
+                });
+            },
+            
+            setupFormattingToolbar() {
+                // Basic formatting buttons
+                dom.formattingToolbar.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('formatting-button') && e.target.dataset.command) {
+                        utils.formatText(e.target.dataset.command);
+                        utils.toggleFormattingButton(e.target);
+                    }
+                });
+                
+                // Color picker
+                dom.colorPickerBtn.addEventListener('click', () => {
+                    dom.colorOptions.style.display = dom.colorOptions.style.display === 'grid' ? 'none' : 'grid';
+                    dom.sizeOptions.style.display = 'none';
+                });
+                
+                dom.colorOptions.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('color-option')) {
+                        const color = e.target.dataset.color;
+                        utils.formatText('foreColor', e.target.style.backgroundColor);
+                        dom.colorOptions.style.display = 'none';
+                    }
+                });
+                
+                // Size picker
+                dom.sizePickerBtn.addEventListener('click', () => {
+                    dom.sizeOptions.style.display = dom.sizeOptions.style.display === 'flex' ? 'none' : 'flex';
+                    dom.colorOptions.style.display = 'none';
+                });
+                
+                dom.sizeOptions.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('size-option')) {
+                        const size = e.target.dataset.size;
+                        // We'll handle the size change when saving the post
+                        dom.sizeOptions.style.display = 'none';
+                    }
+                });
+                
+                // Close dropdowns when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.color-picker') && !e.target.closest('.size-picker')) {
+                        dom.colorOptions.style.display = 'none';
+                        dom.sizeOptions.style.display = 'none';
+                    }
                 });
             },
             
