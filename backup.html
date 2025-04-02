@@ -52,7 +52,12 @@
             font-weight: 300;
             background-color: var(--darker);
             transition: all 0.5s ease;
-            font-size: clamp(1rem, 1.5vw, 1.1rem);
+            font-size: clamp(1.2rem, 1.8vw, 1.4rem);
+        }
+
+        .about-text p {
+            font-size: 1.5rem; /* Adjust this value as needed */
+            line-height: 1.6; /* Improves readability for larger text */
         }
 
         /* Smooth font transitions */
@@ -141,6 +146,7 @@
             height: auto;
             object-fit: cover;
             transition: opacity 1s ease-in-out;
+            filter: brightness(0.5);
         }
 
         .video-background.active {
@@ -232,6 +238,10 @@
             color: var(--text-light);
             transform: translateY(-2px);
             outline: none;
+        }
+
+        #deletePostBtn {
+            display: none !important;
         }
 
         :focus-visible {
@@ -567,8 +577,9 @@
         }
 
         .post-image {
-            height: clamp(200px, 25vw, 250px);
-            overflow: hidden;
+            position: relative;
+            height: clamp(200px, 25vw, 250px); /* Ensure fixed height */
+            overflow: hidden; /* Contain the absolutely positioned elements */
         }
 
         .post-image img {
@@ -576,6 +587,51 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
+        }
+
+        /* Gradient overlay (separate element) */
+        .post-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Adjust opacity (0.5 = 50% dark) */
+            z-index: 1;
+        }
+
+        /* Style for the title over the image */
+        .post-title-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            padding: 0 20px;
+            color: white;
+            text-align: center;
+            font-family: var(--heading-font);
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+            z-index: 2; /* Ensures text appears above overlay */
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .post-title-overlay {
+                padding: 10px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Adjust spacing since title is no longer in .post-content */
+        .post-content h3 {
+            display: none; /* Hide the old title position */
+        }
+
+        .post-content {
+            padding-top: 15px; /* Reduce top padding since title is gone */
         }
 
         .post-card:hover .post-image img {
@@ -608,7 +664,7 @@
 
         .post-excerpt {
             margin: clamp(10px, 2vw, 20px) 0;
-            font-size: clamp(1rem, 1.5vw, 1.1rem);
+            font-size: clamp(1.2rem, 1.8vw, 1.4rem);
             color: var(--text-light);
             text-align: center;
         }
@@ -1111,14 +1167,34 @@
         /* Single Post View - Updated Styles */
         .single-post {
             display: none;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            width: 100%;
+            width: 100vw;
         }
 
         .single-post.active {
             display: block;
+        }
+
+        /* Blurred background for single post view */
+        #singlePostView {
+            position: relative;
+            background: transparent;
+        }
+
+        #singlePostView::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.8); /* Dark semi-transparent overlay */
+            backdrop-filter: blur(3px); /* Adjust blur strength */
+            z-index: -1; /* Place behind content */
+        }
+
+        /* Ensure post content stays sharp */
+        #singlePostView .container {
+            position: relative;
         }
 
         .back-to-blog {
@@ -1127,6 +1203,26 @@
             color: var(--cozy-gold);
             font-weight: 600;
             font-size: 1.1rem;
+        }
+
+                /* Blurred background for Latest Epitaphs */
+        #blog {
+            position: relative; /* Needed for pseudo-element positioning */
+            background: transparent; /* Remove any existing background */
+            border-bottom: 5px solid var(--accent); /* Keep your border */
+        }
+
+        /* Create a blurred overlay */
+        #blog::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.7); /* Semi-transparent dark layer */
+            backdrop-filter: blur(0px); /* The blur effect */
+            z-index: -1; /* Place behind content */
         }
 
         .single-post .post-image {
@@ -1158,13 +1254,14 @@
 
         .single-post .post-content-text {
             color: var(--text-light);
-            font-size: 1.1rem;
+            font-size: 2rem;
             line-height: 1.8;
             white-space: pre-wrap; /* Preserve formatting */
         }
 
         .single-post .post-content-text p {
             margin-bottom: 1.5rem;
+            text-indent: 2em; /* Add paragraph indentation */
         }
 
         .single-post .post-content-text h1 {
@@ -1400,6 +1497,29 @@
             background-color: rgba(50, 50, 50, 0.8);
         }
 
+        /* Content Editable Styles */
+        #postContentEditor {
+            min-height: 200px;
+            padding: 12px;
+            background-color: rgba(20, 20, 20, 0.8);
+            border: 1px solid #333;
+            color: white;
+            font-family: var(--main-font);
+            font-size: 1rem;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        #postContentEditor:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(138, 0, 0, 0.3);
+        }
+
+        #postContentEditor p {
+            margin-bottom: 1rem;
+            text-indent: 2em;
+        }
+
         /* Extra large screens */
         @media (min-width: 2000px) {
             .container, .header-container {
@@ -1485,7 +1605,7 @@
             }
 
             .single-post .post-content-text {
-                font-size: 1rem;
+                font-size: 1.5rem;
             }
 
             .single-post .post-content-text h1 {
@@ -1509,7 +1629,7 @@
 
         @media (max-width: 576px) {
             body {
-                font-size: 1rem;
+                font-size: 1.5rem;
             }
 
             .hero h1 {
@@ -1550,7 +1670,7 @@
             }
 
             .single-post .post-content-text {
-                font-size: 1rem;
+                font-size: 1.5rem;
             }
 
             .single-post .post-content-text h1 {
@@ -1744,9 +1864,6 @@
                         <button type="button" class="formatting-button" data-command="bold" title="Bold"><strong>B</strong></button>
                         <button type="button" class="formatting-button" data-command="italic" title="Italic"><em>I</em></button>
                         <button type="button" class="formatting-button" data-command="underline" title="Underline"><u>U</u></button>
-                        <button type="button" class="formatting-button" data-command="insertUnorderedList" title="Bullet List">• List</button>
-                        <button type="button" class="formatting-button" data-command="insertOrderedList" title="Numbered List">1. List</button>
-                        <button type="button" class="formatting-button" data-command="createLink" title="Link">🔗</button>
                         
                         <div class="color-picker">
                             <button type="button" class="formatting-button" id="colorPickerBtn">Color</button>
@@ -1775,7 +1892,8 @@
                             </div>
                         </div>
                     </div>
-                    <textarea id="postContent" placeholder="Post Content"></textarea>
+                    <div id="postContentEditor" contenteditable="true"></div>
+                    <input type="hidden" id="postContent">
                     <label for="postImage">Image URL</label>
                     <input type="text" id="postImage" placeholder="Image URL">
                     <label for="postTags">Tags (comma separated)</label>
@@ -1783,6 +1901,7 @@
                     <div class="form-actions">
                         <button id="savePostBtn" class="btn">Save Post</button>
                         <button id="cancelPostBtn" class="btn secondary">Cancel</button>
+                        <button id="deletePostBtn" class="btn danger" style="display: none;">Delete Post</button>
                     </div>
                 </div>
             </div>
@@ -1914,10 +2033,12 @@
             postId: document.getElementById('postId'),
             postTitle: document.getElementById('postTitle'),
             postContent: document.getElementById('postContent'),
+            postContentEditor: document.getElementById('postContentEditor'),
             postImage: document.getElementById('postImage'),
             postTags: document.getElementById('postTags'),
             savePostBtn: document.getElementById('savePostBtn'),
             cancelPostBtn: document.getElementById('cancelPostBtn'),
+            deletePostBtn: document.getElementById('deletePostBtn'),
             
             // Formatting toolbar
             formattingToolbar: document.getElementById('formattingToolbar'),
@@ -1996,7 +2117,7 @@
             // Formatting functions
             formatText(command, value = null) {
                 document.execCommand(command, false, value);
-                dom.postContent.focus();
+                dom.postContentEditor.focus();
             },
             
             toggleFormattingButton(button) {
@@ -2330,21 +2451,22 @@
                     postEl.className = 'post-card';
                     postEl.dataset.id = post.id;
                     postEl.innerHTML = `
-                        <div class="post-image">
-                            <img src="${post.image}" alt="${post.title}" loading="lazy">
+                    <div class="post-image">
+                        <img src="${post.image}" alt="${post.title}" loading="lazy">
+                        <h3 class="post-title-overlay">${post.title}</h3> <!-- Moved title here -->
+                    </div>
+                    <div class="post-content">
+                        <div class="post-meta">
+                            <span>${post.date}</span>
+                            <span>${post.readTime}</span>
                         </div>
-                        <div class="post-content">
-                            <div class="post-meta">
-                                <span>${post.date}</span>
-                                <span>${post.readTime}</span>
-                            </div>
-                            <h3>${post.title}</h3>
-                            <div class="post-tags">
-                                ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
-                            </div>
-                            <p class="post-excerpt">${post.excerpt}</p>
-                            <a href="#" class="read-more">Continue Reading →</a>
+                        <!-- Removed the <h3> from here -->
+                        <div class="post-tags">
+                            ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
                         </div>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <a href="#" class="read-more">Continue Reading →</a>
+                    </div>
                     `;
                     dom.postsGrid.appendChild(postEl);
                 });
@@ -2462,19 +2584,22 @@
                     this.hidePostForm();
                     this.showPostsList();
                 });
+                dom.deletePostBtn.addEventListener('click', this.deletePost.bind(this));
             },
             
             setupFormattingToolbar() {
                 // Basic formatting buttons
                 dom.formattingToolbar.addEventListener('click', (e) => {
                     if (e.target.classList.contains('formatting-button') && e.target.dataset.command) {
-                        utils.formatText(e.target.dataset.command);
+                        const command = e.target.dataset.command;
+                        utils.formatText(command);
                         utils.toggleFormattingButton(e.target);
                     }
                 });
                 
                 // Color picker
-                dom.colorPickerBtn.addEventListener('click', () => {
+                dom.colorPickerBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     dom.colorOptions.style.display = dom.colorOptions.style.display === 'grid' ? 'none' : 'grid';
                     dom.sizeOptions.style.display = 'none';
                 });
@@ -2488,7 +2613,8 @@
                 });
                 
                 // Size picker
-                dom.sizePickerBtn.addEventListener('click', () => {
+                dom.sizePickerBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     dom.sizeOptions.style.display = dom.sizeOptions.style.display === 'flex' ? 'none' : 'flex';
                     dom.colorOptions.style.display = 'none';
                 });
@@ -2496,7 +2622,32 @@
                 dom.sizeOptions.addEventListener('click', (e) => {
                     if (e.target.classList.contains('size-option')) {
                         const size = e.target.dataset.size;
-                        // We'll handle the size change when saving the post
+                        let fontSize;
+                        
+                        switch(size) {
+                            case 'xs': fontSize = '0.8rem'; break;
+                            case 'sm': fontSize = '0.9rem'; break;
+                            case 'md': fontSize = '1.1rem'; break;
+                            case 'lg': fontSize = '1.3rem'; break;
+                            case 'xl': fontSize = '1.5rem'; break;
+                            case 'xxl': fontSize = '1.8rem'; break;
+                            default: fontSize = '1rem';
+                        }
+                        
+                        utils.formatText('fontSize', '7'); // 7 is the largest size in execCommand
+                        document.execCommand('styleWithCSS', false, true);
+                        document.execCommand('fontSize', false, '7');
+                        document.execCommand('styleWithCSS', false, false);
+                        
+                        // Apply the actual size using CSS classes
+                        const selection = window.getSelection();
+                        if (selection.rangeCount > 0) {
+                            const range = selection.getRangeAt(0);
+                            const span = document.createElement('span');
+                            span.className = `text-${size}`;
+                            range.surroundContents(span);
+                        }
+                        
                         dom.sizeOptions.style.display = 'none';
                     }
                 });
@@ -2506,6 +2657,41 @@
                     if (!e.target.closest('.color-picker') && !e.target.closest('.size-picker')) {
                         dom.colorOptions.style.display = 'none';
                         dom.sizeOptions.style.display = 'none';
+                    }
+                });
+                
+                // Handle tab key for indentation
+                dom.postContentEditor.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab') {
+                        e.preventDefault();
+                        // Insert a tab character at the current cursor position
+                        document.execCommand('insertText', false, '\t');
+                    }
+                });
+                
+                // Handle enter key to prevent inheriting formatting
+                dom.postContentEditor.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        // Get current selection
+                        const selection = window.getSelection();
+                        if (selection.rangeCount > 0) {
+                            const range = selection.getRangeAt(0);
+                            const node = range.startContainer;
+                            
+                            // If we're in a paragraph that starts with tabs, don't inherit them
+                            if (node.nodeType === Node.TEXT_NODE && node.parentNode.nodeName === 'P') {
+                                const text = node.textContent;
+                                if (text.startsWith('\t')) {
+                                    // Set a timeout to clear the formatting after the new paragraph is created
+                                    setTimeout(() => {
+                                        const newParagraph = dom.postContentEditor.querySelector('p:last-child');
+                                        if (newParagraph && newParagraph.textContent.startsWith('\t')) {
+                                            newParagraph.textContent = newParagraph.textContent.replace(/^\t+/, '');
+                                        }
+                                    }, 0);
+                                }
+                            }
+                        }
                     }
                 });
             },
@@ -2681,9 +2867,12 @@
                     dom.formTitle.textContent = 'Edit Post';
                     dom.postId.value = postId;
                     dom.postTitle.value = post.title;
-                    dom.postContent.value = post.content;
+                    dom.postContentEditor.innerHTML = post.content;
                     dom.postImage.value = post.image || '';
                     dom.postTags.value = post.tags ? post.tags.join(', ') : '';
+                    
+                    // Show delete button for existing posts
+                    dom.deletePostBtn.style.display = 'inline-block';
                     
                     this.showPostForm();
                     this.hidePostsList();
@@ -2707,12 +2896,16 @@
                     dom.formTitle.textContent = 'Create New Post';
                     dom.postId.value = '';
                     dom.postTitle.value = '';
-                    dom.postContent.value = '';
+                    dom.postContentEditor.innerHTML = '';
                     dom.postImage.value = '';
                     dom.postTags.value = '';
+                    
+                    // Hide delete button for new posts
+                    dom.deletePostBtn.style.display = 'none';
                 }
                 
                 dom.postForm.classList.remove('hidden');
+                dom.postContentEditor.focus();
             },
             
             hidePostForm() {
@@ -2722,7 +2915,7 @@
             
             async savePost() {
                 const title = dom.postTitle.value.trim();
-                const content = dom.postContent.value.trim();
+                const content = dom.postContentEditor.innerHTML;
                 const image = dom.postImage.value.trim();
                 const tags = dom.postTags.value.split(',').map(tag => tag.trim()).filter(tag => tag);
                 
@@ -2731,10 +2924,13 @@
                     return;
                 }
                 
+                // Create excerpt from content (remove HTML tags and limit length)
+                const excerpt = this.createExcerpt(content);
+                
                 const postData = {
                     title: utils.sanitizeInput(title),
-                    content: utils.sanitizeInput(content),
-                    excerpt: content.substring(0, 150) + '...',
+                    content: content,
+                    excerpt: excerpt,
                     image: image,
                     tags: tags,
                     date: this.currentPost?.date ? this.currentPost.date : new Date()
@@ -2770,6 +2966,23 @@
                 }
             },
             
+            createExcerpt(content) {
+                // Create a temporary div to parse HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = content;
+                
+                // Get text content and limit to 150 characters
+                let excerpt = tempDiv.textContent || tempDiv.innerText || '';
+                excerpt = excerpt.substring(0, 150);
+                
+                // Add ellipsis if we cut off the text
+                if (excerpt.length === 150) {
+                    excerpt += '...';
+                }
+                
+                return excerpt;
+            },
+            
             async deletePost(postId = null) {
                 const idToDelete = postId || dom.postId.value;
                 if (!idToDelete) return;
@@ -2794,6 +3007,8 @@
                 } catch (error) {
                     console.error('Error deleting post:', error);
                     utils.showError(dom.adminError, "Error deleting post. Please try again.");
+                } finally {
+                    utils.setLoading(dom.deletePostBtn, false);
                 }
             }
         };
