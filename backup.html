@@ -28,13 +28,14 @@
             --main-font: 'Cormorant Garamond', serif;
             --heading-font: 'Cinzel Decorative', serif;
             --nick-font: 'Shadows Into Light', cursive;
+            --error-color: #ff4d4d;
+            --success-color: #4dff4d;
+            --warning-color: #ffcc00;
         }
 
         [data-theme="forest"] {
             --accent: #1a4d1a;
             --light-accent: #2a6e2a;
-            --main-font: var();
-            --heading-font: var();
         }
 
         * {
@@ -60,6 +61,62 @@
                         color 0.5s ease, 
                         background-color 0.5s ease, 
                         border-color 0.5s ease;
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: var(--error-color);
+            background-color: rgba(139, 0, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 3px solid var(--error-color);
+            display: none;
+        }
+
+        .success-message {
+            color: var(--success-color);
+            background-color: rgba(0, 100, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 3px solid var(--success-color);
+            display: none;
+        }
+
+        .warning-message {
+            color: var(--warning-color);
+            background-color: rgba(204, 204, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 3px solid var(--warning-color);
+            display: none;
+        }
+
+        /* Loading states */
+        .loading {
+            position: relative;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading:after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         /* Rest of your existing CSS styles... */
@@ -468,7 +525,7 @@
         }
 
         .hero p.fade-in {
-            opacity: 7;
+            opacity: 1;
             transform: translateY(0);
         }
 
@@ -788,62 +845,6 @@
             50% { transform: translateY(10px); }
         }
         
-        .gif-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1000;
-            pointer-events: none;
-            display: none;
-            filter: brightness(0%);
-        }
-        
-        .gif-tile {
-            position: absolute;
-            background-size: cover;
-            background-position: center;
-            transition: all 2.5s cubic-bezier(0.2, 0.8, 0.4, 1);
-            transform-origin: center;
-            will-change: transform;
-            opacity: 1 !important;
-        }
-        
-        .content {
-            opacity: 0;
-            transition: opacity 0.5s ease-out;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            color: var(--accent);
-        }
-        
-        .content.visible {
-            opacity: 1;
-        }
-        
-        @keyframes loading {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-        
-        @keyframes textPulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.05); opacity: 1; }
-        }
-        
-        @keyframes dropPulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-        
-        @keyframes drip {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(10px); }
-        }
-
         /* Enhanced Admin Panel Styles */
         .admin-panel {
             position: fixed;
@@ -1070,17 +1071,14 @@
         .posts-list th {
             padding: 12px 15px;
             text-align: left;
+            background-color: rgba(138, 0, 0, 0.2);
+            color: var(--cozy-gold);
+            font-family: var(--heading-font);
         }
 
         .posts-list td {
             padding: 12px 15px;
             text-align: left;
-        }
-
-        .posts-list th {
-            background-color: rgba(138, 0, 0, 0.2);
-            color: var(--cozy-gold);
-            font-family: var(--heading-font);
         }
 
         .posts-list tr:hover {
@@ -1096,6 +1094,170 @@
             padding: 6px 10px;
             font-size: 0.9rem;
             border-radius: 3px;
+        }
+
+        /* Loading spinner for posts */
+        .posts-loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            grid-column: 1 / -1;
+        }
+
+        .posts-loading.active {
+            display: block;
+        }
+
+        /* Single Post View - Updated Styles */
+        .single-post {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            width: 100%;
+        }
+
+        .single-post.active {
+            display: block;
+        }
+
+        .back-to-blog {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--cozy-gold);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .single-post .post-image {
+            height: 400px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .single-post .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .single-post .post-content {
+            text-align: left;
+            padding: 0;
+        }
+
+        .single-post .post-meta {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .single-post .post-tags {
+            margin-bottom: 30px;
+        }
+
+        .single-post .post-content-text {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            white-space: pre-wrap; /* Preserve formatting */
+        }
+
+        .single-post .post-content-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .single-post .post-content-text h1 {
+            font-size: 2.2rem;
+            margin: 2.5rem 0 1.5rem;
+        }
+
+        .single-post .post-content-text h2 {
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .single-post .post-content-text h3 {
+            font-size: 1.5rem;
+            margin: 1.8rem 0 0.8rem;
+        }
+
+        .single-post .post-content-text a {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        .single-post .post-content-text a:hover {
+            color: var(--light-accent);
+        }
+
+        /* Rich text formatting */
+        .single-post .post-content-text strong,
+        .single-post .post-content-text b {
+            font-weight: 600;
+            color: var(--cozy-gold);
+        }
+
+        .single-post .post-content-text em,
+        .single-post .post-content-text i {
+            font-style: italic;
+        }
+
+        .single-post .post-content-text u {
+            text-decoration: underline;
+        }
+
+        .single-post .post-content-text blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 20px;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #ccc;
+        }
+
+        .single-post .post-content-text ul,
+        .single-post .post-content-text ol {
+            margin: 1.5rem 0;
+            padding-left: 30px;
+        }
+
+        .single-post .post-content-text li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Text colors */
+        .single-post .post-content-text .text-red {
+            color: #ff6b6b;
+        }
+
+        .single-post .post-content-text .text-gold {
+            color: #ffd700;
+        }
+
+        .single-post .post-content-text .text-purple {
+            color: #b388ff;
+        }
+
+        .single-post .post-content-text .text-green {
+            color: #6bff6b;
+        }
+
+        /* Text alignment */
+        .single-post .post-content-text .text-center {
+            text-align: center;
+        }
+
+        .single-post .post-content-text .text-right {
+            text-align: right;
+        }
+
+        /* Text size */
+        .single-post .post-content-text .text-small {
+            font-size: 0.9rem;
+        }
+
+        .single-post .post-content-text .text-large {
+            font-size: 1.3rem;
         }
 
         /* Extra large screens */
@@ -1172,6 +1334,31 @@
                 display: block;
                 overflow-x: auto;
             }
+
+            /* Responsive single post adjustments */
+            .single-post {
+                padding: 30px 15px;
+            }
+
+            .single-post .post-image {
+                height: 300px;
+            }
+
+            .single-post .post-content-text {
+                font-size: 1rem;
+            }
+
+            .single-post .post-content-text h1 {
+                font-size: 1.8rem;
+            }
+
+            .single-post .post-content-text h2 {
+                font-size: 1.5rem;
+            }
+
+            .single-post .post-content-text h3 {
+                font-size: 1.3rem;
+            }
         }
 
         @media (max-width: 576px) {
@@ -1209,6 +1396,27 @@
 
             .post-actions {
                 flex-direction: column;
+            }
+
+            /* Mobile single post adjustments */
+            .single-post .post-image {
+                height: 200px;
+            }
+
+            .single-post .post-content-text {
+                font-size: 1rem;
+            }
+
+            .single-post .post-content-text h1 {
+                font-size: 1.6rem;
+            }
+
+            .single-post .post-content-text h2 {
+                font-size: 1.4rem;
+            }
+
+            .single-post .post-content-text h3 {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -1283,6 +1491,19 @@
                     <div class="posts-grid" id="postsGrid">
                         <!-- Posts will be loaded dynamically -->
                     </div>
+                    <div class="posts-loading" id="postsLoading">
+                        <div class="loading"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Single Post View (hidden by default) -->
+            <section id="singlePostView" class="single-post">
+                <div class="container">
+                    <a href="#blog" class="back-to-blog" id="backToBlog">← Back to all posts</a>
+                    <article id="singlePostContent">
+                        <!-- Single post content will be loaded here -->
+                    </article>
                 </div>
             </section>
 
@@ -1335,18 +1556,21 @@
         <div class="admin-panel-expanded" id="adminPanelExpanded">
             <div id="loginForm" class="login-form">
                 <h3>Admin Login</h3>
+                <div id="loginError" class="error-message"></div>
                 <input type="email" id="adminEmail" placeholder="Email">
                 <input type="password" id="adminPassword" placeholder="Password">
                 <button id="loginBtn">Login</button>
             </div>
             <div id="adminControls" class="hidden">
                 <h3>Admin Controls</h3>
+                <div id="adminError" class="error-message"></div>
+                <div id="adminSuccess" class="success-message"></div>
                 
                 <div id="postsListContainer" class="hidden">
                     <h4>Manage Posts</h4>
-                <div class="form-actions">
-                    <button id="addPostBtn" class="btn">Add New Post</button>
-                </div>
+                    <div class="form-actions">
+                        <button id="addPostBtn" class="btn">Add New Post</button>
+                    </div>
                     <table class="posts-list">
                         <thead>
                             <tr>
@@ -1365,6 +1589,7 @@
                 
                 <div id="postForm" class="admin-form hidden">
                     <h3 id="formTitle">Create New Post</h3>
+                    <div id="postFormError" class="error-message"></div>
                     <input type="hidden" id="postId">
                     <label for="postTitle">Title</label>
                     <input type="text" id="postTitle" placeholder="Post Title">
@@ -1377,7 +1602,6 @@
                     <div class="form-actions">
                         <button id="savePostBtn" class="btn">Save Post</button>
                         <button id="cancelPostBtn" class="btn secondary">Cancel</button>
-                        <button id="deletePostBtn" class="btn danger hidden">Delete Post</button>
                     </div>
                 </div>
             </div>
@@ -1448,6 +1672,10 @@
                 video1: "./vid1.mp4",
                 video2: "./vid2.mp4",
                 fallbackImage: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450'%3E%3Crect width='800' height='450' fill='%23050505'/%3E%3Ctext x='50%' y='50%' fill='%23ffffff' font-family='Cormorant Garamond' font-size='24' text-anchor='middle'%3EVideo not loaded%3C/text%3E%3C/svg%3E"
+            },
+            posts: {
+                perPage: 6,
+                loadThreshold: 300 // pixels from bottom to trigger load
             }
         };
 
@@ -1476,7 +1704,11 @@
             mainTitle: document.getElementById('main-title'),
             subtitle: document.getElementById('subtitle'),
             ctaButton: document.getElementById('cta-button'),
-            postsGrid: document.querySelector('.posts-grid'),
+            postsGrid: document.getElementById('postsGrid'),
+            postsLoading: document.getElementById('postsLoading'),
+            singlePostView: document.getElementById('singlePostView'),
+            singlePostContent: document.getElementById('singlePostContent'),
+            backToBlog: document.getElementById('backToBlog'),
             
             // Admin Panel
             adminPanel: document.getElementById('adminPanel'),
@@ -1484,7 +1716,10 @@
             adminPanelOverlay: document.getElementById('adminPanelOverlay'),
             adminPanelExpanded: document.getElementById('adminPanelExpanded'),
             loginForm: document.getElementById('loginForm'),
+            loginError: document.getElementById('loginError'),
             adminControls: document.getElementById('adminControls'),
+            adminError: document.getElementById('adminError'),
+            adminSuccess: document.getElementById('adminSuccess'),
             adminEmail: document.getElementById('adminEmail'),
             adminPassword: document.getElementById('adminPassword'),
             loginBtn: document.getElementById('loginBtn'),
@@ -1493,6 +1728,7 @@
             postsListContainer: document.getElementById('postsListContainer'),
             postsList: document.getElementById('postsList'),
             postForm: document.getElementById('postForm'),
+            postFormError: document.getElementById('postFormError'),
             formTitle: document.getElementById('formTitle'),
             postId: document.getElementById('postId'),
             postTitle: document.getElementById('postTitle'),
@@ -1500,8 +1736,74 @@
             postImage: document.getElementById('postImage'),
             postTags: document.getElementById('postTags'),
             savePostBtn: document.getElementById('savePostBtn'),
-            cancelPostBtn: document.getElementById('cancelPostBtn'),
-            deletePostBtn: document.getElementById('deletePostBtn')
+            cancelPostBtn: document.getElementById('cancelPostBtn')
+        };
+
+        // ======================
+        // State Management
+        // ======================
+        const state = {
+            posts: [],
+            lastVisiblePost: null,
+            hasMorePosts: true,
+            isLoadingPosts: false,
+            currentPost: null
+        };
+
+        // ======================
+        // Utility Functions
+        // ======================
+        const utils = {
+            showError(element, message) {
+                element.textContent = message;
+                element.style.display = 'block';
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 5000);
+            },
+            
+            showSuccess(element, message) {
+                element.textContent = message;
+                element.style.display = 'block';
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 3000);
+            },
+            
+            formatDate(date) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return date.toLocaleDateString('en-US', options);
+            },
+            
+            sanitizeInput(input) {
+                // Basic sanitization to prevent XSS
+                return input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            },
+            
+            scrollToTop() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            },
+            
+            scrollToElement(element, offset = 100) {
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            },
+            
+            setLoading(element, isLoading) {
+                if (isLoading) {
+                    element.classList.add('loading');
+                } else {
+                    element.classList.remove('loading');
+                }
+            }
         };
 
         // ======================
@@ -1715,43 +2017,120 @@
         // 4. Content Loader Module
         const contentLoader = {
             init() {
-                this.loadBlogPosts();
+                this.setupEventListeners();
+                this.loadInitialPosts();
+                this.setupInfiniteScroll();
             },
             
-            async loadBlogPosts() {
+            setupEventListeners() {
+                dom.postsGrid.addEventListener('click', (e) => {
+                    if (e.target.closest('.read-more') || e.target.closest('.post-card')) {
+                        e.preventDefault();
+                        const postCard = e.target.closest('.post-card');
+                        if (postCard) {
+                            const postId = postCard.dataset.id;
+                            this.showSinglePost(postId);
+                        }
+                    }
+                });
+                
+                dom.backToBlog.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showPostGrid();
+                });
+            },
+            
+            async loadInitialPosts() {
                 try {
-                    const postsSnapshot = await db.collection('posts').orderBy('date', 'desc').get();
-                    const posts = postsSnapshot.docs.map(doc => {
-                        const data = doc.data();
-                        return {
-                            id: doc.id,
-                            title: data.title,
-                            date: this.formatDate(data.date.toDate()),
-                            readTime: data.readTime || '5 min read',
-                            image: data.image || 'https://via.placeholder.com/400x250?text=No+Image',
-                            tags: data.tags || [],
-                            excerpt: data.excerpt || 'No content available',
-                            content: data.content || ''
-                        };
-                    });
+                    dom.postsLoading.classList.add('active');
+                    utils.setLoading(dom.postsLoading, true);
                     
-                    this.renderPosts(posts);
+                    const postsQuery = db.collection('posts')
+                        .orderBy('date', 'desc')
+                        .limit(CONFIG.posts.perPage);
+                    
+                    const postsSnapshot = await postsQuery.get();
+                    
+                    this.processPostsSnapshot(postsSnapshot);
+                    
+                    if (postsSnapshot.docs.length < CONFIG.posts.perPage) {
+                        state.hasMorePosts = false;
+                    }
                 } catch (error) {
-                    console.error("Failed to load posts:", error);
+                    console.error("Failed to load initial posts:", error);
+                    utils.showError(dom.adminError, "Failed to load posts. Please try again later.");
+                } finally {
+                    dom.postsLoading.classList.remove('active');
+                    utils.setLoading(dom.postsLoading, false);
                 }
             },
             
-            formatDate(date) {
-                const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                return date.toLocaleDateString('en-US', options);
+            async loadMorePosts() {
+                if (state.isLoadingPosts || !state.hasMorePosts) return;
+                
+                try {
+                    state.isLoadingPosts = true;
+                    dom.postsLoading.classList.add('active');
+                    utils.setLoading(dom.postsLoading, true);
+                    
+                    let postsQuery = db.collection('posts')
+                        .orderBy('date', 'desc')
+                        .startAfter(state.lastVisiblePost)
+                        .limit(CONFIG.posts.perPage);
+                    
+                    const postsSnapshot = await postsQuery.get();
+                    
+                    this.processPostsSnapshot(postsSnapshot);
+                    
+                    if (postsSnapshot.docs.length < CONFIG.posts.perPage) {
+                        state.hasMorePosts = false;
+                    }
+                } catch (error) {
+                    console.error("Failed to load more posts:", error);
+                    utils.showError(dom.adminError, "Failed to load more posts. Please try again later.");
+                } finally {
+                    state.isLoadingPosts = false;
+                    dom.postsLoading.classList.remove('active');
+                    utils.setLoading(dom.postsLoading, false);
+                }
+            },
+            
+            processPostsSnapshot(postsSnapshot) {
+                if (postsSnapshot.empty) {
+                    state.hasMorePosts = false;
+                    return;
+                }
+                
+                state.lastVisiblePost = postsSnapshot.docs[postsSnapshot.docs.length - 1];
+                
+                const newPosts = postsSnapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        title: data.title,
+                        date: utils.formatDate(data.date.toDate()),
+                        readTime: data.readTime || '5 min read',
+                        image: data.image || 'https://via.placeholder.com/400x250?text=No+Image',
+                        tags: data.tags || [],
+                        excerpt: data.excerpt || 'No content available',
+                        content: data.content || ''
+                    };
+                });
+                
+                state.posts = [...state.posts, ...newPosts];
+                this.renderPosts(state.posts);
             },
             
             renderPosts(posts) {
-                dom.postsGrid.innerHTML = '';
+                if (posts.length === 0) {
+                    dom.postsGrid.innerHTML = '<p class="no-posts">No posts found. Check back later!</p>';
+                    return;
+                }
                 
                 posts.forEach(post => {
                     const postEl = document.createElement('article');
                     postEl.className = 'post-card';
+                    postEl.dataset.id = post.id;
                     postEl.innerHTML = `
                         <div class="post-image">
                             <img src="${post.image}" alt="${post.title}" loading="lazy">
@@ -1770,6 +2149,93 @@
                         </div>
                     `;
                     dom.postsGrid.appendChild(postEl);
+                });
+            },
+            
+            async showSinglePost(postId) {
+                try {
+                    const post = state.posts.find(p => p.id === postId) || await this.fetchSinglePost(postId);
+                    
+                    if (!post) {
+                        throw new Error('Post not found');
+                    }
+                    
+                    dom.singlePostContent.innerHTML = `
+                        <div class="post-image">
+                            <img src="${post.image}" alt="${post.title}" loading="lazy">
+                        </div>
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>${post.date}</span>
+                                <span>${post.readTime}</span>
+                            </div>
+                            <h1>${post.title}</h1>
+                            <div class="post-tags">
+                                ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
+                            </div>
+                            <div class="post-content-text">
+                                ${post.content}
+                            </div>
+                        </div>
+                    `;
+                    
+                    dom.singlePostView.classList.add('active');
+                    dom.postsGrid.style.display = 'none';
+                    
+                    // Scroll to the post after a short delay to allow rendering
+                    setTimeout(() => {
+                        utils.scrollToElement(dom.singlePostView, 100);
+                    }, 50);
+                } catch (error) {
+                    console.error("Failed to load single post:", error);
+                    utils.showError(dom.adminError, "Failed to load post. Please try again later.");
+                }
+            },
+            
+            async fetchSinglePost(postId) {
+                try {
+                    const doc = await db.collection('posts').doc(postId).get();
+                    
+                    if (!doc.exists) {
+                        throw new Error('Post not found');
+                    }
+                    
+                    const data = doc.data();
+                    const post = {
+                        id: doc.id,
+                        title: data.title,
+                        date: utils.formatDate(data.date.toDate()),
+                        readTime: data.readTime || '5 min read',
+                        image: data.image || 'https://via.placeholder.com/400x250?text=No+Image',
+                        tags: data.tags || [],
+                        excerpt: data.excerpt || 'No content available',
+                        content: data.content || ''
+                    };
+                    
+                    state.posts.push(post);
+                    return post;
+                } catch (error) {
+                    console.error("Error fetching single post:", error);
+                    throw error;
+                }
+            },
+            
+            showPostGrid() {
+                dom.singlePostView.classList.remove('active');
+                dom.postsGrid.style.display = 'grid';
+                utils.scrollToTop();
+            },
+            
+            setupInfiniteScroll() {
+                window.addEventListener('scroll', () => {
+                    if (state.isLoadingPosts || !state.hasMorePosts) return;
+                    
+                    const scrollPosition = window.innerHeight + window.scrollY;
+                    const threshold = document.body.offsetHeight - CONFIG.posts.loadThreshold;
+                    
+                    if (scrollPosition >= threshold) {
+                        this.loadMorePosts();
+                    }
                 });
             }
         };
@@ -1797,7 +2263,6 @@
                     this.hidePostForm();
                     this.showPostsList();
                 });
-                dom.deletePostBtn.addEventListener('click', this.deletePost.bind(this));
             },
             
             toggleAdminPanel() {
@@ -1820,27 +2285,55 @@
             },
             
             async handleLogin() {
-                const email = dom.adminEmail.value;
-                const password = dom.adminPassword.value;
+                const email = dom.adminEmail.value.trim();
+                const password = dom.adminPassword.value.trim();
+                
+                if (!email || !password) {
+                    utils.showError(dom.loginError, "Please enter both email and password");
+                    return;
+                }
                 
                 try {
+                    utils.setLoading(dom.loginBtn, true);
                     await auth.signInWithEmailAndPassword(email, password);
                     this.showAdminControls();
                     this.loadPostsList();
+                    utils.showSuccess(dom.adminSuccess, "Login successful");
                 } catch (error) {
-                    alert('Login failed: ' + error.message);
                     console.error('Login error:', error);
+                    let errorMessage = "Login failed. Please try again.";
+                    
+                    switch (error.code) {
+                        case 'auth/user-not-found':
+                            errorMessage = "User not found. Please check your email.";
+                            break;
+                        case 'auth/wrong-password':
+                            errorMessage = "Incorrect password. Please try again.";
+                            break;
+                        case 'auth/invalid-email':
+                            errorMessage = "Invalid email format.";
+                            break;
+                    }
+                    
+                    utils.showError(dom.loginError, errorMessage);
+                } finally {
+                    utils.setLoading(dom.loginBtn, false);
                 }
             },
             
             async handleLogout() {
                 try {
+                    utils.setLoading(dom.logoutBtn, true);
                     await auth.signOut();
                     this.showLoginForm();
                     this.hidePostForm();
                     this.hidePostsList();
+                    utils.showSuccess(dom.adminSuccess, "Logged out successfully");
                 } catch (error) {
                     console.error('Logout error:', error);
+                    utils.showError(dom.adminError, "Logout failed. Please try again.");
+                } finally {
+                    utils.setLoading(dom.logoutBtn, false);
                 }
             },
             
@@ -1858,13 +2351,20 @@
             
             async loadPostsList() {
                 try {
+                    utils.setLoading(dom.postsListContainer, true);
                     const postsSnapshot = await db.collection('posts').orderBy('date', 'desc').get();
+                    
+                    if (postsSnapshot.empty) {
+                        dom.postsList.innerHTML = '<tr><td colspan="3" style="text-align: center;">No posts found</td></tr>';
+                        return;
+                    }
+                    
                     const posts = postsSnapshot.docs.map(doc => {
                         const data = doc.data();
                         return {
                             id: doc.id,
                             title: data.title,
-                            date: contentLoader.formatDate(data.date.toDate())
+                            date: utils.formatDate(data.date.toDate())
                         };
                     });
                     
@@ -1872,16 +2372,14 @@
                     this.showPostsList();
                 } catch (error) {
                     console.error("Failed to load posts list:", error);
+                    utils.showError(dom.adminError, "Failed to load posts. Please try again later.");
+                } finally {
+                    utils.setLoading(dom.postsListContainer, false);
                 }
             },
             
             renderPostsList(posts) {
                 dom.postsList.innerHTML = '';
-                
-                if (posts.length === 0) {
-                    dom.postsList.innerHTML = '<tr><td colspan="3" style="text-align: center;">No posts found</td></tr>';
-                    return;
-                }
                 
                 posts.forEach(post => {
                     const row = document.createElement('tr');
@@ -1925,31 +2423,36 @@
             
             async editPost(postId) {
                 try {
+                    utils.setLoading(dom.savePostBtn, true);
                     const doc = await db.collection('posts').doc(postId).get();
-                    if (doc.exists) {
-                        const post = doc.data();
-                        this.currentPost = { id: postId, ...post };
-                        
-                        dom.formTitle.textContent = 'Edit Post';
-                        dom.postId.value = postId;
-                        dom.postTitle.value = post.title;
-                        dom.postContent.value = post.content;
-                        dom.postImage.value = post.image || '';
-                        dom.postTags.value = post.tags ? post.tags.join(', ') : '';
-                        
-                        dom.deletePostBtn.classList.remove('hidden');
-                        this.showPostForm();
-                        this.hidePostsList();
-                        
-                        // Scroll to the form
-                        dom.adminPanelExpanded.scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        });
+                    
+                    if (!doc.exists) {
+                        throw new Error('Post not found');
                     }
+                    
+                    const post = doc.data();
+                    this.currentPost = { id: postId, ...post };
+                    
+                    dom.formTitle.textContent = 'Edit Post';
+                    dom.postId.value = postId;
+                    dom.postTitle.value = post.title;
+                    dom.postContent.value = post.content;
+                    dom.postImage.value = post.image || '';
+                    dom.postTags.value = post.tags ? post.tags.join(', ') : '';
+                    
+                    this.showPostForm();
+                    this.hidePostsList();
+                    
+                    // Scroll to the form
+                    dom.adminPanelExpanded.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 } catch (error) {
                     console.error("Error loading post for editing:", error);
-                    alert('Failed to load post for editing');
+                    utils.showError(dom.postFormError, "Failed to load post for editing");
+                } finally {
+                    utils.setLoading(dom.savePostBtn, false);
                 }
             },
             
@@ -1962,7 +2465,6 @@
                     dom.postContent.value = '';
                     dom.postImage.value = '';
                     dom.postTags.value = '';
-                    dom.deletePostBtn.classList.add('hidden');
                 }
                 
                 dom.postForm.classList.remove('hidden');
@@ -1974,37 +2476,41 @@
             },
             
             async savePost() {
+                const title = dom.postTitle.value.trim();
+                const content = dom.postContent.value.trim();
+                const image = dom.postImage.value.trim();
+                const tags = dom.postTags.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+                
+                if (!title || !content) {
+                    utils.showError(dom.postFormError, "Title and content are required");
+                    return;
+                }
+                
                 const postData = {
-                    title: dom.postTitle.value,
-                    content: dom.postContent.value,
-                    excerpt: dom.postContent.value.substring(0, 150) + '...',
-                    image: dom.postImage.value,
-                    tags: dom.postTags.value.split(',').map(tag => tag.trim()),
+                    title: utils.sanitizeInput(title),
+                    content: utils.sanitizeInput(content),
+                    excerpt: content.substring(0, 150) + '...',
+                    image: image,
+                    tags: tags,
                     date: this.currentPost?.date ? this.currentPost.date : new Date()
                 };
                 
                 try {
+                    utils.setLoading(dom.savePostBtn, true);
+                    
                     if (dom.postId.value) {
                         // Update existing post
                         await db.collection('posts').doc(dom.postId.value).update(postData);
+                        utils.showSuccess(dom.adminSuccess, "Post updated successfully");
                     } else {
                         // Create new post
                         await db.collection('posts').add(postData);
+                        utils.showSuccess(dom.adminSuccess, "Post created successfully");
                     }
-                    
-                    // Show success message with smooth animation
-                    const originalText = dom.savePostBtn.textContent;
-                    dom.savePostBtn.textContent = '✓ Saved!';
-                    dom.savePostBtn.style.backgroundColor = '#1a4d1a';
-                    
-                    setTimeout(() => {
-                        dom.savePostBtn.textContent = originalText;
-                        dom.savePostBtn.style.backgroundColor = '';
-                    }, 2000);
                     
                     // Reload posts
                     this.loadPostsList();
-                    contentLoader.loadBlogPosts();
+                    contentLoader.loadInitialPosts();
                     
                     // Return to posts list after a delay
                     setTimeout(() => {
@@ -2013,7 +2519,9 @@
                     }, 500);
                 } catch (error) {
                     console.error('Error saving post:', error);
-                    alert('Error saving post: ' + error.message);
+                    utils.showError(dom.postFormError, "Error saving post. Please try again.");
+                } finally {
+                    utils.setLoading(dom.savePostBtn, false);
                 }
             },
             
@@ -2021,22 +2529,26 @@
                 const idToDelete = postId || dom.postId.value;
                 if (!idToDelete) return;
                 
+                if (!confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
+                    return;
+                }
+                
                 try {
+                    utils.setLoading(dom.deletePostBtn, true);
                     await db.collection('posts').doc(idToDelete).delete();
                     
-                    // Show success message
-                    alert('Post deleted successfully');
+                    utils.showSuccess(dom.adminSuccess, "Post deleted successfully");
                     
                     // Reload posts
                     this.loadPostsList();
-                    contentLoader.loadBlogPosts();
+                    contentLoader.loadInitialPosts();
                     
                     // Hide form and show list
                     this.hidePostForm();
                     this.showPostsList();
                 } catch (error) {
                     console.error('Error deleting post:', error);
-                    alert('Error deleting post: ' + error.message);
+                    utils.showError(dom.adminError, "Error deleting post. Please try again.");
                 }
             }
         };
