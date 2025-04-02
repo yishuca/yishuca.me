@@ -664,11 +664,13 @@
         }
 
         .post-meta {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
+            display: flex;       /* Keep flex to center the date */
+            justify-content: center; /* Center only the date */
+            margin-bottom: 10px;
             font-size: clamp(0.9rem, 1.5vw, 1rem);
             color: #999;
+            margin-bottom: 15px; /* Reduce space */
+            height: 20px;
         }
 
         .post-tag {
@@ -2478,7 +2480,6 @@
                     <div class="post-content">
                         <div class="post-meta">
                             <span>${post.date}</span>
-                            <span>${post.readTime}</span>
                         </div>
                         <!-- Removed the <h3> from here -->
                         <div class="post-tags">
@@ -2507,7 +2508,6 @@
                         <div class="post-content">
                             <div class="post-meta">
                                 <span>${post.date}</span>
-                                <span>${post.readTime}</span>
                             </div>
                             <h1>${post.title}</h1>
                             <div class="post-tags">
