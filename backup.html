@@ -1219,15 +1219,38 @@
             position: relative;
         }
 
+        /* Sticky Back Button */
         .back-to-blog {
-            display: inline-block;
-            margin-bottom: 30px;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background-color: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(5px);
             color: var(--cozy-gold);
+            border: 2px solid var(--accent);
+            border-radius: 0;
+            font-family: var(--main-font);
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            z-index: 100;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: none; /* Hidden by default */
         }
 
-                /* Blurred background for Latest Epitaphs */
+        .back-to-blog.visible {
+            display: block;
+        }
+
+        .back-to-blog:hover {
+            background-color: var(--accent);
+            color: var(--text-light);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        /* Blurred background for Latest Epitaphs */
         #blog {
             position: relative; /* Needed for pseudo-element positioning */
             background: transparent; /* Remove any existing background */
@@ -1347,40 +1370,11 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Text colors */
-        .single-post .post-content-text .text-red {
-            color: #ff6b6b;
+        /* Text alignment classes */
+        .single-post .post-content-text .text-left {
+            text-align: left;
         }
 
-        .single-post .post-content-text .text-gold {
-            color: #ffd700;
-        }
-
-        .single-post .post-content-text .text-purple {
-            color: #b388ff;
-        }
-
-        .single-post .post-content-text .text-green {
-            color: #6bff6b;
-        }
-
-        .single-post .post-content-text .text-blue {
-            color: #6bb5ff;
-        }
-
-        .single-post .post-content-text .text-pink {
-            color: #ff6b9e;
-        }
-
-        .single-post .post-content-text .text-orange {
-            color: #ffa500;
-        }
-
-        .single-post .post-content-text .text-cyan {
-            color: #00ffff;
-        }
-
-        /* Text alignment */
         .single-post .post-content-text .text-center {
             text-align: center;
         }
@@ -1389,45 +1383,11 @@
             text-align: right;
         }
 
-        .single-post .post-content-text .text-left {
-            text-align: left;
+        .single-post .post-content-text .text-justify {
+            text-align: justify;
         }
 
-        /* Text size */
-        .single-post .post-content-text .text-xs {
-            font-size: 0.8rem;
-        }
-
-        .single-post .post-content-text .text-sm {
-            font-size: 0.9rem;
-        }
-
-        .single-post .post-content-text .text-md {
-            font-size: 1.1rem;
-        }
-
-        .single-post .post-content-text .text-lg {
-            font-size: 1.3rem;
-        }
-
-        .single-post .post-content-text .text-xl {
-            font-size: 1.5rem;
-        }
-
-        .single-post .post-content-text .text-xxl {
-            font-size: 1.8rem;
-        }
-
-        /* Text decoration */
-        .single-post .post-content-text .underline {
-            text-decoration: underline;
-        }
-
-        .single-post .post-content-text .line-through {
-            text-decoration: line-through;
-        }
-
-        /* Formatting toolbar styles */
+        /* Formatting toolbar styles - UPDATED TO FIX ALIGNMENT ISSUES */
         .formatting-toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -1436,6 +1396,8 @@
             padding: 10px;
             background-color: rgba(20, 20, 20, 0.8);
             border-radius: 4px;
+            position: relative;
+            z-index: 1;
         }
 
         .formatting-button {
@@ -1458,35 +1420,39 @@
             border-color: var(--light-accent);
         }
 
-        .color-picker {
+        .alignment-picker {
             position: relative;
             display: inline-block;
         }
 
-        .color-options {
+        .alignment-options {
             position: absolute;
             bottom: 100%;
             left: 0;
             display: none;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 5px;
             padding: 10px;
             background-color: rgba(20, 20, 20, 0.95);
             border: 1px solid #444;
             border-radius: 4px;
-            z-index: 100;
+            z-index: 1000; /* Increased z-index to ensure visibility */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
-        .color-option {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
+        .alignment-option {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            background-color: rgba(30, 30, 30, 0.8);
         }
 
-        .color-option:hover {
-            transform: scale(1.1);
+        .alignment-option:hover {
+            background-color: rgba(50, 50, 50, 0.8);
         }
 
         .size-picker {
@@ -1505,7 +1471,8 @@
             background-color: rgba(20, 20, 20, 0.95);
             border: 1px solid #444;
             border-radius: 4px;
-            z-index: 100;
+            z-index: 1000; /* Increased z-index to ensure visibility */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .size-option {
@@ -1540,6 +1507,23 @@
         #postContentEditor p {
             margin-bottom: 1rem;
             text-indent: 2em;
+        }
+
+        /* Alignment styles for editor and display */
+        .text-left, [align="left"] {
+            text-align: left;
+        }
+        
+        .text-center, [align="center"] {
+            text-align: center;
+        }
+        
+        .text-right, [align="right"] {
+            text-align: right;
+        }
+        
+        .text-justify, [align="justify"] {
+            text-align: justify;
         }
 
         /* Extra large screens */
@@ -1646,6 +1630,14 @@
                 flex-wrap: nowrap;
                 overflow-x: auto;
                 padding: 8px;
+            }
+
+            /* Sticky back button on mobile */
+            .back-to-blog {
+                bottom: 10px;
+                left: 10px;
+                padding: 8px 15px;
+                font-size: 0.9rem;
             }
         }
 
@@ -1788,12 +1780,14 @@
             <!-- Single Post View (hidden by default) -->
             <section id="singlePostView" class="single-post">
                 <div class="container">
-                    <a href="#blog" class="back-to-blog" id="backToBlog">← Back to all posts</a>
                     <article id="singlePostContent">
                         <!-- Single post content will be loaded here -->
                     </article>
                 </div>
             </section>
+
+            <!-- Sticky Back Button -->
+            <a href="#blog" class="back-to-blog" id="backToBlog">← Back to all posts</a>
 
             <!-- About Section -->
             <section id="about">
@@ -1887,18 +1881,13 @@
                         <button type="button" class="formatting-button" data-command="italic" title="Italic"><em>I</em></button>
                         <button type="button" class="formatting-button" data-command="underline" title="Underline"><u>U</u></button>
                         
-                        <div class="color-picker">
-                            <button type="button" class="formatting-button" id="colorPickerBtn">Color</button>
-                            <div class="color-options" id="colorOptions">
-                                <div class="color-option" style="background-color: #ffffff;" data-color="white"></div>
-                                <div class="color-option" style="background-color: #ff6b6b;" data-color="red"></div>
-                                <div class="color-option" style="background-color: #ffd700;" data-color="gold"></div>
-                                <div class="color-option" style="background-color: #b388ff;" data-color="purple"></div>
-                                <div class="color-option" style="background-color: #6bff6b;" data-color="green"></div>
-                                <div class="color-option" style="background-color: #6bb5ff;" data-color="blue"></div>
-                                <div class="color-option" style="background-color: #ff6b9e;" data-color="pink"></div>
-                                <div class="color-option" style="background-color: #ffa500;" data-color="orange"></div>
-                                <div class="color-option" style="background-color: #00ffff;" data-color="cyan"></div>
+                        <div class="alignment-picker">
+                            <button type="button" class="formatting-button" id="alignmentPickerBtn">Align</button>
+                            <div class="alignment-options" id="alignmentOptions">
+                                <div class="alignment-option" data-align="left" title="Left align">L</div>
+                                <div class="alignment-option" data-align="center" title="Center align">C</div>
+                                <div class="alignment-option" data-align="right" title="Right align">R</div>
+                                <div class="alignment-option" data-align="justify" title="Justify">J</div>
                             </div>
                         </div>
                         
@@ -2093,8 +2082,8 @@
             
             // Formatting toolbar
             formattingToolbar: document.getElementById('formattingToolbar'),
-            colorPickerBtn: document.getElementById('colorPickerBtn'),
-            colorOptions: document.getElementById('colorOptions'),
+            alignmentPickerBtn: document.getElementById('alignmentPickerBtn'),
+            alignmentOptions: document.getElementById('alignmentOptions'),
             sizePickerBtn: document.getElementById('sizePickerBtn'),
             sizeOptions: document.getElementById('sizeOptions')
         };
@@ -2407,6 +2396,7 @@
                 dom.backToBlog.addEventListener('click', (e) => {
                     e.preventDefault();
                     this.showPostGrid();
+                    utils.scrollToElement(document.getElementById('blog'));
                 });
             },
             
@@ -2550,6 +2540,7 @@
                     
                     dom.singlePostView.classList.add('active');
                     dom.postsGrid.style.display = 'none';
+                    dom.backToBlog.classList.add('visible');
                     
                     // Scroll to the post after a short delay to allow rendering
                     setTimeout(() => {
@@ -2592,7 +2583,7 @@
             showPostGrid() {
                 dom.singlePostView.classList.remove('active');
                 dom.postsGrid.style.display = 'grid';
-                utils.scrollToTop();
+                dom.backToBlog.classList.remove('visible');
             },
             
             setupInfiniteScroll() {
@@ -2646,18 +2637,51 @@
                     }
                 });
                 
-                // Color picker
-                dom.colorPickerBtn.addEventListener('click', (e) => {
+                // Alignment picker
+                dom.alignmentPickerBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    dom.colorOptions.style.display = dom.colorOptions.style.display === 'grid' ? 'none' : 'grid';
+                    dom.alignmentOptions.style.display = dom.alignmentOptions.style.display === 'grid' ? 'none' : 'grid';
                     dom.sizeOptions.style.display = 'none';
                 });
                 
-                dom.colorOptions.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('color-option')) {
-                        const color = e.target.dataset.color;
-                        utils.formatText('foreColor', e.target.style.backgroundColor);
-                        dom.colorOptions.style.display = 'none';
+                dom.alignmentOptions.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('alignment-option')) {
+                        const align = e.target.dataset.align;
+                        
+                        // Get current selection
+                        const selection = window.getSelection();
+                        if (selection.rangeCount > 0) {
+                            const range = selection.getRangeAt(0);
+                            
+                            // Create a div with the alignment class
+                            const div = document.createElement('div');
+                            div.className = `text-${align}`;
+                            
+                            // If there's selected content, wrap it in the div
+                            if (!selection.isCollapsed) {
+                                const selectedContent = range.extractContents();
+                                div.appendChild(selectedContent);
+                                range.insertNode(div);
+                            } else {
+                                // If no selection, apply to the current paragraph
+                                const parentParagraph = range.startContainer.parentElement.closest('p, div');
+                                if (parentParagraph) {
+                                    // Remove any existing alignment classes
+                                    parentParagraph.className = parentParagraph.className
+                                        .split(' ')
+                                        .filter(cls => !cls.startsWith('text-'))
+                                        .join(' ');
+                                    
+                                    // Add the new alignment class
+                                    parentParagraph.classList.add(`text-${align}`);
+                                }
+                            }
+                            
+                            // Clean up empty paragraphs that might have been created
+                            dom.postContentEditor.querySelectorAll('p:empty, div:empty').forEach(el => el.remove());
+                        }
+                        
+                        dom.alignmentOptions.style.display = 'none';
                     }
                 });
                 
@@ -2665,7 +2689,7 @@
                 dom.sizePickerBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     dom.sizeOptions.style.display = dom.sizeOptions.style.display === 'flex' ? 'none' : 'flex';
-                    dom.colorOptions.style.display = 'none';
+                    dom.alignmentOptions.style.display = 'none';
                 });
                 
                 dom.sizeOptions.addEventListener('click', (e) => {
@@ -2703,8 +2727,8 @@
                 
                 // Close dropdowns when clicking outside
                 document.addEventListener('click', (e) => {
-                    if (!e.target.closest('.color-picker') && !e.target.closest('.size-picker')) {
-                        dom.colorOptions.style.display = 'none';
+                    if (!e.target.closest('.alignment-picker') && !e.target.closest('.size-picker')) {
+                        dom.alignmentOptions.style.display = 'none';
                         dom.sizeOptions.style.display = 'none';
                     }
                 });
