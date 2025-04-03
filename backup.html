@@ -935,12 +935,13 @@
         }
 
         .admin-btn {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 50%;
             width: 50px;
             height: 50px;
+            background-color: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(5px);
+            color: var(--cozy-gold);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
             font-size: 20px;
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -954,6 +955,8 @@
         .admin-btn:hover {
             transform: translateY(-3px) scale(1.1);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            background-color: var(--accent);
+            color: var(--text-light);
         }
 
         .admin-panel-overlay {
@@ -1217,6 +1220,7 @@
         /* Ensure post content stays sharp */
         #singlePostView .container {
             position: relative;
+            max-width: min(1000px, 90vw); /* Narrower container for better readability */
         }
 
         /* Sticky Back Button */
@@ -1229,7 +1233,7 @@
             backdrop-filter: blur(5px);
             color: var(--cozy-gold);
             border: 2px solid var(--accent);
-            border-radius: 0;
+            border-radius: 50px;
             font-family: var(--main-font);
             font-weight: 600;
             font-size: 1rem;
@@ -1248,6 +1252,41 @@
             color: var(--text-light);
             transform: translateY(-2px);
             outline: none;
+        }
+
+        /* Back to Top Button - Updated to center bottom */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px; /* Increased from 20px to move it lower */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(5px);
+            color: var(--cozy-gold);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--accent);
+            color: var(--text-light);
+            transform: translateX(-50%) translateY(-4px);
         }
 
         /* Blurred background for Latest Epitaphs */
@@ -1299,9 +1338,11 @@
 
         .single-post .post-content-text {
             color: var(--text-light);
-            font-size: 2rem;
+            font-size: 1.6rem; /* Slightly smaller for better readability */
             line-height: 1.8;
             white-space: pre-wrap; /* Preserve formatting */
+            max-width: 800px; /* Optimal line length for reading */
+            margin: 0 auto; /* Center the content */
         }
 
         .single-post .post-content-text p {
@@ -1543,6 +1584,10 @@
             .hero p {
                 font-size: 2rem;
             }
+
+            .single-post .post-content-text {
+                max-width: 900px; /* Slightly wider for very large screens */
+            }
         }
 
         @media (max-width: 768px) {
@@ -1634,10 +1679,33 @@
 
             /* Sticky back button on mobile */
             .back-to-blog {
-                bottom: 10px;
+                bottom: 20px;
                 left: 10px;
                 padding: 8px 15px;
                 font-size: 0.9rem;
+            }
+
+            .back-to-top {
+                position: fixed;
+            bottom: 20px; /* Increased from 20px to move it lower */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(5px);
+            color: var(--cozy-gold);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 99;
             }
         }
 
@@ -1698,6 +1766,28 @@
             .single-post .post-content-text h3 {
                 font-size: 1.1rem;
             }
+            .back-to-top {
+                position: fixed;
+            bottom: 20px; /* Increased from 20px to move it lower */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(5px);
+            color: var(--cozy-gold);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 99;
+            }
         }
     </style>
 </head>
@@ -1719,7 +1809,7 @@
                 <source src="./vid1.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <video class="video-background inactive" id="video2" autoplay muted loop playsinline webkit-playsinline preload="auto">
+            <video class="video-background inactive" id="video2" autoplay muted loop playsinline webkit-playsinline preload="none">
                 <source src="./vid2.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -1788,6 +1878,9 @@
 
             <!-- Sticky Back Button -->
             <a href="#blog" class="back-to-blog" id="backToBlog">← Back to all posts</a>
+
+            <!-- Back to Top Button - Now centered at bottom -->
+            <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
             <!-- About Section -->
             <section id="about">
@@ -2049,6 +2142,7 @@
             singlePostView: document.getElementById('singlePostView'),
             singlePostContent: document.getElementById('singlePostContent'),
             backToBlog: document.getElementById('backToBlog'),
+            backToTop: document.getElementById('backToTop'),
             
             // Admin Panel
             adminPanel: document.getElementById('adminPanel'),
@@ -2317,6 +2411,7 @@
                 this.setupEventListeners();
                 this.setupSmoothScrolling();
                 this.setupHeaderScrollEffect();
+                this.setupBackToTopButton();
             },
             
             setupEventListeners() {
@@ -2370,6 +2465,19 @@
                 window.addEventListener('scroll', () => {
                     dom.header.classList.toggle('scrolled', window.scrollY > 50);
                 });
+            },
+            
+            setupBackToTopButton() {
+                window.addEventListener('scroll', this.toggleBackToTopButton.bind(this));
+                dom.backToTop.addEventListener('click', utils.scrollToTop);
+            },
+            
+            toggleBackToTopButton() {
+                if (window.pageYOffset > 300) {
+                    dom.backToTop.classList.add('visible');
+                } else {
+                    dom.backToTop.classList.remove('visible');
+                }
             }
         };
 
