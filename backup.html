@@ -1791,12 +1791,13 @@
         /* Hide sections when single post is active */
         body.single-post-active #home,
         body.single-post-active #blog,
-        body.single-post-active #about {
+        body.single-post-active #about,
+        body.single-post-active .footer-content {
             display: none;
         }
 
-        body.single-post-active footer {
-            display: block;
+        body.single-post-active div.copyright {
+            display: none;
         }
     </style>
 </head>
