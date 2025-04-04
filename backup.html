@@ -1830,7 +1830,7 @@
             <!-- Header -->
             <header id="header">
                 <div class="header-container">
-                    <a href="#" class="logo">THE COMFY <span>CEMETERY</span></a>
+                    <a href="#home" class="logo back-to-home" id="backToHome">THE COMFY <span>CEMETERY</span></a>
                     <div class="nav-right">
                         <div class="video-toggle">
                             <span class="toggle-label">Karime</span>
@@ -2152,6 +2152,7 @@
             singlePostView: document.getElementById('singlePostView'),
             singlePostContent: document.getElementById('singlePostContent'),
             backToBlog: document.getElementById('backToBlog'),
+            backToHome: document.getElementById('backToHome'),
             backToTop: document.getElementById('backToTop'),
             
             // Admin Panel
@@ -2516,6 +2517,11 @@
                     this.showPostGrid();
                     utils.scrollToElement(document.getElementById('blog'));
                 });
+                dom.backToHome.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.showPostGrid();
+                    utils.scrollToElement(document.getElementById('home'));
+                });
             },
             
             async loadInitialPosts() {
@@ -2664,6 +2670,8 @@
                     // Remove loading state and show content
                     dom.singlePostView.classList.remove('loading');
                     dom.backToBlog.classList.add('visible');
+                    dom.backToHome.classList.add('visible');
+
                     
                     // Scroll to the post after a short delay to allow rendering
                     setTimeout(() => {
@@ -2713,6 +2721,7 @@
                 dom.singlePostView.classList.remove('loading');
                 dom.postsGrid.style.display = 'grid';
                 dom.backToBlog.classList.remove('visible');
+                dom.backToHome.classList.remove('visible');
             },
             
             setupInfiniteScroll() {
