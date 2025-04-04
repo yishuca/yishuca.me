@@ -36,6 +36,11 @@
         [data-theme="forest"] {
             --accent: #1a4d1a;
             --light-accent: #2a6e2a;
+            --about-bg-tint: rgba(26, 77, 26, 0.5); /* Dark green tint */
+        }
+
+        [data-theme="default"] {
+            --about-bg-tint: rgba(106, 0, 0, 0.5); /* Dark red tint */
         }
 
         * {
@@ -56,8 +61,8 @@
         }
 
         .about-text p {
-            font-size: 1.5rem; /* Adjust this value as needed */
-            line-height: 1.6; /* Improves readability for larger text */
+            font-size: 1.5rem;
+            line-height: 1.6;
         }
 
         /* Smooth font transitions */
@@ -68,7 +73,7 @@
                         border-color 0.5s ease;
         }
 
-        /* Error message styling */
+        /* Message styling */
         .error-message {
             color: var(--error-color);
             background-color: rgba(139, 0, 0, 0.2);
@@ -124,7 +129,7 @@
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* Rest of your existing CSS styles... */
+        /* Video background */
         .video-background-container {
             position: fixed;
             top: 0;
@@ -176,6 +181,25 @@
             margin-left: calc(-50vw + 50%);
         }
 
+        /* About section with themed background */
+        #about {
+            position: relative;
+            background-color: rgba(10, 10, 10, 0.7);
+        }
+
+        #about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--about-bg-tint);
+            backdrop-filter: blur(5px);
+            z-index: -1;
+            transition: background 0.5s ease;
+        }
+
         h1, h2, h3, h4, h5, h6 {
             font-family: var(--heading-font);
             font-weight: 700;
@@ -213,7 +237,7 @@
             font-size: clamp(1rem, 1.5vw, 1.1rem);
         }
 
-        a:hover, a:focus-visible {
+        a:hover {
             color: var(--light-accent);
         }
 
@@ -233,20 +257,14 @@
             transition: all 0.5s ease;
         }
 
-        .btn:hover, .btn:focus-visible {
+        .btn:hover {
             background-color: var(--accent);
             color: var(--text-light);
             transform: translateY(-2px);
-            outline: none;
         }
 
         #deletePostBtn {
             display: none !important;
-        }
-
-        :focus-visible {
-            outline: 2px solid var(--cozy-gold);
-            outline-offset: 3px;
         }
 
         .container {
@@ -571,9 +589,8 @@
         }
 
         .post-card .read-more {
-            pointer-events: auto; /* Re-enable clicks only on this element */
+            pointer-events: auto;
         }
-
 
         .post-card:hover {
             transform: translateY(-10px);
@@ -585,7 +602,6 @@
             position: relative;
             overflow: hidden;
             height: clamp(200px, 25vw, 250px);
-            /* Force GPU acceleration for the container */
             transform: translateZ(0);
             backface-visibility: hidden;
         }
@@ -595,7 +611,6 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
-            /* Prevent subpixel rendering artifacts */
             transform: translateZ(0) scale(1);
             backface-visibility: hidden;
         }
@@ -604,7 +619,6 @@
             transform: translateZ(0) scale(1.05);
         }
 
-        /* Overlay solution - no scaling needed */
         .post-image::after {
             content: '';
             position: absolute;
@@ -614,7 +628,6 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
             z-index: 1;
-            /* These prevent the glitch */
             transform: translateZ(0);
             backface-visibility: hidden;
         }
@@ -634,24 +647,21 @@
             z-index: 2;
             margin: 0;
             backface-visibility: hidden;
-            /* Smooth any remaining glitches */
             will-change: transform;
         }
 
-                @media (hover: hover) {
+        @media (hover: hover) {
             .post-image {
-                /* Only apply hover effects on devices that support them */
                 transition: transform 0.5s ease;
             }
         }
 
-        /* Adjust spacing since title is no longer in .post-content */
         .post-content h3 {
-            display: none; /* Hide the old title position */
+            display: none;
         }
 
         .post-content {
-            padding-top: 15px; /* Reduce top padding since title is gone */
+            padding-top: 15px;
         }
 
         .post-card:hover .post-image img {
@@ -664,12 +674,12 @@
         }
 
         .post-meta {
-            display: flex;       /* Keep flex to center the date */
-            justify-content: center; /* Center only the date */
+            display: flex;
+            justify-content: center;
             margin-bottom: 10px;
             font-size: clamp(0.9rem, 1.5vw, 1rem);
             color: #999;
-            margin-bottom: 15px; /* Reduce space */
+            margin-bottom: 15px;
             height: 20px;
         }
 
@@ -735,7 +745,6 @@
         footer {
             padding: clamp(40px, 8vw, 80px) 0 0;
             text-align: center;
-            border-top: 5px solid var(--accent);
             transition: border-color 0.5s ease;
             position: relative;
             background-color: rgba(10, 10, 10, 0.85);
@@ -793,7 +802,7 @@
             font-size: clamp(1rem, 1.5vw, 1.1rem);
         }
 
-        .footer-links a:hover, .footer-links a:focus-visible {
+        .footer-links a:hover {
             color: var(--cozy-gold);
             padding-left: 5px;
         }
@@ -923,7 +932,7 @@
             50% { transform: translateY(10px); }
         }
         
-        /* Enhanced Admin Panel Styles */
+        /* Admin Panel Styles */
         .admin-panel {
             position: fixed;
             bottom: 20px;
@@ -1042,9 +1051,7 @@
         .admin-form input:focus, 
         .admin-form textarea:focus, 
         .admin-form select:focus {
-            outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(138, 0, 0, 0.3);
         }
 
         .admin-form textarea {
@@ -1189,16 +1196,36 @@
             display: block;
         }
 
-        /* Responsive single post adjustments */
+        /* Single post view */
         .single-post {
             display: none;
             width: 100vw;
             position: relative;
-            top: 45px; /* This will push it down below the header */
-            padding-top: 20px; /* Space between border and content */
-            border-top: 5px solid var(--accent);
+            top: 0;
+            padding-top: 20px;
             margin-left: calc(-50vw + 50%);
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
         }
+        
+        /* Single post loading state */
+        .single-post.loading {
+            min-height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .single-post.loading::after {
+            content: "";
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s linear infinite;
+        }
+
         .single-post.active {
             display: block;
         }
@@ -1206,8 +1233,8 @@
         #singlePostView {
             position: relative;
             background: transparent;
-            padding-top: 0;
-            margin-top: 0;
+            padding-top: 20;
+            margin-top: 47px;
         }
 
         #singlePostView::before {
@@ -1217,16 +1244,15 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 10, 10, 0.8); /* Dgle-post.activeark semi-transparent overlay */
-            backdrop-filter: blur(3px); /* Adjust blur strength */
-            z-index: -1; /* Place behind content */
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(3px);
+            z-index: -1;
         }
 
-        /* Ensure post content stays sharp */
         #singlePostView .container {
             position: relative;
             max-width: min(1000px, 90vw);
-            padding-top: 0; /* Ensure no extra padding */
+            padding-top: 0;
         }
 
         body.single-post-active {
@@ -1255,7 +1281,7 @@
             z-index: 100;
             transition: all 0.3s ease;
             text-decoration: none;
-            display: none; /* Hidden by default */
+            display: none;
         }
 
         .back-to-blog.visible {
@@ -1266,13 +1292,12 @@
             background-color: var(--accent);
             color: var(--text-light);
             transform: translateY(-2px);
-            outline: none;
         }
 
-        /* Back to Top Button - Updated to center bottom */
+        /* Back to Top Button */
         .back-to-top {
             position: fixed;
-            bottom: 20px; /* Increased from 20px to move it lower */
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             width: 50px;
@@ -1306,12 +1331,11 @@
 
         /* Blurred background for Latest Epitaphs */
         #blog {
-            position: relative; /* Needed for pseudo-element positioning */
-            background: transparent; /* Remove any existing background */
-            border-bottom: 5px solid var(--accent); /* Keep your border */
+            position: relative;
+            background: transparent;
+            border-bottom: 5px solid var(--accent);
         }
 
-        /* Create a blurred overlay */
         #blog::before {
             content: '';
             position: absolute;
@@ -1319,14 +1343,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 10, 10, 0.7); /* Semi-transparent dark layer */
-            backdrop-filter: blur(0px); /* The blur effect */
-            z-index: -1; /* Place behind content */
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(0px);
+            z-index: -1;
         }
 
         .single-post .post-image {
             height: 400px;
-            margin: 60px 0; /* Adds space above and below the image */
+            margin: 60px 0;
             border-radius: 5px;
             overflow: hidden;
         }
@@ -1353,20 +1377,20 @@
 
         .single-post .post-content-text {
             color: var(--text-light);
-            font-size: 1.6rem; /* Slightly smaller for better readability */
+            font-size: 1.6rem;
             line-height: 1.8;
-            white-space: pre-wrap; /* Preserve formatting */
-            max-width: 800px; /* Optimal line length for reading */
-            margin: 0 auto; /* Center the content */
+            white-space: pre-wrap;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .single-post .post-content-text p {
             margin-bottom: 1.5rem;
-            text-indent: 2em; /* Add paragraph indentation */
+            text-indent: 2em;
         }
 
         .single-post .post-content-text h1 {
-            font-size: 1.8rem; /* Smaller single post title */
+            font-size: 1.8rem;
             margin: 2.5rem 0 1.5rem;
             color: var(--cozy-gold);
         }
@@ -1443,7 +1467,7 @@
             text-align: justify;
         }
 
-        /* Formatting toolbar styles - UPDATED TO FIX ALIGNMENT ISSUES */
+        /* Formatting toolbar styles */
         .formatting-toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -1492,7 +1516,7 @@
             background-color: rgba(20, 20, 20, 0.95);
             border: 1px solid #444;
             border-radius: 4px;
-            z-index: 1000; /* Increased z-index to ensure visibility */
+            z-index: 1000;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
@@ -1527,7 +1551,7 @@
             background-color: rgba(20, 20, 20, 0.95);
             border: 1px solid #444;
             border-radius: 4px;
-            z-index: 1000; /* Increased z-index to ensure visibility */
+            z-index: 1000;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
@@ -1557,7 +1581,6 @@
 
         #postContentEditor:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(138, 0, 0, 0.3);
         }
 
         #postContentEditor p {
@@ -1601,7 +1624,7 @@
             }
 
             .single-post .post-content-text {
-                max-width: 900px; /* Slightly wider for very large screens */
+                max-width: 900px;
             }
         }
 
@@ -1662,17 +1685,12 @@
             }
 
             .single-post {
-                display: none;
-            width: 100vw;
-            position: relative;
-            top: 45px; /* This will push it down below the header */
-            padding-top: 20px; /* Space between border and content */
-            border-top: 5px solid var(--accent);
-            margin-left: calc(-50vw + 50%);
+                margin-top: 70px;
             }
 
             .single-post .post-image {
                 height: 300px;
+                margin: 30px 0;
             }
 
             .single-post .post-content-text {
@@ -1697,35 +1715,11 @@
                 padding: 8px;
             }
 
-            /* Sticky back button on mobile */
             .back-to-blog {
                 bottom: 20px;
                 left: 10px;
                 padding: 8px 15px;
                 font-size: 0.9rem;
-            }
-
-            .back-to-top {
-                position: fixed;
-            bottom: 20px; /* Increased from 20px to move it lower */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background-color: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(5px);
-            color: var(--cozy-gold);
-            border: 2px solid var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 99;
             }
         }
 
@@ -1766,21 +1760,14 @@
                 flex-direction: column;
             }
 
-            /* Mobile single post adjustments */
             .single-post {
-                display: none;
-            width: 100vw;
-            position: relative;
-            top: 45px; /* This will push it down below the header */
-            padding-top: 20px; /* Space between border and content */
-            border-top: 5px solid var(--accent);
-            margin-left: calc(-50vw + 50%);
-            margin-top: 495px;
-            max-height: fit-content;
+                padding: 20px 15px;
+                margin-top: 95px;
             }
 
             .single-post .post-image {
                 height: 200px;
+                margin: 20px 0;
             }
 
             .single-post .post-content-text {
@@ -1797,28 +1784,6 @@
 
             .single-post .post-content-text h3 {
                 font-size: 1.1rem;
-            }
-            .back-to-top {
-                position: fixed;
-            bottom: 20px; /* Increased from 20px to move it lower */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background-color: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(5px);
-            color: var(--cozy-gold);
-            border: 2px solid var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 99;
             }
         }
 
@@ -1922,7 +1887,7 @@
             <!-- Sticky Back Button -->
             <a href="#blog" class="back-to-blog" id="backToBlog">← Back to all posts</a>
 
-            <!-- Back to Top Button - Now centered at bottom -->
+            <!-- Back to Top Button -->
             <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
             <!-- About Section -->
@@ -2151,7 +2116,7 @@
             },
             posts: {
                 perPage: 6,
-                loadThreshold: 300 // pixels from bottom to trigger load
+                loadThreshold: 300
             }
         };
 
@@ -2262,7 +2227,6 @@
             },
             
             sanitizeInput(input) {
-                // Basic sanitization to prevent XSS
                 return input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
             },
             
@@ -2291,7 +2255,6 @@
                 }
             },
             
-            // Formatting functions
             formatText(command, value = null) {
                 document.execCommand(command, false, value);
                 dom.postContentEditor.focus();
@@ -2323,6 +2286,9 @@
                 const loaderImg = new Image();
                 loaderImg.src = 'https://cdna.artstation.com/p/assets/images/images/012/951/896/original/ian-berghuijs-flying-bat.gif?1537343287';
                 
+                // Set up video error handlers
+                this.setupVideoFallbacks();
+                
                 Promise.all([
                     new Promise(resolve => loaderImg.onload = resolve),
                     new Promise(resolve => document.fonts.ready.then(resolve)),
@@ -2334,6 +2300,16 @@
                 }).catch(error => {
                     console.error("Preloader error:", error);
                     this.hidePreloader();
+                });
+            },
+            
+            setupVideoFallbacks() {
+                [dom.video1, dom.video2].forEach(video => {
+                    video.addEventListener('error', () => {
+                        console.error(`Video ${video.id} failed to load`);
+                        video.style.display = 'none';
+                        video.parentElement.style.background = `url('${CONFIG.videos.fallbackImage}') center/cover`;
+                    });
                 });
             },
             
@@ -2420,19 +2396,9 @@
         // 2. Video Toggle Module
         const videoController = {
             init() {
-                this.setupVideoFallbacks();
                 dom.videoToggle.addEventListener('change', this.toggleVideos.bind(this));
-            },
-            
-            setupVideoFallbacks() {
-                dom.video1.src = CONFIG.videos.video1;
-                dom.video2.src = CONFIG.videos.video2;
-                
-                [dom.video1, dom.video2].forEach(video => {
-                    video.addEventListener('error', () => {
-                        video.parentElement.style.background = `url('${CONFIG.videos.fallbackImage}') center/cover`;
-                    });
-                });
+                // Set initial theme
+                document.documentElement.setAttribute('data-theme', 'default');
             },
             
             toggleVideos() {
@@ -2443,7 +2409,7 @@
                 } else {
                     dom.video2.classList.replace('active', 'inactive');
                     dom.video1.classList.replace('inactive', 'active');
-                    document.documentElement.removeAttribute('data-theme');
+                    document.documentElement.setAttribute('data-theme', 'default');
                 }
             }
         };
@@ -2534,14 +2500,13 @@
             
             setupEventListeners() {
                 dom.postsGrid.addEventListener('click', (e) => {
-                    // Only proceed if clicking the "Continue Reading" link
                     const readMoreLink = e.target.closest('.read-more');
                     if (!readMoreLink) return;
                     
                     e.preventDefault();
                     const postCard = readMoreLink.closest('.post-card');
                     const postId = postCard.dataset.id;
-                    contentLoader.showSinglePost(postId);
+                    this.showSinglePost(postId);
                 });
                 
                 dom.backToBlog.addEventListener('click', (e) => {
@@ -2645,13 +2610,12 @@
                     postEl.innerHTML = `
                     <div class="post-image">
                         <img src="${post.image}" alt="${post.title}" loading="lazy">
-                        <h3 class="post-title-overlay">${post.title}</h3> <!-- Moved title here -->
+                        <h3 class="post-title-overlay">${post.title}</h3>
                     </div>
                     <div class="post-content">
                         <div class="post-meta">
                             <span>${post.date}</span>
                         </div>
-                        <!-- Removed the <h3> from here -->
                         <div class="post-tags">
                             ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
                         </div>
@@ -2665,7 +2629,10 @@
             
             async showSinglePost(postId) {
                 try {
-                    // Add class to body to hide other sections
+                    // Show loading state
+                    dom.singlePostView.classList.add('loading');
+                    dom.singlePostView.classList.add('active');
+                    dom.postsGrid.style.display = 'none';
                     document.body.classList.add('single-post-active');
                     
                     const post = state.posts.find(p => p.id === postId) || await this.fetchSinglePost(postId);
@@ -2692,8 +2659,8 @@
                         </div>
                     `;
                     
-                    dom.singlePostView.classList.add('active');
-                    dom.postsGrid.style.display = 'none';
+                    // Remove loading state and show content
+                    dom.singlePostView.classList.remove('loading');
                     dom.backToBlog.classList.add('visible');
                     
                     // Scroll to the post after a short delay to allow rendering
@@ -2706,6 +2673,7 @@
                 } catch (error) {
                     console.error("Failed to load single post:", error);
                     utils.showError(dom.adminError, "Failed to load post. Please try again later.");
+                    this.showPostGrid();
                 }
             },
             
@@ -2738,10 +2706,9 @@
             },
             
             showPostGrid() {
-                // Remove class from body to show other sections
                 document.body.classList.remove('single-post-active');
-                
                 dom.singlePostView.classList.remove('active');
+                dom.singlePostView.classList.remove('loading');
                 dom.postsGrid.style.display = 'grid';
                 dom.backToBlog.classList.remove('visible');
             },
@@ -2788,7 +2755,6 @@
             },
             
             setupFormattingToolbar() {
-                // Basic formatting buttons
                 dom.formattingToolbar.addEventListener('click', (e) => {
                     if (e.target.classList.contains('formatting-button') && e.target.dataset.command) {
                         const command = e.target.dataset.command;
@@ -2797,7 +2763,6 @@
                     }
                 });
                 
-                // Alignment picker
                 dom.alignmentPickerBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     dom.alignmentOptions.style.display = dom.alignmentOptions.style.display === 'grid' ? 'none' : 'grid';
@@ -2807,37 +2772,27 @@
                 dom.alignmentOptions.addEventListener('click', (e) => {
                     if (e.target.classList.contains('alignment-option')) {
                         const align = e.target.dataset.align;
-                        
-                        // Get current selection
                         const selection = window.getSelection();
                         if (selection.rangeCount > 0) {
                             const range = selection.getRangeAt(0);
-                            
-                            // Create a div with the alignment class
                             const div = document.createElement('div');
                             div.className = `text-${align}`;
                             
-                            // If there's selected content, wrap it in the div
                             if (!selection.isCollapsed) {
                                 const selectedContent = range.extractContents();
                                 div.appendChild(selectedContent);
                                 range.insertNode(div);
                             } else {
-                                // If no selection, apply to the current paragraph
                                 const parentParagraph = range.startContainer.parentElement.closest('p, div');
                                 if (parentParagraph) {
-                                    // Remove any existing alignment classes
                                     parentParagraph.className = parentParagraph.className
                                         .split(' ')
                                         .filter(cls => !cls.startsWith('text-'))
                                         .join(' ');
-                                    
-                                    // Add the new alignment class
                                     parentParagraph.classList.add(`text-${align}`);
                                 }
                             }
                             
-                            // Clean up empty paragraphs that might have been created
                             dom.postContentEditor.querySelectorAll('p:empty, div:empty').forEach(el => el.remove());
                         }
                         
@@ -2845,7 +2800,6 @@
                     }
                 });
                 
-                // Size picker
                 dom.sizePickerBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     dom.sizeOptions.style.display = dom.sizeOptions.style.display === 'flex' ? 'none' : 'flex';
@@ -2867,12 +2821,11 @@
                             default: fontSize = '1rem';
                         }
                         
-                        utils.formatText('fontSize', '7'); // 7 is the largest size in execCommand
+                        utils.formatText('fontSize', '7');
                         document.execCommand('styleWithCSS', false, true);
                         document.execCommand('fontSize', false, '7');
                         document.execCommand('styleWithCSS', false, false);
                         
-                        // Apply the actual size using CSS classes
                         const selection = window.getSelection();
                         if (selection.rangeCount > 0) {
                             const range = selection.getRangeAt(0);
@@ -2885,7 +2838,6 @@
                     }
                 });
                 
-                // Close dropdowns when clicking outside
                 document.addEventListener('click', (e) => {
                     if (!e.target.closest('.alignment-picker') && !e.target.closest('.size-picker')) {
                         dom.alignmentOptions.style.display = 'none';
@@ -2893,29 +2845,23 @@
                     }
                 });
                 
-                // Handle tab key for indentation
                 dom.postContentEditor.addEventListener('keydown', (e) => {
                     if (e.key === 'Tab') {
                         e.preventDefault();
-                        // Insert a tab character at the current cursor position
                         document.execCommand('insertText', false, '\t');
                     }
                 });
                 
-                // Handle enter key to prevent inheriting formatting
                 dom.postContentEditor.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
-                        // Get current selection
                         const selection = window.getSelection();
                         if (selection.rangeCount > 0) {
                             const range = selection.getRangeAt(0);
                             const node = range.startContainer;
                             
-                            // If we're in a paragraph that starts with tabs, don't inherit them
                             if (node.nodeType === Node.TEXT_NODE && node.parentNode.nodeName === 'P') {
                                 const text = node.textContent;
                                 if (text.startsWith('\t')) {
-                                    // Set a timeout to clear the formatting after the new paragraph is created
                                     setTimeout(() => {
                                         const newParagraph = dom.postContentEditor.querySelector('p:last-child');
                                         if (newParagraph && newParagraph.textContent.startsWith('\t')) {
@@ -2932,8 +2878,6 @@
             toggleAdminPanel() {
                 dom.adminPanelOverlay.classList.toggle('active');
                 dom.adminPanelExpanded.classList.toggle('active');
-                
-                // Add/remove body scroll lock when panel is open
                 document.body.style.overflow = dom.adminPanelExpanded.classList.contains('active') ? 'hidden' : '';
             },
             
@@ -3058,7 +3002,6 @@
                     dom.postsList.appendChild(row);
                 });
                 
-                // Add event listeners to the new buttons
                 document.querySelectorAll('.edit-post').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const postId = e.target.getAttribute('data-id');
@@ -3104,13 +3047,11 @@
                     dom.postImage.value = post.image || '';
                     dom.postTags.value = post.tags ? post.tags.join(', ') : '';
                     
-                    // Show delete button for existing posts
                     dom.deletePostBtn.style.display = 'inline-block';
                     
                     this.showPostForm();
                     this.hidePostsList();
                     
-                    // Scroll to the form
                     dom.adminPanelExpanded.scrollTo({
                         top: 0,
                         behavior: 'smooth'
@@ -3125,15 +3066,12 @@
             
             showPostForm() {
                 if (!this.currentPost) {
-                    // New post
                     dom.formTitle.textContent = 'Create New Post';
                     dom.postId.value = '';
                     dom.postTitle.value = '';
                     dom.postContentEditor.innerHTML = '';
                     dom.postImage.value = '';
                     dom.postTags.value = '';
-                    
-                    // Hide delete button for new posts
                     dom.deletePostBtn.style.display = 'none';
                 }
                 
@@ -3157,7 +3095,6 @@
                     return;
                 }
                 
-                // Create excerpt from content (remove HTML tags and limit length)
                 const excerpt = this.createExcerpt(content);
                 
                 const postData = {
@@ -3173,20 +3110,16 @@
                     utils.setLoading(dom.savePostBtn, true);
                     
                     if (dom.postId.value) {
-                        // Update existing post
                         await db.collection('posts').doc(dom.postId.value).update(postData);
                         utils.showSuccess(dom.adminSuccess, "Post updated successfully");
                     } else {
-                        // Create new post
                         await db.collection('posts').add(postData);
                         utils.showSuccess(dom.adminSuccess, "Post created successfully");
                     }
                     
-                    // Reload posts
                     this.loadPostsList();
                     contentLoader.loadInitialPosts();
                     
-                    // Return to posts list after a delay
                     setTimeout(() => {
                         this.hidePostForm();
                         this.showPostsList();
@@ -3200,15 +3133,11 @@
             },
             
             createExcerpt(content) {
-                // Create a temporary div to parse HTML
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = content;
-                
-                // Get text content and limit to 150 characters
                 let excerpt = tempDiv.textContent || tempDiv.innerText || '';
                 excerpt = excerpt.substring(0, 150);
                 
-                // Add ellipsis if we cut off the text
                 if (excerpt.length === 150) {
                     excerpt += '...';
                 }
@@ -3229,12 +3158,8 @@
                     await db.collection('posts').doc(idToDelete).delete();
                     
                     utils.showSuccess(dom.adminSuccess, "Post deleted successfully");
-                    
-                    // Reload posts
                     this.loadPostsList();
                     contentLoader.loadInitialPosts();
-                    
-                    // Hide form and show list
                     this.hidePostForm();
                     this.showPostsList();
                 } catch (error) {
