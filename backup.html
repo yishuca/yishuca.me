@@ -1589,6 +1589,39 @@
             text-indent: 2em;
         }
 
+        /* SoundCloud Player Styles */
+        .player-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 20px;
+            overflow: hidden;
+            margin: 30px auto;
+            border-bottom: 1px solid var(--accent);
+
+        }
+
+        .player-container iframe {
+            width: 100%;
+            height: 20px;
+        }
+
+        .logo-cover {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 19px;
+            background-color: black;
+            z-index: 10;
+            border: 1px solid var(--accent);
+            font-size: small;
+            transform: translateY(2px);
+            display: flex;
+            align-items: center;     /* vertical */
+            justify-content: center; /* horizontal */
+        }
+
         /* Alignment styles for editor and display */
         .text-left, [align="left"] {
             text-align: left;
@@ -2010,6 +2043,8 @@
                     <input type="hidden" id="postContent">
                     <label for="postImage">Image URL</label>
                     <input type="text" id="postImage" placeholder="Image URL">
+                    <label for="soundcloudUrl">SoundCloud URL</label>
+                    <input type="text" id="soundcloudUrl" placeholder="SoundCloud URL (optional)">
                     <label for="postTags">Tags (comma separated)</label>
                     <input type="text" id="postTags" placeholder="Tags (comma separated)">
                     <div class="form-actions">
@@ -2180,6 +2215,7 @@
             postContent: document.getElementById('postContent'),
             postContentEditor: document.getElementById('postContentEditor'),
             postImage: document.getElementById('postImage'),
+            soundcloudUrl: document.getElementById('soundcloudUrl'),
             postTags: document.getElementById('postTags'),
             savePostBtn: document.getElementById('savePostBtn'),
             cancelPostBtn: document.getElementById('cancelPostBtn'),
@@ -2265,6 +2301,16 @@
             
             toggleFormattingButton(button) {
                 button.classList.toggle('active');
+            },
+            
+            isValidSoundCloudUrl(url) {
+                if (!url) return false;
+                try {
+                    const parsedUrl = new URL(url);
+                    return parsedUrl.hostname.includes('soundcloud.com');
+                } catch (e) {
+                    return false;
+                }
             }
         };
 
@@ -2597,7 +2643,8 @@
                         image: data.image || 'https://via.placeholder.com/400x250?text=No+Image',
                         tags: data.tags || [],
                         excerpt: data.excerpt || 'No content available',
-                        content: data.content || ''
+                        content: data.content || '',
+                        soundcloudUrl: data.soundcloudUrl || ''
                     };
                 });
                 
@@ -2649,6 +2696,23 @@
                         throw new Error('Post not found');
                     }
                     
+                    let soundcloudPlayer = '';
+                    if (post.soundcloudUrl && utils.isValidSoundCloudUrl(post.soundcloudUrl)) {
+                        soundcloudPlayer = `
+                        <div class="player-container">
+                            <iframe 
+                                width="100%" 
+                                height="20px" 
+                                scrolling="no" 
+                                frameborder="no" 
+                                allow="autoplay" 
+                                src="https://w.soundcloud.com/player/?url=${encodeURIComponent(post.soundcloudUrl)}&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
+                            </iframe>
+                            <div class="logo-cover">The Gravewave</div>
+                        </div>
+                        `;
+                    }
+                    
                     dom.singlePostContent.innerHTML = `
                         <div class="post-image">
                             <img src="${post.image}" alt="${post.title}" loading="lazy">
@@ -2658,6 +2722,7 @@
                                 <span>${post.date}</span>
                             </div>
                             <h1>${post.title}</h1>
+                            ${soundcloudPlayer}
                             <div class="post-tags">
                                 ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
                             </div>
@@ -2704,7 +2769,8 @@
                         image: data.image || 'https://via.placeholder.com/400x250?text=No+Image',
                         tags: data.tags || [],
                         excerpt: data.excerpt || 'No content available',
-                        content: data.content || ''
+                        content: data.content || '',
+                        soundcloudUrl: data.soundcloudUrl || ''
                     };
                     
                     state.posts.push(post);
@@ -3056,6 +3122,7 @@
                     dom.postTitle.value = post.title;
                     dom.postContentEditor.innerHTML = post.content;
                     dom.postImage.value = post.image || '';
+                    dom.soundcloudUrl.value = post.soundcloudUrl || '';
                     dom.postTags.value = post.tags ? post.tags.join(', ') : '';
                     
                     dom.deletePostBtn.style.display = 'inline-block';
@@ -3082,6 +3149,7 @@
                     dom.postTitle.value = '';
                     dom.postContentEditor.innerHTML = '';
                     dom.postImage.value = '';
+                    dom.soundcloudUrl.value = '';
                     dom.postTags.value = '';
                     dom.deletePostBtn.style.display = 'none';
                 }
@@ -3099,6 +3167,7 @@
                 const title = dom.postTitle.value.trim();
                 const content = dom.postContentEditor.innerHTML;
                 const image = dom.postImage.value.trim();
+                const soundcloudUrl = dom.soundcloudUrl.value.trim();
                 const tags = dom.postTags.value.split(',').map(tag => tag.trim()).filter(tag => tag);
                 
                 if (!title || !content) {
@@ -3113,6 +3182,7 @@
                     content: content,
                     excerpt: excerpt,
                     image: image,
+                    soundcloudUrl: soundcloudUrl,
                     tags: tags,
                     date: this.currentPost?.date ? this.currentPost.date : new Date()
                 };
