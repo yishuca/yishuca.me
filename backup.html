@@ -1600,7 +1600,7 @@
             background-color: black;
             border: 1px solid;
             border-color: darkgray;
-            border-radius: 50px;
+            border-radius: 5px;
         }
         
         iframe {
@@ -2719,15 +2719,13 @@
                         <div class="player-container">
                             <iframe 
                                 width="100%" 
-                                height="100%" 
+                                height="20px" 
                                 scrolling="no" 
                                 frameborder="no" 
                                 allow="autoplay" 
-                                src="https://w.soundcloud.com/player/?url=https://soundcloud.com/classical-piano-hits/claire-de-lune&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false">
+                                src="https://w.soundcloud.com/player/?url=${encodeURIComponent(post.soundcloudUrl)}&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
                             </iframe>
-                            <div class="track-text">
-                                𓉸 The Gravewave
-                            </div>
+                            <div class="track-text">𓉸 The Gravewave</div>
                         </div>
                         `;
                     }
@@ -2741,10 +2739,10 @@
                                 <span>${post.date}</span>
                             </div>
                             <h1>${post.title}</h1>
+                            ${soundcloudPlayer}
                             <div class="post-tags">
                                 ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
                             </div>
-                                ${soundcloudPlayer}
                             <div class="post-content-text">
                                 ${post.content}
                             </div>
