@@ -245,25 +245,26 @@
             margin-bottom: 1rem;
             letter-spacing: 1px;
             position: relative;
-            animation: logoPulse 2s ease-in-out infinite;
+            animation: logoPulse 2s ease-in-out;
+            opacity: 0;
+            animation-delay: 7s;
+            animation-fill-mode: forwards;
         }
 
         @keyframes logoPulse {
-            0%, 100% {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
                 text-shadow:
                     0 0 5px #fff,
                     0 0 10px #fff,
                     0 0 20px var(--neon-primary),
                     0 0 30px var(--neon-primary),
                     0 0 40px var(--neon-primary);
-            }
-            50% {
-                text-shadow:
-                    0 0 10px #fff,
-                    0 0 20px #fff,
-                    0 0 30px var(--neon-primary),
-                    0 0 50px var(--neon-primary),
-                    0 0 60px var(--neon-primary);
             }
         }
 
@@ -286,11 +287,29 @@
             justify-content: center;
             flex-wrap: wrap;
             line-height: 1.2;
+            opacity: 0;
+            transform: translateY(60px);
+            animation: titleRise 4s ease-out forwards;
+        }
+
+        @keyframes titleRise {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #yishuca-title {
+            animation-delay: 0.5s;
+        }
+
+        #designs-title {
+            animation-delay: 5s;
         }
 
         .matrix-letter {
             opacity: 0;
-            animation: matrixReveal 0.1s forwards;
+            animation: matrixReveal .1s forwards;
             display: inline-block;
             min-width: 20px;
             text-align: center;
@@ -343,6 +362,15 @@
             text-shadow: 
                 0 0 5px rgba(255, 255, 255, 0.594),
                 0 0 10px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 7s;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
         }
 
         .tagline {
@@ -351,6 +379,9 @@
             margin: 0 auto 2rem;
             color: var(--light-gray);
             font-family: 'Segoe UI', sans-serif;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 8s;
         }
 
         .btn {
@@ -366,6 +397,9 @@
             transition: var(--transition);
             box-shadow: var(--shadow);
             font-family: 'Poppins', sans-serif;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 2.1s;
         }
 
         .portfolio-overlay .btn {
