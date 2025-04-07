@@ -969,6 +969,13 @@
             animation: bounce 2s infinite;
             z-index: 10;
             opacity: 0.7;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            display: none; /* Initially hidden */
+        }
+
+        .scroll-indicator.visible {
+            display: block;
         }
 
         @keyframes bounce {
@@ -1206,7 +1213,7 @@
                 </div>
             </header>
 
-            <section class="services">
+            <section class="services" id="services">
                 <h3>What I Offer</h3>
                 <div class="services-grid">
                     <div class="service-card">
@@ -1471,7 +1478,7 @@
                     
                     setTimeout(() => {
                         animateLetter(charSpan, part.text[i], (partIndex * 80) + i);
-                    }, ((partIndex * part.text.length) + i) * 0);
+                    }, ((partIndex * part.text.length) + i) * 50);
                 }
                 
                 yishucaTitle.appendChild(span);
@@ -1527,13 +1534,30 @@
 
             // Scroll indicator functionality
             const scrollIndicator = document.getElementById('scrollIndicator');
-            if (scrollIndicator) {
+            const servicesSection = document.getElementById('services');
+            
+            if (scrollIndicator && servicesSection) {
+                // Make arrow clickable to scroll to services
                 scrollIndicator.addEventListener('click', () => {
-                    window.scrollTo({
-                        top: window.innerHeight,
+                    servicesSection.scrollIntoView({
                         behavior: 'smooth'
                     });
                 });
+                
+                // Show/hide arrow based on scroll position
+                function checkScrollPosition() {
+                    if (window.scrollY === 0) {
+                        scrollIndicator.classList.add('visible');
+                    } else {
+                        scrollIndicator.classList.remove('visible');
+                    }
+                }
+                
+                // Initial check
+                checkScrollPosition();
+                
+                // Add scroll event listener
+                window.addEventListener('scroll', checkScrollPosition);
             }
 
             // Create subtle shooting stars with parallax effect
