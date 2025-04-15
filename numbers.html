@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Memorization Challenge</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;        /* Main purple */
+            --primary-dark: #5649c0;   /* Slightly darker purple */
+            --primary-light: #a29bfe;  /* Lighter purple */
+            --secondary: #a29bfe;      /* Same as primary-light */
+            --dark: #2d3436;
+            --darker: #1e272e;
+            --light: #f5f6fa;
+            --error: #ff7675;
+            --success: #55efc4;
+            --warning: #fdcb6e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: var(--dark);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .settings {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 150px;
+            max-width: 250px;
+        }
+
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--primary-light);
+        }
+
+        select, input, button {
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.5rem;
+            padding-right: 2.5rem;
+            background-color: var(--darker);
+        }
+
+        select option {
+            background-color: var(--darker);
+            color: var(--light);
+            padding: 0.5rem;
+        }
+
+        button {
+            background-color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            margin-top: auto;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background-color: #636e72;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .game-area {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .number-display {
+            font-size: 4rem;
+            font-weight: bold;
+            letter-spacing: 0.5rem;
+            margin: 2rem 0;
+            color: var(--primary);
+            min-height: 6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: break-all;
+        }
+
+        .timer {
+            font-size: 2rem;
+            margin: 1rem 0;
+            color: var(--warning);
+            font-family: monospace;
+        }
+
+        .input-area {
+            margin-top: 2rem;
+        }
+
+        .number-input {
+            font-size: 1.5rem;
+            padding: 1rem;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--primary-light);
+            color: var(--light);
+            border-radius: 8px;
+        }
+
+        .stats {
+            margin-top: 2rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: none;
+            border: 1px solid var(--primary-light);
+        }
+
+        .stats h2 {
+            color: var(--primary-light);
+            margin-bottom: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .error {
+            color: var(--error);
+            margin-top: 1rem;
+        }
+
+        .success {
+            color: var(--success);
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        .attempts {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .attempts span {
+            color: var(--error);
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .time-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .time-input input {
+            text-align: center;
+        }
+
+        .time-separator {
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            color: var(--primary-light);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .number-display {
+                font-size: 2.5rem;
+                letter-spacing: 0.3rem;
+            }
+            
+            .timer {
+                font-size: 1.5rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-buttons button {
+                width: 100%;
+            }
+            
+            .setting-group {
+                min-width: 100%;
+                max-width: 100%;
+            }
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML content remains exactly the same as previous version -->
+    <div class="container">
+        <h1>Number Memorization Challenge</h1>
+        
+        <div class="settings">
+            <div class="setting-group">
+                <label for="digitCount">Number of Digits</label>
+                <input type="number" id="digitCount" min="1" value="4">
+            </div>
+            
+            <div class="setting-group">
+                <label for="memorizeTime">Memorization Time</label>
+                <div class="time-input">
+                    <input type="number" id="memorizeMinutes" min="0" max="59" value="0" placeholder="MM">
+                    <div class="time-separator">:</div>
+                    <input type="number" id="memorizeSeconds" min="0" max="59" value="5" placeholder="SS">
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <label>&nbsp;</label>
+                <button id="startBtn">Start Challenge</button>
+            </div>
+        </div>
+        
+        <div class="game-area">
+            <div class="timer" id="timer">--:--</div>
+            <div class="number-display" id="numberDisplay"></div>
+            
+            <div class="action-buttons" id="memorizationResetBtn" style="display: none;">
+                <button id="resetBtn" style="background-color: var(--warning);">Reset</button>
+            </div>
+            
+            <div class="input-area" id="inputArea" style="display: none;">
+                <input type="text" class="number-input" id="numberInput" placeholder="Enter the numbers..." autocomplete="off">
+                <div class="attempts">Incorrect attempts: <span id="incorrectCount">0</span></div>
+                <div class="error" id="errorMsg"></div>
+                <div class="success" id="successMsg"></div>
+                <div class="action-buttons">
+                    <button id="giveUpBtn" style="background-color: var(--error);">Give Up</button>
+                </div>
+            </div>
+            
+            <div class="stats" id="stats">
+                <h2>Your Results</h2>
+                <div class="stat-item">
+                    <span>Digits Memorized:</span>
+                    <span class="stat-value" id="statDigits">4</span>
+                </div>
+                <div class="stat-item">
+                    <span>Memorization Time:</span>
+                    <span class="stat-value" id="statMemTime">00:05</span>
+                </div>
+                <div class="stat-item">
+                    <span>Recall Time:</span>
+                    <span class="stat-value" id="statRecallTime">--:--</span>
+                </div>
+                <div class="stat-item">
+                    <span>Incorrect Attempts:</span>
+                    <span class="stat-value" id="statIncorrect">0</span>
+                </div>
+                <div class="action-buttons">
+                    <button id="newChallengeBtn">New Challenge</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript remains exactly the same as previous version -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const startBtn = document.getElementById('startBtn');
+            const newChallengeBtn = document.getElementById('newChallengeBtn');
+            const giveUpBtn = document.getElementById('giveUpBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const memorizationResetBtn = document.getElementById('memorizationResetBtn');
+            const digitCountInput = document.getElementById('digitCount');
+            const memorizeMinutesInput = document.getElementById('memorizeMinutes');
+            const memorizeSecondsInput = document.getElementById('memorizeSeconds');
+            const timerDisplay = document.getElementById('timer');
+            const numberDisplay = document.getElementById('numberDisplay');
+            const inputArea = document.getElementById('inputArea');
+            const numberInput = document.getElementById('numberInput');
+            const incorrectCount = document.getElementById('incorrectCount');
+            const errorMsg = document.getElementById('errorMsg');
+            const successMsg = document.getElementById('successMsg');
+            const stats = document.getElementById('stats');
+            const statDigits = document.getElementById('statDigits');
+            const statMemTime = document.getElementById('statMemTime');
+            const statRecallTime = document.getElementById('statRecallTime');
+            const statIncorrect = document.getElementById('statIncorrect');
+            
+            // Game variables
+            let targetNumber = '';
+            let memorizeTimer;
+            let recallTimer;
+            let startTime;
+            let incorrectAttempts = 0;
+            let currentDigitCount = 4;
+            let currentMemorizeTime = 5; // in seconds
+            let lastCorrectLength = 0;
+            
+            // Helper functions for time formatting
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            function parseTimeInput(minutesInput, secondsInput) {
+                const minutes = parseInt(minutesInput.value) || 0;
+                const seconds = parseInt(secondsInput.value) || 0;
+                return (minutes * 60) + seconds;
+            }
+            
+            // Start the challenge
+            startBtn.addEventListener('click', startChallenge);
+            newChallengeBtn.addEventListener('click', newChallenge);
+            giveUpBtn.addEventListener('click', giveUp);
+            resetBtn.addEventListener('click', resetChallenge);
+            
+            // Handle input validation
+            numberInput.addEventListener('input', function(e) {
+                // Only allow numbers
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                const currentInput = this.value;
+                const currentLength = currentInput.length;
+                
+                // Check if current input matches the beginning of target
+                if (targetNumber.indexOf(currentInput) !== 0) {
+                    // Wrong digit entered
+                    incorrectAttempts++;
+                    incorrectCount.textContent = incorrectAttempts;
+                    errorMsg.textContent = 'Incorrect digit!';
+                    this.value = currentInput.slice(0, -1); // Remove the wrong digit
+                    return;
+                }
+                
+                // Clear error message if input is correct so far
+                if (currentLength > lastCorrectLength) {
+                    errorMsg.textContent = '';
+                    lastCorrectLength = currentLength;
+                }
+                
+                // Check if input matches target number
+                if (currentInput === targetNumber) {
+                    endChallenge(true);
+                    giveUpBtn.style.display = 'none';
+                }
+            });
+            
+            // Validate digit count input
+            digitCountInput.addEventListener('change', function() {
+                let value = parseInt(this.value);
+                if (isNaN(value) || value < 1) {
+                    this.value = 1;
+                }
+            });
+            
+            // Validate minutes input (0-59)
+            memorizeMinutesInput.addEventListener('change', function() {
+                let value = parseInt(this.value);
+                if (isNaN(value)) {
+                    this.value = 0;
+                } else if (value < 0) {
+                    this.value = 0;
+                } else if (value > 59) {
+                    this.value = 59;
+                }
+            });
+
+            // Validate seconds input (0-59)
+            memorizeSecondsInput.addEventListener('change', function() {
+                let value = parseInt(this.value);
+                if (isNaN(value)) {
+                    this.value = 0;
+                } else if (value < 0) {
+                    this.value = 0;
+                } else if (value > 59) {
+                    this.value = 59;
+                }
+            });
+            
+            function startChallenge() {
+                // Get settings
+                currentDigitCount = parseInt(digitCountInput.value);
+                currentMemorizeTime = parseTimeInput(memorizeMinutesInput, memorizeSecondsInput);
+                
+                // Validate inputs
+                if (isNaN(currentDigitCount) || currentDigitCount < 1) currentDigitCount = 1;
+                if (currentMemorizeTime < 1) currentMemorizeTime = 1;
+                
+                // Reset game state
+                resetGameState();
+                
+                // Generate random number
+                targetNumber = generateRandomNumber(currentDigitCount);
+                
+                // Show the number and start memorization timer
+                numberDisplay.textContent = targetNumber;
+                startBtn.disabled = true;
+                
+                // Show reset button during memorization
+                memorizationResetBtn.style.display = 'flex';
+                giveUpBtn.style.display = 'none';
+                
+                // Start countdown
+                let timeLeft = currentMemorizeTime;
+                timerDisplay.textContent = formatTime(timeLeft);
+                
+                memorizeTimer = setInterval(() => {
+                    timeLeft--;
+                    timerDisplay.textContent = formatTime(timeLeft);
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(memorizeTimer);
+                        timerDisplay.textContent = 'MEMORIZE!';
+                        setTimeout(() => {
+                            numberDisplay.textContent = '•'.repeat(currentDigitCount);
+                            startRecallPhase();
+                        }, 1000);
+                    }
+                }, 1000);
+            }
+            
+            function newChallenge() {
+                // Show settings and hide game area
+                stats.style.display = 'none';
+                inputArea.style.display = 'none';
+                memorizationResetBtn.style.display = 'none';
+                numberDisplay.textContent = '';
+                timerDisplay.textContent = '--:--';
+                startBtn.disabled = false;
+                giveUpBtn.style.display = 'block';
+            }
+            
+            function resetChallenge() {
+                clearInterval(memorizeTimer);
+                clearInterval(recallTimer);
+                newChallenge();
+            }
+            
+            function giveUp() {
+                // Show the correct number
+                numberDisplay.textContent = targetNumber;
+                endChallenge(false);
+                successMsg.textContent = `The correct number was: ${targetNumber}`;
+                giveUpBtn.style.display = 'none';
+            }
+            
+            function resetGameState() {
+                // Reset game state
+                clearTimeout(memorizeTimer);
+                clearInterval(recallTimer);
+                targetNumber = '';
+                incorrectAttempts = 0;
+                startTime = null;
+                lastCorrectLength = 0;
+                
+                // Hide stats and show game area
+                stats.style.display = 'none';
+                inputArea.style.display = 'none';
+                errorMsg.textContent = '';
+                successMsg.textContent = '';
+                numberInput.value = '';
+                incorrectCount.textContent = '0';
+                
+                // Update stats display
+                statDigits.textContent = currentDigitCount;
+                statMemTime.textContent = formatTime(currentMemorizeTime);
+                statRecallTime.textContent = '--:--';
+                statIncorrect.textContent = '0';
+            }
+            
+            function startRecallPhase() {
+                // Hide memorization reset button
+                memorizationResetBtn.style.display = 'none';
+                
+                // Show input area and give up button
+                inputArea.style.display = 'block';
+                giveUpBtn.style.display = 'block';
+                numberInput.focus();
+                lastCorrectLength = 0;
+                
+                // Start recall timer
+                startTime = Date.now();
+                recallTimer = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                    timerDisplay.textContent = formatTime(elapsed);
+                }, 1000);
+            }
+            
+            function endChallenge(success) {
+                clearInterval(recallTimer);
+                
+                const recallTime = Math.floor((Date.now() - startTime) / 1000);
+                statRecallTime.textContent = formatTime(recallTime);
+                statIncorrect.textContent = incorrectAttempts;
+                
+                if (success) {
+                    successMsg.textContent = `Correct! You recalled the number in ${formatTime(recallTime)} with ${incorrectAttempts} incorrect attempts.`;
+                }
+                
+                // Show stats
+                stats.style.display = 'block';
+                startBtn.disabled = false;
+            }
+            
+            function generateRandomNumber(length) {
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += Math.floor(Math.random() * 10).toString();
+                }
+                return result;
+            }
+        });
+    </script>
+</body>
+</html>
