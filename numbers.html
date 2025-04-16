@@ -271,7 +271,6 @@
     </style>
 </head>
 <body>
-    <!-- HTML content remains exactly the same as previous version -->
     <div class="container">
         <h1>Number Memorization Challenge</h1>
         
@@ -321,6 +320,10 @@
                     <span class="stat-value" id="statDigits">4</span>
                 </div>
                 <div class="stat-item">
+                    <span>Correct Digits Guessed:</span>
+                    <span class="stat-value" id="statCorrectDigits">0</span>
+                </div>
+                <div class="stat-item">
                     <span>Memorization Time:</span>
                     <span class="stat-value" id="statMemTime">00:05</span>
                 </div>
@@ -333,18 +336,17 @@
                     <span class="stat-value" id="statIncorrect">0</span>
                 </div>
                 <div class="action-buttons">
-                    <button id="newChallengeBtn">New Challenge</button>
+                    <button id="startNewBtn">Start New Challenge</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript remains exactly the same as previous version -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
             const startBtn = document.getElementById('startBtn');
-            const newChallengeBtn = document.getElementById('newChallengeBtn');
+            const startNewBtn = document.getElementById('startNewBtn');
             const giveUpBtn = document.getElementById('giveUpBtn');
             const resetBtn = document.getElementById('resetBtn');
             const memorizationResetBtn = document.getElementById('memorizationResetBtn');
@@ -360,6 +362,7 @@
             const successMsg = document.getElementById('successMsg');
             const stats = document.getElementById('stats');
             const statDigits = document.getElementById('statDigits');
+            const statCorrectDigits = document.getElementById('statCorrectDigits');
             const statMemTime = document.getElementById('statMemTime');
             const statRecallTime = document.getElementById('statRecallTime');
             const statIncorrect = document.getElementById('statIncorrect');
@@ -389,7 +392,7 @@
             
             // Start the challenge
             startBtn.addEventListener('click', startChallenge);
-            newChallengeBtn.addEventListener('click', newChallenge);
+            startNewBtn.addEventListener('click', newChallenge);
             giveUpBtn.addEventListener('click', giveUp);
             resetBtn.addEventListener('click', resetChallenge);
             
@@ -516,10 +519,23 @@
             }
             
             function giveUp() {
+                // Calculate how many digits were correct
+                const currentInput = numberInput.value;
+                let correctDigits = 0;
+                
+                for (let i = 0; i < currentInput.length; i++) {
+                    if (currentInput[i] === targetNumber[i]) {
+                        correctDigits++;
+                    } else {
+                        break;
+                    }
+                }
+                
                 // Show the correct number
                 numberDisplay.textContent = targetNumber;
                 endChallenge(false);
-                successMsg.textContent = `The correct number was: ${targetNumber}`;
+                successMsg.textContent = `You guessed ${correctDigits} digit(s) correctly. The full number was: ${targetNumber}`;
+                statCorrectDigits.textContent = correctDigits;
                 giveUpBtn.style.display = 'none';
             }
             
@@ -539,6 +555,7 @@
                 successMsg.textContent = '';
                 numberInput.value = '';
                 incorrectCount.textContent = '0';
+                statCorrectDigits.textContent = '0';
                 
                 // Update stats display
                 statDigits.textContent = currentDigitCount;
@@ -573,6 +590,7 @@
                 statIncorrect.textContent = incorrectAttempts;
                 
                 if (success) {
+                    statCorrectDigits.textContent = currentDigitCount;
                     successMsg.textContent = `Correct! You recalled the number in ${formatTime(recallTime)} with ${incorrectAttempts} incorrect attempts.`;
                 }
                 
