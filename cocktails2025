@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Menu Training Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --primary: #6c5ce7;
+      --secondary: #a29bfe;
+      --accent: #fd79a8;
+      --text: rgba(255, 255, 255, 0.92);
+      --text-muted: rgba(255, 255, 255, 0.6);
+      --correct: #00b894;
+      --incorrect: #d63031;
+      --correct-bg: rgba(0, 184, 148, 0.2);
+      --incorrect-bg: rgba(214, 48, 49, 0.2);
+      --blur: blur(12px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--card-border);
+      border-radius: 1rem;
+      padding: 1.75rem;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 160px;
+    }
+
+    .card:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      background: var(--secondary);
+    }
+
+    .btn:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .quiz-box {
+      background: var(--card-bg);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--card-border);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+
+    .answer-btn {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem 1.25rem;
+      border-radius: 0.75rem;
+      margin-top: 0.75rem;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s;
+    }
+
+    .answer-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary);
+    }
+
+    .answer-btn:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.3);
+    }
+
+    .answer-btn.correct {
+      background: var(--correct-bg);
+      border-color: var(--correct);
+    }
+
+    .answer-btn.incorrect {
+      background: var(--incorrect-bg);
+      border-color: var(--incorrect);
+    }
+
+    .answer-btn:disabled {
+      cursor: not-allowed;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--primary);
+      border-radius: 9999px;
+      width: 0%;
+      margin: 1.5rem 0 2rem 0;
+      transition: width 0.4s ease;
+    }
+
+    .muted {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+      display: none;
+    }
+
+    .stats {
+      margin-top: 0.75rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .question-text {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1.25rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .quiz-box {
+        padding: 1.5rem;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Menu Training Quiz</h1>
+    <div id="categoryGrid" class="grid"></div>
+
+    <div id="quizSection" class="quiz-box" style="display:none;">
+      <h2 id="quizTitle"></h2>
+      <div class="progress-bar" id="progressBar"></div>
+      <div class="muted" id="progressText"></div>
+      <div id="questionContainer"></div>
+      <button id="submitButton" class="btn" style="display:none;">Submit</button>
+    </div>
+
+    <div id="resultsBox" class="quiz-box" style="display:none;"></div>
+  </div>
+
+  <!-- Audio elements -->
+  <audio preload="auto" id="correctSound" src="https://assets.mixkit.co/active_storage/sfx/947/947-preview.mp3"></audio>
+  <audio preload="auto" id="wrongSound" src="https://assets.mixkit.co/active_storage/sfx/1491/1491-preview.mp3"></audio>
+  <audio preload="auto" id="celebrationSound" src="https://assets.mixkit.co/active_storage/sfx/866/866-preview.mp3"></audio>
+
+  <!-- Confetti will be added dynamically when needed -->
+  
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    // Cache frequently used DOM elements
+    const DOM = {
+      categoryGrid: document.getElementById("categoryGrid"),
+      quizSection: document.getElementById("quizSection"),
+      quizTitle: document.getElementById("quizTitle"),
+      questionContainer: document.getElementById("questionContainer"),
+      progressText: document.getElementById("progressText"),
+      progressBar: document.getElementById("progressBar"),
+      resultsBox: document.getElementById("resultsBox"),
+      submitButton: document.getElementById("submitButton"),
+      correctSound: document.getElementById("correctSound"),
+      wrongSound: document.getElementById("wrongSound"),
+      celebrationSound: document.getElementById("celebrationSound")
+    };
+
+    // Quiz data structure - EASY TO EDIT
+    const quizData = {
+      "Starters": [
+        {
+          id: "boise_lettuce",
+          question: "What comes with the Boise Vertical Farm's Lettuces?",
+          answers: ["Acme Garlic Croutons, Shaved Radish", "Pecorino, Rosemary Gremolata", "Capers, Sriracha Sauce", "Smoked Hagerman Trout"],
+          correct: 0
+        },
+        {
+          id: "boise_price",
+          question: "What is the price of Boise Vertical Farm's Lettuces?",
+          answers: ["$9", "$13", "$15", "$17"],
+          correct: 1
+        },
+        {
+          id: "boise_dressing",
+          question: "What dressing comes with the Boise Vertical Farm's Lettuces?",
+          answers: ["Romesco Sauce", "Lemon-Champagne Vinaigrette", "Spiced Apple Butter", "Extra Virgin Olive Oil"],
+          correct: 1
+        },
+        {
+          id: "spot_prawn",
+          question: "What is the main ingredient in Spot Prawn Crudo?",
+          answers: ["Octopus", "Wagyu Beef", "Spot Prawns", "Foie Gras"],
+          correct: 2
+        },
+        {
+          id: "spot_prawn_price",
+          question: "What is the price of Spot Prawn Crudo?",
+          answers: ["$13", "$15", "$17", "$23"],
+          correct: 1
+        },
+        {
+          id: "spot_prawn_accompaniments",
+          question: "What accompaniments come with Spot Prawn Crudo?",
+          answers: ["Oven Roasted Lemon, Fresno Chili Pepper", "Cured Egg Yolk, Capers", "Spirulina, Agrumato", "Rosemary Gremolata"],
+          correct: 0
+        },
+        {
+          id: "steak_tartare",
+          question: "What type of beef is used in the Steak Tartare?",
+          answers: ["USDA Prime", "Snake River Farms American Wagyu", "Grass-fed Angus", "Japanese A5 Wagyu"],
+          correct: 1
+        },
+        {
+          id: "steak_tartare_price",
+          question: "What is the price of Steak Tartare?",
+          answers: ["$15", "$17", "$23", "$65"],
+          correct: 1
+        },
+        {
+          id: "steak_tartare_accompaniments",
+          question: "What accompaniments come with Steak Tartare?",
+          answers: ["Cured Egg Yolk, Capers", "Oven Roasted Lemon, Chive", "Smoked Trout, Spirulina", "Sunset Butte Bean & Chorizo"],
+          correct: 0
+        },
+        {
+          id: "potato_bisque",
+          question: "What is the main protein in Potato Bisque?",
+          answers: ["Spot Prawns", "Smoked Hagerman Trout", "Spanish Octopus", "Foie Gras"],
+          correct: 1
+        },
+        {
+          id: "potato_bisque_price",
+          question: "What is the price of Potato Bisque?",
+          answers: ["$9", "$13", "$15", "$17"],
+          correct: 0
+        },
+        {
+          id: "potato_bisque_accompaniments",
+          question: "What accompaniments come with Potato Bisque?",
+          answers: ["Spirulina, Agrumato", "Fresno Chili Pepper, Chive", "Capers, Sriracha Sauce", "Arugula, Fleur de Sel"],
+          correct: 0
+        },
+        {
+          id: "grilled_octopus",
+          question: "What is the main ingredient in Grilled Spanish Octopus?",
+          answers: ["Spot Prawns", "Wagyu Beef", "Spanish Octopus", "Foie Gras"],
+          correct: 2
+        },
+        {
+          id: "grilled_octopus_price",
+          question: "What is the price of Grilled Spanish Octopus?",
+          answers: ["$15", "$17", "$23", "$65"],
+          correct: 2
+        },
+        {
+          id: "grilled_octopus_accompaniments",
+          question: "What accompaniments come with Grilled Spanish Octopus?",
+          answers: ["Sunset Butte Bean & Chorizo Ragú", "Cured Egg Yolk, Capers", "Spirulina, Agrumato", "Pecorino, Rosemary Gremolata"],
+          correct: 0
+        },
+        {
+          id: "grilled_octopus_sauce",
+          question: "What sauce comes with Grilled Spanish Octopus?",
+          answers: ["Lemon-Champagne Vinaigrette", "Sriracha Sauce", "Romesco Sauce", "Spiced Apple Butter"],
+          correct: 2
+        },
+        {
+          id: "meatballs",
+          question: "What is the name of the meatballs starter?",
+          answers: ["Nonna Anna's Meatballs", "Mama Maria's Meatballs", "Grandma Gina's Meatballs", "Auntie Angela's Meatballs"],
+          correct: 0
+        },
+        {
+          id: "meatballs_price",
+          question: "What is the price of Nonna Anna's Meatballs?",
+          answers: ["$13", "$15", "$17", "$23"],
+          correct: 1
+        },
+        {
+          id: "meatballs_accompaniments",
+          question: "What accompaniments come with Nonna Anna's Meatballs?",
+          answers: ["Pecorino, Rosemary Gremolata", "Cured Egg Yolk, Capers", "Oven Roasted Lemon, Chive", "Smoked Trout, Spirulina"],
+          correct: 0
+        },
+        {
+          id: "meatballs_oil",
+          question: "What oil is served with Nonna Anna's Meatballs?",
+          answers: ["Truffle Oil", "Extra Virgin Olive Oil", "Chili Oil", "Garlic Oil"],
+          correct: 1
+        },
+        {
+          id: "foie_gras",
+          question: "What is the preparation style of the Foie Gras?",
+          answers: ["Seared", "Torchon", "Mousse", "Pâté"],
+          correct: 1
+        },
+        {
+          id: "foie_gras_price",
+          question: "What is the price of Foie Gras Torchon?",
+          answers: ["$15", "$17", "$23", "$65"],
+          correct: 1
+        },
+        {
+          id: "foie_gras_accompaniments",
+          question: "What accompaniments come with Foie Gras Torchon?",
+          answers: ["Spiced Apple Butter, Arugula", "Cured Egg Yolk, Capers", "Sunset Butte Bean & Chorizo", "Pecorino, Rosemary Gremolata"],
+          correct: 0
+        },
+        {
+          id: "foie_gras_salt",
+          question: "What type of salt is served with Foie Gras Torchon?",
+          answers: ["Himalayan Pink Salt", "Fleur de Sel", "Smoked Sea Salt", "Black Lava Salt"],
+          correct: 1
+        }
+      ],
+      "Spring 2025 Cocktails": [
+  // ================== JALISCO SPA WATER ==================
+  {
+    id: "jalisco_base",
+    question: "What is the base spirit in Jalisco Spa Water?",
+    answers: ["Blanco Tequila", "Mezcal", "Vodka", "Gin"],
+    correct: 0
+  },
+  {
+    id: "jalisco_liqueur",
+    question: "Which liqueur is used in Jalisco Spa Water?",
+    answers: ["St. Germain", "Aperol", "Campari", "Cointreau"],
+    correct: 0
+  },
+  {
+    id: "jalisco_spritz",
+    question: "What is the glass spritzed with before serving?",
+    answers: ["Mezcal + Ancho Reyes Verde", "Lime juice", "Simple syrup", "Tonic water"],
+    correct: 0
+  },
+  {
+    id: "jalisco_garnish",
+    question: "How is Jalisco Spa Water garnished?",
+    answers: ["Cucumber ribbon with mint/cilantro", "Lime wheel", "Chili salt rim", "Orange twist"],
+    correct: 0
+  },
+  {
+    id: "jalisco_price",
+    question: "What is the price of Jalisco Spa Water?",
+    answers: ["$14", "$16", "$18", "$20"],
+    correct: 1
+  },
+
+  // ================== TROPICAL STORM ==================
+  {
+    id: "tropical_rum",
+    question: "What rum is floated in Tropical Storm?",
+    answers: ["Gosling’s Dark Rum", "Plantation Pineapple", "Bacardi Blanco", "Myers’s"],
+    correct: 0
+  },
+  {
+    id: "tropical_syrup",
+    question: "Which syrup is used in Tropical Storm?",
+    answers: ["Cinnamon syrup", "Ginger syrup", "Demerara syrup", "Honey syrup"],
+    correct: 0
+  },
+  {
+    id: "tropical_juice",
+    question: "What juice combination is in Tropical Storm?",
+    answers: ["Lime + pineapple", "Lemon + orange", "Grapefruit + cranberry", "Mango + passionfruit"],
+    correct: 0
+  },
+  {
+    id: "tropical_garnish",
+    question: "How is Tropical Storm garnished?",
+    answers: ["Lime wheel + mint sprig", "Pineapple wedge", "Cinnamon stick", "Dehydrated citrus"],
+    correct: 0
+  },
+  {
+    id: "tropical_price",
+    question: "What is the price of Tropical Storm?",
+    answers: ["$15", "$17", "$19", "$21"],
+    correct: 1
+  },
+
+  // ================== SPRING IN PIEDMONT ==================
+  {
+    id: "piedmont_vermouth",
+    question: "What vermouth is used in Spring in Piedmont?",
+    answers: ["Bordiga Bianco", "Carpano Antica", "Dolin Dry", "Cocchi Americano"],
+    correct: 0
+  },
+  {
+    id: "piedmont_liqueur",
+    question: "Which fruit liqueur is in Spring in Piedmont?",
+    answers: ["Apricot (Marie Brizzard Apry)", "Peach", "Blackberry", "Raspberry"],
+    correct: 0
+  },
+  {
+    id: "piedmont_bubbles",
+    question: "What is used to top Spring in Piedmont?",
+    answers: ["Prosecco", "Club soda", "Tonic water", "Ginger beer"],
+    correct: 0
+  },
+  {
+    id: "piedmont_garnish",
+    question: "How is Spring in Piedmont garnished?",
+    answers: ["Mint + thyme + lemon wheel", "Orange twist", "Edible flower", "Basil leaf"],
+    correct: 0
+  },
+  {
+    id: "piedmont_price",
+    question: "What is the price of Spring in Piedmont?",
+    answers: ["$16", "$18", "$20", "$22"],
+    correct: 1
+  },
+
+  // ================== CLÁSSICO ==================
+  {
+    id: "classico_wine",
+    question: "What Portuguese wine is used in Clássico?",
+    answers: ["White Port", "Red Port", "Madeira", "Vinho Verde"],
+    correct: 0
+  },
+  {
+    id: "classico_mixer",
+    question: "Which tonic brand is used in Clássico?",
+    answers: ["Fever-Tree Mediterranean", "Q Tonic", "Schweppes", "Fentimans"],
+    correct: 0
+  },
+  {
+    id: "classico_citrus",
+    question: "What citrus is squeezed in Clássico?",
+    answers: ["Lime wedge", "Lemon wedge", "Orange wedge", "Grapefruit wedge"],
+    correct: 0
+  },
+  {
+    id: "classico_garnish",
+    question: "How is Clássico garnished?",
+    answers: ["Dried lime wheel", "Fresh lime wheel", "Mint sprig", "None"],
+    correct: 0
+  },
+  {
+    id: "classico_price",
+    question: "What is the price of Clássico?",
+    answers: ["$13", "$15", "$17", "$19"],
+    correct: 1
+  },
+
+  // ================== MODERNA NO. 1 ==================
+  {
+    id: "moderna_port",
+    question: "What port is used in Moderna No. 1?",
+    answers: ["White Port", "Tawny Port", "Ruby Port", "Rosé Port"],
+    correct: 0
+  },
+  {
+    id: "moderna_gin",
+    question: "Which gin is used in Moderna No. 1?",
+    answers: ["Bombay Sapphire", "Tanqueray", "Hendrick’s", "Beefeater"],
+    correct: 0
+  },
+  {
+    id: "moderna_fruit",
+    question: "What fruit puree is in Moderna No. 1?",
+    answers: ["Strawberry", "Raspberry", "Blackberry", "Blueberry"],
+    correct: 0
+  },
+  {
+    id: "moderna_garnish",
+    question: "How is Moderna No. 1 garnished?",
+    answers: ["Fanned strawberry + hyssop flower", "Lemon twist", "Cucumber ribbon", "Mint sprig"],
+    correct: 0
+  },
+  {
+    id: "moderna_price",
+    question: "What is the price of Moderna No. 1?",
+    answers: ["$16", "$18", "$20", "$22"],
+    correct: 1
+  },
+
+  // ================== ABOUT TIME ==================
+  {
+    id: "abouttime_whiskey",
+    question: "What whiskey is used in About Time?",
+    answers: ["Rittenhouse Rye", "Bulleit Bourbon", "Jameson Irish", "Crown Royal"],
+    correct: 0
+  },
+  {
+    id: "abouttime_dram",
+    question: "Which spiced liqueur is in About Time?",
+    answers: ["Allspice Dram", "Drambuie", "Bénédictine", "Chartreuse"],
+    correct: 0
+  },
+  {
+    id: "abouttime_garnish",
+    question: "How is About Time garnished?",
+    answers: ["Lemon 'boat' + fanned strawberry", "Orange twist", "Lime wheel", "Cherry"],
+    correct: 0
+  },
+  {
+    id: "abouttime_herb",
+    question: "Which herb is brushed on the glass for About Time?",
+    answers: ["Thyme", "Rosemary", "Basil", "Mint"],
+    correct: 0
+  },
+  {
+    id: "abouttime_price",
+    question: "What is the price of About Time?",
+    answers: ["$17", "$19", "$21", "$23"],
+    correct: 1
+  },
+
+  // ================== HAZY MEMORIES ==================
+  {
+    id: "hazy_beer",
+    question: "What beer style is used in Hazy Memories?",
+    answers: ["Hazy IPA", "Pilsner", "Stout", "Sour"],
+    correct: 0
+  },
+  {
+    id: "hazy_gin",
+    question: "Which gin is used in Hazy Memories?",
+    answers: ["Beefeater", "Tanqueray", "Hendrick’s", "Bombay Sapphire"],
+    correct: 0
+  },
+  {
+    id: "hazy_garnish",
+    question: "How is Hazy Memories garnished?",
+    answers: ["Pineapple fronds", "Orange wheel", "Mint sprig", "Lime wedge"],
+    correct: 0
+  },
+  {
+    id: "hazy_fruit",
+    question: "Which tropical fruit is in Hazy Memories?",
+    answers: ["Passion fruit", "Mango", "Guava", "Papaya"],
+    correct: 0
+  },
+  {
+    id: "hazy_price",
+    question: "What is the price of Hazy Memories?",
+    answers: ["$16", "$18", "$20", "$22"],
+    correct: 1
+  },
+
+  // ================== BIRD. FLOWER. FISH. ==================
+  {
+    id: "bird_gin",
+    question: "What gin is used in Bird. Flower. Fish.?",
+    answers: ["Hendrick’s", "Beefeater", "Tanqueray", "Bombay Sapphire"],
+    correct: 0
+  },
+  {
+    id: "bird_syrup",
+    question: "What flavor is the house syrup in Bird. Flower. Fish.?",
+    answers: ["Blueberry-lemon-thyme", "Strawberry-basil", "Raspberry-vanilla", "Blackberry-lavender"],
+    correct: 0
+  },
+  {
+    id: "bird_garnish",
+    question: "How is Bird. Flower. Fish. garnished?",
+    answers: ["Rosemary sprig", "Edible flower", "Lemon twist", "Cucumber slice"],
+    correct: 0
+  },
+  {
+    id: "bird_glass",
+    question: "What glass is used for Bird. Flower. Fish.?",
+    answers: ["Coupe", "Rocks", "Collins", "Nick & Nora"],
+    correct: 0
+  },
+  {
+    id: "bird_price",
+    question: "What is the price of Bird. Flower. Fish.?",
+    answers: ["$17", "$19", "$21", "$23"],
+    correct: 1
+  },
+
+  // ================== TAMARIND MAN ==================
+  {
+    id: "tamarind_base",
+    question: "What is the base spirit in Tamarind Man?",
+    answers: ["Evan Williams Bourbon", "Rittenhouse Rye", "Buffalo Trace", "Jack Daniels"],
+    correct: 0
+  },
+  {
+    id: "tamarind_syrup",
+    question: "What is the signature syrup in Tamarind Man?",
+    answers: ["Tamarind", "Ginger", "Honey", "Demerara"],
+    correct: 0
+  },
+  {
+    id: "tamarind_garnish",
+    question: "How is Tamarind Man garnished?",
+    answers: ["Lemon plane (maybe tamarind candy)", "Orange twist", "Lime wedge", "Cherry"],
+    correct: 0
+  },
+  {
+    id: "tamarind_liqueur",
+    question: "Which Italian liqueur is in Tamarind Man?",
+    answers: ["Aperol", "Campari", "Fernet", "Cynar"],
+    correct: 0
+  },
+  {
+    id: "tamarind_price",
+    question: "What is the price of Tamarind Man?",
+    answers: ["$16", "$18", "$20", "$22"],
+    correct: 1
+  },
+
+  // ================== CHAT GPT ==================
+  {
+    id: "chat_tequila",
+    question: "What tequila is used in Chat GPT?",
+    answers: ["Luna Azul Añejo", "Patrón Silver", "Don Julio Reposado", "Casamigos Blanco"],
+    correct: 0
+  },
+  {
+    id: "chat_bitters",
+    question: "Which bitters are used in Chat GPT?",
+    answers: ["Tiki bitters", "Angostura", "Peychaud’s", "Orange"],
+    correct: 0
+  },
+  {
+    id: "chat_prep",
+    question: "How is Chat GPT prepared?",
+    answers: ["Stirred over a large rock", "Shaken + double strained", "Built in glass", "Blended"],
+    correct: 0
+  },
+  {
+    id: "chat_garnish",
+    question: "How is Chat GPT garnished?",
+    answers: ["Flamed orange expression", "Lemon twist", "Lime wheel", "None"],
+    correct: 0
+  },
+  {
+    id: "chat_price",
+    question: "What is the price of Chat GPT?",
+    answers: ["$18", "$20", "$22", "$24"],
+    correct: 1
+  },
+
+  // ================== FREE TRADE AGREEMENT ==================
+  {
+    id: "fta_spirits",
+    question: "Which three spirits are combined in Free Trade Agreement?",
+    answers: ["Pisco + Cachaça + Singani 63", "Rum + Tequila + Mezcal", "Gin + Vodka + Whiskey", "Brandy + Armagnac + Calvados"],
+    correct: 0
+  },
+  {
+    id: "fta_foam",
+    question: "What creates the foam in Free Trade Agreement?",
+    answers: ["Egg white", "Aquafaba", "Coconut cream", "None"],
+    correct: 0
+  },
+  {
+    id: "fta_garnish",
+    question: "How is Free Trade Agreement garnished?",
+    answers: ["Flower-patterned bitters + edible flower", "Lime wheel", "Mint sprig", "Dehydrated citrus"],
+    correct: 0
+  },
+  {
+    id: "fta_nectar",
+    question: "What fruit is in the guava-agave nectar?",
+    answers: ["Guava", "Mango", "Passionfruit", "Pineapple"],
+    correct: 0
+  },
+  {
+    id: "fta_price",
+    question: "What is the price of Free Trade Agreement?",
+    answers: ["$17", "$19", "$21", "$23"],
+    correct: 1
+  },
+
+  // ================== EAST SIDE ==================
+  {
+    id: "east_gin",
+    question: "What spirit is used in East Side?",
+    answers: ["Gin", "Vodka", "Tequila", "Rum"],
+    correct: 0
+  },
+  {
+    id: "east_veg",
+    question: "Which vegetable is muddled in East Side?",
+    answers: ["Cucumber", "Celery", "Carrot", "Bell pepper"],
+    correct: 0
+  },
+  {
+    id: "east_garnish",
+    question: "How is East Side garnished?",
+    answers: ["Striped cucumber wheels", "Lime wedge", "Mint sprig", "None"],
+    correct: 0
+  },
+  {
+    id: "east_glass",
+    question: "What glass is used for East Side?",
+    answers: ["Coupe", "Rocks", "Collins", "Martini"],
+    correct: 0
+  },
+  {
+    id: "east_price",
+    question: "What is the price of East Side?",
+    answers: ["$15", "$17", "$19", "$21"],
+    correct: 1
+  },
+
+  // ================== GREYHOUND’S TOOTH ==================
+  {
+    id: "greyhound_liqueur",
+    question: "What herbal liqueur is used in Greyhound’s Tooth?",
+    answers: ["Bénédictine", "Chartreuse", "Drambuie", "Galliano"],
+    correct: 0
+  },
+  {
+    id: "greyhound_juice",
+    question: "Which citrus juice dominates Greyhound’s Tooth?",
+    answers: ["Grapefruit", "Lemon", "Lime", "Orange"],
+    correct: 0
+  },
+  {
+    id: "greyhound_garnish",
+    question: "How is Greyhound’s Tooth garnished?",
+    answers: ["Dukes grapefruit", "Lemon twist", "Lime wheel", "None"],
+    correct: 0
+  },
+  {
+    id: "greyhound_style",
+    question: "What style of cocktail is Greyhound’s Tooth?",
+    answers: ["Vodka-based sour", "Rum swizzle", "Whiskey smash", "Tiki punch"],
+    correct: 0
+  },
+  {
+    id: "greyhound_price",
+    question: "What is the price of Greyhound’s Tooth?",
+    answers: ["$16", "$18", "$20", "$22"],
+    correct: 1
+  },
+
+  // ================== BOWLING WITH JEN ==================
+  {
+    id: "bowling_whiskey",
+    question: "What bourbon is used in Bowling With Jen?",
+    answers: ["Old Grand-Dad 100pf", "Wild Turkey 101", "Buffalo Trace", "Maker’s Mark"],
+    correct: 0
+  },
+  {
+    id: "bowling_fruit",
+    question: "Which dried fruit is muddled in Bowling With Jen?",
+    answers: ["Figs", "Apricots", "Dates", "Prunes"],
+    correct: 0
+  },
+  {
+    id: "bowling_garnish",
+    question: "How is Bowling With Jen garnished?",
+    answers: ["Flamed Dukes orange + half fig", "Lemon twist", "Cherry", "None"],
+    correct: 0
+  },
+  {
+    id: "bowling_syrup",
+    question: "What flavor is the syrup in Bowling With Jen?",
+    answers: ["Vanilla-cinnamon", "Ginger", "Honey", "Demerara"],
+    correct: 0
+  },
+  {
+    id: "bowling_price",
+    question: "What is the price of Bowling With Jen?",
+    answers: ["$17", "$19", "$21", "$23"],
+    correct: 1
+  },
+
+  // ================== TORRENTS OF THE SEASON ==================
+  {
+    id: "torrents_rum",
+    question: "What rum is used in Torrents of the Season?",
+    answers: ["Silver rum", "Dark rum", "Spiced rum", "Aged rum"],
+    correct: 0
+  },
+  {
+    id: "torrents_liqueur",
+    question: "Which Italian liqueur is in Torrents of the Season?",
+    answers: ["Luxardo Maraschino", "Aperol", "Campari", "Fernet"],
+    correct: 0
+  },
+  {
+    id: "torrents_garnish",
+    question: "How is Torrents of the Season garnished?",
+    answers: ["Cherry + orange peel flag", "Lime wheel", "Mint sprig", "None"],
+    correct: 0
+  },
+  {
+    id: "torrents_agave",
+    question: "What sweetener is used in Torrents of the Season?",
+    answers: ["Agave", "Simple syrup", "Honey", "Maple syrup"],
+    correct: 0
+  },
+  {
+    id: "torrents_price",
+    question: "What is the price of Torrents of the Season?",
+    answers: ["$16", "$18", "$20", "$22"],
+    correct: 1
+  },
+
+  // ================== PROFIT & LOSS ==================
+  {
+    id: "profit_shrub",
+    question: "What seasonal shrub is used in Profit & Loss?",
+    answers: ["Spiced-pear or spiced-huckleberry", "Apple-cinnamon", "Peach-lavender", "Blackberry-thyme"],
+    correct: 0
+  },
+  {
+    id: "profit_herbs",
+    question: "Which herbs are muddled in Profit & Loss?",
+    answers: ["Mint + basil + thyme", "Rosemary + sage", "Cilantro + parsley", "None"],
+    correct: 0
+  },
+  {
+    id: "profit_garnish",
+    question: "How is Profit & Loss garnished?",
+    answers: ["Thyme sprig + mint top + violet flowers", "Lemon wheel", "Edible flower", "None"],
+    correct: 0
+  },
+  {
+    id: "profit_style",
+    question: "What style is Profit & Loss?",
+    answers: ["Zero-proof herbal sour", "Tiki punch", "Spritz", "Smash"],
+    correct: 0
+  },
+  {
+    id: "profit_price",
+    question: "What is the price of Profit & Loss?",
+    answers: ["$12", "$14", "$16", "$18"],
+    correct: 1
+  },
+
+  // ================== 20/20 VISION ==================
+  {
+    id: "vision_shrub",
+    question: "What flavor is the house shrub in 20/20 Vision?",
+    answers: ["Carrot", "Beet", "Celery", "Tomato"],
+    correct: 0
+  },
+  {
+    id: "vision_syrup",
+    question: "What spice is in the ginger-cayenne syrup?",
+    answers: ["Cayenne", "Paprika", "Chipotle", "Black pepper"],
+    correct: 0
+  },
+  {
+    id: "vision_garnish",
+    question: "How is 20/20 Vision garnished?",
+    answers: ["Lemon wheel + cucumber/carrot spiral", "Mint sprig", "Edible flower", "None"],
+    correct: 0
+  },
+  {
+    id: "vision_topper",
+    question: "What is used to top 20/20 Vision?",
+    answers: ["Ginger beer", "Prosecco", "Club soda", "Tonic"],
+    correct: 0
+  },
+  {
+    id: "vision_price",
+    question: "What is the price of 20/20 Vision?",
+    answers: ["$11", "$13", "$15", "$17"],
+    correct: 1
+  },
+
+  // ================== COCO PIÑA PUNCH ==================
+  {
+    id: "coco_dairy",
+    question: "What creamy ingredient is in Coco Piña Punch?",
+    answers: ["Coconut milk", "Heavy cream", "Half & half", "Condensed milk"],
+    correct: 0
+  },
+  {
+    id: "coco_rim",
+    question: "How is the glass rimmed for Coco Piña Punch?",
+    answers: ["Toasted coconut flakes", "Chili salt", "Sugar", "None"],
+    correct: 0
+  },
+  {
+    id: "coco_garnish",
+    question: "How is Coco Piña Punch garnished?",
+    answers: ["Dried lime wheel + pineapple fronds", "Mint sprig", "Cherry", "None"],
+    correct: 0
+  },
+  {
+    id: "coco_style",
+    question: "What style is Coco Piña Punch inspired by?",
+    answers: ["Piña Colada meets Margarita", "Daiquiri", "Mojito", "Painkiller"],
+    correct: 0
+  },
+  {
+    id: "coco_price",
+    question: "What is the price of Coco Piña Punch?",
+    answers: ["$10", "$12", "$14", "$16"],
+    correct: 1
+  },
+
+  // ================== STONE FRUIT COOLER ==================
+  {
+    id: "stone_fruit",
+    question: "What stone fruit puree is in Stone Fruit Cooler?",
+    answers: ["Apricot", "Peach", "Plum", "Nectarine"],
+    correct: 0
+  },
+  {
+    id: "stone_spice",
+    question: "What spice is in the syrup for Stone Fruit Cooler?",
+    answers: ["Cayenne", "Cinnamon", "Nutmeg", "Cardamom"],
+    correct: 0
+  },
+  {
+    id: "stone_garnish",
+    question: "How is Stone Fruit Cooler garnished?",
+    answers: ["Dried apricot + basil leaf", "Orange wheel", "Mint sprig", "None"],
+    correct: 0
+  },
+  {
+    id: "stone_topper",
+    question: "What is used to top Stone Fruit Cooler?",
+    answers: ["½ ginger beer + ½ soda water", "Prosecco", "Tonic", "Club soda"],
+    correct: 0
+  },
+  {
+    id: "stone_price",
+    question: "What is the price of Stone Fruit Cooler?",
+    answers: ["$11", "$13", "$15", "$17"],
+    correct: 1
+  },
+
+  // ================== FEELING SPRITZY ==================
+  {
+    id: "spritzy_wine",
+    question: "What non-alcoholic wine is used in Feeling Spritzy?",
+    answers: ["Töst", "Fre", "Ariel", "None"],
+    correct: 0
+  },
+  {
+    id: "spritzy_syrup",
+    question: "What flavor is the syrup in Feeling Spritzy?",
+    answers: ["Lavender", "Vanilla", "Honey", "Ginger"],
+    correct: 0
+  },
+  {
+    id: "spritzy_preserves",
+    question: "What fruit preserves are in Feeling Spritzy?",
+    answers: ["Peach", "Apricot", "Raspberry", "Strawberry"],
+    correct: 0
+  },
+  {
+    id: "spritzy_garnish",
+    question: "How is Feeling Spritzy garnished?",
+    answers: ["Mint tops + duke lemon peel", "Orange wheel", "Edible flower", "None"],
+    correct: 0
+  },
+  {
+    id: "spritzy_price",
+    question: "What is the price of Feeling Spritzy?",
+    answers: ["$10", "$12", "$14", "$16"],
+    correct: 1
+  }
+]
+    };
+
+    // Quiz state
+    const state = {
+      currentCategory: "",
+      currentQuestions: [],
+      currentQuestionIndex: 0,
+      score: 0,
+      answerSelected: false,
+      confettiCanvas: null
+    };
+
+    // Load stats from localStorage
+    const stats = JSON.parse(localStorage.getItem("quizStats") || "{}");
+
+    // Fisher-Yates shuffle algorithm
+    function shuffle(array) {
+      const newArray = [...array];
+      for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      }
+      return newArray;
+    }
+
+    function saveStats() {
+      localStorage.setItem("quizStats", JSON.stringify(stats));
+    }
+
+    function getLastScore(cat) {
+      const catStats = stats[cat];
+      return catStats?.last || 0;
+    }
+
+    function getCategoryStats(cat) {
+      const catStats = stats[cat];
+      if (!catStats) return "";
+      
+      let totalQuestions = 0;
+      let totalCorrect = 0;
+      
+      for (const questionId in catStats) {
+        if (questionId !== "last") {
+          totalQuestions += catStats[questionId].attempts || 0;
+          totalCorrect += catStats[questionId].correct || 0;
+        }
+      }
+      
+      if (totalQuestions === 0) return "";
+      
+      const accuracy = Math.round((totalCorrect / totalQuestions) * 100);
+      return `<div class="stats">Overall Accuracy: ${accuracy}%</div>`;
+    }
+
+    function loadCategories() {
+      DOM.categoryGrid.innerHTML = "";
+      DOM.resultsBox.style.display = "none";
+      DOM.quizSection.style.display = "none";
+
+      for (const cat in quizData) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.tabIndex = 0;
+        card.innerHTML = `
+          <strong>${cat}</strong><br>
+          <span class="muted">Last Score: ${getLastScore(cat)}%</span>
+          ${getCategoryStats(cat)}
+        `;
+        card.onclick = () => startQuiz(cat);
+        card.onkeydown = (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            startQuiz(cat);
+          }
+        };
+        DOM.categoryGrid.appendChild(card);
+      }
+    }
+
+    function startQuiz(category) {
+      if (!quizData[category]) {
+        console.error("Category not found:", category);
+        return;
+      }
+
+      state.currentCategory = category;
+      state.currentQuestions = shuffle([...quizData[category]]).slice(0, 10);
+      state.currentQuestionIndex = 0;
+      state.score = 0;
+      state.answerSelected = false;
+      
+      DOM.quizTitle.textContent = category;
+      DOM.questionContainer.innerHTML = "";
+      DOM.progressBar.style.width = "0%";
+      DOM.quizSection.style.display = "block";
+      DOM.resultsBox.style.display = "none";
+      DOM.submitButton.style.display = "none";
+      
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = state.currentQuestions[state.currentQuestionIndex];
+      DOM.questionContainer.innerHTML = `
+        <div class="question-text">${q.question}</div>
+        <div id="answerContainer"></div>
+      `;
+
+      const answerContainer = document.getElementById("answerContainer");
+      
+      const answerPairs = q.answers.map((answer, index) => ({ answer, originalIndex: index }));
+      const shuffledAnswers = shuffle([...answerPairs]);
+
+      shuffledAnswers.forEach((item) => {
+        const btn = document.createElement("button");
+        btn.className = "answer-btn";
+        btn.textContent = item.answer;
+        btn.setAttribute("aria-label", `Select answer: ${item.answer}`);
+        btn.onclick = () => handleAnswer(item.originalIndex, btn, answerContainer);
+        btn.onkeydown = (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleAnswer(item.originalIndex, btn, answerContainer);
+          }
+        };
+        answerContainer.appendChild(btn);
+      });
+
+      const progress = ((state.currentQuestionIndex / state.currentQuestions.length) * 100).toFixed(0);
+      DOM.progressBar.style.width = `${progress}%`;
+      DOM.progressText.textContent = `Question ${state.currentQuestionIndex + 1} of ${state.currentQuestions.length}`;
+      
+      // Show submit button on last question
+      if (state.currentQuestionIndex === state.currentQuestions.length - 1) {
+        DOM.submitButton.style.display = "block";
+      }
+    }
+
+    function handleAnswer(selectedOriginalIndex, clickedBtn, container) {
+      if (state.answerSelected) return;
+      state.answerSelected = true;
+      
+      const q = state.currentQuestions[state.currentQuestionIndex];
+      const answerButtons = container.querySelectorAll(".answer-btn");
+      answerButtons.forEach(btn => btn.disabled = true);
+
+      const isCorrect = selectedOriginalIndex === q.correct;
+
+      // Update stats
+      if (!stats[state.currentCategory]) stats[state.currentCategory] = {};
+      if (!stats[state.currentCategory][q.id]) {
+        stats[state.currentCategory][q.id] = { attempts: 0, correct: 0 };
+      }
+
+      const qStats = stats[state.currentCategory][q.id];
+      qStats.attempts++;
+      
+      if (isCorrect) {
+        state.score++;
+        qStats.correct++;
+        playAudio(DOM.correctSound);
+      } else {
+        playAudio(DOM.wrongSound);
+      }
+      
+      saveStats();
+
+      // Highlight buttons
+      answerButtons.forEach((btn) => {
+        if (btn.textContent === q.answers[q.correct]) {
+          btn.classList.add("correct");
+        }
+        if (btn === clickedBtn && !isCorrect) {
+          btn.classList.add("incorrect");
+        }
+      });
+
+      // Auto-proceed to next question or show results
+      setTimeout(() => {
+        if (state.currentQuestionIndex < state.currentQuestions.length - 1) {
+          nextQuestion();
+        }
+      }, 800);
+    }
+
+    function playAudio(audioElement) {
+      audioElement.currentTime = 0;
+      audioElement.play().catch(e => console.log("Audio play failed:", e));
+    }
+
+    function nextQuestion() {
+      state.answerSelected = false;
+      state.currentQuestionIndex++;
+      DOM.submitButton.style.display = "none";
+      
+      if (state.currentQuestionIndex < state.currentQuestions.length) {
+        showQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      const percent = Math.round((state.score / state.currentQuestions.length) * 100);
+      
+      // Update stats
+      if (!stats[state.currentCategory]) stats[state.currentCategory] = {};
+      stats[state.currentCategory].last = percent;
+      saveStats();
+
+      // Show confetti for perfect score
+      if (percent === 100) {
+        triggerCelebration();
+      }
+
+      DOM.resultsBox.innerHTML = `
+        <h2>${state.currentCategory} Complete</h2>
+        <p>You scored <strong>${state.score}</strong> out of <strong>${state.currentQuestions.length}</strong> (${percent}%)</p>
+        <div class="button-group">
+          <button class="btn" onclick="loadCategories()">Back to Categories</button>
+          <button class="btn btn-secondary" onclick="startQuiz('${state.currentCategory}')">Restart Quiz</button>
+        </div>
+      `;
+
+      DOM.quizSection.style.display = "none";
+      DOM.resultsBox.style.display = "block";
+    }
+
+    function triggerCelebration() {
+      state.confettiCanvas = document.createElement("canvas");
+      state.confettiCanvas.id = "confetti-canvas";
+      state.confettiCanvas.style.position = "fixed";
+      state.confettiCanvas.style.top = "0";
+      state.confettiCanvas.style.left = "0";
+      state.confettiCanvas.style.width = "100%";
+      state.confettiCanvas.style.height = "100%";
+      state.confettiCanvas.style.pointerEvents = "none";
+      state.confettiCanvas.style.zIndex = "1000";
+      document.body.appendChild(state.confettiCanvas);
+      
+      playAudio(DOM.celebrationSound);
+      
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      
+      setTimeout(() => {
+        if (state.confettiCanvas && state.confettiCanvas.parentNode) {
+          state.confettiCanvas.parentNode.removeChild(state.confettiCanvas);
+          state.confettiCanvas = null;
+        }
+      }, 3000);
+    }
+
+    // Initialize
+    window.onload = loadCategories;
+    DOM.submitButton.onclick = showResults;
+  </script>
+</body>
+</html>
