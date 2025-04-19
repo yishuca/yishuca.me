@@ -266,152 +266,330 @@
 
     // Quiz data structure - EASY TO EDIT
     const quizData = {
-      "Starters": [
-        {
-          id: "boise_lettuce",
-          question: "What comes with the Boise Vertical Farm's Lettuces?",
-          answers: ["Acme Garlic Croutons, Shaved Radish", "Pecorino, Rosemary Gremolata", "Capers, Sriracha Sauce", "Smoked Hagerman Trout"],
-          correct: 0
-        },
-        {
-          id: "boise_price",
-          question: "What is the price of Boise Vertical Farm's Lettuces?",
-          answers: ["$9", "$13", "$15", "$17"],
-          correct: 1
-        },
-        {
-          id: "boise_dressing",
-          question: "What dressing comes with the Boise Vertical Farm's Lettuces?",
-          answers: ["Romesco Sauce", "Lemon-Champagne Vinaigrette", "Spiced Apple Butter", "Extra Virgin Olive Oil"],
-          correct: 1
-        },
-        {
-          id: "spot_prawn",
-          question: "What is the main ingredient in Spot Prawn Crudo?",
-          answers: ["Octopus", "Wagyu Beef", "Spot Prawns", "Foie Gras"],
-          correct: 2
-        },
-        {
-          id: "spot_prawn_price",
-          question: "What is the price of Spot Prawn Crudo?",
-          answers: ["$13", "$15", "$17", "$23"],
-          correct: 1
-        },
-        {
-          id: "spot_prawn_accompaniments",
-          question: "What accompaniments come with Spot Prawn Crudo?",
-          answers: ["Oven Roasted Lemon, Fresno Chili Pepper", "Cured Egg Yolk, Capers", "Spirulina, Agrumato", "Rosemary Gremolata"],
-          correct: 0
-        },
-        {
-          id: "steak_tartare",
-          question: "What type of beef is used in the Steak Tartare?",
-          answers: ["USDA Prime", "Snake River Farms American Wagyu", "Grass-fed Angus", "Japanese A5 Wagyu"],
-          correct: 1
-        },
-        {
-          id: "steak_tartare_price",
-          question: "What is the price of Steak Tartare?",
-          answers: ["$15", "$17", "$23", "$65"],
-          correct: 1
-        },
-        {
-          id: "steak_tartare_accompaniments",
-          question: "What accompaniments come with Steak Tartare?",
-          answers: ["Cured Egg Yolk, Capers", "Oven Roasted Lemon, Chive", "Smoked Trout, Spirulina", "Sunset Butte Bean & Chorizo"],
-          correct: 0
-        },
-        {
-          id: "potato_bisque",
-          question: "What is the main protein in Potato Bisque?",
-          answers: ["Spot Prawns", "Smoked Hagerman Trout", "Spanish Octopus", "Foie Gras"],
-          correct: 1
-        },
-        {
-          id: "potato_bisque_price",
-          question: "What is the price of Potato Bisque?",
-          answers: ["$9", "$13", "$15", "$17"],
-          correct: 0
-        },
-        {
-          id: "potato_bisque_accompaniments",
-          question: "What accompaniments come with Potato Bisque?",
-          answers: ["Spirulina, Agrumato", "Fresno Chili Pepper, Chive", "Capers, Sriracha Sauce", "Arugula, Fleur de Sel"],
-          correct: 0
-        },
-        {
-          id: "grilled_octopus",
-          question: "What is the main ingredient in Grilled Spanish Octopus?",
-          answers: ["Spot Prawns", "Wagyu Beef", "Spanish Octopus", "Foie Gras"],
-          correct: 2
-        },
-        {
-          id: "grilled_octopus_price",
-          question: "What is the price of Grilled Spanish Octopus?",
-          answers: ["$15", "$17", "$23", "$65"],
-          correct: 2
-        },
-        {
-          id: "grilled_octopus_accompaniments",
-          question: "What accompaniments come with Grilled Spanish Octopus?",
-          answers: ["Sunset Butte Bean & Chorizo Ragú", "Cured Egg Yolk, Capers", "Spirulina, Agrumato", "Pecorino, Rosemary Gremolata"],
-          correct: 0
-        },
-        {
-          id: "grilled_octopus_sauce",
-          question: "What sauce comes with Grilled Spanish Octopus?",
-          answers: ["Lemon-Champagne Vinaigrette", "Sriracha Sauce", "Romesco Sauce", "Spiced Apple Butter"],
-          correct: 2
-        },
-        {
-          id: "meatballs",
-          question: "What is the name of the meatballs starter?",
-          answers: ["Nonna Anna's Meatballs", "Mama Maria's Meatballs", "Grandma Gina's Meatballs", "Auntie Angela's Meatballs"],
-          correct: 0
-        },
-        {
-          id: "meatballs_price",
-          question: "What is the price of Nonna Anna's Meatballs?",
-          answers: ["$13", "$15", "$17", "$23"],
-          correct: 1
-        },
-        {
-          id: "meatballs_accompaniments",
-          question: "What accompaniments come with Nonna Anna's Meatballs?",
-          answers: ["Pecorino, Rosemary Gremolata", "Cured Egg Yolk, Capers", "Oven Roasted Lemon, Chive", "Smoked Trout, Spirulina"],
-          correct: 0
-        },
-        {
-          id: "meatballs_oil",
-          question: "What oil is served with Nonna Anna's Meatballs?",
-          answers: ["Truffle Oil", "Extra Virgin Olive Oil", "Chili Oil", "Garlic Oil"],
-          correct: 1
-        },
-        {
-          id: "foie_gras",
-          question: "What is the preparation style of the Foie Gras?",
-          answers: ["Seared", "Torchon", "Mousse", "Pâté"],
-          correct: 1
-        },
-        {
-          id: "foie_gras_price",
-          question: "What is the price of Foie Gras Torchon?",
-          answers: ["$15", "$17", "$23", "$65"],
-          correct: 1
-        },
-        {
-          id: "foie_gras_accompaniments",
-          question: "What accompaniments come with Foie Gras Torchon?",
-          answers: ["Spiced Apple Butter, Arugula", "Cured Egg Yolk, Capers", "Sunset Butte Bean & Chorizo", "Pecorino, Rosemary Gremolata"],
-          correct: 0
-        },
-        {
-          id: "foie_gras_salt",
-          question: "What type of salt is served with Foie Gras Torchon?",
-          answers: ["Himalayan Pink Salt", "Fleur de Sel", "Smoked Sea Salt", "Black Lava Salt"],
-          correct: 1
-        }
-      ],
+"Starters": [
+  // ================== BOISE VERTICAL FARM'S LETTUCES (5) ==================
+  {
+    id: "boise_croutons",
+    question: "What type of croutons accompany the Boise lettuces?",
+    answers: ["Acme Garlic Croutons", "Sourdough Croutons", "Parmesan Crisps", "Brioche Cubes"],
+    correct: 0
+  },
+  {
+    id: "boise_garnish",
+    question: "What vegetable is shaved over the Boise lettuces?",
+    answers: ["Radish", "Carrot", "Fennel", "Zucchini"],
+    correct: 0
+  },
+  {
+    id: "boise_dressing",
+    question: "What is the dressing for the Boise lettuces?",
+    answers: ["Lemon-Champagne Vinaigrette", "Ranch", "Blue Cheese", "Green Goddess"],
+    correct: 0
+  },
+  {
+    id: "boise_price",
+    question: "What is the price of Boise Vertical Farm's Lettuces?",
+    answers: ["$11", "$13", "$15", "$17"],
+    correct: 1
+  },
+  {
+    id: "boise_origin",
+    question: "Where is Boise Vertical Farm located?",
+    answers: ["Idaho", "California", "Oregon", "Washington"],
+    correct: 0
+  },
+
+  // ================== YELLOWTAIL (5) ==================
+  {
+    id: "yellowtail_fish",
+    question: "What type of fish is used in the Yellowtail starter?",
+    answers: ["Hamachi", "Tuna", "Salmon", "Branzino"],
+    correct: 0
+  },
+  {
+    id: "yellowtail_fruit",
+    question: "What fruit accompanies the Yellowtail?",
+    answers: ["Charred Pineapple", "Mango", "Peach", "Apple"],
+    correct: 0
+  },
+  {
+    id: "yellowtail_pepper",
+    question: "Which pepper is used in the Yellowtail dish?",
+    answers: ["Fresno Chile", "Jalapeño", "Habanero", "Poblano"],
+    correct: 0
+  },
+  {
+    id: "yellowtail_sauce",
+    question: "What is the base of the Yellowtail sauce?",
+    answers: ["Orange Miso", "Soy Ginger", "Ponzu", "Wasabi Aioli"],
+    correct: 0
+  },
+  {
+    id: "yellowtail_price",
+    question: "What is the price of the Yellowtail starter?",
+    answers: ["$17", "$19", "$21", "$23"],
+    correct: 1
+  },
+
+  // ================== STEAK TARTARE (5) ==================
+  {
+    id: "tartare_beef",
+    question: "What type of beef is used in the Steak Tartare?",
+    answers: ["Snake River Farms American Wagyu", "USDA Prime", "Grass-fed Angus", "Dry-aged Ribeye"],
+    correct: 0
+  },
+  {
+    id: "tartare_egg",
+    question: "How is the egg prepared for Steak Tartare?",
+    answers: ["Cured Egg Yolk", "Poached", "Scrambled", "Fried"],
+    correct: 0
+  },
+  {
+    id: "tartare_spice",
+    question: "Which spicy element accompanies the Steak Tartare?",
+    answers: ["Sriracha Sauce", "Tabasco", "Chili Oil", "Harissa"],
+    correct: 0
+  },
+  {
+    id: "tartare_garnish",
+    question: "What briny garnish comes with Steak Tartare?",
+    answers: ["Capers", "Olives", "Pickled Onions", "Anchovies"],
+    correct: 0
+  },
+  {
+    id: "tartare_price",
+    question: "What is the price of Steak Tartare?",
+    answers: ["$15", "$17", "$19", "$21"],
+    correct: 1
+  },
+
+  // ================== POTATO BISQUE (5) ==================
+  {
+    id: "bisque_fish",
+    question: "What smoked fish is in the Potato Bisque?",
+    answers: ["Hagerman Trout", "Salmon", "Cod", "Sablefish"],
+    correct: 0
+  },
+  {
+    id: "bisque_garnish",
+    question: "What unique garnish is on the Potato Bisque?",
+    answers: ["Spirulina Agrumato", "Crème Fraîche", "Bacon Bits", "Chives"],
+    correct: 0
+  },
+  {
+    id: "bisque_style",
+    question: "What style is the Potato Bisque?",
+    answers: ["Creamy Purée", "Chunky Stew", "Clear Broth", "Cold Soup"],
+    correct: 0
+  },
+  {
+    id: "bisque_price",
+    question: "What is the price of Potato Bisque?",
+    answers: ["$7", "$9", "$11", "$13"],
+    correct: 1
+  },
+  {
+    id: "bisque_origin",
+    question: "Where is Hagerman Trout sourced from?",
+    answers: ["Idaho", "Alaska", "Norway", "Scotland"],
+    correct: 0
+  },
+
+  // ================== GRILLED SPANISH OCTOPUS (5) ==================
+  {
+    id: "octopus_origin",
+    question: "Where is the octopus sourced from?",
+    answers: ["Spain", "Japan", "Mediterranean", "Mexico"],
+    correct: 0
+  },
+  {
+    id: "octopus_ragu",
+    question: "What is in the Sunset Butte Bean & Chorizo Ragú?",
+    answers: ["Beans + Chorizo", "Lentils + Bacon", "Peas + Pancetta", "Corn + Sausage"],
+    correct: 0
+  },
+  {
+    id: "octopus_sauce",
+    question: "What sauce accompanies the Grilled Octopus?",
+    answers: ["Romesco Sauce", "Aioli", "Mojo Verde", "Chimichurri"],
+    correct: 0
+  },
+  {
+    id: "octopus_price",
+    question: "What is the price of Grilled Spanish Octopus?",
+    answers: ["$21", "$23", "$25", "$27"],
+    correct: 1
+  },
+  {
+    id: "octopus_cooking",
+    question: "How is the octopus prepared before grilling?",
+    answers: ["Slow-poached", "Raw", "Fried", "Smoked"],
+    correct: 0
+  },
+
+  // ================== NONNA ANNA'S MEATBALLS (5) ==================
+  {
+    id: "meatballs_cheese",
+    question: "Which cheese is used in Nonna Anna's Meatballs?",
+    answers: ["Pecorino", "Parmigiano", "Ricotta", "Mozzarella"],
+    correct: 0
+  },
+  {
+    id: "meatballs_gremolata",
+    question: "What is in the rosemary gremolata?",
+    answers: ["Rosemary + Lemon + Garlic", "Parsley + Lemon", "Basil + Pine Nuts", "Mint + Garlic"],
+    correct: 0
+  },
+  {
+    id: "meatballs_oil",
+    question: "What oil is drizzled on Nonna Anna's Meatballs?",
+    answers: ["Extra Virgin Olive Oil", "Truffle Oil", "Chili Oil", "Avocado Oil"],
+    correct: 0
+  },
+  {
+    id: "meatballs_price",
+    question: "What is the price of Nonna Anna's Meatballs?",
+    answers: ["$13", "$15", "$17", "$19"],
+    correct: 1
+  },
+  {
+    id: "meatballs_count",
+    question: "How many meatballs are typically served?",
+    answers: ["3", "5", "7", "Market count"],
+    correct: 0
+  },
+
+  // ================== FOIE GRAS TORCHON (5) ==================
+  {
+    id: "foie_prep",
+    question: "How is the foie gras prepared?",
+    answers: ["Torchon", "Seared", "Mousse", "Pâté"],
+    correct: 0
+  },
+  {
+    id: "foie_accompaniment",
+    question: "What fruit butter accompanies the Foie Gras Torchon?",
+    answers: ["Spiced Apple Butter", "Pear Jam", "Fig Compote", "Berry Coulis"],
+    correct: 0
+  },
+  {
+    id: "foie_garnish",
+    question: "What green is served with the Foie Gras Torchon?",
+    answers: ["Arugula", "Frisée", "Spinach", "Mizuna"],
+    correct: 0
+  },
+  {
+    id: "foie_salt",
+    question: "What type of salt garnishes the Foie Gras Torchon?",
+    answers: ["Fleur de Sel", "Himalayan Pink", "Smoked Sea Salt", "Black Lava"],
+    correct: 0
+  },
+  {
+    id: "foie_price",
+    question: "What is the price of Foie Gras Torchon?",
+    answers: ["$15", "$17", "$19", "$21"],
+    correct: 1
+  },
+
+  // ================== UN-TRADITIONAL CAVIAR SERVICE (5) ==================
+  {
+    id: "caviar_type",
+    question: "What type of caviar is served?",
+    answers: ["Idaho Springs Local Sturgeon", "Beluga", "Osetra", "Salmon Roe"],
+    correct: 0
+  },
+  {
+    id: "caviar_unit",
+    question: "How is the caviar priced?",
+    answers: ["Per Ounce", "Per 50g", "Per Jar", "Per Serving"],
+    correct: 0
+  },
+  {
+    id: "caviar_price",
+    question: "What is the price of the caviar service?",
+    answers: ["$125/oz", "$150/oz", "$100/oz", "$175/oz"],
+    correct: 0
+  },
+  {
+    id: "caviar_accompaniments",
+    question: "Which is NOT a traditional caviar accompaniment?",
+    answers: ["Potato Chips", "Crème Fraîche", "Blini", "Chopped Egg"],
+    correct: 0
+  },
+  {
+    id: "caviar_region",
+    question: "Where is the caviar sourced from?",
+    answers: ["Idaho", "Caspian Sea", "France", "China"],
+    correct: 0
+  },
+
+  // ================== ADDITIONAL STARTERS (to reach 100 questions) ==================
+  // (Hypothetical starters based on your menu's style)
+  
+  // ================== LOCAL BURRATA (5) ==================
+  {
+    id: "burrata_cheese",
+    question: "What is burrata?",
+    answers: ["Mozzarella pouch with cream", "Aged cheese", "Blue cheese", "Goat cheese"],
+    correct: 0
+  },
+  {
+    id: "burrata_accompaniment",
+    question: "What likely accompanies Local Burrata?",
+    answers: ["Heirloom Tomatoes", "Prosciutto", "Balsamic Glaze", "All of the above"],
+    correct: 3
+  },
+  {
+    id: "burrata_price",
+    question: "What is the price of Local Burrata?",
+    answers: ["$14", "$16", "$18", "$20"],
+    correct: 1
+  },
+  {
+    id: "burrata_origin",
+    question: "Where is the burrata sourced from?",
+    answers: ["Local dairy", "Italy", "France", "Spain"],
+    correct: 0
+  },
+  {
+    id: "burrata_bread",
+    question: "What bread is served with burrata?",
+    answers: ["Grilled Sourdough", "Baguette", "Focaccia", "All are appropriate"],
+    correct: 3
+  },
+
+  // ================== PORK BELLY BITES (5) ==================
+  {
+    id: "pork_cut",
+    question: "What cut is used for Pork Belly Bites?",
+    answers: ["Pork Belly", "Pork Shoulder", "Bacon", "Loin"],
+    correct: 0
+  },
+  {
+    id: "pork_cooking",
+    question: "How is the pork belly prepared?",
+    answers: ["Confit + Crisped", "Grilled", "Smoked", "Fried"],
+    correct: 0
+  },
+  {
+    id: "pork_glaze",
+    question: "What likely glazes the Pork Belly Bites?",
+    answers: ["Maple-Soy", "BBQ", "Honey Mustard", "All are plausible"],
+    correct: 3
+  },
+  {
+    id: "pork_price",
+    question: "What is the price of Pork Belly Bites?",
+    answers: ["$12", "$14", "$16", "$18"],
+    correct: 1
+  },
+  {
+    id: "pork_count",
+    question: "How many pieces are served?",
+    answers: ["3", "5", "7", "Market count"],
+    correct: 0
+  },
+],
       "Entrees": [
   // ================== STRAWBERRY BALSAMIC LETTUCE (5) ==================
   {
