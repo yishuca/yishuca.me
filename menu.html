@@ -1,0 +1,3069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Mastery - Professional Restaurant Training</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --darker: #1e272e;
+            --light: #f5f6fa;
+            --accent: #fd79a8;
+            --correct: #00b894;
+            --incorrect: #d63031;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            margin-left: 15px;
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+        
+        .category-card {
+            background: var(--dark);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .category-info {
+            padding: 20px;
+        }
+        
+        .category-info h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .category-info p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+        
+        .progress-container {
+            margin-bottom: 15px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .quiz-container {
+            display: none;
+            background: var(--dark);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .quiz-title {
+            font-size: 24px;
+            color: var(--primary);
+        }
+        
+        .quiz-progress {
+            font-weight: 600;
+        }
+        
+        .question-container {
+            margin-bottom: 30px;
+        }
+        
+        .question {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .option {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .option.selected {
+            background: rgba(108, 92, 231, 0.2);
+            border-color: var(--primary);
+        }
+        
+        .option.correct {
+            background: rgba(0, 184, 148, 0.2);
+            border-color: var(--correct);
+        }
+        
+        .option.incorrect {
+            background: rgba(214, 48, 49, 0.2);
+            border-color: var(--incorrect);
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .result-container {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .result-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .result-score {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .result-feedback {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .review-container {
+            display: none;
+            margin-top: 30px;
+        }
+        
+        .review-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .review-question {
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .review-answer {
+            color: var(--correct);
+            margin-bottom: 5px;
+        }
+        
+        .review-explanation {
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: var(--dark);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 200px;
+            margin: 10px;
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .menu-section {
+            margin-bottom: 50px;
+        }
+        
+        .menu-section h2 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .menu-item {
+            background: var(--dark);
+            padding: 20px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .item-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .item-price {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .item-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        .item-highlights {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .highlight {
+            background: rgba(108, 92, 231, 0.2);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-links a {
+            color: rgba(255, 255, 255, 0.5);
+            margin: 0 10px;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+            }
+            
+            .quiz-container, .result-container {
+                padding: 20px;
+            }
+        }
+        
+        /* Animation classes */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        /* Loading spinner */
+        .loader {
+            display: none;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-utensils"></i>
+                <span>Menu Mastery</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" id="nav-home">Home</a></li>
+                    <li><a href="#" id="nav-menu">Full Menu</a></li>
+                    <li><a href="#" id="nav-stats">My Progress</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section id="home-section">
+            <div class="hero">
+                <h1>Master the Menu</h1>
+                <p>Comprehensive training and quizzes to help you memorize every detail of the restaurant menu, from ingredients to prices and pairings.</p>
+                <div>
+                    <a href="#" class="btn" id="start-quiz">Start Quiz</a>
+                    <a href="#" class="btn btn-outline" id="view-menu">View Full Menu</a>
+                </div>
+            </div>
+
+            <div class="categories">
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('https://lh3.googleusercontent.com/gps-cs-s/AB5caB-9JAiAhwEvOOoRHctaBxSWWkQfc-ZtESQqGXITuyeru7Oh-9fQuIMfdz3qWLRTa1w_bO177v3soUpaUdVGA0kq_nQ8J4SJxJUpDZM-eyMEBAuY4BtwYJ_5JuDkuUmcg-rd2S-P=s680-w680-h510');"></div>
+                    <div class="category-info">
+                        <h3>Starters</h3>
+                        <p>Test your knowledge of appetizers, from Boise Vertical Farm's Lettuces to Foie Gras Torchon.</p>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Progress</span>
+                                <span id="starters-progress">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="starters-progress-bar"></div>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-outline start-category" data-category="starters">Start Practice</a>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('https://lh3.googleusercontent.com/geougc-cs/AIHozJKMIZ5jAC_amCpMSkT6yEkZEiBvinSTZDhf11BQ7jXY7YUqxIMQ-jUmuftuk9mJlV65sbbWE4qQOhnRNMzI0Z6SiQSE2ZL-a9jbjzMNuWPGPmhaZLOtDRIntafgEzeWd4hFi80z=s2880-w2880-h1514');"></div>
+                    <div class="category-info">
+                        <h3>Main Courses</h3>
+                        <p>Master the details of our Angus cuts, handmade pastas, and signature entrees.</p>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Progress</span>
+                                <span id="mains-progress">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="mains-progress-bar"></div>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-outline start-category" data-category="mains">Start Practice</a>
+                    </div>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('https://lh3.googleusercontent.com/p/AF1QipMynQRNutCJgW9j0zBjeSEr3QX63qLfqWdYYyKZ=s680-w680-h510');"></div>
+                    <div class="category-info">
+                        <h3>Desserts & Drinks</h3>
+                        <p>Learn about our desserts, cocktails, wines, and digestifs with detailed questions.</p>
+                        <div class="progress-container">
+                            <div class="progress-label">
+                                <span>Progress</span>
+                                <span id="drinks-progress">0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="drinks-progress-bar"></div>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-outline start-category" data-category="drinks">Start Practice</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="menu-section" style="display: none;">
+            <div class="menu-section">
+                <h2>Starters</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">BOISE VERTICAL FARM'S LETTUCES</div>
+                            <div class="item-price">$13</div>
+                        </div>
+                        <div class="item-description">Acme Garlic Croutons, Shaved Radish Lemon-Champagne Vinaigrette</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Vegetarian</div>
+                            <div class="highlight">Local Produce</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">YELLOWTAIL</div>
+                            <div class="item-price">$19</div>
+                        </div>
+                        <div class="item-description">Orange Miso, Charred Pineapple, Shishito Fresno Chile</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Raw</div>
+                            <div class="highlight">Spicy</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">STEAK TARTARE</div>
+                            <div class="item-price">$17</div>
+                        </div>
+                        <div class="item-description">Snake River Farms American Wagyu, Cured Egg Yolk Capers, Sriracha Sauce</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Raw</div>
+                            <div class="highlight">Wagyu Beef</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">POTATO BISQUE</div>
+                            <div class="item-price">$9</div>
+                        </div>
+                        <div class="item-description">Smoked Hagerman Trout, Spirulina Agrumato</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Gluten Free</div>
+                            <div class="highlight">Contains Fish</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">GRILLED SPANISH OCTOPUS</div>
+                            <div class="item-price">$23</div>
+                        </div>
+                        <div class="item-description">Sunset Butte Bean & Chorizo Ragú, Romesco Sauce</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Seafood</div>
+                            <div class="highlight">Spicy</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">NONNA ANNA'S MEATBALLS</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                        <div class="item-description">Pecorino, Rosemary Gremolata, Extra Virgin Olive Oil</div>
+                        <div class="item-highlights">
+                            <div class="highlight">House Specialty</div>
+                            <div class="highlight">Contains Dairy</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">FOIE GRAS TORCHON</div>
+                            <div class="item-price">$17</div>
+                        </div>
+                        <div class="item-description">Spiced Apple Butter, Arugula Fleur de Sel</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Rich</div>
+                            <div class="highlight">Signature Dish</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">UN-TRADITIONAL CAVIAR SERVICE</div>
+                            <div class="item-price">$125/oz</div>
+                        </div>
+                        <div class="item-description">Idaho Springs Local Sturgeon Caviar, Capers, Red Onion, Hard Boiled Egg, Potato Chips</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Premium</div>
+                            <div class="highlight">Local</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>100% Locally Sourced Angus Cuts</h2>
+                <p class="item-description" style="margin-bottom: 20px;">All selections are served with Handcut French Fries, Arugula Salad & Maître d'Hôtel Butter</p>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">CÔTE DE BOEUF</div>
+                            <div class="item-price">Market Price</div>
+                        </div>
+                        <div class="item-description">Premium rib steak, dry-aged for maximum flavor</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Dry-Aged</div>
+                            <div class="highlight">Bone-In</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">SNAKE RIVER FARMS COULOTTE</div>
+                            <div class="item-price">$53</div>
+                        </div>
+                        <div class="item-description">Premium American Wagyu, exceptionally tender</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Wagyu</div>
+                            <div class="highlight">Signature Cut</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">SNAKE RIVER FARMS TENDERLOIN</div>
+                            <div class="item-price">$75</div>
+                        </div>
+                        <div class="item-description">The most tender cut, with exceptional marbling</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Wagyu</div>
+                            <div class="highlight">Premium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Handmade Pasta</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">RAVIOLO</div>
+                            <div class="item-price">$19</div>
+                        </div>
+                        <div class="item-description">Egg Yolk, Smoked Pecorino, Butter Sauce, Guanciale</div>
+                        <div class="item-highlights">
+                            <div class="highlight">House-Made</div>
+                            <div class="highlight">Rich</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">BOLOGNESE</div>
+                            <div class="item-price">$27</div>
+                        </div>
+                        <div class="item-description">Traditional Meat Sauce, House Made Pasta, Smoked Pecorino Romano</div>
+                        <div class="item-highlights">
+                            <div class="highlight">House Specialty</div>
+                            <div class="highlight">Hearty</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Entrees</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">STRAWBERRY BALSAMIC LETTUCE</div>
+                            <div class="item-price">$23</div>
+                        </div>
+                        <div class="item-description">Grilled Chicken, Goat Cheese, Almonds, Strawberry Vinaigrette</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Light</div>
+                            <div class="highlight">Seasonal</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">OVEN ROASTED ALASKAN BLACK COD</div>
+                            <div class="item-price">$31</div>
+                        </div>
+                        <div class="item-description">Preserved Fennel Relish, Glazed Yukon Potatoes, Bouillabaisse Sauce</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Sustainable</div>
+                            <div class="highlight">Signature Dish</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">1⁄2 ROASTED CHICKEN</div>
+                            <div class="item-price">$31</div>
+                        </div>
+                        <div class="item-description">Shiitake Mushrooms, Pommes Purée, Spanish Sherry Vinegar</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Comfort Food</div>
+                            <div class="highlight">House Specialty</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">LOCAL ANGUS SKIRT STEAK</div>
+                            <div class="item-price">$47</div>
+                        </div>
+                        <div class="item-description">6oz Roulade, Duck Fat Potatoes, Persillade Sauce</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Local</div>
+                            <div class="highlight">Flavorful</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Sides</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Pommes Purée</div>
+                            <div class="item-price">$9</div>
+                        </div>
+                        <div class="item-description">Silky smooth mashed potatoes with butter and cream</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Roasted Mushrooms</div>
+                            <div class="item-price">$9</div>
+                        </div>
+                        <div class="item-description">Seasonal mushrooms with herbs and garlic</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Arugula Salad</div>
+                            <div class="item-price">$9</div>
+                        </div>
+                        <div class="item-description">Parmigiano, lemon vinaigrette</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Handcut French Fries</div>
+                            <div class="item-price">$9</div>
+                        </div>
+                        <div class="item-description">Double-fried for maximum crispiness</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Desserts</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">COFFEE & DONUTS</div>
+                            <div class="item-price">$14</div>
+                        </div>
+                        <div class="item-description">Coffee Pot de Crème, Coffee & Fernet Ice Cream, Brown Butter Beignets, Salted Caramel</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Signature</div>
+                            <div class="highlight">Rich</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">BASQUE CHEESECAKE</div>
+                            <div class="item-price">$19</div>
+                        </div>
+                        <div class="item-description">Blueberry & Black Currant Compote, Caramelized Rice Krispies</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Creamy</div>
+                            <div class="highlight">Burnt Top</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">TOFFEE BRIOCHE</div>
+                            <div class="item-price">$12</div>
+                        </div>
+                        <div class="item-description">Bourbon Toffee-Soaked Brioche, Vanilla & Cranberry Ice Cream, Cinnamon Crunch</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Warm</div>
+                            <div class="highlight">Comforting</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">CHOCOLATE PAVÉ</div>
+                            <div class="item-price">$14</div>
+                        </div>
+                        <div class="item-description">Chocolate Flourless Cake, Dark Chocolate Brownie, Peanut Butter Whipped Cream, Valrhona Chocolate Mousse</div>
+                        <div class="item-highlights">
+                            <div class="highlight">Chocolate Lover's</div>
+                            <div class="highlight">Rich</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Coffee & Tea</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">LA COLOMBE COFFEE & ESPRESSO</div>
+                            <div class="item-price">$5-6</div>
+                        </div>
+                        <div class="item-description">Corsica Regular Coffee // Monte Carlo Decaf Coffee // Espresso // Cappuccino // Latte (Oat milk available upon request)</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">ORGANIC TEA SELECTION</div>
+                            <div class="item-price">$5</div>
+                        </div>
+                        <div class="item-description">Lord Bergamot, Red Nectar, Golden Light, Meadow Peppermint Leaves, British Brunch, Big Hibiscus, Rose City Genmaicha, Jasmine Silver Tip, Masala Chai</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Dessert Drinks</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">DOUBLE ESPRESSO MARTINI</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                        <div class="item-description">Vodka, Caffè Espresso Liqueur, Espresso</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Wines</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Château Roumieu-Lacoste, Sauternes</div>
+                            <div class="item-price">$14</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Kopke, 20-yr Tawny Port</div>
+                            <div class="item-price">$16</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Vietti, Moscoto D'Asti</div>
+                            <div class="item-price">$13</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Cleto Chiarli, Lambrusco</div>
+                            <div class="item-price">$16</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Digestifs</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Absinthe Ordinaire 129°</div>
+                            <div class="item-price">$12</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Braulio, Amaro Alpino</div>
+                            <div class="item-price">$20</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Brucato Chaparral, Amaro</div>
+                            <div class="item-price">$16</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Averna, Amaro</div>
+                            <div class="item-price">$16</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Carpano, Antica Formula</div>
+                            <div class="item-price">$14</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Carpano, Punt e Mes</div>
+                            <div class="item-price">$12</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">CiaCiaro, Amaro</div>
+                            <div class="item-price">$14</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Cynar, Amaro</div>
+                            <div class="item-price">$13</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Dolin, Génépy le Chamois</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Fernet Branca, Amaro</div>
+                            <div class="item-price">$13</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Jägermeister</div>
+                            <div class="item-price">$12</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Montenegro, Amaro</div>
+                            <div class="item-price">$12</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Nonino, Amaro</div>
+                            <div class="item-price">$20</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Liqueurs</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Disaronno, Amaretto</div>
+                            <div class="item-price">$12</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Bailey's, Irish Cream</div>
+                            <div class="item-price">$12</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Bénédictine</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Caravella, Limoncello</div>
+                            <div class="item-price">$12</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Chateau Monet, Framboise</div>
+                            <div class="item-price">$11</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Cointreau</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Domaine de Canton</div>
+                            <div class="item-price">$13</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Drambuie</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Frangelico</div>
+                            <div class="item-price">$13</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Grand Marnier</div>
+                            <div class="item-price">$16</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Kahlúa</div>
+                            <div class="item-price">$11</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">St. Germain</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Tuaca</div>
+                            <div class="item-price">$12</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Cognac/Brandy/Calvados</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Hennessy, XO Cognac</div>
+                            <div class="item-price">$52</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">St. Rémy, VSOP Brandy</div>
+                            <div class="item-price">$11</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Busnel, VSOP Calvados</div>
+                            <div class="item-price">$14</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Laird's, Straight Apple Brandy 100°</div>
+                            <div class="item-price">$12</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Bubbles</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Good Twin Non-Alcoholic Brut</div>
+                            <div class="item-price">NV</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Adami, 'Garbèl', Prosecco</div>
+                            <div class="item-price">NV $30</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Paladin, Prosecco Rosé</div>
+                            <div class="item-price">NV $50</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Veuve Clicquot</div>
+                            <div class="item-price">NV $140</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Marie-Pierre Manciat, Cremant</div>
+                            <div class="item-price">NV $50</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Charles Le Bel. 'Inspiration 1818</div>
+                            <div class="item-price">NV $245</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Pol Roger, Brut Réserve</div>
+                            <div class="item-price">NV $130</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Moët, Brut Rosé</div>
+                            <div class="item-price">NV $85</div>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Cleto Chiarli, Rosé de Noir Brut</div>
+                            <div class="item-price">NV $65</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Crisp and Dry Whites</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Merry Edwards, Sauvignon Blanc</div>
+                            <div class="item-price">2023 $65</div>
+                        </div>
+                        <div class="item-description">Russian River Valley, CA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Pascal Jolivet, Sauvignon Blanc</div>
+                            <div class="item-price">2023 $50</div>
+                        </div>
+                        <div class="item-description">Sancerre, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Langlois-Chateau, Sauvignon Blanc</div>
+                            <div class="item-price">2022 $50</div>
+                        </div>
+                        <div class="item-description">Loire Valley, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Paul Cluver, 'Village' Sauvignon Blanc</div>
+                            <div class="item-price">2022 $50</div>
+                        </div>
+                        <div class="item-description">South Africa</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Tommasi, Lugana le Fornaci</div>
+                            <div class="item-price">2022 $65</div>
+                        </div>
+                        <div class="item-description">Lugana, IT</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Chardonnay</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Stuhlmuller, 'Estate'</div>
+                            <div class="item-price">2022 $50</div>
+                        </div>
+                        <div class="item-description">Alexander Valley, CA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Patz & Hall</div>
+                            <div class="item-price">2020 $95</div>
+                        </div>
+                        <div class="item-description">Sonoma Coast, CA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Au Bon Climat</div>
+                            <div class="item-price">2023 $55</div>
+                        </div>
+                        <div class="item-description">Santa Barbara, CA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Chateau Montelena</div>
+                            <div class="item-price">2021 $130</div>
+                        </div>
+                        <div class="item-description">Napa Valley, CA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Rombauer</div>
+                            <div class="item-price">2023 $50</div>
+                        </div>
+                        <div class="item-description">Carneros, CA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Domaine Thévenet et Fils, Chardonnay</div>
+                            <div class="item-price">2022 $50</div>
+                        </div>
+                        <div class="item-description">Burgundy, FR</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Blends and Other Whites</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Vietti, Roero Arneis</div>
+                            <div class="item-price">2023 $50</div>
+                        </div>
+                        <div class="item-description">Piedmont, IT</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Chateau La Gravière, Sémillon/Sauvignon Blanc</div>
+                            <div class="item-price">2023 $50</div>
+                        </div>
+                        <div class="item-description">Bordeaux, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Familia Torres, 'Celeste, Verdejo Sur Lies</div>
+                            <div class="item-price">2023 $50</div>
+                        </div>
+                        <div class="item-description">Rueda, SP</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">E. Guigal, Châteauneuf-du-Pape Blanc</div>
+                            <div class="item-price">2020 $130</div>
+                        </div>
+                        <div class="item-description">Châteauneuf-du-Pape, FR</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Rosé & Chillable Reds</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Whispering Angel</div>
+                            <div class="item-price">2023 $60</div>
+                        </div>
+                        <div class="item-description">Côtes de Provence, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Daniel Chotard</div>
+                            <div class="item-price">2022 $80</div>
+                        </div>
+                        <div class="item-description">Sancerre, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Domaine de Fontsainte, Gris de Gris</div>
+                            <div class="item-price">2023 $40</div>
+                        </div>
+                        <div class="item-description">Corbières, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Long Shadows, Julia's Dazzle</div>
+                            <div class="item-price">2023 $50</div>
+                        </div>
+                        <div class="item-description">Columbia Valley, WA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Marcel Lapierre, 'Raisins Gaulois' Gamay</div>
+                            <div class="item-price">NV $60</div>
+                        </div>
+                        <div class="item-description">Vin de FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Tenuta Regaleali, Lamúri Nero d'Avola</div>
+                            <div class="item-price">2020 $55</div>
+                        </div>
+                        <div class="item-description">Sicilia, IT</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>West Coast Reds</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Rusack, Pinot Noir</div>
+                            <div class="item-price">2022 $80</div>
+                        </div>
+                        <div class="item-description">Santa Barbara, CA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Melville, 'Estate', Pinot Noir</div>
+                            <div class="item-price">2022 $100</div>
+                        </div>
+                        <div class="item-description">Santa Rita Hills, CA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Ken Wright, Pinot Noir</div>
+                            <div class="item-price">2023 $65</div>
+                        </div>
+                        <div class="item-description">Willamette Valley, OR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Evesham Wood, Pinot Noir</div>
+                            <div class="item-price">2023 $115</div>
+                        </div>
+                        <div class="item-description">Willamette Valley, OR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Bergsrom, 'Cumberland Reserve', Pinot Noir</div>
+                            <div class="item-price">2023 $65</div>
+                        </div>
+                        <div class="item-description">Willamette Valley, OR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Longship, Grenache</div>
+                            <div class="item-price">2022 $85</div>
+                        </div>
+                        <div class="item-description">Columbia Valley, WA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Dunham, Trutina', Red Blend</div>
+                            <div class="item-price">2021 $70</div>
+                        </div>
+                        <div class="item-description">Columbia Valley, WA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Fidelitas, 'M100', Cabernet Sauvignon</div>
+                            <div class="item-price">2022 $50</div>
+                        </div>
+                        <div class="item-description">Columbia Valley, WA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Daou, Cabernet Sauvignon</div>
+                            <div class="item-price">2023 $60</div>
+                        </div>
+                        <div class="item-description">Paso Robles, CA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Chapellet, Mountain Cuvée, Cabernet Sauvignon</div>
+                            <div class="item-price">2022 $120</div>
+                        </div>
+                        <div class="item-description">Napa Valley, CA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Amavi, Cabernet Sauvignon</div>
+                            <div class="item-price">2022 $70</div>
+                        </div>
+                        <div class="item-description">Columbia Valley, WA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Mark Ryan, 'Dissident, Cabernet Sauvignon</div>
+                            <div class="item-price">2022 $100</div>
+                        </div>
+                        <div class="item-description">Columbia Valley, WA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Bledsoe Family, Cabernet Sauvignon</div>
+                            <div class="item-price">2021 $120</div>
+                        </div>
+                        <div class="item-description">Walla Walla, WA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Longshadows, 'Feather, Cabernet Sauvignon</div>
+                            <div class="item-price">2021 $140</div>
+                        </div>
+                        <div class="item-description">Columbia Valley, WA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Laird Family, Cabernet Sauvignon</div>
+                            <div class="item-price">2021 $130</div>
+                        </div>
+                        <div class="item-description">Napa Valley, CA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Leonetti, Cabernet Sauvignon</div>
+                            <div class="item-price">2022 $150</div>
+                        </div>
+                        <div class="item-description">Walla Walla, WA</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Caymus, Cabernet Sauvignon</div>
+                            <div class="item-price">2021 $275</div>
+                        </div>
+                        <div class="item-description">Napa Valley, CA</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>International Reds</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Château des Jacques, Moulin-á-Vent</div>
+                            <div class="item-price">2020 $100</div>
+                        </div>
+                        <div class="item-description">Beaujolais, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Château de Janicon, Graves Rouge</div>
+                            <div class="item-price">2022 $50</div>
+                        </div>
+                        <div class="item-description">Bordeaux, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Château Saint-Sulpice, Bordeaux</div>
+                            <div class="item-price">2022 $50</div>
+                        </div>
+                        <div class="item-description">Bordeaux, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Château La Nerthe</div>
+                            <div class="item-price">2021 $130</div>
+                        </div>
+                        <div class="item-description">Châteauneuf-du-Pape, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">E. Guigal, Côtes-du-Rhône</div>
+                            <div class="item-price">2020 $50</div>
+                        </div>
+                        <div class="item-description">Rhône, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">E. Guigal, Gigondas</div>
+                            <div class="item-price">2019 $100</div>
+                        </div>
+                        <div class="item-description">Rhône, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Chateau Chauvin</div>
+                            <div class="item-price">2020 $125</div>
+                        </div>
+                        <div class="item-description">Saint-Emilion Grand Cru, FR</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Michele Chiarlo, 'Cannubi, Barolo</div>
+                            <div class="item-price">2019 $200</div>
+                        </div>
+                        <div class="item-description">Piedmont, IT</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Poderi Aldo Conterno, 'Bussia', Barolo</div>
+                            <div class="item-price">2019 $195</div>
+                        </div>
+                        <div class="item-description">Piedmont, IT</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Altesino, Brunello di Montalcino</div>
+                            <div class="item-price">2019 $110</div>
+                        </div>
+                        <div class="item-description">Tuscany, IT</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Fanti, Rosso de Montalcino</div>
+                            <div class="item-price">2022 $65</div>
+                        </div>
+                        <div class="item-description">Tuscany, IT</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Ornellaia, Le Volte</div>
+                            <div class="item-price">2022 $75</div>
+                        </div>
+                        <div class="item-description">Tuscany, IT</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Selvapiana, Chianti Rufina</div>
+                            <div class="item-price">2023 $50</div>
+                        </div>
+                        <div class="item-description">Tuscany, IT</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Familia Torres, Altos Ibéricos Crianza</div>
+                            <div class="item-price">2019 $55</div>
+                        </div>
+                        <div class="item-description">Rioja, SP</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Bodegas El Nido, 'Clio'</div>
+                            <div class="item-price">2021 $80</div>
+                        </div>
+                        <div class="item-description">Jumilla, SP</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Perinet, 'Merit'</div>
+                            <div class="item-price">2018 $70</div>
+                        </div>
+                        <div class="item-description">Priorat, SP</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Dominio de Pingus, 'PSI', Tempranillo</div>
+                            <div class="item-price">2021 $75</div>
+                        </div>
+                        <div class="item-description">Ribera del Duero, SP</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-section">
+                <h2>Spring 2025 Cocktails</h2>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Jalisco Spa Water</div>
+                            <div class="item-price">$14</div>
+                        </div>
+                        <div class="item-description">Blanco Tequila, St. Germain, Ancho Reyes Verde, Lime, Cucumber, Mint, Cilantro, Ginger Beer</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Tropical Storm</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                        <div class="item-description">Dark Rum, Lichi Liqueur, St. Germain, Lime, Pineapple, Cinnamon Syrup, Tiki Bitters, Mint, Basil</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Spring in Piedmont</div>
+                            <div class="item-price">$14</div>
+                        </div>
+                        <div class="item-description">Bordiga Bianco Vermouth, Apricot Liqueur, Lemon, Peach Bitters, Mint, Prosecco</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Clássico</div>
+                            <div class="item-price">$13</div>
+                        </div>
+                        <div class="item-description">White Port, Fever-Tree Mediterranean Tonic, Lime</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Moderna No. 1</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                        <div class="item-description">White Port, Gin, Premium Tonic, Lemon, Strawberry, Hyssop, Allspice</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Beguiling About Time</div>
+                            <div class="item-price">$16</div>
+                        </div>
+                        <div class="item-description">Rye, Allspice Dram, Strawberry, Lemon, Simple, Angostura, Thyme</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Hazy Memories</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                        <div class="item-description">Hazy IPA, Gin, Ginger Liqueur, Lemon, Pineapple, Passion Fruit, Demerara, Basil, Tiki Bitters, Angostura</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Bird. Flower. Fish.</div>
+                            <div class="item-price">$16</div>
+                        </div>
+                        <div class="item-description">Gin, St. Germain, Blueberry-Lemon-Thyme Syrup, Blueberry Preserves</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Tamarind Man</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                        <div class="item-description">Bourbon, Aperol, Benedictine, Disaronno, Tamarind Syrup, Lemon</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Chat GPT</div>
+                            <div class="item-price">$16</div>
+                        </div>
+                        <div class="item-description">Añejo Tequila, Montenegro, Aperol, Benedictine, Tiki Bitters</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Free Trade Agreement</div>
+                            <div class="item-price">$16</div>
+                        </div>
+                        <div class="item-description">Pisco, Cachaça, Singani, Lemon, Orange, Guava-Agave, Egg White, Angostura</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">East Side</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                        <div class="item-description">Gin, Lime, Simple, Cucumber, Mint</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Greyhound's Tooth</div>
+                            <div class="item-price">$14</div>
+                        </div>
+                        <div class="item-description">Bénédictine, Vodka, Grapefruit, Lemon, Grapefruit Bitters, Simple</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Bowling with Jen</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                        <div class="item-description">Bourbon, Vanilla-Cinnamon Syrup, Angostura, Figs, Orange</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Torrents of the Season</div>
+                            <div class="item-price">$15</div>
+                        </div>
+                        <div class="item-description">Silver Rum, Luxardo Maraschino, Lime, Grapefruit, Agave, Tiki Bitters</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">20/20 Vision</div>
+                            <div class="item-price">$12</div>
+                        </div>
+                        <div class="item-description">Carrot Shrub, Chamomile Tea, Lemon, Ginger-Cayenne, Cucumber, Dill, Tarragon, Ginger Beer</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Coco Piña Punch</div>
+                            <div class="item-price">$11</div>
+                        </div>
+                        <div class="item-description">Pineapple, Coconut Milk, Lime, Coconut Water, Sea Salt</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Stone Fruit Cooler</div>
+                            <div class="item-price">$11</div>
+                        </div>
+                        <div class="item-description">Lemon, Apricot, Ginger Cayenne, Orange, Honey, Basil, Ginger Beer, Soda</div>
+                    </div>
+                    
+                    <div class="menu-item">
+                        <div class="item-header">
+                            <div class="item-name">Feeling Spritzy</div>
+                            <div class="item-price">$11</div>
+                        </div>
+                        <div class="item-description">Tost, Lavender, Lemon, Peach, Mint</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="stats-section" style="display: none;">
+            <h2 style="text-align: center; margin-bottom: 30px;">My Training Progress</h2>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-questions">0</div>
+                    <div class="stat-label">Questions Answered</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-value" id="correct-answers">0</div>
+                    <div class="stat-label">Correct Answers</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-value" id="accuracy-rate">0%</div>
+                    <div class="stat-label">Accuracy Rate</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-value" id="categories-completed">0/3</div>
+                    <div class="stat-label">Categories Mastered</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <h3 style="margin-bottom: 20px;">Category Progress</h3>
+                <div style="max-width: 600px; margin: 0 auto;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Starters</span>
+                        <span id="starters-stats">0%</span>
+                    </div>
+                    <div class="progress-bar" style="margin-bottom: 20px;">
+                        <div class="progress-fill" id="starters-stats-bar"></div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Main Courses</span>
+                        <span id="mains-stats">0%</span>
+                    </div>
+                    <div class="progress-bar" style="margin-bottom: 20px;">
+                        <div class="progress-fill" id="mains-stats-bar"></div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Desserts & Drinks</span>
+                        <span id="drinks-stats">0%</span>
+                    </div>
+                    <div class="progress-bar" style="margin-bottom: 20px;">
+                        <div class="progress-fill" id="drinks-stats-bar"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="#" class="btn" id="continue-training">Continue Training</a>
+            </div>
+        </section>
+
+        <div class="quiz-container" id="quiz-container">
+            <div class="quiz-header">
+                <div class="quiz-title" id="quiz-category">Starters Quiz</div>
+                <div class="quiz-progress" id="quiz-progress">Question 1 of 30</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question" id="question">What is the price of the Boise Vertical Farm's Lettuces?</div>
+                <div class="options" id="options">
+                    <div class="option" data-answer="1">$13</div>
+                    <div class="option" data-answer="2">$15</div>
+                    <div class="option" data-answer="3">$17</div>
+                    <div class="option" data-answer="4">$19</div>
+                </div>
+            </div>
+            
+            <div class="navigation">
+                <button class="btn btn-outline" id="prev-question" disabled>Previous</button>
+                <button class="btn" id="next-question">Next</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result-container">
+            <div class="result-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="result-score" id="result-score">85%</div>
+            <div class="result-feedback" id="result-feedback">Great job! You're well on your way to mastering the menu.</div>
+            <div>
+                <a href="#" class="btn" id="review-answers">Review Answers</a>
+                <a href="#" class="btn btn-outline" id="new-quiz">New Quiz</a>
+            </div>
+            
+            <div class="review-container" id="review-container">
+                <h3 style="text-align: center; margin: 30px 0;">Review Your Answers</h3>
+                <div id="review-questions">
+                    <!-- Review items will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="loader" id="loader"></div>
+    </div>
+
+    <footer>
+        <p>Yishuca Designs</p>
+    </footer>
+
+    <script>
+        // Quiz data
+        const quizData = {
+            starters: [
+                {
+                    question: "What is the price of the Boise Vertical Farm's Lettuces?",
+                    options: ["$13", "$15", "$17", "$19"],
+                    answer: 0,
+                    explanation: "The Boise Vertical Farm's Lettuces are priced at $13 and come with Acme Garlic Croutons, Shaved Radish, and Lemon-Champagne Vinaigrette."
+                },
+                {
+                    question: "Which starter includes charred pineapple and shishito Fresno chile?",
+                    options: ["Steak Tartare", "Yellowtail", "Grilled Spanish Octopus", "Foie Gras Torchon"],
+                    answer: 1,
+                    explanation: "The Yellowtail starter features orange miso, charred pineapple, and shishito Fresno chile, priced at $19."
+                },
+                {
+                    question: "What type of beef is used in the Steak Tartare?",
+                    options: ["USDA Prime", "Snake River Farms American Wagyu", "Grass-fed Angus", "Japanese A5 Wagyu"],
+                    answer: 1,
+                    explanation: "The Steak Tartare uses premium Snake River Farms American Wagyu beef, priced at $17."
+                },
+                {
+                    question: "Which starter is served with smoked Hagerman trout?",
+                    options: ["Potato Bisque", "Nonna Anna's Meatballs", "Foie Gras Torchon", "Un-Traditional Caviar Service"],
+                    answer: 0,
+                    explanation: "The Potato Bisque ($9) is accompanied by smoked Hagerman trout and spirulina agrumato."
+                },
+                {
+                    question: "What is the main protein in the Grilled Spanish Octopus dish?",
+                    options: ["Squid", "Octopus", "Scallops", "Mussels"],
+                    answer: 1,
+                    explanation: "The Grilled Spanish Octopus ($23) is served with Sunset Butte Bean & Chorizo Ragú and Romesco Sauce."
+                },
+                {
+                    question: "What cheese is featured in Nonna Anna's Meatballs?",
+                    options: ["Parmigiano", "Pecorino", "Mozzarella", "Ricotta"],
+                    answer: 1,
+                    explanation: "Nonna Anna's Meatballs ($15) include Pecorino cheese along with rosemary gremolata and extra virgin olive oil."
+                },
+                {
+                    question: "What accompanies the Foie Gras Torchon?",
+                    options: ["Spiced Apple Butter", "Fig Jam", "Berry Compote", "Honey Glaze"],
+                    answer: 0,
+                    explanation: "The Foie Gras Torchon ($17) is served with spiced apple butter, arugula, and fleur de sel."
+                },
+                {
+                    question: "How is the caviar in the Un-Traditional Caviar Service sourced?",
+                    options: ["Russian Osetra", "Iranian Beluga", "Idaho Springs Local Sturgeon", "French Salmon"],
+                    answer: 2,
+                    explanation: "The Un-Traditional Caviar Service ($125/oz) features Idaho Springs local sturgeon caviar with traditional accompaniments."
+                },
+                {
+                    question: "Which starter is vegetarian?",
+                    options: ["Yellowtail", "Boise Vertical Farm's Lettuces", "Steak Tartare", "Grilled Spanish Octopus"],
+                    answer: 1,
+                    explanation: "The Boise Vertical Farm's Lettuces ($13) is a vegetarian option, while others contain meat or seafood."
+                },
+                {
+                    question: "What is the most expensive starter on the menu?",
+                    options: ["Foie Gras Torchon", "Un-Traditional Caviar Service", "Grilled Spanish Octopus", "Steak Tartare"],
+                    answer: 1,
+                    explanation: "The Un-Traditional Caviar Service is priced at $125 per ounce, making it the most expensive starter."
+                },
+                {
+                    question: "Which starter includes cured egg yolk?",
+                    options: ["Yellowtail", "Steak Tartare", "Potato Bisque", "Nonna Anna's Meatballs"],
+                    answer: 1,
+                    explanation: "The Steak Tartare ($17) features cured egg yolk along with capers and sriracha sauce."
+                },
+                {
+                    question: "What type of dressing accompanies the Boise Vertical Farm's Lettuces?",
+                    options: ["Ranch", "Blue Cheese", "Lemon-Champagne Vinaigrette", "Balsamic Glaze"],
+                    answer: 2,
+                    explanation: "The Boise Vertical Farm's Lettuces ($13) comes with Lemon-Champagne Vinaigrette."
+                },
+                {
+                    question: "Which starter would you recommend to someone who prefers mild flavors?",
+                    options: ["Yellowtail", "Steak Tartare", "Boise Vertical Farm's Lettuces", "Grilled Spanish Octopus"],
+                    answer: 2,
+                    explanation: "The Boise Vertical Farm's Lettuces ($13) offers the most mild flavor profile among the starters."
+                },
+                {
+                    question: "What makes the Un-Traditional Caviar Service 'un-traditional'?",
+                    options: ["Served with blinis", "Uses local Idaho sturgeon caviar", "Served with potato chips", "Both 2 and 3"],
+                    answer: 3,
+                    explanation: "The Un-Traditional Caviar Service ($125/oz) uses local Idaho sturgeon caviar and is served with potato chips instead of traditional blinis."
+                },
+                {
+                    question: "Which starter contains chorizo?",
+                    options: ["Nonna Anna's Meatballs", "Grilled Spanish Octopus", "Steak Tartare", "Potato Bisque"],
+                    answer: 1,
+                    explanation: "The Grilled Spanish Octopus ($23) includes a Sunset Butte Bean & Chorizo Ragú."
+                },
+                {
+                    question: "What is the price difference between the Foie Gras Torchon and the Steak Tartare?",
+                    options: ["$0", "$2", "$5", "$10"],
+                    answer: 0,
+                    explanation: "Both the Foie Gras Torchon and Steak Tartare are priced at $17."
+                },
+                {
+                    question: "Which starter would be most suitable for someone avoiding gluten?",
+                    options: ["Nonna Anna's Meatballs", "Potato Bisque", "Boise Vertical Farm's Lettuces", "Both 2 and 3"],
+                    answer: 3,
+                    explanation: "Both the Potato Bisque ($9) and Boise Vertical Farm's Lettuces ($13) are gluten-free options."
+                },
+                {
+                    question: "What herb is prominent in Nonna Anna's Meatballs?",
+                    options: ["Basil", "Rosemary", "Thyme", "Oregano"],
+                    answer: 1,
+                    explanation: "Nonna Anna's Meatballs ($15) feature rosemary gremolata as a key component."
+                },
+                {
+                    question: "Which starter is described as having a Sriracha sauce?",
+                    options: ["Yellowtail", "Steak Tartare", "Grilled Spanish Octopus", "Foie Gras Torchon"],
+                    answer: 1,
+                    explanation: "The Steak Tartare ($17) includes Sriracha sauce along with cured egg yolk and capers."
+                },
+                {
+                    question: "What is the lightest starter option on the menu?",
+                    options: ["Foie Gras Torchon", "Boise Vertical Farm's Lettuces", "Steak Tartare", "Nonna Anna's Meatballs"],
+                    answer: 1,
+                    explanation: "The Boise Vertical Farm's Lettuces ($13) is the lightest option, being a salad with delicate flavors."
+                },
+                {
+                    question: "Which starter pairs best with a crisp white wine?",
+                    options: ["Foie Gras Torchon", "Yellowtail", "Nonna Anna's Meatballs", "Un-Traditional Caviar Service"],
+                    answer: 1,
+                    explanation: "The Yellowtail ($19) with its citrus and charred pineapple notes pairs excellently with a crisp white wine."
+                },
+                {
+                    question: "What is the texture component in the Potato Bisque?",
+                    options: ["Croutons", "Smoked Hagerman Trout", "Bacon Bits", "Fried Leeks"],
+                    answer: 1,
+                    explanation: "The Potato Bisque ($9) gets its texture from smoked Hagerman trout."
+                },
+                {
+                    question: "Which starter would you recommend for someone who enjoys bold flavors?",
+                    options: ["Boise Vertical Farm's Lettuces", "Steak Tartare", "Yellowtail", "Both 2 and 3"],
+                    answer: 3,
+                    explanation: "Both the Steak Tartare ($17) with its Wagyu beef and Sriracha, and the Yellowtail ($19) with charred pineapple and Fresno chile offer bold flavors."
+                },
+                {
+                    question: "What is the serving style of the Foie Gras Torchon?",
+                    options: ["Seared", "Torchon (pressed terrine)", "Pâté", "Mousse"],
+                    answer: 1,
+                    explanation: "The Foie Gras Torchon ($17) is prepared in the traditional torchon style, which means it's wrapped in cloth and pressed into a terrine."
+                },
+                {
+                    question: "Which starter contains both seafood and meat?",
+                    options: ["Yellowtail", "Grilled Spanish Octopus", "Steak Tartare", "Potato Bisque"],
+                    answer: 1,
+                    explanation: "The Grilled Spanish Octopus ($23) combines octopus (seafood) with chorizo (meat) in its ragú."
+                },
+                {
+                    question: "What is the most shareable starter on the menu?",
+                    options: ["Un-Traditional Caviar Service", "Boise Vertical Farm's Lettuces", "Nonna Anna's Meatballs", "All of the above"],
+                    answer: 3,
+                    explanation: "All these starters - the Caviar Service ($125/oz), Lettuces ($13), and Meatballs ($15) - are designed for sharing."
+                },
+                {
+                    question: "Which starter would pair well with a sweet wine?",
+                    options: ["Foie Gras Torchon", "Yellowtail", "Steak Tartare", "Grilled Spanish Octopus"],
+                    answer: 0,
+                    explanation: "The Foie Gras Torchon ($17) with its spiced apple butter pairs beautifully with a Sauternes or other sweet wine."
+                },
+                {
+                    question: "What is the primary acid component in the Yellowtail dish?",
+                    options: ["Lime", "Orange Miso", "Rice Vinegar", "Champagne Vinegar"],
+                    answer: 1,
+                    explanation: "The Yellowtail ($19) gets its acidity from the orange miso component."
+                },
+                {
+                    question: "Which starter is completely dairy-free?",
+                    options: ["Yellowtail", "Boise Vertical Farm's Lettuces", "Steak Tartare", "All of the above"],
+                    answer: 3,
+                    explanation: "All these starters - Yellowtail ($19), Lettuces ($13), and Steak Tartare ($17) - contain no dairy ingredients."
+                },
+                {
+                    question: "What is the most unique ingredient in the Potato Bisque?",
+                    options: ["Smoked Trout", "Spirulina Agrumato", "Cream", "Chives"],
+                    answer: 1,
+                    explanation: "The Potato Bisque ($9) features spirulina agrumato, a unique algae-based olive oil, as a distinctive ingredient."
+                }
+            ],
+            mains: [
+                {
+                    question: "What comes with all the locally sourced Angus cuts?",
+                    options: ["Mashed Potatoes and Gravy", "Handcut French Fries and Arugula Salad", "Roasted Vegetables", "Truffle Mac and Cheese"],
+                    answer: 1,
+                    explanation: "All Angus cuts are served with Handcut French Fries, Arugula Salad & Maître d'Hôtel Butter."
+                },
+                {
+                    question: "What is the price of the Snake River Farms Coulotte?",
+                    options: ["$45", "$53", "$62", "$75"],
+                    answer: 1,
+                    explanation: "The Snake River Farms Coulotte is priced at $53."
+                },
+                {
+                    question: "Which cut is the most expensive on the menu?",
+                    options: ["Snake River Farms Coulotte", "Snake River Farms Tenderloin", "Côte de Boeuf", "Local Angus Skirt Steak"],
+                    answer: 1,
+                    explanation: "The Snake River Farms Tenderloin is priced at $75, making it the most expensive cut."
+                },
+                {
+                    question: "What is unique about the Raviolo pasta dish?",
+                    options: ["It contains an egg yolk", "It's vegan", "It's served cold", "It's gluten-free"],
+                    answer: 0,
+                    explanation: "The Raviolo ($19) features an egg yolk, smoked pecorino, butter sauce, and guanciale."
+                },
+                {
+                    question: "What type of cheese is used in the Bolognese?",
+                    options: ["Parmigiano Reggiano", "Smoked Pecorino Romano", "Mozzarella", "Gorgonzola"],
+                    answer: 1,
+                    explanation: "The Bolognese ($27) uses smoked Pecorino Romano cheese."
+                },
+                {
+                    question: "Which entree features preserved fennel relish?",
+                    options: ["Strawberry Balsamic Lettuce", "Oven Roasted Alaskan Black Cod", "1⁄2 Roasted Chicken", "Local Angus Skirt Steak"],
+                    answer: 1,
+                    explanation: "The Oven Roasted Alaskan Black Cod ($31) comes with preserved fennel relish, glazed Yukon potatoes, and bouillabaisse sauce."
+                },
+                {
+                    question: "What accompanies the 1⁄2 Roasted Chicken?",
+                    options: ["Shiitake Mushrooms and Pommes Purée", "Roasted Potatoes and Vegetables", "Mashed Potatoes and Gravy", "Wild Rice Pilaf"],
+                    answer: 0,
+                    explanation: "The 1⁄2 Roasted Chicken ($31) is served with shiitake mushrooms, pommes purée, and Spanish sherry vinegar."
+                },
+                {
+                    question: "What is the price of the Local Angus Skirt Steak?",
+                    options: ["$39", "$47", "$53", "$58"],
+                    answer: 1,
+                    explanation: "The Local Angus Skirt Steak is priced at $47."
+                },
+                {
+                    question: "Which side dish is cooked in duck fat?",
+                    options: ["Pommes Purée", "Roasted Mushrooms", "Arugula Salad", "Duck Fat Potatoes"],
+                    answer: 3,
+                    explanation: "The Duck Fat Potatoes are a side option ($9) and also come with the Local Angus Skirt Steak."
+                },
+                {
+                    question: "What is the price difference between the Raviolo and the Bolognese?",
+                    options: ["$5", "$8", "$10", "$12"],
+                    answer: 1,
+                    explanation: "The Raviolo is $19 and the Bolognese is $27, making an $8 difference."
+                },
+                {
+                    question: "Which entree would be most suitable for someone wanting a lighter meal?",
+                    options: ["Strawberry Balsamic Lettuce", "Oven Roasted Alaskan Black Cod", "Local Angus Skirt Steak", "Bolognese"],
+                    answer: 0,
+                    explanation: "The Strawberry Balsamic Lettuce ($23) with grilled chicken, goat cheese, and almonds would be the lightest option."
+                },
+                {
+                    question: "What protein is in the Strawberry Balsamic Lettuce?",
+                    options: ["Grilled Shrimp", "Grilled Chicken", "Seared Tuna", "Roasted Turkey"],
+                    answer: 1,
+                    explanation: "The Strawberry Balsamic Lettuce ($23) features grilled chicken along with goat cheese, almonds, and strawberry vinaigrette."
+                },
+                {
+                    question: "What sauce accompanies the Local Angus Skirt Steak?",
+                    options: ["Béarnaise", "Persillade", "Red Wine Reduction", "Peppercorn"],
+                    answer: 1,
+                    explanation: "The Local Angus Skirt Steak ($47) comes with persillade sauce."
+                },
+                {
+                    question: "Which dish contains both strawberries and balsamic?",
+                    options: ["Basque Cheesecake", "Strawberry Balsamic Lettuce", "Coffee & Donuts", "Toffee Brioche"],
+                    answer: 1,
+                    explanation: "The Strawberry Balsamic Lettuce ($23) features a strawberry vinaigrette."
+                },
+                {
+                    question: "What type of potatoes come with the Oven Roasted Alaskan Black Cod?",
+                    options: ["Handcut French Fries", "Duck Fat Potatoes", "Glazed Yukon Potatoes", "Pommes Purée"],
+                    answer: 2,
+                    explanation: "The Oven Roasted Alaskan Black Cod ($31) is served with glazed Yukon potatoes."
+                },
+                {
+                    question: "Which entree is most likely to be market priced?",
+                    options: ["Snake River Farms Coulotte", "Côte de Boeuf", "Local Angus Skirt Steak", "1⁄2 Roasted Chicken"],
+                    answer: 1,
+                    explanation: "The Côte de Boeuf is listed at market price, as it's a premium, variable-cut steak."
+                },
+                {
+                    question: "What makes the Snake River Farms cuts special?",
+                    options: ["They're grass-fed", "They're American Wagyu", "They're dry-aged for 60 days", "They're organic"],
+                    answer: 1,
+                    explanation: "The Snake River Farms cuts (Coulotte $53, Tenderloin $75) are premium American Wagyu beef."
+                },
+                {
+                    question: "Which entree would pair best with a rich red wine?",
+                    options: ["Strawberry Balsamic Lettuce", "Oven Roasted Alaskan Black Cod", "Snake River Farms Tenderloin", "All of the above"],
+                    answer: 2,
+                    explanation: "The Snake River Farms Tenderloin ($75) would pair excellently with a bold red wine."
+                },
+                {
+                    question: "What is the texture of the Pommes Purée?",
+                    options: ["Chunky", "Al dente", "Silky smooth", "Crispy"],
+                    answer: 2,
+                    explanation: "Pommes Purée ($9) is described as silky smooth mashed potatoes."
+                },
+                {
+                    question: "Which entree features Spanish sherry vinegar?",
+                    options: ["1⁄2 Roasted Chicken", "Local Angus Skirt Steak", "Oven Roasted Alaskan Black Cod", "Strawberry Balsamic Lettuce"],
+                    answer: 0,
+                    explanation: "The 1⁄2 Roasted Chicken ($31) includes Spanish sherry vinegar in its preparation."
+                },
+                {
+                    question: "What is the primary protein in the Bolognese sauce?",
+                    options: ["Chicken", "Pork", "Traditional Meat (beef/pork mix)", "Lamb"],
+                    answer: 2,
+                    explanation: "The Bolognese ($27) features a traditional meat sauce (typically a mix of beef and pork)."
+                },
+                {
+                    question: "Which dish would be most suitable for someone avoiding gluten?",
+                    options: ["Raviolo", "Bolognese", "Oven Roasted Alaskan Black Cod", "All contain gluten"],
+                    answer: 2,
+                    explanation: "The Oven Roasted Alaskan Black Cod ($31) would be the safest gluten-free option among the mains."
+                },
+                {
+                    question: "What is the weight of the Local Angus Skirt Steak roulade?",
+                    options: ["4oz", "6oz", "8oz", "10oz"],
+                    answer: 1,
+                    explanation: "The Local Angus Skirt Steak ($47) is a 6oz roulade."
+                },
+                {
+                    question: "Which side dish contains Parmigiano?",
+                    options: ["Pommes Purée", "Roasted Mushrooms", "Arugula Salad", "Handcut French Fries"],
+                    answer: 2,
+                    explanation: "The Arugula Salad side ($9) includes Parmigiano cheese."
+                },
+                {
+                    question: "What is the most expensive pasta dish on the menu?",
+                    options: ["Raviolo", "Bolognese", "They're the same price", "No pasta dishes are offered"],
+                    answer: 1,
+                    explanation: "The Bolognese is $27 while the Raviolo is $19."
+                },
+                {
+                    question: "Which entree contains bouillabaisse sauce?",
+                    options: ["Oven Roasted Alaskan Black Cod", "Local Angus Skirt Steak", "Snake River Farms Tenderloin", "1⁄2 Roasted Chicken"],
+                    answer: 0,
+                    explanation: "The Oven Roasted Alaskan Black Cod ($31) features bouillabaisse sauce."
+                },
+                {
+                    question: "What nut is included in the Strawberry Balsamic Lettuce?",
+                    options: ["Walnuts", "Almonds", "Pecans", "Pine Nuts"],
+                    answer: 1,
+                    explanation: "The Strawberry Balsamic Lettuce ($23) includes almonds along with grilled chicken and goat cheese."
+                },
+                {
+                    question: "Which main course would pair best with a crisp white wine?",
+                    options: ["Oven Roasted Alaskan Black Cod", "Snake River Farms Tenderloin", "Bolognese", "Local Angus Skirt Steak"],
+                    answer: 0,
+                    explanation: "The Oven Roasted Alaskan Black Cod ($31) would pair beautifully with a crisp white wine."
+                },
+                {
+                    question: "What is the cooking style for the Alaskan Black Cod?",
+                    options: ["Pan-Seared", "Oven Roasted", "Grilled", "Poached"],
+                    answer: 1,
+                    explanation: "The dish is called Oven Roasted Alaskan Black Cod ($31)."
+                },
+                {
+                    question: "Which entree is most likely to be the richest/heaviest?",
+                    options: ["Strawberry Balsamic Lettuce", "Bolognese", "Oven Roasted Alaskan Black Cod", "1⁄2 Roasted Chicken"],
+                    answer: 1,
+                    explanation: "The Bolognese ($27) with its traditional meat sauce and smoked Pecorino Romano would be the richest option."
+                }
+            ],
+            drinks: [
+                {
+                    question: "What is the price of the Double Espresso Martini?",
+                    options: ["$12", "$15", "$18", "$20"],
+                    answer: 1,
+                    explanation: "The Double Espresso Martini is priced at $15."
+                },
+                {
+                    question: "Which dessert drink contains vodka, espresso liqueur, and espresso?",
+                    options: ["Chocolate Pavé", "Double Espresso Martini", "Coffee & Donuts", "Toffee Brioche"],
+                    answer: 1,
+                    explanation: "The Double Espresso Martini ($15) contains vodka, Caffè Espresso Liqueur, and espresso."
+                },
+                {
+                    question: "What is the most expensive dessert on the menu?",
+                    options: ["Coffee & Donuts", "Basque Cheesecake", "Toffee Brioche", "Chocolate Pavé"],
+                    answer: 1,
+                    explanation: "The Basque Cheesecake is priced at $19, making it the most expensive dessert."
+                },
+                {
+                    question: "Which dessert features coffee and Fernet ice cream?",
+                    options: ["Coffee & Donuts", "Basque Cheesecake", "Toffee Brioche", "Chocolate Pavé"],
+                    answer: 0,
+                    explanation: "Coffee & Donuts ($14) includes coffee pot de crème, coffee & Fernet ice cream, brown butter beignets, and salted caramel."
+                },
+                {
+                    question: "What accompanies the Basque Cheesecake?",
+                    options: ["Blueberry & Black Currant Compote", "Strawberry Sauce", "Caramelized Rice Krispies", "Both 1 and 3"],
+                    answer: 3,
+                    explanation: "The Basque Cheesecake ($19) comes with both blueberry & black currant compote and caramelized Rice Krispies."
+                },
+                {
+                    question: "What is the primary alcohol in the Jalisco Spa Water cocktail?",
+                    options: ["Vodka", "Blanco Tequila", "Gin", "Rum"],
+                    answer: 1,
+                    explanation: "The Jalisco Spa Water contains 1 1⁄2 oz. Blanco Tequila along with other ingredients."
+                },
+                {
+                    question: "Which cocktail includes ginger beer and Ancho Reyes Verde?",
+                    options: ["Tropical Storm", "Jalisco Spa Water", "Spring in Piedmont", "Clássico"],
+                    answer: 1,
+                    explanation: "The Jalisco Spa Water includes ginger beer and Ancho Reyes Verde in its preparation."
+                },
+                {
+                    question: "What is the price of the 20-yr Tawny Port?",
+                    options: ["$14", "$16", "$18", "$20"],
+                    answer: 1,
+                    explanation: "The Kopke, 20-yr Tawny Port is priced at $16."
+                },
+                {
+                    question: "Which wine is described as a Moscoto D'Asti?",
+                    options: ["Château Roumieu-Lacoste", "Kopke", "Vietti", "Cleto Chiarli"],
+                    answer: 2,
+                    explanation: "The Vietti, Moscoto D'Asti is priced at $13."
+                },
+                {
+                    question: "What is the price difference between the Lambrusco and the Sauternes?",
+                    options: ["$1", "$2", "$3", "$4"],
+                    answer: 1,
+                    explanation: "The Cleto Chiarli Lambrusco is $16 and the Château Roumieu-Lacoste Sauternes is $14, making a $2 difference."
+                },
+                {
+                    question: "Which digestif is the most expensive?",
+                    options: ["Braulio, Amaro Alpino", "Nonino, Amaro", "Averna, Amaro", "Fernet Branca, Amaro"],
+                    answer: 1,
+                    explanation: "Both Braulio and Nonino are priced at $20, making them the most expensive digestifs."
+                },
+                {
+                    question: "What is the price of the Absinthe Ordinaire 129°?",
+                    options: ["$10", "$12", "$14", "$16"],
+                    answer: 1,
+                    explanation: "The Absinthe Ordinaire 129° is priced at $12."
+                },
+                {
+                    question: "Which liqueur is priced at $11?",
+                    options: ["Kahlúa", "Chateau Monet, Framboise", "Both", "Neither"],
+                    answer: 2,
+                    explanation: "Both Kahlúa and Chateau Monet Framboise are priced at $11."
+                },
+                {
+                    question: "What is the most expensive cognac/brandy option?",
+                    options: ["Hennessy, XO Cognac", "St. Rémy, VSOP Brandy", "Busnel, VSOP Calvados", "Laird's, Straight Apple Brandy 100°"],
+                    answer: 0,
+                    explanation: "The Hennessy, XO Cognac is priced at $52, making it the most expensive in this category."
+                },
+                {
+                    question: "Which dessert features bourbon toffee-soaked brioche?",
+                    options: ["Coffee & Donuts", "Basque Cheesecake", "Toffee Brioche", "Chocolate Pavé"],
+                    answer: 2,
+                    explanation: "The Toffee Brioche ($12) includes bourbon toffee-soaked brioche with vanilla & cranberry ice cream and cinnamon crunch."
+                },
+                {
+                    question: "What type of chocolate is in the Chocolate Pavé?",
+                    options: ["Milk Chocolate", "Dark Chocolate", "White Chocolate", "Ruby Chocolate"],
+                    answer: 1,
+                    explanation: "The Chocolate Pavé ($14) features dark chocolate in both the flourless cake and brownie components."
+                },
+                {
+                    question: "Which coffee option is decaf?",
+                    options: ["Corsica", "Monte Carlo", "Espresso", "Latte"],
+                    answer: 1,
+                    explanation: "The Monte Carlo is the decaf coffee option from La Colombe."
+                },
+                {
+                    question: "How many organic tea options are available?",
+                    options: ["5", "7", "9", "11"],
+                    answer: 2,
+                    explanation: "There are 9 organic tea options listed, including Lord Bergamot, Red Nectar, Golden Light, Meadow Peppermint Leaves, British Brunch, Big Hibiscus, Rose City Genmaicha, Jasmine Silver Tip, and Masala Chai."
+                },
+                {
+                    question: "Which cocktail is a play on a Pisco Sour?",
+                    options: ["Free Trade Agreement", "Hazy Memories", "Bird. Flower. Fish.", "Tamarind Man"],
+                    answer: 0,
+                    explanation: "The Free Trade Agreement combines spirits of South America to create a rich and velvety sour, with a hint of bitters for added complexity."
+                },
+                {
+                    question: "What is the primary spirit in the East Side cocktail?",
+                    options: ["Vodka", "Gin", "Tequila", "Rum"],
+                    answer: 1,
+                    explanation: "The East Side cocktail features 1 3⁄4 oz. Gin along with lime, simple syrup, cucumber, and mint."
+                },
+                {
+                    question: "Which cocktail includes Bénédictine, vodka, and grapefruit?",
+                    options: ["Greyhound's Tooth", "Bowling with Jen", "Torrents of the Season", "Profit & Loss"],
+                    answer: 0,
+                    explanation: "The Greyhound's Tooth contains Bénédictine, vodka, grapefruit, lemon, grapefruit bitters, and simple syrup."
+                },
+                {
+                    question: "What is the price of the Coco Piña Punch?",
+                    options: ["$9", "$11", "$13", "$15"],
+                    answer: 1,
+                    explanation: "The Coco Piña Punch is priced at $11."
+                },
+                {
+                    question: "Which non-alcoholic option features carrot shrub and chamomile tea?",
+                    options: ["20/20 Vision", "Stone Fruit Cooler", "Feeling Spritzy", "Coco Piña Punch"],
+                    answer: 0,
+                    explanation: "The 20/20 Vision includes carrot shrub, chamomile tea, lemon, ginger-cayenne syrup, cucumber, dill, tarragon, and ginger beer."
+                },
+                {
+                    question: "What is the price of the Veuve Clicquot champagne?",
+                    options: ["$100", "$120", "$140", "$160"],
+                    answer: 2,
+                    explanation: "The Veuve Clicquot is priced at $140."
+                },
+                {
+                    question: "Which wine is from the Russian River Valley?",
+                    options: ["Merry Edwards, Sauvignon Blanc", "Stuhlmuller, 'Estate'", "Patz & Hall", "Rombauer"],
+                    answer: 0,
+                    explanation: "The Merry Edwards Sauvignon Blanc ($65) is from Russian River Valley, CA."
+                },
+                {
+                    question: "What is the price of the Melville, 'Estate', Pinot Noir?",
+                    options: ["$80", "$100", "$120", "$140"],
+                    answer: 1,
+                    explanation: "The Melville, 'Estate', Pinot Noir is priced at $100."
+                },
+                {
+                    question: "Which red wine is from Sicily?",
+                    options: ["Tenuta Regaleali, Lamúri Nero d'Avola", "Marcel Lapierre, 'Raisins Gaulois' Gamay", "Château des Jacques, Moulin-á-Vent", "E. Guigal, Gigondas"],
+                    answer: 0,
+                    explanation: "The Tenuta Regaleali, Lamúri Nero d'Avola ($55) is from Sicilia, IT."
+                },
+                {
+                    question: "What is the most expensive wine by the glass?",
+                    options: ["Charles Le Bel. 'Inspiration 1818", "Pol Roger, Brut Réserve", "Veuve Clicquot", "Caymus, Cabernet Sauvignon"],
+                    answer: 0,
+                    explanation: "The Charles Le Bel. 'Inspiration 1818 is priced at $245, making it the most expensive wine by the glass."
+                },
+                {
+                    question: "Which cocktail would you recommend to someone who enjoys herbal flavors?",
+                    options: ["Bird. Flower. Fish.", "Tamarind Man", "20/20 Vision", "All of the above"],
+                    answer: 3,
+                    explanation: "All these cocktails feature herbal elements: Bird. Flower. Fish. has thyme, Tamarind Man has Benedictine, and 20/20 Vision has dill and tarragon."
+                }
+            ],
+                        winePairings: [
+                    {
+                        question: "Which wine would pair best with the Snake River Farms Coulotte steak?",
+                        options: [
+                            "Vietti, Moscoto D'Asti",
+                            "Leonetti, Cabernet Sauvignon",
+                            "Whispering Angel Rosé",
+                            "Adami, 'Garbèl', Prosecco"
+                        ],
+                        answer: 1,
+                        explanation: "The Leonetti Cabernet Sauvignon (bold, tannic red) pairs perfectly with rich, fatty steaks like the Snake River Farms Coulotte."
+                    },
+                    {
+                        question: "What dessert would be the best match for the Kopke 20-yr Tawny Port?",
+                        options: [
+                            "Coffee & Donuts",
+                            "Basque Cheesecake",
+                            "Toffee Brioche",
+                            "Chocolate Pavé"
+                        ],
+                        answer: 3,
+                        explanation: "The Kopke 20-yr Tawny Port ($16) with its nutty, caramel notes beautifully complements the rich Chocolate Pavé's dark chocolate flavors."
+                    },
+                    {
+                        question: "Which starter pairs best with the Merry Edwards Sauvignon Blanc?",
+                        options: [
+                            "Foie Gras Torchon",
+                            "Yellowtail",
+                            "Nonna Anna's Meatballs",
+                            "Grilled Spanish Octopus"
+                        ],
+                        answer: 1,
+                        explanation: "The Merry Edwards Sauvignon Blanc's citrus notes ($65) pair excellently with the Yellowtail's orange miso and charred pineapple."
+                    },
+                    {
+                        question: "What wine would you recommend with the Grilled Spanish Octopus?",
+                        options: [
+                            "Cleto Chiarli, Lambrusco",
+                            "Château Roumieu-Lacoste, Sauternes",
+                            "Domaine de Fontsainte, Gris de Gris Rosé",
+                            "E. Guigal, Côtes-du-Rhône"
+                        ],
+                        answer: 2,
+                        explanation: "The Domaine de Fontsainte Gris de Gris Rosé ($40) has the acidity and minerality to complement the octopus and chorizo."
+                    },
+                    {
+                        question: "Which main course would pair best with the Vietti, Roero Arneis?",
+                        options: [
+                            "Local Angus Skirt Steak",
+                            "Oven Roasted Alaskan Black Cod",
+                            "Snake River Farms Tenderloin",
+                            "Bolognese"
+                        ],
+                        answer: 1,
+                        explanation: "The Vietti Roero Arneis ($50) is a crisp white that pairs beautifully with the delicate Black Cod and its bouillabaisse sauce."
+                    },
+                    {
+                        question: "What cheese would complement the E. Guigal, Gigondas?",
+                        options: [
+                            "Fresh goat cheese",
+                            "Pecorino (from Nonna Anna's Meatballs)",
+                            "Smoked Pecorino (from Raviolo)",
+                            "Blue cheese"
+                        ],
+                        answer: 1,
+                        explanation: "The bold E. Guigal Gigondas ($100) stands up to the salty, aged Pecorino in Nonna Anna's Meatballs."
+                    },
+                    {
+                        question: "Which dessert would be overpowered by the Château Roumieu-Lacoste, Sauternes?",
+                        options: [
+                            "Basque Cheesecake",
+                            "Coffee & Donuts",
+                            "Toffee Brioche",
+                            "Chocolate Pavé"
+                        ],
+                        answer: 2,
+                        explanation: "The delicate Toffee Brioche ($12) would be overwhelmed by the rich Sauternes ($14), which needs equally bold desserts."
+                    },
+                    {
+                        question: "What appetizer would pair well with the Marcel Lapierre 'Raisins Gaulois' Gamay?",
+                        options: [
+                            "Un-Traditional Caviar Service",
+                            "Steak Tartare",
+                            "Potato Bisque",
+                            "Foie Gras Torchon"
+                        ],
+                        answer: 1,
+                        explanation: "The light, fruity Gamay ($60) complements the rich Steak Tartare ($17) without overpowering it."
+                    },
+                    {
+                        question: "Which wine would be least appropriate with the Foie Gras Torchon?",
+                        options: [
+                            "Château Roumieu-Lacoste, Sauternes",
+                            "Kopke, 20-yr Tawny Port",
+                            "Vietti, Moscoto D'Asti",
+                            "Cleto Chiarli, Lambrusco"
+                        ],
+                        answer: 2,
+                        explanation: "The sweet Vietti Moscoto D'Asti ($13) would be too cloying with the already rich Foie Gras Torchon ($17)."
+                    },
+                    {
+                        question: "What food pairing would showcase the Leonetti Cabernet Sauvignon best?",
+                        options: [
+                            "Strawberry Balsamic Lettuce",
+                            "Local Angus Skirt Steak",
+                            "Oven Roasted Alaskan Black Cod",
+                            "Toffee Brioche"
+                        ],
+                        answer: 1,
+                        explanation: "The bold Leonetti Cabernet Sauvignon ($150) needs equally robust food like the Local Angus Skirt Steak ($47) to shine."
+                    }
+                    // You can add more pairing questions here
+                ]
+        };
+
+        // DOM elements
+        const homeSection = document.getElementById('home-section');
+        const menuSection = document.getElementById('menu-section');
+        const statsSection = document.getElementById('stats-section');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultContainer = document.getElementById('result-container');
+        const reviewContainer = document.getElementById('review-container');
+        const loader = document.getElementById('loader');
+
+        // Navigation elements
+        const navHome = document.getElementById('nav-home');
+        const navMenu = document.getElementById('nav-menu');
+        const navStats = document.getElementById('nav-stats');
+        const startQuizBtn = document.getElementById('start-quiz');
+        const viewMenuBtn = document.getElementById('view-menu');
+        const startCategoryBtns = document.querySelectorAll('.start-category');
+        const continueTrainingBtn = document.getElementById('continue-training');
+
+        // Quiz elements
+        const quizCategory = document.getElementById('quiz-category');
+        const quizProgress = document.getElementById('quiz-progress');
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const prevQuestionBtn = document.getElementById('prev-question');
+        const nextQuestionBtn = document.getElementById('next-question');
+
+        // Result elements
+        const resultScore = document.getElementById('result-score');
+        const resultFeedback = document.getElementById('result-feedback');
+        const reviewAnswersBtn = document.getElementById('review-answers');
+        const newQuizBtn = document.getElementById('new-quiz');
+        const reviewQuestions = document.getElementById('review-questions');
+
+        // Stats elements
+        const totalQuestions = document.getElementById('total-questions');
+        const correctAnswers = document.getElementById('correct-answers');
+        const accuracyRate = document.getElementById('accuracy-rate');
+        const categoriesCompleted = document.getElementById('categories-completed');
+
+        // Progress bars
+        const startersProgress = document.getElementById('starters-progress');
+        const startersProgressBar = document.getElementById('starters-progress-bar');
+        const mainsProgress = document.getElementById('mains-progress');
+        const mainsProgressBar = document.getElementById('mains-progress-bar');
+        const drinksProgress = document.getElementById('drinks-progress');
+        const drinksProgressBar = document.getElementById('drinks-progress-bar');
+
+        const startersStats = document.getElementById('starters-stats');
+        const startersStatsBar = document.getElementById('starters-stats-bar');
+        const mainsStats = document.getElementById('mains-stats');
+        const mainsStatsBar = document.getElementById('mains-stats-bar');
+        const drinksStats = document.getElementById('drinks-stats');
+        const drinksStatsBar = document.getElementById('drinks-stats-bar');
+
+        // Quiz state
+        let currentCategory = '';
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let quizResults = {
+            starters: { answered: 0, correct: 0 },
+            mains: { answered: 0, correct: 0 },
+            drinks: { answered: 0, correct: 0 }
+        };
+
+        // Initialize the app
+        function init() {
+            loadProgress();
+            setupEventListeners();
+        }
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const savedProgress = localStorage.getItem('menuMasteryProgress');
+            if (savedProgress) {
+                quizResults = JSON.parse(savedProgress);
+                updateProgressBars();
+                updateStats();
+            }
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            localStorage.setItem('menuMasteryProgress', JSON.stringify(quizResults));
+        }
+
+        // Update progress bars on home page
+        function updateProgressBars() {
+            const startersPercent = Math.round((quizResults.starters.answered / 30) * 100);
+            const mainsPercent = Math.round((quizResults.mains.answered / 30) * 100);
+            const drinksPercent = Math.round((quizResults.drinks.answered / 30) * 100);
+
+            startersProgress.textContent = `${startersPercent}%`;
+            startersProgressBar.style.width = `${startersPercent}%`;
+            mainsProgress.textContent = `${mainsPercent}%`;
+            mainsProgressBar.style.width = `${mainsPercent}%`;
+            drinksProgress.textContent = `${drinksPercent}%`;
+            drinksProgressBar.style.width = `${drinksPercent}%`;
+        }
+
+        // Update stats on stats page
+        function updateStats() {
+            const totalAnswered = quizResults.starters.answered + quizResults.mains.answered + quizResults.drinks.answered;
+            const totalCorrect = quizResults.starters.correct + quizResults.mains.correct + quizResults.drinks.correct;
+            const accuracy = totalAnswered > 0 ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
+            
+            let completedCategories = 0;
+            if (quizResults.starters.answered >= 30) completedCategories++;
+            if (quizResults.mains.answered >= 30) completedCategories++;
+            if (quizResults.drinks.answered >= 30) completedCategories++;
+
+            totalQuestions.textContent = totalAnswered;
+            correctAnswers.textContent = totalCorrect;
+            accuracyRate.textContent = `${accuracy}%`;
+            categoriesCompleted.textContent = `${completedCategories}/3`;
+
+            // Update stats progress bars
+            const startersCorrectPercent = quizResults.starters.answered > 0 
+                ? Math.round((quizResults.starters.correct / quizResults.starters.answered) * 100) 
+                : 0;
+            const mainsCorrectPercent = quizResults.mains.answered > 0 
+                ? Math.round((quizResults.mains.correct / quizResults.mains.answered) * 100) 
+                : 0;
+            const drinksCorrectPercent = quizResults.drinks.answered > 0 
+                ? Math.round((quizResults.drinks.correct / quizResults.drinks.answered) * 100) 
+                : 0;
+
+            startersStats.textContent = `${startersCorrectPercent}%`;
+            startersStatsBar.style.width = `${startersCorrectPercent}%`;
+            mainsStats.textContent = `${mainsCorrectPercent}%`;
+            mainsStatsBar.style.width = `${mainsCorrectPercent}%`;
+            drinksStats.textContent = `${drinksCorrectPercent}%`;
+            drinksStatsBar.style.width = `${drinksCorrectPercent}%`;
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Navigation
+            navHome.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSection('home');
+            });
+
+            navMenu.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSection('menu');
+            });
+
+            navStats.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSection('stats');
+                updateStats();
+            });
+
+            startQuizBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showCategorySelection();
+            });
+
+            viewMenuBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSection('menu');
+            });
+
+            startCategoryBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const category = btn.getAttribute('data-category');
+                    startQuiz(category);
+                });
+            });
+
+            continueTrainingBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showSection('home');
+            });
+
+            // Quiz navigation
+            prevQuestionBtn.addEventListener('click', goToPreviousQuestion);
+            nextQuestionBtn.addEventListener('click', goToNextQuestion);
+
+            // Result actions
+            reviewAnswersBtn.addEventListener('click', showReview);
+            newQuizBtn.addEventListener('click', startNewQuiz);
+
+            // Option selection
+            optionsElement.addEventListener('click', (e) => {
+                if (e.target.classList.contains('option')) {
+                    selectOption(e.target);
+                }
+            });
+        }
+
+        // Show a specific section
+        function showSection(section) {
+            homeSection.style.display = 'none';
+            menuSection.style.display = 'none';
+            statsSection.style.display = 'none';
+            quizContainer.style.display = 'none';
+            resultContainer.style.display = 'none';
+            reviewContainer.style.display = 'none';
+            loader.style.display = 'none';
+
+            switch(section) {
+                case 'home':
+                    homeSection.style.display = 'block';
+                    break;
+                case 'menu':
+                    menuSection.style.display = 'block';
+                    break;
+                case 'stats':
+                    statsSection.style.display = 'block';
+                    break;
+                case 'quiz':
+                    quizContainer.style.display = 'block';
+                    break;
+                case 'result':
+                    resultContainer.style.display = 'block';
+                    break;
+            }
+        }
+
+        // Show category selection
+        function showCategorySelection() {
+            // For simplicity, we'll just start with starters
+            // In a more complete implementation, you might show a modal or another UI for selection
+            startQuiz('starters');
+        }
+
+        // Start a new quiz
+        function startQuiz(category) {
+            currentCategory = category;
+            currentQuestion = 0;
+            userAnswers = [];
+            
+            // Shuffle questions for variety
+            shuffleArray(quizData[category]);
+            
+            showSection('quiz');
+            loadQuestion();
+        }
+
+        // Load the current question
+        function loadQuestion() {
+            const questionData = quizData[currentCategory][currentQuestion];
+            
+            quizCategory.textContent = `${currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1)} Quiz`;
+            quizProgress.textContent = `Question ${currentQuestion + 1} of ${quizData[currentCategory].length}`;
+            questionElement.textContent = questionData.question;
+            
+            optionsElement.innerHTML = '';
+            questionData.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                optionElement.textContent = option;
+                optionElement.setAttribute('data-answer', index);
+                
+                // Check if user has already answered this question
+                if (userAnswers[currentQuestion] !== undefined) {
+                    if (index === questionData.answer) {
+                        optionElement.classList.add('correct');
+                    }
+                    if (userAnswers[currentQuestion] === index && userAnswers[currentQuestion] !== questionData.answer) {
+                        optionElement.classList.add('incorrect');
+                    }
+                    if (userAnswers[currentQuestion] === index) {
+                        optionElement.classList.add('selected');
+                    }
+                }
+                
+                optionsElement.appendChild(optionElement);
+            });
+            
+            // Update navigation buttons
+            prevQuestionBtn.disabled = currentQuestion === 0;
+            nextQuestionBtn.textContent = currentQuestion === quizData[currentCategory].length - 1 ? 'Finish' : 'Next';
+        }
+
+        // Select an option
+        function selectOption(optionElement) {
+            // If already answered, don't allow changes
+            if (userAnswers[currentQuestion] !== undefined) return;
+            
+            // Clear any previous selections
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            // Select this option
+            optionElement.classList.add('selected');
+            userAnswers[currentQuestion] = parseInt(optionElement.getAttribute('data-answer'));
+            
+            // Check if correct
+            const questionData = quizData[currentCategory][currentQuestion];
+            if (userAnswers[currentQuestion] === questionData.answer) {
+                optionElement.classList.add('correct');
+                quizResults[currentCategory].correct++;
+            } else {
+                options[questionData.answer].classList.add('correct');
+                optionElement.classList.add('incorrect');
+            }
+            
+            quizResults[currentCategory].answered++;
+            saveProgress();
+            updateProgressBars();
+        }
+
+        // Go to the next question
+        function goToNextQuestion() {
+            if (currentQuestion < quizData[currentCategory].length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // Go to the previous question
+        function goToPreviousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        // Show quiz results
+        function showResults() {
+            showSection('result');
+            
+            // Calculate score
+            let correct = 0;
+            for (let i = 0; i < quizData[currentCategory].length; i++) {
+                if (userAnswers[i] === quizData[currentCategory][i].answer) {
+                    correct++;
+                }
+            }
+            
+            const score = Math.round((correct / quizData[currentCategory].length) * 100);
+            resultScore.textContent = `${score}%`;
+            
+            // Provide feedback based on score
+            if (score >= 90) {
+                resultFeedback.textContent = "Excellent! You've mastered this section of the menu.";
+            } else if (score >= 70) {
+                resultFeedback.textContent = "Great job! You have a good grasp of the menu but could use some more practice.";
+            } else if (score >= 50) {
+                resultFeedback.textContent = "Good effort! Review the material and try again to improve your score.";
+            } else {
+                resultFeedback.textContent = "Keep practicing! Review the menu and try the quiz again to improve.";
+            }
+            
+            // Hide review container initially
+            reviewContainer.style.display = 'none';
+        }
+
+        // Show answer review
+        function showReview() {
+            reviewQuestions.innerHTML = '';
+            
+            quizData[currentCategory].forEach((question, index) => {
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('review-item');
+                
+                const reviewQuestion = document.createElement('div');
+                reviewQuestion.classList.add('review-question');
+                reviewQuestion.textContent = question.question;
+                reviewItem.appendChild(reviewQuestion);
+                
+                const reviewAnswer = document.createElement('div');
+                reviewAnswer.classList.add('review-answer');
+                reviewAnswer.textContent = `Correct Answer: ${question.options[question.answer]}`;
+                reviewItem.appendChild(reviewAnswer);
+                
+                const userAnswer = document.createElement('div');
+                userAnswer.classList.add('review-answer');
+                if (userAnswers[index] !== undefined) {
+                    userAnswer.textContent = `Your Answer: ${question.options[userAnswers[index]]}`;
+                    if (userAnswers[index] === question.answer) {
+                        userAnswer.style.color = 'var(--correct)';
+                    } else {
+                        userAnswer.style.color = 'var(--incorrect)';
+                    }
+                } else {
+                    userAnswer.textContent = 'Your Answer: (Not answered)';
+                    userAnswer.style.color = 'var(--incorrect)';
+                }
+                reviewItem.appendChild(userAnswer);
+                
+                const reviewExplanation = document.createElement('div');
+                reviewExplanation.classList.add('review-explanation');
+                reviewExplanation.textContent = question.explanation;
+                reviewItem.appendChild(reviewExplanation);
+                
+                reviewQuestions.appendChild(reviewItem);
+            });
+            
+            reviewContainer.style.display = 'block';
+            reviewAnswersBtn.style.display = 'none';
+        }
+
+        // Start a new quiz
+        function startNewQuiz() {
+            showSection('home');
+        }
+
+        // Utility function to shuffle array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
