@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Menu Quizzes</title>
+  <title>Menu Training Quiz</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -20,6 +20,7 @@
       --correct-bg: rgba(0, 184, 148, 0.2);
       --incorrect-bg: rgba(214, 48, 49, 0.2);
       --blur: blur(12px);
+      --explanation-bg: rgba(255, 255, 255, 0.05);
     }
 
     * {
@@ -89,10 +90,12 @@
       font-size: 1rem;
       cursor: pointer;
       margin-top: 1rem;
+      transition: all 0.2s;
     }
 
     .btn:hover {
       background: var(--secondary);
+      transform: translateY(-1px);
     }
 
     .btn:focus {
@@ -102,6 +105,11 @@
 
     .btn-secondary {
       background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-next {
+      display: none; /* Initially hidden */
+      margin-top: 1.5rem;
     }
 
     .quiz-box {
@@ -150,6 +158,7 @@
 
     .answer-btn:disabled {
       cursor: not-allowed;
+      opacity: 0.8;
     }
 
     .progress-bar {
@@ -197,6 +206,39 @@
       margin-top: 1.5rem;
     }
 
+    .explanation {
+      background: var(--explanation-bg);
+      padding: 1rem;
+      border-radius: 0.75rem;
+      margin-top: 1rem;
+      border-left: 3px solid var(--primary);
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .explanation-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--secondary);
+    }
+
+    .correct-answer {
+      font-weight: 600;
+      color: var(--correct);
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .next-button-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     @media (max-width: 768px) {
       body {
         padding: 1.25rem;
@@ -226,7 +268,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Menu Quizzes</h1>
+    <h1>Menu Training Quiz</h1>
     <div id="categoryGrid" class="grid"></div>
 
     <div id="quizSection" class="quiz-box" style="display:none;">
@@ -234,6 +276,9 @@
       <div class="progress-bar" id="progressBar"></div>
       <div class="muted" id="progressText"></div>
       <div id="questionContainer"></div>
+      <div class="next-button-container">
+        <button id="nextButton" class="btn btn-next">Next Question →</button>
+      </div>
       <button id="submitButton" class="btn" style="display:none;">Submit</button>
     </div>
 
@@ -259,6 +304,7 @@
       progressBar: document.getElementById("progressBar"),
       resultsBox: document.getElementById("resultsBox"),
       submitButton: document.getElementById("submitButton"),
+      nextButton: document.getElementById("nextButton"),
       correctSound: document.getElementById("correctSound"),
       wrongSound: document.getElementById("wrongSound"),
       celebrationSound: document.getElementById("celebrationSound")
@@ -272,31 +318,36 @@
     id: "boise_croutons",
     question: "What type of croutons accompany the Boise lettuces?",
     answers: ["Acme Garlic Croutons", "Sourdough Croutons", "Parmesan Crisps", "Brioche Cubes"],
-    correct: 0
+    correct: 0,
+    explanation: "The Boise lettuces feature Acme Garlic Croutons, which are artisan-made with fresh garlic and high-quality bread for the perfect crunch. These croutons are specially selected to complement the delicate greens without overpowering them."
   },
   {
     id: "boise_garnish",
     question: "What vegetable is shaved over the Boise lettuces?",
     answers: ["Radish", "Carrot", "Fennel", "Zucchini"],
-    correct: 0
+    correct: 0,
+    explanation: "Paper-thin radish slices add a crisp, peppery note to the salad. The radishes are shaved to order for maximum freshness and provide a beautiful visual contrast against the greens."
   },
   {
     id: "boise_dressing",
     question: "What is the dressing for the Boise lettuces?",
     answers: ["Lemon-Champagne Vinaigrette", "Ranch", "Blue Cheese", "Green Goddess"],
-    correct: 0
+    correct: 0,
+    explanation: "Our signature Lemon-Champagne Vinaigrette is light yet flavorful, featuring fresh lemon juice, champagne vinegar, and a touch of Dijon mustard. This dressing enhances the lettuces without weighing them down."
   },
   {
     id: "boise_price",
     question: "What is the price of Boise Vertical Farm's Lettuces?",
     answers: ["$11", "$13", "$15", "$17"],
-    correct: 1
+    correct: 1,
+    explanation: "Priced at $13, this salad reflects our commitment to premium local ingredients. The price accounts for the vertical farming techniques that ensure year-round freshness and sustainability."
   },
   {
     id: "boise_origin",
     question: "Where is Boise Vertical Farm located?",
     answers: ["Idaho", "California", "Oregon", "Washington"],
-    correct: 0
+    correct: 0,
+    explanation: "Boise Vertical Farm operates in downtown Boise, Idaho, using cutting-edge hydroponic technology to grow greens with minimal water and no pesticides, delivering the freshest product possible."
   },
 
   // ================== YELLOWTAIL (5) ==================
@@ -304,31 +355,36 @@
     id: "yellowtail_fish",
     question: "What type of fish is used in the Yellowtail starter?",
     answers: ["Hamachi", "Tuna", "Salmon", "Branzino"],
-    correct: 0
+    correct: 0,
+    explanation: "We use premium Hamachi (Japanese yellowtail) known for its buttery texture and rich flavor. Sourced from sustainable fisheries, it's hand-selected by our chefs for optimal quality."
   },
   {
     id: "yellowtail_fruit",
     question: "What fruit accompanies the Yellowtail?",
     answers: ["Charred Pineapple", "Mango", "Peach", "Apple"],
-    correct: 0
+    correct: 0,
+    explanation: "Charred pineapple adds a caramelized sweetness that balances the yellowtail's richness. We grill the pineapple to enhance its natural sugars while maintaining acidity."
   },
   {
     id: "yellowtail_pepper",
     question: "Which pepper is used in the Yellowtail dish?",
     answers: ["Fresno Chile", "Jalapeño", "Habanero", "Poblano"],
-    correct: 0
+    correct: 0,
+    explanation: "Thinly sliced Fresno chiles provide mild heat and vibrant color. Their fruity flavor profile complements rather than overwhelms the delicate fish."
   },
   {
     id: "yellowtail_sauce",
     question: "What is the base of the Yellowtail sauce?",
     answers: ["Orange Miso", "Soy Ginger", "Ponzu", "Wasabi Aioli"],
-    correct: 0
+    correct: 0,
+    explanation: "Our house-made orange miso sauce combines white miso paste with fresh orange juice and zest, creating a perfect balance of sweet, salty, and umami flavors."
   },
   {
     id: "yellowtail_price",
     question: "What is the price of the Yellowtail starter?",
     answers: ["$17", "$19", "$21", "$23"],
-    correct: 1
+    correct: 1,
+    explanation: "At $19, this dish offers excellent value considering the premium quality Hamachi and artisanal preparation techniques we use to create this signature starter."
   },
 
   // ================== STEAK TARTARE (5) ==================
@@ -336,31 +392,36 @@
     id: "tartare_beef",
     question: "What type of beef is used in the Steak Tartare?",
     answers: ["Snake River Farms American Wagyu", "USDA Prime", "Grass-fed Angus", "Dry-aged Ribeye"],
-    correct: 0
+    correct: 0,
+    explanation: "Snake River Farms American Wagyu provides exceptional marbling and flavor for our tartare. This premium beef is hand-cut to order for optimal texture and freshness."
   },
   {
     id: "tartare_egg",
     question: "How is the egg prepared for Steak Tartare?",
     answers: ["Cured Egg Yolk", "Poached", "Scrambled", "Fried"],
-    correct: 0
+    correct: 0,
+    explanation: "We cure egg yolks for 48 hours in a salt-sugar mixture, then grate them over the tartare. This technique creates luxurious texture and concentrated flavor without raw egg concerns."
   },
   {
     id: "tartare_spice",
     question: "Which spicy element accompanies the Steak Tartare?",
     answers: ["Sriracha Sauce", "Tabasco", "Chili Oil", "Harissa"],
-    correct: 0
+    correct: 0,
+    explanation: "Our house-made sriracha adds balanced heat with garlic undertones. It's served on the side so guests can adjust the spice level to their preference."
   },
   {
     id: "tartare_garnish",
     question: "What briny garnish comes with Steak Tartare?",
     answers: ["Capers", "Olives", "Pickled Onions", "Anchovies"],
-    correct: 0
+    correct: 0,
+    explanation: "Italian capers provide the perfect briny counterpoint to the rich beef. We rinse them lightly to control saltiness while preserving their distinctive pop of flavor."
   },
   {
     id: "tartare_price",
     question: "What is the price of Steak Tartare?",
     answers: ["$15", "$17", "$19", "$21"],
-    correct: 1
+    correct: 1,
+    explanation: "Priced at $17, our tartare represents excellent value considering the premium Wagyu beef and artisanal preparation that goes into this classic dish."
   },
 
   // ================== POTATO BISQUE (5) ==================
@@ -368,31 +429,36 @@
     id: "bisque_fish",
     question: "What smoked fish is in the Potato Bisque?",
     answers: ["Hagerman Trout", "Salmon", "Cod", "Sablefish"],
-    correct: 0
+    correct: 0,
+    explanation: "Hagerman Valley trout adds delicate smoky notes to the bisque. Cold-smoked in-house using applewood, it provides depth without overpowering the potato flavor."
   },
   {
     id: "bisque_garnish",
     question: "What unique garnish is on the Potato Bisque?",
     answers: ["Spirulina Agrumato", "Crème Fraîche", "Bacon Bits", "Chives"],
-    correct: 0
+    correct: 0,
+    explanation: "Spirulina agrumato (cold-pressed with citrus) adds vibrant color and bright flavor. This innovative garnish provides antioxidant benefits while enhancing the dish visually."
   },
   {
     id: "bisque_style",
     question: "What style is the Potato Bisque?",
     answers: ["Creamy Purée", "Chunky Stew", "Clear Broth", "Cold Soup"],
-    correct: 0
+    correct: 0,
+    explanation: "Our bisque is silky-smooth, achieved by passing the soup through a fine chinois after blending. The velvety texture showcases the quality of our ingredients."
   },
   {
     id: "bisque_price",
     question: "What is the price of Potato Bisque?",
     answers: ["$7", "$9", "$11", "$13"],
-    correct: 1
+    correct: 1,
+    explanation: "At $9, this starter offers comforting sophistication. The price reflects the labor-intensive preparation and premium ingredients like smoked trout and organic potatoes."
   },
   {
     id: "bisque_origin",
     question: "Where is Hagerman Trout sourced from?",
     answers: ["Idaho", "Alaska", "Norway", "Scotland"],
-    correct: 0
+    correct: 0,
+    explanation: "Hagerman Trout comes from the mineral-rich springs of Idaho's Hagerman Valley, known for producing exceptionally clean, flavorful fish through sustainable aquaculture."
   },
 
   // ================== GRILLED SPANISH OCTOPUS (5) ==================
@@ -400,31 +466,36 @@
     id: "octopus_origin",
     question: "Where is the octopus sourced from?",
     answers: ["Spain", "Japan", "Mediterranean", "Mexico"],
-    correct: 0
+    correct: 0,
+    explanation: "Our octopus comes directly from Galician waters in Spain, prized for their superior texture and flavor. It's flash-frozen at sea to preserve quality."
   },
   {
     id: "octopus_ragu",
     question: "What is in the Sunset Butte Bean & Chorizo Ragú?",
     answers: ["Beans + Chorizo", "Lentils + Bacon", "Peas + Pancetta", "Corn + Sausage"],
-    correct: 0
+    correct: 0,
+    explanation: "The ragú features heirloom beans from local Sunset Butte Farm and house-made chorizo, creating a hearty base that complements the tender octopus."
   },
   {
     id: "octopus_sauce",
     question: "What sauce accompanies the Grilled Octopus?",
     answers: ["Romesco Sauce", "Aioli", "Mojo Verde", "Chimichurri"],
-    correct: 0
+    correct: 0,
+    explanation: "Traditional Spanish romesco sauce - made with roasted tomatoes, peppers, almonds, and sherry vinegar - provides the perfect smoky, nutty complement to the octopus."
   },
   {
     id: "octopus_price",
     question: "What is the price of Grilled Spanish Octopus?",
     answers: ["$21", "$23", "$25", "$27"],
-    correct: 1
+    correct: 1,
+    explanation: "Priced at $23, this dish reflects the premium quality Spanish octopus and the labor-intensive preparation required to achieve its perfect tenderness."
   },
   {
     id: "octopus_cooking",
     question: "How is the octopus prepared before grilling?",
     answers: ["Slow-poached", "Raw", "Fried", "Smoked"],
-    correct: 0
+    correct: 0,
+    explanation: "We slow-poach the octopus in a court bouillon for several hours to ensure tenderness, then finish it on the grill for smoky char and crisp texture."
   },
 
   // ================== NONNA ANNA'S MEATBALLS (5) ==================
@@ -432,31 +503,36 @@
     id: "meatballs_cheese",
     question: "Which cheese is used in Nonna Anna's Meatballs?",
     answers: ["Pecorino", "Parmigiano", "Ricotta", "Mozzarella"],
-    correct: 0
+    correct: 0,
+    explanation: "Pecorino Romano adds a distinctive salty, tangy flavor to our meatballs. Aged for 8 months, it provides depth that younger cheeses can't match."
   },
   {
     id: "meatballs_gremolata",
     question: "What is in the rosemary gremolata?",
     answers: ["Rosemary + Lemon + Garlic", "Parsley + Lemon", "Basil + Pine Nuts", "Mint + Garlic"],
-    correct: 0
+    correct: 0,
+    explanation: "Our rosemary gremolata combines fresh rosemary, lemon zest, and garlic - a modern twist on the classic that cuts through the richness of the meatballs beautifully."
   },
   {
     id: "meatballs_oil",
     question: "What oil is drizzled on Nonna Anna's Meatballs?",
     answers: ["Extra Virgin Olive Oil", "Truffle Oil", "Chili Oil", "Avocado Oil"],
-    correct: 0
+    correct: 0,
+    explanation: "We finish the dish with premium Italian extra virgin olive oil, cold-pressed from early harvest olives for its peppery finish and antioxidant properties."
   },
   {
     id: "meatballs_price",
     question: "What is the price of Nonna Anna's Meatballs?",
     answers: ["$13", "$15", "$17", "$19"],
-    correct: 1
+    correct: 1,
+    explanation: "At $15, these meatballs represent authentic Italian craftsmanship, made with heritage pork, premium cheeses, and artisanal breadcrumbs."
   },
   {
     id: "meatballs_count",
     question: "How many meatballs are typically served?",
     answers: ["3", "5", "7", "Market count"],
-    correct: 0
+    correct: 0,
+    explanation: "Three substantial meatballs make the perfect starter portion, each weighing about 2 ounces to ensure proper cooking and ideal texture."
   },
 
   // ================== FOIE GRAS TORCHON (5) ==================
@@ -464,31 +540,36 @@
     id: "foie_prep",
     question: "How is the foie gras prepared?",
     answers: ["Torchon", "Seared", "Mousse", "Pâté"],
-    correct: 0
+    correct: 0,
+    explanation: "Prepared as a torchon, the foie gras is wrapped in cheesecloth and poached, resulting in an incredibly smooth texture that melts on the tongue."
   },
   {
     id: "foie_accompaniment",
     question: "What fruit butter accompanies the Foie Gras Torchon?",
     answers: ["Spiced Apple Butter", "Pear Jam", "Fig Compote", "Berry Coulis"],
-    correct: 0
+    correct: 0,
+    explanation: "Our spiced apple butter balances the foie gras' richness with warm cinnamon and allspice notes, made from locally sourced heirloom apples."
   },
   {
     id: "foie_garnish",
     question: "What green is served with the Foie Gras Torchon?",
     answers: ["Arugula", "Frisée", "Spinach", "Mizuna"],
-    correct: 0
+    correct: 0,
+    explanation: "Baby arugula provides a peppery contrast to the rich foie gras. We select the most tender leaves and dress them lightly with lemon to cut through the fat."
   },
   {
     id: "foie_salt",
     question: "What type of salt garnishes the Foie Gras Torchon?",
     answers: ["Fleur de Sel", "Himalayan Pink", "Smoked Sea Salt", "Black Lava"],
-    correct: 0
+    correct: 0,
+    explanation: "French fleur de sel adds the perfect finishing touch - its delicate flakes provide subtle crunch and clean salinity without overpowering the foie gras."
   },
   {
     id: "foie_price",
     question: "What is the price of Foie Gras Torchon?",
     answers: ["$15", "$17", "$19", "$21"],
-    correct: 1
+    correct: 1,
+    explanation: "Priced at $17, this luxurious starter reflects the premium quality of the foie gras and the skilled preparation required for this classic French technique."
   },
 
   // ================== UN-TRADITIONAL CAVIAR SERVICE (5) ==================
@@ -496,65 +577,74 @@
     id: "caviar_type",
     question: "What type of caviar is served?",
     answers: ["Idaho Springs Local Sturgeon", "Beluga", "Osetra", "Salmon Roe"],
-    correct: 0
+    correct: 0,
+    explanation: "We source sustainable sturgeon caviar from Idaho Springs Aquaculture, known for its buttery texture and clean, briny flavor with nutty undertones."
   },
   {
     id: "caviar_unit",
     question: "How is the caviar priced?",
     answers: ["Per Ounce", "Per 50g", "Per Jar", "Per Serving"],
-    correct: 0
+    correct: 0,
+    explanation: "Our caviar is priced per ounce to accommodate different party sizes and preferences. We recommend starting with one ounce for two guests as an appetizer."
   },
   {
     id: "caviar_price",
     question: "What is the price of the caviar service?",
     answers: ["$125/oz", "$150/oz", "$100/oz", "$175/oz"],
-    correct: 0
+    correct: 0,
+    explanation: "At $125 per ounce, our domestic caviar offers exceptional quality at a more accessible price point than imported varieties, while supporting sustainable aquaculture."
   },
   {
     id: "caviar_accompaniments",
     question: "Which is NOT a traditional caviar accompaniment?",
     answers: ["Potato Chips", "Crème Fraîche", "Blini", "Chopped Egg"],
-    correct: 0
+    correct: 0,
+    explanation: "While we offer traditional accompaniments, our signature potato chips add a playful, local twist - made from Idaho potatoes fried in duck fat for extra richness."
   },
   {
     id: "caviar_region",
     question: "Where is the caviar sourced from?",
     answers: ["Idaho", "Caspian Sea", "France", "China"],
-    correct: 0
-  },
-
+    correct: 0,
+    explanation: "Our caviar comes from sustainable sturgeon farms in Idaho's pristine waters, where careful aquaculture practices produce world-class roe with minimal environmental impact."
+  }
 ],
-      "Entrees": [
+"Entrees": [
   // ================== STRAWBERRY BALSAMIC LETTUCE (5) ==================
   {
     id: "strawberry_protein",
     question: "What protein is in the Strawberry Balsamic Lettuce entree?",
     answers: ["Grilled Chicken", "Seared Salmon", "Grilled Shrimp", "Tofu"],
-    correct: 0
+    correct: 0,
+    explanation: "The entree features tender grilled chicken breast, marinated in herbs and olive oil, then grilled to perfection. This lean protein balances the sweetness of the strawberries."
   },
   {
     id: "strawberry_cheese",
     question: "Which cheese is featured in Strawberry Balsamic Lettuce?",
     answers: ["Goat Cheese", "Parmigiano", "Blue Cheese", "Feta"],
-    correct: 0
+    correct: 0,
+    explanation: "Creamy goat cheese crumbles add tangy richness that complements the sweet strawberries. We use locally sourced chèvre for its fresh, mild flavor."
   },
   {
     id: "strawberry_nut",
     question: "What nut is included in Strawberry Balsamic Lettuce?",
     answers: ["Almonds", "Walnuts", "Pecans", "Pine Nuts"],
-    correct: 0
+    correct: 0,
+    explanation: "Toasted almond slices provide satisfying crunch and nutty flavor. We toast them in-house daily to ensure maximum freshness and aroma."
   },
   {
     id: "strawberry_dressing",
     question: "What is the dressing for Strawberry Balsamic Lettuce?",
     answers: ["Strawberry Vinaigrette", "Balsamic Glaze", "Ranch", "Honey Mustard"],
-    correct: 0
+    correct: 0,
+    explanation: "Our signature strawberry vinaigrette blends fresh strawberry purée with aged balsamic and extra virgin olive oil for a perfectly balanced sweet-tart dressing."
   },
   {
     id: "strawberry_price",
     question: "What is the price of Strawberry Balsamic Lettuce?",
     answers: ["$21", "$23", "$25", "$27"],
-    correct: 1
+    correct: 1,
+    explanation: "Priced at $23, this entree salad offers excellent value considering the premium ingredients including organic greens, seasonal strawberries, and antibiotic-free chicken."
   },
 
   // ================== OVEN ROASTED ALASKAN BLACK COD (5) ==================
@@ -562,31 +652,36 @@
     id: "cod_fish",
     question: "What type of fish is used in the Black Cod entree?",
     answers: ["Alaskan Black Cod", "Atlantic Salmon", "Chilean Sea Bass", "Halibut"],
-    correct: 0
+    correct: 0,
+    explanation: "Also known as sablefish, Alaskan black cod has an exceptionally buttery texture due to its high oil content. We source it sustainably from cold Alaskan waters."
   },
   {
     id: "cod_relish",
     question: "What relish accompanies the Black Cod?",
     answers: ["Preserved Fennel Relish", "Tomato Jam", "Onion Marmalade", "Cucumber Pickles"],
-    correct: 0
+    correct: 0,
+    explanation: "Our preserved fennel relish adds bright acidity and crunch, balancing the fish's richness. The fennel is pickled in-house with citrus and spices."
   },
   {
     id: "cod_potatoes",
     question: "How are the potatoes prepared for Black Cod?",
     answers: ["Glazed Yukon Potatoes", "Mashed Potatoes", "Roasted Fingerlings", "French Fries"],
-    correct: 0
+    correct: 0,
+    explanation: "Yukon gold potatoes are glazed in a light butter sauce with herbs, creating a tender yet structured accompaniment that doesn't overpower the delicate fish."
   },
   {
     id: "cod_sauce",
     question: "What sauce is served with Black Cod?",
     answers: ["Bouillabaisse Sauce", "Beurre Blanc", "Hollandaise", "Lemon Butter"],
-    correct: 0
+    correct: 0,
+    explanation: "A refined bouillabaisse sauce adds depth with its saffron-infused seafood stock base, complementing the cod's natural flavors without overwhelming them."
   },
   {
     id: "cod_price",
     question: "What is the price of Oven Roasted Alaskan Black Cod?",
     answers: ["$29", "$31", "$33", "$35"],
-    correct: 1
+    correct: 1,
+    explanation: "At $31, this dish represents excellent value for premium wild-caught black cod, which is more labor-intensive to harvest than many other fish varieties."
   },
 
   // ================== ½ ROASTED CHICKEN (5) ==================
@@ -594,31 +689,36 @@
     id: "chicken_mushrooms",
     question: "What mushrooms are served with the ½ Roasted Chicken?",
     answers: ["Shiitake Mushrooms", "Cremini", "Morels", "Chanterelles"],
-    correct: 0
+    correct: 0,
+    explanation: "Meaty shiitake mushrooms add umami depth to the dish. We sauté them with thyme and garlic to enhance their natural savory qualities."
   },
   {
     id: "chicken_potatoes",
     question: "How are the potatoes prepared for ½ Roasted Chicken?",
     answers: ["Pommes Purée", "Duck Fat Potatoes", "Gratin", "Roasted Wedges"],
-    correct: 0
+    correct: 0,
+    explanation: "Silky pommes purée (French-style mashed potatoes) provide comforting richness. We use a 2:1 ratio of butter to potatoes for exceptional creaminess."
   },
   {
     id: "chicken_vinegar",
     question: "What vinegar is used in the ½ Roasted Chicken dish?",
     answers: ["Spanish Sherry Vinegar", "Balsamic", "Red Wine Vinegar", "Champagne Vinegar"],
-    correct: 0
+    correct: 0,
+    explanation: "Aged Spanish sherry vinegar adds nuanced acidity with nutty undertones. We reduce it slightly to mellow the sharpness while preserving complexity."
   },
   {
     id: "chicken_portion",
     question: "What portion of chicken is served?",
     answers: ["½ Chicken", "Whole Chicken", "Chicken Breast", "Chicken Thighs"],
-    correct: 0
+    correct: 0,
+    explanation: "The dish includes a half chicken (breast, wing, thigh and leg) from small farms where birds are raised with ample space and natural feed."
   },
   {
     id: "chicken_price",
     question: "What is the price of ½ Roasted Chicken?",
     answers: ["$29", "$31", "$33", "$35"],
-    correct: 1
+    correct: 1,
+    explanation: "Priced at $31, this entree reflects the quality of our pasture-raised chickens and the classic French technique used in its preparation."
   },
 
   // ================== LOCAL ANGUS SKIRT STEAK (5) ==================
@@ -626,31 +726,36 @@
     id: "steak_cut",
     question: "What cut is used in the Local Angus Skirt Steak?",
     answers: ["6oz Roulade", "8oz Filet", "12oz Ribeye", "16oz T-Bone"],
-    correct: 0
+    correct: 0,
+    explanation: "We use a 6oz skirt steak roulade - the meat is butterflied, rolled with herbs, and tied for even cooking. This preparation maximizes flavor from this traditionally tough cut."
   },
   {
     id: "steak_potatoes",
     question: "How are the potatoes prepared for Skirt Steak?",
     answers: ["Duck Fat Potatoes", "Pommes Purée", "Gratin", "Steak Fries"],
-    correct: 0
+    correct: 0,
+    explanation: "Duck fat potatoes are roasted until crisp outside and creamy inside. The rendered duck fat adds incredible richness that stands up to the bold steak flavors."
   },
   {
     id: "steak_sauce",
     question: "What sauce accompanies the Skirt Steak?",
     answers: ["Persillade Sauce", "Béarnaise", "Peppercorn", "Red Wine Reduction"],
-    correct: 0
+    correct: 0,
+    explanation: "Bright persillade sauce (chopped parsley, garlic, lemon and olive oil) cuts through the steak's richness. We prepare it fresh for each order."
   },
   {
     id: "steak_origin",
     question: "Where is the beef sourced for Skirt Steak?",
     answers: ["Local Angus", "Wagyu", "Grass-fed", "Prime"],
-    correct: 0
+    correct: 0,
+    explanation: "We source from a local Angus ranch known for exceptional marbling and flavor. The cattle are pasture-raised and finished on a special grain blend."
   },
   {
     id: "steak_price",
     question: "What is the price of Local Angus Skirt Steak?",
     answers: ["$45", "$47", "$49", "$51"],
-    correct: 1
+    correct: 1,
+    explanation: "At $47, this steak offers great value considering the labor-intensive roulade preparation and premium local sourcing."
   },
 
   // ================== SIDES (5) ==================
@@ -658,31 +763,36 @@
     id: "sides_puree",
     question: "What is Pommes Purée?",
     answers: ["Mashed Potatoes", "Roasted Potatoes", "Potato Gratin", "French Fries"],
-    correct: 0
+    correct: 0,
+    explanation: "Pommes purée is the French version of mashed potatoes - ultra-smooth with generous butter and cream. We pass ours through a fine tamis for velvety texture."
   },
   {
     id: "sides_mushrooms",
     question: "How are the mushrooms prepared as a side?",
     answers: ["Roasted", "Sautéed", "Grilled", "Fried"],
-    correct: 0
+    correct: 0,
+    explanation: "Seasonal mushrooms are roasted to concentrate their flavors. This dry-heat method preserves their meaty texture better than sautéing."
   },
   {
     id: "sides_salad",
     question: "What greens are in the Arugula Salad side?",
     answers: ["Arugula", "Romaine", "Spinach", "Kale"],
-    correct: 0
+    correct: 0,
+    explanation: "Baby arugula is the base for this salad - its peppery bite stands up to rich dishes. We source organic arugula for optimal flavor and texture."
   },
   {
     id: "sides_cheese",
     question: "Which cheese is on the Arugula Salad?",
     answers: ["Parmigiano", "Goat Cheese", "Blue Cheese", "Feta"],
-    correct: 0
+    correct: 0,
+    explanation: "Shaved Parmigiano-Reggiano adds salty, nutty complexity. We use authentic 24-month aged Parmigiano for its crystalline texture and umami depth."
   },
   {
     id: "sides_price",
     question: "What is the price for individual sides?",
     answers: ["$7", "$9", "$11", "$13"],
-    correct: 1
+    correct: 1,
+    explanation: "At $9 per side, our portions are generous enough to share and made with the same premium ingredients as our main dishes."
   },
 
   // ================== CÔTE DE BOEUF (5) ==================
@@ -690,31 +800,36 @@
     id: "cote_cut",
     question: "What cut is Côte de Boeuf?",
     answers: ["Ribeye on the bone", "Tenderloin", "Strip Steak", "Brisket"],
-    correct: 0
+    correct: 0,
+    explanation: "Côte de Boeuf is a magnificent bone-in ribeye, typically 28-32oz. The bone adds flavor during cooking and makes for dramatic presentation."
   },
   {
     id: "cote_serving",
     question: "How is Côte de Boeuf typically served?",
     answers: ["For two (bone-in)", "Single portion", "As sliders", "Chopped salad"],
-    correct: 0
+    correct: 0,
+    explanation: "This majestic cut is designed for sharing - perfect for two guests. We present it whole tableside before carving."
   },
   {
     id: "cote_price",
     question: "Why does Côte de Boeuf have a market price?",
     answers: ["Based on weight/availability", "Chef's whim", "Seasonal garnish cost", "Special order only"],
-    correct: 0
+    correct: 0,
+    explanation: "The price varies based on the exact weight of each primal cut and market fluctuations for premium dry-aged beef. We update it daily."
   },
   {
     id: "cote_accompaniment",
     question: "What likely accompanies Côte de Boeuf?",
     answers: ["Duck Fat Potatoes", "Pommes Purée", "Truffle Fries", "All of the above"],
-    correct: 3
+    correct: 3,
+    explanation: "All these sides complement the rich steak beautifully. Our servers often recommend a combination for the ultimate steak experience."
   },
   {
     id: "cote_sauce",
     question: "Which sauce would pair best with Côte de Boeuf?",
     answers: ["Béarnaise", "Persillade", "Red Wine Reduction", "All are appropriate"],
-    correct: 3
+    correct: 3,
+    explanation: "Each sauce offers a different way to enjoy this premium cut - béarnaise for richness, persillade for freshness, or red wine reduction for depth."
   },
 
   // ================== SNAKE RIVER FARMS COULOTTE (5) ==================
@@ -722,31 +837,36 @@
     id: "srf_coulotte_cut",
     question: "What is Coulotte steak?",
     answers: ["Top sirloin cap", "Ribeye", "Filet mignon", "Flank steak"],
-    correct: 0
+    correct: 0,
+    explanation: "The coulotte is the flavorful cap of the top sirloin. Its coarse grain and fat marbling make it exceptionally juicy when cooked properly."
   },
   {
     id: "srf_coulotte_origin",
     question: "Why is Snake River Farms beef special?",
     answers: ["American Wagyu hybrid", "Dry-aged 60 days", "Grass-fed only", "Wild game"],
-    correct: 0
+    correct: 0,
+    explanation: "SRF raises American Wagyu cattle - a cross between Japanese Wagyu and Angus breeds. This produces exceptional marbling and buttery texture."
   },
   {
     id: "srf_coulotte_weight",
     question: "What is the standard portion size for Coulotte?",
     answers: ["8oz", "10oz", "12oz", "Market weight"],
-    correct: 0
+    correct: 0,
+    explanation: "We serve an 8oz portion - substantial enough to satisfy but not overwhelm, allowing the rich marbling to shine."
   },
   {
     id: "srf_coulotte_price",
     question: "What is the price of Snake River Farms Coulotte?",
     answers: ["$49", "$53", "$57", "$61"],
-    correct: 1
+    correct: 1,
+    explanation: "At $53, this represents excellent value for SRF's premium American Wagyu beef, which typically scores 6-8 on the USDA marbling scale."
   },
   {
     id: "srf_coulotte_prep",
     question: "How is Coulotte typically cooked?",
     answers: ["Medium-rare", "Well-done", "Sous vide only", "Chopped for salad"],
-    correct: 0
+    correct: 0,
+    explanation: "Medium-rare (130-135°F internal) allows the marbling to properly render while keeping the coulotte juicy and tender."
   },
 
   // ================== SNAKE RIVER FARMS TENDERLOIN (5) ==================
@@ -754,31 +874,36 @@
     id: "srf_tenderloin_cut",
     question: "What is another name for tenderloin?",
     answers: ["Filet mignon", "Strip steak", "Hanger steak", "Flat iron"],
-    correct: 0
+    correct: 0,
+    explanation: "Filet mignon comes from the small end of the tenderloin - the most tender cut of beef with subtle flavor that benefits from premium quality."
   },
   {
     id: "srf_tenderloin_price",
     question: "What is the price of Snake River Farms Tenderloin?",
     answers: ["$70", "$75", "$80", "$85"],
-    correct: 1
+    correct: 1,
+    explanation: "Priced at $75, this reflects the exceptional quality of SRF's American Wagyu tenderloin, known for its buttery texture and mild beef flavor."
   },
   {
     id: "srf_tenderloin_farm",
     question: "Where is Snake River Farms located?",
     answers: ["Idaho", "Colorado", "Texas", "Nebraska"],
-    correct: 0
+    correct: 0,
+    explanation: "Based in Idaho, SRF raises cattle in ideal conditions at high elevation, which contributes to the beef's exceptional quality."
   },
   {
     id: "srf_tenderloin_marble",
     question: "What makes Snake River Farms beef distinctive?",
     answers: ["High marbling score", "Extra lean", "Gamey flavor", "Pre-sliced"],
-    correct: 0
+    correct: 0,
+    explanation: "SRF beef is prized for its intense marbling (intramuscular fat) which creates unparalleled tenderness and rich flavor."
   },
   {
     id: "srf_tenderloin_pairing",
     question: "What classic accompaniment comes with the tenderloin?",
     answers: ["Pommes Purée", "Arugula Salad", "Roasted Mushrooms", "All of the above"],
-    correct: 3
+    correct: 3,
+    explanation: "All these accompaniments complement the tenderloin beautifully - the creamy potatoes, peppery arugula, and earthy mushrooms create a perfect balance."
   },
 
   // ================== HANDMADE PASTA RAVIOLO (5) ==================
@@ -786,31 +911,36 @@
     id: "raviolo_filling",
     question: "What is special about the Raviolo's filling?",
     answers: ["Contains an egg yolk", "Three-cheese blend", "Lobster filling", "Truffle-infused"],
-    correct: 0
+    correct: 0,
+    explanation: "Each giant raviolo contains a whole egg yolk that creates luxurious sauce when cut. The yolk is carefully placed in a ricotta and parmesan nest."
   },
   {
     id: "raviolo_cheese",
     question: "Which cheese flavors the Raviolo?",
     answers: ["Smoked Pecorino", "Parmigiano-Reggiano", "Gorgonzola", "Ricotta"],
-    correct: 0
+    correct: 0,
+    explanation: "Grated smoked pecorino adds depth to the filling and as a garnish. The smoking process gives it a distinctive aroma that elevates the dish."
   },
   {
     id: "raviolo_sauce",
     question: "What sauce accompanies the Raviolo?",
     answers: ["Butter Sauce", "Tomato Basil", "Pesto Cream", "Bolognese"],
-    correct: 0
+    correct: 0,
+    explanation: "Simple brown butter sauce allows the raviolo's rich filling to shine. We finish it with lemon juice to cut through the richness."
   },
   {
     id: "raviolo_guanciale",
     question: "What is guanciale?",
     answers: ["Cured pork cheek", "Duck breast", "Beef bacon", "Lamb belly"],
-    correct: 0
+    correct: 0,
+    explanation: "Guanciale is cured pork cheek with more flavor than pancetta. We crisp it as garnish, adding salty crunch to contrast the creamy raviolo."
   },
   {
     id: "raviolo_price",
     question: "What is the price of Handmade Pasta Raviolo?",
     answers: ["$17", "$19", "$21", "$23"],
-    correct: 1
+    correct: 1,
+    explanation: "At $19, this handmade pasta dish offers excellent value considering the artisanal preparation and premium ingredients in each component."
   },
 
   // ================== BOLOGNESE (5) ==================
@@ -818,804 +948,756 @@
     id: "bolognese_meat",
     question: "What meats are traditional in Bolognese sauce?",
     answers: ["Beef + Pork + Pancetta", "Chicken only", "Lamb", "Veal"],
-    correct: 0
+    correct: 0,
+    explanation: "Authentic Bolognese uses a trio of meats: ground beef for richness, pork for sweetness, and pancetta for depth. We grind ours in-house daily."
   },
   {
     id: "bolognese_pasta",
     question: "What pasta shape is typically used for Bolognese?",
     answers: ["Pappardelle", "Spaghetti", "Penne", "Farfalle"],
-    correct: 0
+    correct: 0,
+    explanation: "Wide pappardelle noodles are ideal - their broad surface area catches the chunky sauce. We make ours fresh with semolina and eggs."
   },
   {
     id: "bolognese_cheese",
     question: "Which cheese garnishes the Bolognese?",
     answers: ["Smoked Pecorino Romano", "Parmigiano-Reggiano", "Asiago", "Gorgonzola"],
-    correct: 0
+    correct: 0,
+    explanation: "Grated smoked pecorino adds salty, tangy complexity. The smoking process gives it a distinctive flavor that enhances the meaty sauce."
   },
   {
     id: "bolognese_cooktime",
     question: "How long should proper Bolognese sauce simmer?",
     answers: ["3+ hours", "30 minutes", "1 hour", "10 minutes"],
-    correct: 0
+    correct: 0,
+    explanation: "True Bolognese requires slow cooking - we simmer ours for 4 hours to develop deep flavors and melt the meats into the sauce."
   },
   {
     id: "bolognese_price",
     question: "What is the price of Bolognese?",
     answers: ["$25", "$27", "$29", "$31"],
-    correct: 1
-  },
-
-  // ================== ADDITIONAL QUESTIONS (20) ==================
-  // Wine Pairings (5)
-  {
-    id: "pair_cod",
-    question: "What wine pairs best with Black Cod?",
-    answers: ["White Burgundy", "Cabernet", "Prosecco", "Pinot Noir"],
-    correct: 0
-  },
-  {
-    id: "pair_steak",
-    question: "What wine pairs best with Snake River Farms beef?",
-    answers: ["Napa Cabernet", "Chardonnay", "Rosé", "Riesling"],
-    correct: 0
-  },
-  {
-    id: "pair_raviolo",
-    question: "What wine pairs best with the Raviolo?",
-    answers: ["Barbera", "Sauvignon Blanc", "Champagne", "Port"],
-    correct: 0
-  },
-  {
-    id: "pair_chicken",
-    question: "What wine pairs best with ½ Roasted Chicken?",
-    answers: ["Châteauneuf-du-Pape", "Malbec", "Pinot Grigio", "All work"],
-    correct: 3
-  },
-  {
-    id: "pair_bolognese",
-    question: "What wine pairs best with Bolognese?",
-    answers: ["Sangiovese", "Chardonnay", "Syrah", "All work"],
-    correct: 0
-  },
-
-  // Cooking Techniques (5)
-  {
-    id: "cook_pommes",
-    question: "How is Pommes Purée prepared?",
-    answers: ["Butter + cream whipped potatoes", "Roasted", "Fried", "Grated"],
-    correct: 0
-  },
-  {
-    id: "cook_persillade",
-    question: "What is Persillade sauce made with?",
-    answers: ["Parsley + garlic", "Tomatoes", "Cream", "Mustard"],
-    correct: 0
-  },
-  {
-    id: "cook_bouillabaisse",
-    question: "What defines Bouillabaisse sauce?",
-    answers: ["Saffron + seafood stock", "Cream base", "Tomato paste", "Wine reduction"],
-    correct: 0
-  },
-  {
-    id: "cook_raviolo",
-    question: "How is the egg yolk in Raviolo cooked?",
-    answers: ["Runny (soft-poached)", "Hard-boiled", "Scrambled", "Raw"],
-    correct: 0
-  },
-  {
-    id: "cook_duckfat",
-    question: "Why use duck fat for potatoes?",
-    answers: ["Higher smoke point + flavor", "Lower cost", "Vegetarian option", "Less calories"],
-    correct: 0
-  },
-
-  // Allergens (5)
-  {
-    id: "allergen_raviolo",
-    question: "Which allergen is present in Raviolo?",
-    answers: ["Eggs", "Shellfish", "Peanuts", "None"],
-    correct: 0
-  },
-  {
-    id: "allergen_bolognese",
-    question: "Is Bolognese gluten-free?",
-    answers: ["No (contains pasta)", "Yes", "Only without cheese", "Depends on request"],
-    correct: 0
-  },
-  {
-    id: "allergen_cod",
-    question: "What allergen might be in Black Cod's Bouillabaisse sauce?",
-    answers: ["Shellfish stock", "Nuts", "Dairy", "Soy"],
-    correct: 0
-  },
-  {
-    id: "allergen_steak",
-    question: "Is the Skirt Steak dairy-free?",
-    answers: ["Yes (check sauce)", "No", "Only without potatoes", "Depends on cut"],
-    correct: 0
-  },
-  {
-    id: "allergen_sides",
-    question: "Which side is vegan?",
-    answers: ["Arugula Salad (no cheese)", "Pommes Purée", "Roasted Mushrooms", "None"],
-    correct: 0
-  },
-
-  // Menu Knowledge (5)
-  {
-    id: "menu_expensive",
-    question: "What is the most expensive entree?",
-    answers: ["Snake River Farms Tenderloin ($75)", "Côte de Boeuf (MP)", "Local Angus Skirt Steak ($47)", "Black Cod ($31)"],
-    correct: 0
-  },
-  {
-    id: "menu_vegetarian",
-    question: "Which entree is vegetarian?",
-    answers: ["Handmade Pasta Raviolo", "½ Roasted Chicken", "Black Cod", "None"],
-    correct: 0
-  },
-  {
-    id: "menu_shareable",
-    question: "Which dish is meant for sharing?",
-    answers: ["Côte de Boeuf", "Raviolo", "Bolognese", "All"],
-    correct: 0
-  },
-  {
-    id: "menu_signature",
-    question: "What is the signature steak?",
-    answers: ["Snake River Farms Coulotte", "Filet Mignon", "Ribeye", "Flank"],
-    correct: 0
-  },
-  {
-    id: "menu_pasta",
-    question: "How many handmade pasta dishes are on the menu?",
-    answers: ["2 (Raviolo + Bolognese)", "1", "3", "4"],
-    correct: 0
+    correct: 1,
+    explanation: "Priced at $27, this reflects the labor-intensive process and premium ingredients in our authentic, slow-cooked Bolognese."
   }
 ],
-      "Spring 2025 Cocktails": [
-  // ================== JALISCO SPA WATER ==================
+"Wine Basics": [
+  // ================== WINE BASICS (20) ==================
   {
-    id: "jalisco_base",
-    question: "What is the base spirit in Jalisco Spa Water?",
-    answers: ["Blanco Tequila", "Mezcal", "Vodka", "Gin"],
-    correct: 0
+    id: "wine_components",
+    question: "What are the main components of wine?",
+    answers: ["Water, alcohol, acids, tannins", "Sugar, yeast, colorants", "Fruit juice, preservatives", "Grapes, water, sulfites"],
+    correct: 0,
+    explanation: "Wine primarily consists of water (80-90%), alcohol (ethanol, 10-15%), acids (tartaric, malic), and tannins (from skins/seeds). These elements create balance and structure."
   },
   {
-    id: "jalisco_liqueur",
-    question: "Which liqueur is used in Jalisco Spa Water?",
-    answers: ["St. Germain", "Aperol", "Campari", "Cointreau"],
-    correct: 0
+    id: "tannins_define",
+    question: "What are tannins in wine?",
+    answers: ["Polyphenols from skins/seeds/oak", "Sugar crystals", "Acid compounds", "Sediment particles"],
+    correct: 0,
+    explanation: "Tannins are natural polyphenols that create dryness/astringency. They come from grape skins, seeds, and oak aging. Important for structure and aging potential, especially in reds."
   },
   {
-    id: "jalisco_spritz",
-    question: "What is the glass spritzed with before serving?",
-    answers: ["Mezcal + Ancho Reyes Verde", "Lime juice", "Simple syrup", "Tonic water"],
-    correct: 0
+    id: "dry_wine_meaning",
+    question: "What does 'dry' wine mean?",
+    answers: ["Contains minimal residual sugar", "Has no fruit flavors", "High in acidity", "Feels rough on the palate"],
+    correct: 0,
+    explanation: "Dry means most sugar has been converted to alcohol during fermentation. Technically <1% residual sugar, though some may perceive fruitiness as sweetness."
   },
   {
-    id: "jalisco_garnish",
-    question: "How is Jalisco Spa Water garnished?",
-    answers: ["Cucumber ribbon with mint/cilantro", "Lime wheel", "Chili salt rim", "Orange twist"],
-    correct: 0
+    id: "abv_meaning",
+    question: "What does ABV stand for?",
+    answers: ["Alcohol By Volume", "Aged Barrel Vintage", "Acid Balance Value", "Aromatic Bouquet Varietal"],
+    correct: 0,
+    explanation: "ABV measures alcohol content as a percentage of total volume. Table wines typically range from 12-15% ABV, with fortified wines higher."
   },
   {
-    id: "jalisco_price",
-    question: "What is the price of Jalisco Spa Water?",
-    answers: ["$14", "$16", "$18", "$20"],
-    correct: 1
+    id: "vintage_meaning",
+    question: "What does 'vintage' indicate?",
+    answers: ["Year grapes were harvested", "Wine's expiration date", "Barrel aging duration", "Bottling date"],
+    correct: 0,
+    explanation: "The vintage year reflects growing conditions that affected grape quality. Non-vintage (NV) blends multiple years for consistency."
   },
+  {
+    id: "terroir_definition",
+    question: "What is 'terroir'?",
+    answers: ["Environmental factors affecting grapes", "Wine aging process", "Tasting technique", "Blending method"],
+    correct: 0,
+    explanation: "Terroir encompasses soil, climate, topography and tradition that give wine unique sense of place. Fundamental to Old World winemaking philosophy."
+  },
+  {
+    id: "sulfites_purpose",
+    question: "Why are sulfites added to wine?",
+    answers: ["Preservative and antioxidant", "Enhance sweetness", "Increase alcohol content", "Improve color extraction"],
+    correct: 0,
+    explanation: "Sulfites (SO₂) prevent oxidation and microbial spoilage. All wines contain some naturally; added amounts are minimal (<350ppm) and rarely cause headaches."
+  },
+  {
+    id: "malolactic_fermentation",
+    question: "What is malolactic fermentation?",
+    answers: ["Conversion of malic to lactic acid", "Secondary alcohol fermentation", "Sugar concentration process", "Color stabilization technique"],
+    correct: 0,
+    explanation: "MLF softens acidity by converting sharper malic acid (like green apples) to creamier lactic acid (like milk). Common in reds and buttery Chardonnays."
+  },
+  {
+    id: "residual_sugar",
+    question: "What is residual sugar in wine?",
+    answers: ["Unfermented grape sugars remaining", "Added sweeteners", "Sugar from oak aging", "Natural grape sweetness"],
+    correct: 0,
+    explanation: "RS is sugar left after fermentation stops. Ranges from bone dry (<1g/L) to sweet dessert wines (>120g/L). Balance with acidity prevents cloying sweetness."
+  },
+  {
+    id: "tannin_sources",
+    question: "Where do wine tannins come from?",
+    answers: ["Grape skins, seeds, and oak", "Added powder", "Fermentation byproduct", "Acid conversion"],
+    correct: 0,
+    explanation: "Primary tannins come from grape solids during maceration; secondary from oak aging. White wines have minimal tannins unless oak-aged."
+  },
+  {
+    id: "decanting_purpose",
+    question: "Why decant wine?",
+    answers: ["Aerate and separate sediment", "Increase alcohol content", "Sweeten the wine", "Change serving temperature"],
+    correct: 0,
+    explanation: "Decanting exposes wine to oxygen (beneficial for young tannic reds) and removes sediment in aged wines. Not typically needed for whites or most modern reds."
+  },
+  {
+    id: "cork_taint",
+    question: "What causes 'corked' wine?",
+    answers: ["TCA contamination", "Oxidation", "Overaging", "Poor storage"],
+    correct: 0,
+    explanation: "2,4,6-trichloroanisole (TCA) from mold interacting with chlorine creates musty, wet cardboard aromas. Affects 3-5% of natural corks."
+  },
+  {
+    id: "serving_temp_reds",
+    question: "What's ideal serving temperature for full-bodied reds?",
+    answers: ["60-65°F (15-18°C)", "Room temperature", "Chilled like whites", "Warm (70°F+)"],
+    correct: 0,
+    explanation: "Slightly cooler than room temp preserves aromatics and prevents alcohol heat. Light reds (Beaujolais) can be served cooler (55°F)."
+  },
+  {
+    id: "serving_temp_whites",
+    question: "What's ideal serving temperature for white wines?",
+    answers: ["45-50°F (7-10°C)", "Room temperature", "Ice cold", "Warm like reds"],
+    correct: 0,
+    explanation: "Chilled but not ice-cold preserves aromas and acidity. Sweet wines often served colder to balance sweetness; complex whites slightly warmer."
+  },
+  {
+    id: "glassware_importance",
+    question: "Why use proper wine glasses?",
+    answers: ["Direct aromas to nose", "Decorative presentation", "Increase alcohol perception", "Speed up oxidation"],
+    correct: 0,
+    explanation: "Tulip-shaped glasses concentrate aromas. Larger bowls allow swirling for aeration. Thin rims direct wine to optimal palate zones."
+  },
+  {
+    id: "breathing_myth",
+    question: "Does wine need to 'breathe'?",
+    answers: ["Some benefit from aeration", "All wines require hours", "Only cheap wines", "Never beneficial"],
+    correct: 0,
+    explanation: "Young, tannic reds benefit most from air exposure. Most modern wines are ready to drink upon opening. Surface area exposure matters more than time."
+  },
+  {
+    id: "organic_wine",
+    question: "What defines organic wine?",
+    answers: ["Grapes grown without synthetic inputs", "No added sulfites", "Vegan production", "Low alcohol content"],
+    correct: 0,
+    explanation: "Organic certification varies by country. USDA requires organic grapes and minimal added sulfites (<100ppm). Many quality producers follow organic practices without certification."
+  },
+  {
+    id: "biodynamic_wine",
+    question: "What's biodynamic winemaking?",
+    answers: ["Holistic farming following lunar cycles", "Wild yeast fermentation", "No oak aging", "Carbon-neutral production"],
+    correct: 0,
+    explanation: "Biodynamics views vineyard as self-sustaining ecosystem. Uses preparations like horn manure and follows astrological calendar. Demeter certification required."
+  },
+  {
+    id: "old_vs_new_world",
+    question: "What distinguishes Old World vs New World wines?",
+    answers: ["Traditional vs innovative styles", "Age of vineyards", "Grape varieties used", "Oak treatment methods"],
+    correct: 0,
+    explanation: "Old World (Europe) emphasizes terroir and tradition; New World (Americas, Oceania) focuses on fruit expression and innovation. Styles are converging today."
+  },
+  {
+    id: "wine_storage",
+    question: "How should wine be stored long-term?",
+    answers: ["55°F, 70% humidity, dark", "Room temperature", "In refrigerator", "Anywhere upright"],
+    correct: 0,
+    explanation: "Ideal conditions prevent premature aging: constant cool temp (55°F), moderate humidity (keeps corks moist), darkness (prevents light strike), and sideways storage (keeps corks wet)."
 
-  // ================== TROPICAL STORM ==================
-  {
-    id: "tropical_rum",
-    question: "What rum is floated in Tropical Storm?",
-    answers: ["Gosling’s Dark Rum", "Plantation Pineapple", "Bacardi Blanco", "Myers’s"],
-    correct: 0
+  // ================== GRAPE VARIETALS (20) ==================
   },
   {
-    id: "tropical_syrup",
-    question: "Which syrup is used in Tropical Storm?",
-    answers: ["Cinnamon syrup", "Ginger syrup", "Demerara syrup", "Honey syrup"],
-    correct: 0
+    id: "cabernet_profile",
+    question: "What best describes Cabernet Sauvignon?",
+    answers: ["Full-bodied with blackcurrant notes", "Light-bodied with strawberry", "Aromatic with floral notes", "Herbaceous with green pepper"],
+    correct: 0,
+    explanation: "Cabernet Sauvignon is full-bodied with classic blackcurrant/cassis flavors, firm tannins, and often oak-derived vanilla/cedar notes. Ages exceptionally well."
   },
   {
-    id: "tropical_juice",
-    question: "What juice combination is in Tropical Storm?",
-    answers: ["Lime + pineapple", "Lemon + orange", "Grapefruit + cranberry", "Mango + passionfruit"],
-    correct: 0
+    id: "pinot_noir_profile",
+    question: "What's characteristic of Pinot Noir?",
+    answers: ["Light-bodied, red fruits, earthy", "Bold, jammy, high tannin", "Grassy, citrusy", "Floral, sweet"],
+    correct: 0,
+    explanation: "Pinot Noir shows delicate red fruit (strawberry, cherry) with earthy/forest floor notes. Thin-skinned grapes make lighter-colored, lower-tannin wines that are terroir-expressive."
   },
   {
-    id: "tropical_garnish",
-    question: "How is Tropical Storm garnished?",
-    answers: ["Lime wheel + mint sprig", "Pineapple wedge", "Cinnamon stick", "Dehydrated citrus"],
-    correct: 0
+    id: "merlot_profile",
+    question: "What describes Merlot?",
+    answers: ["Medium-bodied, plummy, soft tannins", "Light, herbal, tart", "Full-bodied, peppery", "Aromatic, sweet"],
+    correct: 0,
+    explanation: "Merlot offers approachable plum and black cherry flavors with velvety texture. Important in Bordeaux blends (Right Bank) and popular as varietal wine."
   },
   {
-    id: "tropical_price",
-    question: "What is the price of Tropical Storm?",
-    answers: ["$15", "$17", "$19", "$21"],
-    correct: 1
+    id: "syrah_shiraz",
+    question: "What's typical of Syrah/Shiraz?",
+    answers: ["Dark fruit, pepper, full-bodied", "Light, floral, crisp", "Herbal, green notes", "Sweet, jammy, low tannin"],
+    correct: 0,
+    explanation: "Syrah (Old World) shows blackberry, olive, and pepper; Shiraz (Australia) is riper and jammier. Both have significant tannins and ageability."
   },
+  {
+    id: "chardonnay_profile",
+    question: "What defines Chardonnay?",
+    answers: ["Versatile, ranges from crisp to buttery", "Always oaky and buttery", "Light and sweet", "Herbal and tart"],
+    correct: 0,
+    explanation: "Chardonnay's style depends on climate and winemaking. Cool climate = crisp apple/pear; warm climate = tropical fruit. Oak aging adds vanilla/butter (Burgundy, California)."
+  },
+  {
+    id: "sauvignon_blanc_profile",
+    question: "How would you describe Sauvignon Blanc?",
+    answers: ["High acid, herbaceous, citrus", "Buttery, oaky", "Sweet, floral", "Full-bodied, tropical"],
+    correct: 0,
+    explanation: "Sauvignon Blanc is crisp with pronounced acidity. Shows grassy/herbal notes (New Zealand), grapefruit (Sancerre), or tropical fruit (warmer regions). Rarely oaked."
+  },
+  {
+    id: "riesling_profile",
+    question: "What's characteristic of Riesling?",
+    answers: ["High acid, aromatic, ranges dry-sweet", "Always sweet", "Neutral, low acid", "Buttery texture"],
+    correct: 0,
+    explanation: "Riesling makes dry to sweet wines with piercing acidity and floral/apricot notes. Excellent with spice. Ages remarkably well, developing petrol notes."
+  },
+  {
+    id: "pinot_grigio_gris",
+    question: "What's the difference between Pinot Grigio/Gris?",
+    answers: ["Style: light/crisp vs rich/textured", "Different grapes", "Sweet vs dry", "Red vs white wine"],
+    correct: 0,
+    explanation: "Same grape (Pinot Gris). Italian Pinot Grigio is light, crisp, neutral. French Pinot Gris (Alsace) is richer, more aromatic, sometimes slightly sweet."
+  },
+  {
+    id: "nebbiolo_profile",
+    question: "What describes Nebbiolo?",
+    answers: ["High tannin, tar/rose aromas, ages well", "Light, fruity, early-drinking", "Sweet, sparkling", "Herbal, low alcohol"],
+    correct: 0,
+    explanation: "Nebbiolo makes Barolo/Barbaresco - powerfully tannic with complex tar, rose, and cherry flavors. Requires extensive aging to soften."
+  },
+  {
+    id: "sangiovese_profile",
+    question: "What's typical of Sangiovese?",
+    answers: ["High acid, cherry, herbal notes", "Jammy, low acid", "Buttery, oaky", "Sweet, floral"],
+    correct: 0,
+    explanation: "Chianti's primary grape shows tart cherry, tomato leaf, and earthy notes. Firm acidity makes it food-friendly. Brunello is its most prestigious expression."
+  },
+  {
+    id: "tempranillo_profile",
+    question: "How would you describe Tempranillo?",
+    answers: ["Medium-bodied, red fruit, leather", "Light, herbal", "Very tannic, black fruit", "Sweet, jammy"],
+    correct: 0,
+    explanation: "Spain's flagship red offers strawberry, tobacco, and leather notes. Rioja versions often show vanilla from American oak. Ages well but approachable young."
+  },
+  {
+    id: "malbec_profile",
+    question: "What describes Malbec?",
+    answers: ["Plummy, velvety, dark-fruited", "Light, tart", "Herbal, green", "Sweet, sparkling"],
+    correct: 0,
+    explanation: "Originally from France (Cahors), now Argentina's star. Deep purple color with plum, chocolate, and soft tannins. Great value."
+  },
+  {
+    id: "zinfandel_profile",
+    question: "What's typical of Zinfandel?",
+    answers: ["Jammy, brambly, high alcohol", "Light, tart", "Herbal, green", "Sweet, low tannin"],
+    correct: 0,
+    explanation: "California's heritage grape makes robust, spicy reds with blackberry and pepper notes. Prone to high alcohol (15%+). White Zin is sweet rosé from same grape."
+  },
+  {
+    id: "grenache_profile",
+    question: "How would you describe Grenache?",
+    answers: ["Red fruit, spicy, medium tannin", "Black fruit, high tannin", "Herbal, tart", "Sweet, low alcohol"],
+    correct: 0,
+    explanation: "Grenache offers strawberry, white pepper, and warmth. Key in Rhône blends (GSM) and Spanish Garnacha. Drought-resistant, thrives in hot climates."
+  },
+  {
+    id: "viognier_profile",
+    question: "What defines Viognier?",
+    answers: ["Aromatic, floral, stone fruit", "Neutral, crisp", "Buttery, oaky", "Sweet, sparkling"],
+    correct: 0,
+    explanation: "Viognier is intensely perfumed with apricot, peach, and violet notes. Low acidity makes it prone to flabbiness. Best from Condrieu (Rhône) and California."
+  },
+  {
+    id: "chenin_blanc_profile",
+    question: "What's characteristic of Chenin Blanc?",
+    answers: ["High acid, versatile styles", "Always sweet", "Buttery, oaky", "Neutral, light"],
+    correct: 0,
+    explanation: "Chenin makes dry to sweet wines with apple/honey flavors. Loire Valley benchmark (Vouvray, Savennières). South Africa's most planted white ('Steen')."
+  },
+  {
+    id: "gewurztraminer_profile",
+    question: "How would you describe Gewürztraminer?",
+    answers: ["Lychee, rose, spicy", "Citrus, crisp", "Buttery, oaky", "Neutral, light"],
+    correct: 0,
+    explanation: "Gewürz is intensely aromatic with lychee, rose, and ginger notes. Low acidity, slightly bitter finish. Pairs well with Asian cuisine and strong cheeses."
+  },
+  {
+    id: "carmenere_profile",
+    question: "What describes Carménère?",
+    answers: ["Herbal, dark fruit, medium tannin", "Light, tart", "Sweet, jammy", "Very tannic, black fruit"],
+    correct: 0,
+    explanation: "Originally from Bordeaux, now Chile's signature grape. Shows blackberry, green pepper, and cocoa. Softer tannins than Cabernet Sauvignon."
+  },
+  {
+    id: "gruner_profile",
+    question: "What's typical of Grüner Veltliner?",
+    answers: ["Pepper, citrus, high acid", "Buttery, oaky", "Sweet, floral", "Neutral, low acid"],
+    correct: 0,
+    explanation: "Austria's flagship white offers white pepper, grapefruit, and lentil notes. Crisp acidity makes it versatile with food. Ages surprisingly well."
+  },
+  {
+    id: "albarino_profile",
+    question: "How would you describe Albariño?",
+    answers: ["High acid, citrus, saline", "Buttery, oaky", "Sweet, floral", "Neutral, light"],
+    correct: 0,
+    explanation: "Spain's Rías Baixas specialty shows lemon, peach, and sea spray minerality. Refreshing acidity perfect for seafood. Portugal calls it Alvarinho."
 
-  // ================== SPRING IN PIEDMONT ==================
-  {
-    id: "piedmont_vermouth",
-    question: "What vermouth is used in Spring in Piedmont?",
-    answers: ["Bordiga Bianco", "Carpano Antica", "Dolin Dry", "Cocchi Americano"],
-    correct: 0
+  // ================== WINE REGIONS (20) ==================
   },
   {
-    id: "piedmont_liqueur",
-    question: "Which fruit liqueur is in Spring in Piedmont?",
-    answers: ["Apricot (Marie Brizzard Apry)", "Peach", "Blackberry", "Raspberry"],
-    correct: 0
+    id: "bordeaux_region",
+    question: "What's Bordeaux known for?",
+    answers: ["Cabernet/Merlot blends", "Pinot Noir", "Riesling", "Sangiovese"],
+    correct: 0,
+    explanation: "Bordeaux's Left Bank focuses on Cabernet-dominant blends (with Merlot/Cab Franc), while Right Bank emphasizes Merlot. Famous for age-worthy, structured reds and sweet Sauternes."
   },
   {
-    id: "piedmont_bubbles",
-    question: "What is used to top Spring in Piedmont?",
-    answers: ["Prosecco", "Club soda", "Tonic water", "Ginger beer"],
-    correct: 0
+    id: "burgundy_region",
+    question: "What grapes dominate Burgundy?",
+    answers: ["Pinot Noir (red), Chardonnay (white)", "Syrah, Viognier", "Tempranillo, Albariño", "Nebbiolo, Barbera"],
+    correct: 0,
+    explanation: "Burgundy is the spiritual home of Pinot Noir (red) and Chardonnay (white). The region emphasizes terroir expression through single-varietal wines."
   },
   {
-    id: "piedmont_garnish",
-    question: "How is Spring in Piedmont garnished?",
-    answers: ["Mint + thyme + lemon wheel", "Orange twist", "Edible flower", "Basil leaf"],
-    correct: 0
+    id: "rhone_region",
+    question: "What's the Rhône Valley known for?",
+    answers: ["Syrah/GSM blends (red), Viognier (white)", "Pinot Noir", "Cabernet Sauvignon", "Riesling"],
+    correct: 0,
+    explanation: "Northern Rhône specializes in Syrah (red) and Viognier (white). Southern Rhône produces Grenache-based blends like Châteauneuf-du-Pape."
   },
   {
-    id: "piedmont_price",
-    question: "What is the price of Spring in Piedmont?",
-    answers: ["$16", "$18", "$20", "$22"],
-    correct: 1
+    id: "champagne_region",
+    question: "What grapes are used in Champagne?",
+    answers: ["Chardonnay, Pinot Noir, Pinot Meunier", "Only Chardonnay", "Riesling, Gewürztraminer", "Sauvignon Blanc, Sémillon"],
+    correct: 0,
+    explanation: "Champagne blends these three grapes: Chardonnay (finesse), Pinot Noir (body), Pinot Meunier (fruitiness). Blanc de Blancs = 100% Chardonnay; Blanc de Noirs = black grapes only."
   },
+  {
+    id: "tuscany_region",
+    question: "What's Tuscany's most famous wine?",
+    answers: ["Sangiovese-based Chianti", "Nebbiolo-based Barolo", "Corvina-based Amarone", "Tempranillo-based Rioja"],
+    correct: 0,
+    explanation: "Chianti Classico (black rooster label) is Sangiovese-dominant. Brunello di Montalcino is 100% Sangiovese. Super Tuscans often blend Sangiovese with international varieties."
+  },
+  {
+    id: "piedmont_region",
+    question: "What are Piedmont's signature wines?",
+    answers: ["Barolo/Barbaresco (Nebbiolo)", "Chianti", "Rioja", "Bordeaux blends"],
+    correct: 0,
+    explanation: "Piedmont's 'King of Wines' Barolo and 'Queen' Barbaresco are both 100% Nebbiolo. The region also produces Barbera, Dolcetto, and sparkling Moscato d'Asti."
+  },
+  {
+    id: "napa_region",
+    question: "What's Napa Valley's flagship wine?",
+    answers: ["Cabernet Sauvignon", "Pinot Noir", "Riesling", "Sangiovese"],
+    correct: 0,
+    explanation: "Napa excels with powerful, oak-aged Cabernet Sauvignon. The region's warm days/cool nights create ideal ripening conditions. Also known for Chardonnay and Meritage blends."
+  },
+  {
+    id: "sonoma_region",
+    question: "What's Sonoma best known for?",
+    answers: ["Diverse styles from cool-climate Pinot to robust Zin", "Only Cabernet", "Sweet wines", "Budget wines"],
+    correct: 0,
+    explanation: "Sonoma's varied microclimates produce excellent Pinot Noir (Russian River Valley), Chardonnay, Zinfandel (Dry Creek), and sparkling wines. More diverse than neighboring Napa."
+  },
+  {
+    id: "alsace_region",
+    question: "What's unique about Alsace wines?",
+    answers: ["Aromatic whites in tall bottles", "Big reds", "Sparkling only", "Sweet wines only"],
+    correct: 0,
+    explanation: "Alsace specializes in aromatic whites (Riesling, Gewürztraminer, Pinot Gris) in flute bottles. Mostly dry despite Germanic influence. Only French region listing varietal on label."
+  },
+  {
+    id: "loire_region",
+    question: "What wines come from the Loire Valley?",
+    answers: ["Sauvignon Blanc, Chenin Blanc, Cab Franc", "Syrah, Viognier", "Tempranillo", "Nebbiolo"],
+    correct: 0,
+    explanation: "Loire produces Sancerre/Pouilly-Fumé (Sauvignon Blanc), Vouvray (Chenin), and Chinon (Cabernet Franc). Diverse styles from crisp dry to sweet, still to sparkling."
+  },
+  {
+    id: "rioja_region",
+    question: "What defines Rioja wines?",
+    answers: ["Tempranillo with American oak", "Garnacha only", "No oak aging", "Sweet whites"],
+    correct: 0,
+    explanation: "Rioja reds are Tempranillo-based with Garnacha/Mazuelo/Graciano. Traditional styles show vanilla/dill from American oak. Aging categories: Crianza, Reserva, Gran Reserva."
+  },
+  {
+    id: "riorja_region",
+    question: "What's special about Ribera del Duero?",
+    answers: ["Premium Tempranillo (Tinto Fino)", "White wines only", "Sweet wines", "Light-bodied reds"],
+    correct: 0,
+    explanation: "Ribera produces powerful, concentrated Tempranillo (called Tinto Fino here) at high elevations. More structured than Rioja, often with French oak influence. Vega Sicilia is most famous producer."
+  },
+  {
+    id: "portugal_region",
+    question: "What's Portugal's famous fortified wine?",
+    answers: ["Port", "Sherry", "Marsala", "Madeira"],
+    correct: 0,
+    explanation: "Port is sweet fortified wine from Douro Valley, stopped with brandy during fermentation. Styles: Ruby (young), Tawny (aged), Vintage (exceptional years), LBV (bottle-aged)."
+  },
+  {
+    id: "germany_region",
+    question: "What's Germany's most prestigious wine?",
+    answers: ["Riesling from Mosel", "Pinot Noir from Baden", "Silvaner from Franken", "Dornfelder from Pfalz"],
+    correct: 0,
+    explanation: "Mosel Rieslings are light-bodied with high acidity and slate minerality. Prädikat levels indicate ripeness: Kabinett (lightest) to Trockenbeerenauslese (sweetest)."
+  },
+  {
+    id: "australia_region",
+    question: "What's Australia's signature red?",
+    answers: ["Shiraz", "Pinot Noir", "Cabernet Franc", "Sangiovese"],
+    correct: 0,
+    explanation: "Australian Shiraz is bold and fruity, ranging from Barossa Valley's jammy styles to cooler-climate peppery versions. Often blended with Cabernet Sauvignon ('Cab-Shiraz')."
+  },
+  {
+    id: "new_zealand_region",
+    question: "What's New Zealand's flagship wine?",
+    answers: ["Sauvignon Blanc from Marlborough", "Shiraz from Hawke's Bay", "Riesling from Nelson", "Pinotage from Auckland"],
+    correct: 0,
+    explanation: "Marlborough Sauvignon Blanc put NZ on the map with its explosive passionfruit/gooseberry aromas. Also produces excellent Pinot Noir (Central Otago) and Chardonnay."
+  },
+  {
+    id: "argentina_region",
+    question: "What's Argentina's most famous wine?",
+    answers: ["Malbec from Mendoza", "Torrontés from Salta", "Cabernet from Patagonia", "Chardonnay from Uco Valley"],
+    correct: 0,
+    explanation: "High-altitude Mendoza Malbec shows plush dark fruit with floral notes. Torrontés is the signature white - aromatic like Muscat but dry. Uco Valley excels with premium reds."
+  },
+  {
+    id: "chile_region",
+    question: "What's Chile's signature grape?",
+    answers: ["Carménère", "Malbec", "Tannat", "Touriga Nacional"],
+    correct: 0,
+    explanation: "Once mistaken for Merlot, Carménère is Chile's flagship variety producing herbal, spicy reds. Also known for quality Cabernet Sauvignon from Maipo Valley."
+  },
+  {
+    id: "south_africa_region",
+    question: "What's South Africa's unique grape?",
+    answers: ["Pinotage", "Carménère", "Tempranillo", "Sangiovese"],
+    correct: 0,
+    explanation: "Pinotage is a cross between Pinot Noir and Cinsault, producing earthy, smoky reds. Also known for Chenin Blanc ('Steen') and Bordeaux-style blends."
+  },
+  {
+    id: "oregon_region",
+    question: "What's Oregon's star wine?",
+    answers: ["Pinot Noir from Willamette Valley", "Cabernet Sauvignon", "Zinfandel", "Syrah"],
+    correct: 0,
+    explanation: "Willamette Valley's cool climate produces elegant, earthy Pinot Noir comparable to Burgundy. Also makes excellent Pinot Gris and Chardonnay."
 
-  // ================== CLÁSSICO ==================
-  {
-    id: "classico_wine",
-    question: "What Portuguese wine is used in Clássico?",
-    answers: ["White Port", "Red Port", "Madeira", "Vinho Verde"],
-    correct: 0
+  // ================== FOOD PAIRING PRINCIPLES (20) ==================
   },
   {
-    id: "classico_mixer",
-    question: "Which tonic brand is used in Clássico?",
-    answers: ["Fever-Tree Mediterranean", "Q Tonic", "Schweppes", "Fentimans"],
-    correct: 0
+    id: "pairing_principle",
+    question: "What's the most important pairing principle?",
+    answers: ["Match weight/intensity", "Same region food/wine", "Always red with meat", "White with fish"],
+    correct: 0,
+    explanation: "Weight matching is key - delicate foods with light wines, rich foods with full-bodied wines. Regional pairing can work but isn't absolute. Many whites pair well with meat (e.g., Chardonnay with chicken)."
   },
   {
-    id: "classico_citrus",
-    question: "What citrus is squeezed in Clássico?",
-    answers: ["Lime wedge", "Lemon wedge", "Orange wedge", "Grapefruit wedge"],
-    correct: 0
+    id: "acidic_food_pairing",
+    question: "How to pair high-acid foods?",
+    answers: ["Choose higher acid wine", "Sweet wine only", "Avoid wine pairing", "High tannin reds"],
+    correct: 0,
+    explanation: "Acidic foods (tomato sauce, vinaigrette) need equally high-acid wines (Sangiovese, Sauvignon Blanc) to avoid tasting flat. Sweet wines clash with acidity."
   },
   {
-    id: "classico_garnish",
-    question: "How is Clássico garnished?",
-    answers: ["Dried lime wheel", "Fresh lime wheel", "Mint sprig", "None"],
-    correct: 0
+    id: "spicy_food_pairing",
+    question: "What wine with spicy cuisine?",
+    answers: ["Off-dry aromatic white", "High alcohol red", "Oaky Chardonnay", "Tannic Cabernet"],
+    correct: 0,
+    explanation: "Spicy heat amplifies alcohol and tannins. Off-dry Riesling/Gewürztraminer cool the palate. Low-alcohol reds like Beaujolais also work. Avoid high alcohol (>14%)."
   },
   {
-    id: "classico_price",
-    question: "What is the price of Clássico?",
-    answers: ["$13", "$15", "$17", "$19"],
-    correct: 1
+    id: "fatty_food_pairing",
+    question: "What cuts through rich, fatty foods?",
+    answers: ["High acid/tannin wines", "Sweet wines", "Low acid wines", "Sparkling only"],
+    correct: 0,
+    explanation: "Acid cuts fat (Chianti with steak); tannins bind protein (Barolo with braised meat). Champagne's bubbles cleanse the palate. Sweet wines overwhelm savory fats."
   },
+  {
+    id: "salty_food_pairing",
+    question: "What complements salty foods?",
+    answers: ["Sweet or sparkling wines", "High tannin reds", "Oaky whites", "High alcohol wines"],
+    correct: 0,
+    explanation: "Salt loves sweetness (Sauternes with foie gras) or bubbles (Champagne with fries). Avoid high tannins which turn bitter with salt."
+  },
+  {
+    id: "sweet_food_pairing",
+    question: "How to pair dessert?",
+    answers: ["Wine should be sweeter", "Dry wine only", "No pairing needed", "High acid wines"],
+    correct: 0,
+    explanation: "Dessert makes dry wines taste sour. Choose wine with higher sugar than food: Sauternes with crème brûlée, Port with chocolate. Acid balances sweetness."
+  },
+  {
+    id: "umami_pairing",
+    question: "What's challenging about umami pairings?",
+    answers: ["Can make wines taste bitter", "Requires sweet wines", "Needs high alcohol", "Best without wine"],
+    correct: 0,
+    explanation: "Umami-rich foods (mushrooms, aged cheese) amplify tannin bitterness. Pair with fruity, low-tannin reds (Pinot Noir) or aged whites with developed flavors."
+  },
+  {
+    id: "cheese_pairing",
+    question: "What's a universal cheese pairing?",
+    answers: ["Champagne", "Cabernet Sauvignon", "Sweet Riesling", "Oaky Chardonnay"],
+    correct: 0,
+    explanation: "Champagne's acidity and bubbles cut through fat while complementing diverse flavors. Other good options: Sauternes with blue cheese, Port with aged cheddar."
+  },
+  {
+    id: "steak_pairing",
+    question: "What's the classic steak pairing?",
+    answers: ["Cabernet Sauvignon", "Pinot Grigio", "Riesling", "Prosecco"],
+    correct: 0,
+    explanation: "Cab's tannins bind steak's protein, fat softens tannins. Also try Malbec, Syrah, or aged Barolo. For filet mignon (leaner), try Pinot Noir."
+  },
+  {
+    id: "seafood_pairing",
+    question: "What's the safest seafood pairing?",
+    answers: ["Crisp, high-acid white", "Big red wine", "Sweet wine", "No wine"],
+    correct: 0,
+    explanation: "Sauvignon Blanc, Albariño, or Chablis complement most seafood. Avoid tannic reds with fish (metallic taste). Oily fish pairs with richer whites (Chardonnay)."
+  },
+  {
+    id: "sushi_pairing",
+    question: "What's ideal with sushi?",
+    answers: ["Dry Riesling or Champagne", "Cabernet Sauvignon", "Sweet Sherry", "No pairing"],
+    correct: 0,
+    explanation: "Riesling's acidity matches wasabi/vinegar; Champagne's bubbles cleanse. Light, dry rosé also works. Avoid tannic reds that clash with fish and soy."
+  },
+  {
+    id: "pasta_pairing",
+    question: "How to pair wine with pasta?",
+    answers: ["Match sauce weight/intensity", "Always red wine", "Always white wine", "Sparkling only"],
+    correct: 0,
+    explanation: "Light sauces (pesto) = Pinot Grigio; cream sauces = oaked Chardonnay; tomato sauces = Sangiovese; meat sauces = Chianti or Barbera."
+  },
+  {
+    id: "bbq_pairing",
+    question: "What pairs with barbecue?",
+    answers: ["Zinfandel or Shiraz", "Delicate Pinot Noir", "Sweet Riesling", "Light white wine"],
+    correct: 0,
+    explanation: "BBQ's smoky-sweet flavors need bold, fruity wines. Zinfandel's jamminess complements sauce; Shiraz's pepper matches rubs. Rosé also works with pulled pork."
+  },
+  {
+    id: "vegetarian_pairing",
+    question: "How to pair vegetarian dishes?",
+    answers: ["Consider preparation method", "Only white wine", "Only light reds", "No wine"],
+    correct: 0,
+    explanation: "Grilled veggies = smoky red (Syrah); creamy dishes = rich white (Viognier); salads = crisp white (Sauvignon Blanc); mushroom dishes = earthy red (Pinot Noir)."
+  },
+  {
+    id: "chocolate_pairing",
+    question: "What wine with chocolate?",
+    answers: ["Port or Banyuls", "Dry red wine", "Dry white wine", "Champagne"],
+    correct: 0,
+    explanation: "Chocolate needs sweeter wines: Ruby Port with milk chocolate, Tawny with dark, Banyuls with bittersweet. Avoid dry wines which taste bitter."
+  },
+  {
+    id: "oysters_pairing",
+    question: "What's the classic oyster pairing?",
+    answers: ["Chablis or Muscadet", "Cabernet Sauvignon", "Sweet Riesling", "No wine"],
+    correct: 0,
+    explanation: "Chablis' minerality mirrors oyster's brininess; Muscadet's crispness cleanses. Champagne also excellent. Avoid oaky or tannic wines."
+  },
+  {
+    id: "foie_gras_pairing",
+    question: "What pairs with foie gras?",
+    answers: ["Sauternes or late-harvest Riesling", "Dry red wine", "Light white wine", "No pairing"],
+    correct: 0,
+    explanation: "Foie gras' richness needs sweet wine's acidity to cut through. Sauternes' honeyed notes complement; Tokaji or TBA Riesling also work. Savory preparations may pair with Pinot Noir."
+  },
+  {
+    id: "asian_cuisine_pairing",
+    question: "What's versatile with Asian cuisine?",
+    answers: ["Off-dry Riesling or Gewürztraminer", "Big red wine", "Oaky Chardonnay", "No wine"],
+    correct: 0,
+    explanation: "Riesling's sweetness balances spice; Gewürz's lychee notes complement flavors. For less spicy dishes, try Pinot Noir or dry rosé."
+  },
+  {
+    id: "cheese_plate_pairing",
+    question: "How to pair a diverse cheese plate?",
+    answers: ["Offer multiple wine options", "Only red wine", "Only white wine", "No pairing"],
+    correct: 0,
+    explanation: "Soft cheeses = Champagne; aged cheeses = Cabernet; blue cheeses = Sauternes; goat cheese = Sauvignon Blanc. Better to offer 2-3 wines than one compromise."
+  },
+  {
+    id: "brunch_pairing",
+    question: "What's best for brunch?",
+    answers: ["Sparkling wine or rosé", "Big red wine", "Sweet dessert wine", "No alcohol"],
+    correct: 0,
+    explanation: "Champagne's bubbles refresh; dry rosé suits diverse brunch foods. Mimosa (OJ + sparkling) is classic. Avoid heavy reds that overwhelm morning palates."
 
-  // ================== MODERNA NO. 1 ==================
-  {
-    id: "moderna_port",
-    question: "What port is used in Moderna No. 1?",
-    answers: ["White Port", "Tawny Port", "Ruby Port", "Rosé Port"],
-    correct: 0
-  },
-  {
-    id: "moderna_gin",
-    question: "Which gin is used in Moderna No. 1?",
-    answers: ["Bombay Sapphire", "Tanqueray", "Hendrick’s", "Beefeater"],
-    correct: 0
-  },
-  {
-    id: "moderna_fruit",
-    question: "What fruit puree is in Moderna No. 1?",
-    answers: ["Strawberry", "Raspberry", "Blackberry", "Blueberry"],
-    correct: 0
-  },
-  {
-    id: "moderna_garnish",
-    question: "How is Moderna No. 1 garnished?",
-    answers: ["Fanned strawberry + hyssop flower", "Lemon twist", "Cucumber ribbon", "Mint sprig"],
-    correct: 0
-  },
-  {
-    id: "moderna_price",
-    question: "What is the price of Moderna No. 1?",
-    answers: ["$16", "$18", "$20", "$22"],
-    correct: 1
-  },
-
-  // ================== ABOUT TIME ==================
-  {
-    id: "abouttime_whiskey",
-    question: "What whiskey is used in About Time?",
-    answers: ["Rittenhouse Rye", "Bulleit Bourbon", "Jameson Irish", "Crown Royal"],
-    correct: 0
-  },
-  {
-    id: "abouttime_dram",
-    question: "Which spiced liqueur is in About Time?",
-    answers: ["Allspice Dram", "Drambuie", "Bénédictine", "Chartreuse"],
-    correct: 0
-  },
-  {
-    id: "abouttime_garnish",
-    question: "How is About Time garnished?",
-    answers: ["Lemon 'boat' + fanned strawberry", "Orange twist", "Lime wheel", "Cherry"],
-    correct: 0
-  },
-  {
-    id: "abouttime_herb",
-    question: "Which herb is brushed on the glass for About Time?",
-    answers: ["Thyme", "Rosemary", "Basil", "Mint"],
-    correct: 0
-  },
-  {
-    id: "abouttime_price",
-    question: "What is the price of About Time?",
-    answers: ["$17", "$19", "$21", "$23"],
-    correct: 1
-  },
-
-  // ================== HAZY MEMORIES ==================
-  {
-    id: "hazy_beer",
-    question: "What beer style is used in Hazy Memories?",
-    answers: ["Hazy IPA", "Pilsner", "Stout", "Sour"],
-    correct: 0
-  },
-  {
-    id: "hazy_gin",
-    question: "Which gin is used in Hazy Memories?",
-    answers: ["Beefeater", "Tanqueray", "Hendrick’s", "Bombay Sapphire"],
-    correct: 0
-  },
-  {
-    id: "hazy_garnish",
-    question: "How is Hazy Memories garnished?",
-    answers: ["Pineapple fronds", "Orange wheel", "Mint sprig", "Lime wedge"],
-    correct: 0
-  },
-  {
-    id: "hazy_fruit",
-    question: "Which tropical fruit is in Hazy Memories?",
-    answers: ["Passion fruit", "Mango", "Guava", "Papaya"],
-    correct: 0
-  },
-  {
-    id: "hazy_price",
-    question: "What is the price of Hazy Memories?",
-    answers: ["$16", "$18", "$20", "$22"],
-    correct: 1
-  },
-
-  // ================== BIRD. FLOWER. FISH. ==================
-  {
-    id: "bird_gin",
-    question: "What gin is used in Bird. Flower. Fish.?",
-    answers: ["Hendrick’s", "Beefeater", "Tanqueray", "Bombay Sapphire"],
-    correct: 0
-  },
-  {
-    id: "bird_syrup",
-    question: "What flavor is the house syrup in Bird. Flower. Fish.?",
-    answers: ["Blueberry-lemon-thyme", "Strawberry-basil", "Raspberry-vanilla", "Blackberry-lavender"],
-    correct: 0
-  },
-  {
-    id: "bird_garnish",
-    question: "How is Bird. Flower. Fish. garnished?",
-    answers: ["Rosemary sprig", "Edible flower", "Lemon twist", "Cucumber slice"],
-    correct: 0
-  },
-  {
-    id: "bird_glass",
-    question: "What glass is used for Bird. Flower. Fish.?",
-    answers: ["Coupe", "Rocks", "Collins", "Nick & Nora"],
-    correct: 0
-  },
-  {
-    id: "bird_price",
-    question: "What is the price of Bird. Flower. Fish.?",
-    answers: ["$17", "$19", "$21", "$23"],
-    correct: 1
-  },
-
-  // ================== TAMARIND MAN ==================
-  {
-    id: "tamarind_base",
-    question: "What is the base spirit in Tamarind Man?",
-    answers: ["Evan Williams Bourbon", "Rittenhouse Rye", "Buffalo Trace", "Jack Daniels"],
-    correct: 0
-  },
-  {
-    id: "tamarind_syrup",
-    question: "What is the signature syrup in Tamarind Man?",
-    answers: ["Tamarind", "Ginger", "Honey", "Demerara"],
-    correct: 0
-  },
-  {
-    id: "tamarind_garnish",
-    question: "How is Tamarind Man garnished?",
-    answers: ["Lemon plane (maybe tamarind candy)", "Orange twist", "Lime wedge", "Cherry"],
-    correct: 0
-  },
-  {
-    id: "tamarind_liqueur",
-    question: "Which Italian liqueur is in Tamarind Man?",
-    answers: ["Aperol", "Campari", "Fernet", "Cynar"],
-    correct: 0
-  },
-  {
-    id: "tamarind_price",
-    question: "What is the price of Tamarind Man?",
-    answers: ["$16", "$18", "$20", "$22"],
-    correct: 1
-  },
-
-  // ================== CHAT GPT ==================
-  {
-    id: "chat_tequila",
-    question: "What tequila is used in Chat GPT?",
-    answers: ["Luna Azul Añejo", "Patrón Silver", "Don Julio Reposado", "Casamigos Blanco"],
-    correct: 0
-  },
-  {
-    id: "chat_bitters",
-    question: "Which bitters are used in Chat GPT?",
-    answers: ["Tiki bitters", "Angostura", "Peychaud’s", "Orange"],
-    correct: 0
-  },
-  {
-    id: "chat_prep",
-    question: "How is Chat GPT prepared?",
-    answers: ["Stirred over a large rock", "Shaken + double strained", "Built in glass", "Blended"],
-    correct: 0
-  },
-  {
-    id: "chat_garnish",
-    question: "How is Chat GPT garnished?",
-    answers: ["Flamed orange expression", "Lemon twist", "Lime wheel", "None"],
-    correct: 0
-  },
-  {
-    id: "chat_price",
-    question: "What is the price of Chat GPT?",
-    answers: ["$18", "$20", "$22", "$24"],
-    correct: 1
-  },
-
-  // ================== FREE TRADE AGREEMENT ==================
-  {
-    id: "fta_spirits",
-    question: "Which three spirits are combined in Free Trade Agreement?",
-    answers: ["Pisco + Cachaça + Singani 63", "Rum + Tequila + Mezcal", "Gin + Vodka + Whiskey", "Brandy + Armagnac + Calvados"],
-    correct: 0
-  },
-  {
-    id: "fta_foam",
-    question: "What creates the foam in Free Trade Agreement?",
-    answers: ["Egg white", "Aquafaba", "Coconut cream", "None"],
-    correct: 0
-  },
-  {
-    id: "fta_garnish",
-    question: "How is Free Trade Agreement garnished?",
-    answers: ["Flower-patterned bitters + edible flower", "Lime wheel", "Mint sprig", "Dehydrated citrus"],
-    correct: 0
-  },
-  {
-    id: "fta_nectar",
-    question: "What fruit is in the guava-agave nectar?",
-    answers: ["Guava", "Mango", "Passionfruit", "Pineapple"],
-    correct: 0
-  },
-  {
-    id: "fta_price",
-    question: "What is the price of Free Trade Agreement?",
-    answers: ["$17", "$19", "$21", "$23"],
-    correct: 1
-  },
-
-  // ================== EAST SIDE ==================
-  {
-    id: "east_gin",
-    question: "What spirit is used in East Side?",
-    answers: ["Gin", "Vodka", "Tequila", "Rum"],
-    correct: 0
-  },
-  {
-    id: "east_veg",
-    question: "Which vegetable is muddled in East Side?",
-    answers: ["Cucumber", "Celery", "Carrot", "Bell pepper"],
-    correct: 0
-  },
-  {
-    id: "east_garnish",
-    question: "How is East Side garnished?",
-    answers: ["Striped cucumber wheels", "Lime wedge", "Mint sprig", "None"],
-    correct: 0
-  },
-  {
-    id: "east_glass",
-    question: "What glass is used for East Side?",
-    answers: ["Coupe", "Rocks", "Collins", "Martini"],
-    correct: 0
-  },
-  {
-    id: "east_price",
-    question: "What is the price of East Side?",
-    answers: ["$15", "$17", "$19", "$21"],
-    correct: 1
-  },
-
-  // ================== GREYHOUND’S TOOTH ==================
-  {
-    id: "greyhound_liqueur",
-    question: "What herbal liqueur is used in Greyhound’s Tooth?",
-    answers: ["Bénédictine", "Chartreuse", "Drambuie", "Galliano"],
-    correct: 0
-  },
-  {
-    id: "greyhound_juice",
-    question: "Which citrus juice dominates Greyhound’s Tooth?",
-    answers: ["Grapefruit", "Lemon", "Lime", "Orange"],
-    correct: 0
-  },
-  {
-    id: "greyhound_garnish",
-    question: "How is Greyhound’s Tooth garnished?",
-    answers: ["Dukes grapefruit", "Lemon twist", "Lime wheel", "None"],
-    correct: 0
-  },
-  {
-    id: "greyhound_style",
-    question: "What style of cocktail is Greyhound’s Tooth?",
-    answers: ["Vodka-based sour", "Rum swizzle", "Whiskey smash", "Tiki punch"],
-    correct: 0
-  },
-  {
-    id: "greyhound_price",
-    question: "What is the price of Greyhound’s Tooth?",
-    answers: ["$16", "$18", "$20", "$22"],
-    correct: 1
-  },
-
-  // ================== BOWLING WITH JEN ==================
-  {
-    id: "bowling_whiskey",
-    question: "What bourbon is used in Bowling With Jen?",
-    answers: ["Old Grand-Dad 100pf", "Wild Turkey 101", "Buffalo Trace", "Maker’s Mark"],
-    correct: 0
-  },
-  {
-    id: "bowling_fruit",
-    question: "Which dried fruit is muddled in Bowling With Jen?",
-    answers: ["Figs", "Apricots", "Dates", "Prunes"],
-    correct: 0
-  },
-  {
-    id: "bowling_garnish",
-    question: "How is Bowling With Jen garnished?",
-    answers: ["Flamed Dukes orange + half fig", "Lemon twist", "Cherry", "None"],
-    correct: 0
-  },
-  {
-    id: "bowling_syrup",
-    question: "What flavor is the syrup in Bowling With Jen?",
-    answers: ["Vanilla-cinnamon", "Ginger", "Honey", "Demerara"],
-    correct: 0
-  },
-  {
-    id: "bowling_price",
-    question: "What is the price of Bowling With Jen?",
-    answers: ["$17", "$19", "$21", "$23"],
-    correct: 1
-  },
-
-  // ================== TORRENTS OF THE SEASON ==================
-  {
-    id: "torrents_rum",
-    question: "What rum is used in Torrents of the Season?",
-    answers: ["Silver rum", "Dark rum", "Spiced rum", "Aged rum"],
-    correct: 0
-  },
-  {
-    id: "torrents_liqueur",
-    question: "Which Italian liqueur is in Torrents of the Season?",
-    answers: ["Luxardo Maraschino", "Aperol", "Campari", "Fernet"],
-    correct: 0
-  },
-  {
-    id: "torrents_garnish",
-    question: "How is Torrents of the Season garnished?",
-    answers: ["Cherry + orange peel flag", "Lime wheel", "Mint sprig", "None"],
-    correct: 0
-  },
-  {
-    id: "torrents_agave",
-    question: "What sweetener is used in Torrents of the Season?",
-    answers: ["Agave", "Simple syrup", "Honey", "Maple syrup"],
-    correct: 0
-  },
-  {
-    id: "torrents_price",
-    question: "What is the price of Torrents of the Season?",
-    answers: ["$16", "$18", "$20", "$22"],
-    correct: 1
-  },
-
-  // ================== PROFIT & LOSS ==================
-  {
-    id: "profit_shrub",
-    question: "What seasonal shrub is used in Profit & Loss?",
-    answers: ["Spiced-pear or spiced-huckleberry", "Apple-cinnamon", "Peach-lavender", "Blackberry-thyme"],
-    correct: 0
-  },
-  {
-    id: "profit_herbs",
-    question: "Which herbs are muddled in Profit & Loss?",
-    answers: ["Mint + basil + thyme", "Rosemary + sage", "Cilantro + parsley", "None"],
-    correct: 0
-  },
-  {
-    id: "profit_garnish",
-    question: "How is Profit & Loss garnished?",
-    answers: ["Thyme sprig + mint top + violet flowers", "Lemon wheel", "Edible flower", "None"],
-    correct: 0
-  },
-  {
-    id: "profit_style",
-    question: "What style is Profit & Loss?",
-    answers: ["Zero-proof herbal sour", "Tiki punch", "Spritz", "Smash"],
-    correct: 0
+  // ================== SERVICE KNOWLEDGE (20) ==================
   },
   {
-    id: "profit_price",
-    question: "What is the price of Profit & Loss?",
-    answers: ["$12", "$14", "$16", "$18"],
-    correct: 1
+    id: "presenting_bottle",
+    question: "How to properly present a bottle?",
+    answers: ["Show label, state producer/year", "Open immediately", "Only show back label", "Don't let guest see bottle"],
+    correct: 0,
+    explanation: "Present bottle with label facing guest, clearly stating producer and vintage. This confirms they're receiving what they ordered. Hold by base/indent for stability."
   },
-
-  // ================== 20/20 VISION ==================
   {
-    id: "vision_shrub",
-    question: "What flavor is the house shrub in 20/20 Vision?",
-    answers: ["Carrot", "Beet", "Celery", "Tomato"],
-    correct: 0
+    id: "opening_procedure",
+    question: "What's the correct opening procedure?",
+    answers: ["Cut capsule, wipe rim, insert corkscrew", "Twist cork out quickly", "Push cork in", "Break neck of bottle"],
+    correct: 0,
+    explanation: "Use knife to cut capsule below lip. Wipe rim with clean napkin. Insert corkscrew slightly off-center. Pull steadily without jerking. Final 'kiss' sound is ideal."
   },
   {
-    id: "vision_syrup",
-    question: "What spice is in the ginger-cayenne syrup?",
-    answers: ["Cayenne", "Paprika", "Chipotle", "Black pepper"],
-    correct: 0
+    id: "decanting_reasons",
+    question: "When should you decant wine?",
+    answers: ["Young tannic reds or aged wines with sediment", "All wines", "Only white wines", "Never"],
+    correct: 0,
+    explanation: "Decant young reds (Barolo, Cabernet) to soften tannins; old wines to separate sediment. Most whites and everyday reds don't need decanting."
   },
   {
-    id: "vision_garnish",
-    question: "How is 20/20 Vision garnished?",
-    answers: ["Lemon wheel + cucumber/carrot spiral", "Mint sprig", "Edible flower", "None"],
-    correct: 0
+    id: "serving_order",
+    question: "What's proper serving order for multiple wines?",
+    answers: ["Light to heavy, dry to sweet", "Whatever's ready first", "Red before white", "Sweet before dry"],
+    correct: 0,
+    explanation: "Progress from light-bodied to full-bodied, dry to sweet. Whites before reds, young before old, simple before complex. Sweet wines always last."
   },
   {
-    id: "vision_topper",
-    question: "What is used to top 20/20 Vision?",
-    answers: ["Ginger beer", "Prosecco", "Club soda", "Tonic"],
-    correct: 0
+    id: "pour_size",
+    question: "What's standard pour size?",
+    answers: ["5oz for still, 6oz for sparkling", "Fill glass completely", "2oz tasting pour", "No standard"],
+    correct: 0,
+    explanation: "5oz allows proper swirling/aeration. Sparkling gets 6oz to maintain bubbles. 25oz bottle = ~5 glasses. Adjust for oversized/bowled glasses."
   },
   {
-    id: "vision_price",
-    question: "What is the price of 20/20 Vision?",
-    answers: ["$11", "$13", "$15", "$17"],
-    correct: 1
+    id: "temperature_correction",
+    question: "How to quickly chill wine?",
+    answers: ["Ice water bath (20 mins)", "Freezer (5 mins)", "Add ice cubes", "Refrigerator (hours)"],
+    correct: 0,
+    explanation: "Ice water with salt chills fastest (conduction). Freezer risks expansion/breakage. Never add ice - it dilutes wine. Plan ahead when possible."
   },
-
-  // ================== COCO PIÑA PUNCH ==================
   {
-    id: "coco_dairy",
-    question: "What creamy ingredient is in Coco Piña Punch?",
-    answers: ["Coconut milk", "Heavy cream", "Half & half", "Condensed milk"],
-    correct: 0
+    id: "dealing_corked_wine",
+    question: "What to do if wine is corked?",
+    answers: ["Apologize and replace immediately", "Serve anyway", "Charge guest anyway", "Blame guest"],
+    correct: 0,
+    explanation: "Musty wet cardboard aroma = TCA contamination. Politely acknowledge and replace bottle. Never argue - even experts debate fault detection."
   },
   {
-    id: "coco_rim",
-    question: "How is the glass rimmed for Coco Piña Punch?",
-    answers: ["Toasted coconut flakes", "Chili salt", "Sugar", "None"],
-    correct: 0
+    id: "handling_complaints",
+    question: "How to handle wine complaints?",
+    answers: ["Stay calm, assess validity, offer solution", "Argue with guest", "Ignore complaint", "Blame producer"],
+    correct: 0,
+    explanation: "Listen without defensiveness. If wine is flawed (corked, oxidized), replace. For stylistic dislikes, offer alternative. Manager may comp if appropriate."
   },
   {
-    id: "coco_garnish",
-    question: "How is Coco Piña Punch garnished?",
-    answers: ["Dried lime wheel + pineapple fronds", "Mint sprig", "Cherry", "None"],
-    correct: 0
+    id: "by_the_glass_service",
+    question: "How to maintain BTG wine quality?",
+    answers: ["Use preservation system, date bottles", "Leave open indefinitely", "Refrigerate reds", "No special handling"],
+    correct: 0,
+    explanation: "Opened bottles last 3-5 days with argon systems. Label with open date. Keep whites chilled, reds at cellar temp. Never pour from bottle that smells off."
   },
   {
-    id: "coco_style",
-    question: "What style is Coco Piña Punch inspired by?",
-    answers: ["Piña Colada meets Margarita", "Daiquiri", "Mojito", "Painkiller"],
-    correct: 0
+    id: "sommelier_approach",
+    question: "How should a sommelier approach guests?",
+    answers: ["Be knowledgeable but not pretentious", "Show off expertise", "Speak in jargon", "Ignore guests"],
+    correct: 0,
+    explanation: "Read guest cues - some want education, others simplicity. Avoid condescension. Convert technical terms to relatable descriptions ('crisp' vs 'high acid')."
   },
   {
-    id: "coco_price",
-    question: "What is the price of Coco Piña Punch?",
-    answers: ["$10", "$12", "$14", "$16"],
-    correct: 1
+    id: "upselling_technique",
+    question: "What's ethical upselling technique?",
+    answers: ["Suggest better pairings within budget", "Push most expensive", "Ignore budget", "Lie about quality"],
+    correct: 0,
+    explanation: "Recommend genuine upgrades that enhance experience. 'The Chianti Classico would pair beautifully with your steak for $15 more than the house red.'"
   },
-
-  // ================== STONE FRUIT COOLER ==================
   {
-    id: "stone_fruit",
-    question: "What stone fruit puree is in Stone Fruit Cooler?",
-    answers: ["Apricot", "Peach", "Plum", "Nectarine"],
-    correct: 0
+    id: "wine_list_navigation",
+    question: "How to help guests navigate the wine list?",
+    answers: ["Ask preferences and budget first", "Start with most expensive", "Recommend your favorite", "Pick randomly"],
+    correct: 0,
+    explanation: "Key questions: 'What style do you enjoy?' and 'Is there a price range you'd like to stay within?' Then suggest 2-3 options at different price points."
   },
   {
-    id: "stone_spice",
-    question: "What spice is in the syrup for Stone Fruit Cooler?",
-    answers: ["Cayenne", "Cinnamon", "Nutmeg", "Cardamom"],
-    correct: 0
+    id: "stemware_handling",
+    question: "How to properly handle wine glasses?",
+    answers: ["Hold by stem or base", "Grab bowl with full hand", "Touch rim", "Stack multiple glasses"],
+    correct: 0,
+    explanation: "Holding bowl leaves fingerprints and transfers heat. Carry 3 max for safety. Polish before service - no lint or streaks. Store upside down in clean cellar."
   },
   {
-    id: "stone_garnish",
-    question: "How is Stone Fruit Cooler garnished?",
-    answers: ["Dried apricot + basil leaf", "Orange wheel", "Mint sprig", "None"],
-    correct: 0
+    id: "bucket_usage",
+    question: "When to use an ice bucket?",
+    answers: ["Sparkling and sweet whites", "All wines", "Only red wines", "Never"],
+    correct: 0,
+    explanation: "Champagne and dessert wines benefit from ice buckets. Most whites just need proper fridge temp. Never chill reds below 55°F - it mutes flavors."
   },
   {
-    id: "stone_topper",
-    question: "What is used to top Stone Fruit Cooler?",
-    answers: ["½ ginger beer + ½ soda water", "Prosecco", "Tonic", "Club soda"],
-    correct: 0
+    id: "cork_presentation",
+    question: "What to do with the cork?",
+    answers: ["Place on table unless guest inspects", "Give to every guest", "Throw away immediately", "Keep in pocket"],
+    correct: 0,
+    explanation: "Set cork near host unless they examine it. Don't make them smell it - TCA is detectable in wine. Only mention if natural cork (vs synthetic)."
   },
   {
-    id: "stone_price",
-    question: "What is the price of Stone Fruit Cooler?",
-    answers: ["$11", "$13", "$15", "$17"],
-    correct: 1
+    id: "tasting_pour",
+    question: "Why pour a taste?",
+    answers: ["Confirm wine's condition", "Show off pouring skill", "Give free samples", "No reason"],
+    correct: 0,
+    explanation: "The taste confirms the wine isn't flawed, not whether guest likes it. Pour 1-2oz for host unless they waive. Never pour taste of BTG wine."
   },
-
-  // ================== FEELING SPRITZY ==================
   {
-    id: "spritzy_wine",
-    question: "What non-alcoholic wine is used in Feeling Spritzy?",
-    answers: ["Töst", "Fre", "Ariel", "None"],
-    correct: 0
+    id: "rejecting_wine",
+    question: "Can guests reject wine?",
+    answers: ["Only if flawed, not for dislike", "Always", "Never", "Only expensive bottles"],
+    correct: 0,
+    explanation: "Guests may reject flawed wine (corked, oxidized). Disliking sound wine isn't valid reason, though some restaurants may accommodate politely."
   },
   {
-    id: "spritzy_syrup",
-    question: "What flavor is the syrup in Feeling Spritzy?",
-    answers: ["Lavender", "Vanilla", "Honey", "Ginger"],
-    correct: 0
+    id: "leftover_wine",
+    question: "What to do with unfinished bottle?",
+    answers: ["Offer to recork for takeaway", "Discard immediately", "Serve to next guest", "Staff drinks"],
+    correct: 0,
+    explanation: "Many states allow recorking for off-premise consumption. Seal tightly and bag. Include receipt showing alcohol for transport laws."
   },
   {
-    id: "spritzy_preserves",
-    question: "What fruit preserves are in Feeling Spritzy?",
-    answers: ["Peach", "Apricot", "Raspberry", "Strawberry"],
-    correct: 0
+    id: "pairing_questions",
+    question: "What to ask when suggesting pairings?",
+    answers: ["'What flavors are in the dish?'", "'How much do you want to spend?'", "'What's your favorite color?'", "'Do you like wine?'"],
+    correct: 0,
+    explanation: "Key questions: sauce/preparation (butter vs tomato), spice level, protein type. Then suggest options at different price points."
   },
   {
-    id: "spritzy_garnish",
-    question: "How is Feeling Spritzy garnished?",
-    answers: ["Mint tops + duke lemon peel", "Orange wheel", "Edible flower", "None"],
-    correct: 0
+    id: "allergies_concerns",
+    question: "How to handle wine allergy concerns?",
+    answers: ["Know additives (egg whites, etc)", "All wine is allergen-free", "Only red wines have allergens", "Ignore concerns"],
+    correct: 0,
+    explanation: "Common fining agents: egg whites (albumin), milk protein (casein), fish bladders (isinglass). Vegan/natural wines avoid these. Sulfites aren't true allergens for most."
   },
   {
-    id: "spritzy_price",
-    question: "What is the price of Feeling Spritzy?",
-    answers: ["$10", "$12", "$14", "$16"],
-    correct: 1
+    id: "wine_storage",
+    question: "How to store open bottles overnight?",
+    answers: ["Recork, refrigerate whites, cellar reds", "Leave at room temperature", "Pour down drain", "Give to staff"],
+    correct: 0,
+    explanation: "Recork tightly. Whites in fridge (3-5 days). Red in cool, dark place (1-3 days). Sparkling with specialty stopper (1-2 days). Commercial preservation systems extend further."
   }
-],
-
+]
     };
 
     // Quiz state
@@ -1625,7 +1707,8 @@
       currentQuestionIndex: 0,
       score: 0,
       answerSelected: false,
-      confettiCanvas: null
+      confettiCanvas: null,
+      userAnswers: [] // Track user answers for review
     };
 
     // Load stats from localStorage
@@ -1706,6 +1789,7 @@
       state.currentQuestionIndex = 0;
       state.score = 0;
       state.answerSelected = false;
+      state.userAnswers = [];
       
       DOM.quizTitle.textContent = category;
       DOM.questionContainer.innerHTML = "";
@@ -1713,6 +1797,7 @@
       DOM.quizSection.style.display = "block";
       DOM.resultsBox.style.display = "none";
       DOM.submitButton.style.display = "none";
+      DOM.nextButton.style.display = "none";
       
       showQuestion();
     }
@@ -1722,9 +1807,17 @@
       DOM.questionContainer.innerHTML = `
         <div class="question-text">${q.question}</div>
         <div id="answerContainer"></div>
+        <div id="explanationContainer" class="explanation" style="display:none;">
+          <div class="explanation-title">Explanation</div>
+          <div id="explanationText"></div>
+          <div id="correctAnswer" class="correct-answer"></div>
+        </div>
       `;
 
       const answerContainer = document.getElementById("answerContainer");
+      const explanationContainer = document.getElementById("explanationContainer");
+      const explanationText = document.getElementById("explanationText");
+      const correctAnswer = document.getElementById("correctAnswer");
       
       const answerPairs = q.answers.map((answer, index) => ({ answer, originalIndex: index }));
       const shuffledAnswers = shuffle([...answerPairs]);
@@ -1734,11 +1827,11 @@
         btn.className = "answer-btn";
         btn.textContent = item.answer;
         btn.setAttribute("aria-label", `Select answer: ${item.answer}`);
-        btn.onclick = () => handleAnswer(item.originalIndex, btn, answerContainer);
+        btn.onclick = () => handleAnswer(item.originalIndex, btn, answerContainer, explanationContainer, explanationText, correctAnswer);
         btn.onkeydown = (e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            handleAnswer(item.originalIndex, btn, answerContainer);
+            handleAnswer(item.originalIndex, btn, answerContainer, explanationContainer, explanationText, correctAnswer);
           }
         };
         answerContainer.appendChild(btn);
@@ -1750,11 +1843,11 @@
       
       // Show submit button on last question
       if (state.currentQuestionIndex === state.currentQuestions.length - 1) {
-        DOM.submitButton.style.display = "block";
+        DOM.submitButton.style.display = "none"; // Will be shown after last answer
       }
     }
 
-    function handleAnswer(selectedOriginalIndex, clickedBtn, container) {
+    function handleAnswer(selectedOriginalIndex, clickedBtn, container, explanationContainer, explanationText, correctAnswer) {
       if (state.answerSelected) return;
       state.answerSelected = true;
       
@@ -1763,6 +1856,15 @@
       answerButtons.forEach(btn => btn.disabled = true);
 
       const isCorrect = selectedOriginalIndex === q.correct;
+
+      // Store user answer for review
+      state.userAnswers.push({
+        question: q.question,
+        userAnswer: q.answers[selectedOriginalIndex],
+        correctAnswer: q.answers[q.correct],
+        isCorrect,
+        explanation: q.explanation
+      });
 
       // Update stats
       if (!stats[state.currentCategory]) stats[state.currentCategory] = {};
@@ -1793,12 +1895,23 @@
         }
       });
 
-      // Auto-proceed to next question or show results
-      setTimeout(() => {
-        if (state.currentQuestionIndex < state.currentQuestions.length - 1) {
-          nextQuestion();
+      // Show explanation and correct answer if wrong
+      if (q.explanation) {
+        explanationText.textContent = q.explanation;
+        explanationContainer.style.display = "block";
+        
+        if (!isCorrect) {
+          correctAnswer.textContent = `Correct Answer: ${q.answers[q.correct]}`;
+          correctAnswer.style.display = "block";
         }
-      }, 800);
+      }
+
+      // Show next button (or submit button if last question)
+      if (state.currentQuestionIndex === state.currentQuestions.length - 1) {
+        DOM.submitButton.style.display = "block";
+      } else {
+        DOM.nextButton.style.display = "block";
+      }
     }
 
     function playAudio(audioElement) {
@@ -1809,6 +1922,7 @@
     function nextQuestion() {
       state.answerSelected = false;
       state.currentQuestionIndex++;
+      DOM.nextButton.style.display = "none";
       DOM.submitButton.style.display = "none";
       
       if (state.currentQuestionIndex < state.currentQuestions.length) {
@@ -1831,9 +1945,33 @@
         triggerCelebration();
       }
 
+      // Generate review section for incorrect answers
+      let reviewSection = '';
+      const incorrectAnswers = state.userAnswers.filter(a => !a.isCorrect);
+      
+      if (incorrectAnswers.length > 0) {
+        reviewSection = `
+          <div style="margin-top: 2rem;">
+            <h3>Review Incorrect Answers</h3>
+            ${incorrectAnswers.map(answer => `
+              <div style="margin-bottom: 1.5rem;">
+                <p><strong>Question:</strong> ${answer.question}</p>
+                <p><strong>Your answer:</strong> <span style="color: var(--incorrect)">${answer.userAnswer}</span></p>
+                <p><strong>Correct answer:</strong> <span style="color: var(--correct)">${answer.correctAnswer}</span></p>
+                ${answer.explanation ? `<div class="explanation" style="margin-top: 0.5rem;">
+                  <div class="explanation-title">Explanation</div>
+                  <div>${answer.explanation}</div>
+                </div>` : ''}
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
       DOM.resultsBox.innerHTML = `
         <h2>${state.currentCategory} Complete</h2>
         <p>You scored <strong>${state.score}</strong> out of <strong>${state.currentQuestions.length}</strong> (${percent}%)</p>
+        ${reviewSection}
         <div class="button-group">
           <button class="btn" onclick="loadCategories()">Back to Categories</button>
           <button class="btn btn-secondary" onclick="startQuiz('${state.currentCategory}')">Restart Quiz</button>
@@ -1874,6 +2012,7 @@
 
     // Initialize
     window.onload = loadCategories;
+    DOM.nextButton.onclick = nextQuestion;
     DOM.submitButton.onclick = showResults;
   </script>
 </body>
