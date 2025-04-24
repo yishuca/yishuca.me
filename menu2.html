@@ -309,45 +309,98 @@
         // =============================================
         const allQuizQuestions = [
             {
-                question: "What is the capital of France?",
-                answer: "Paris"
+                question: "What is the Steak Tartare served with?",
+                answer: "Crostinis"
             },
             {
-                question: "Which planet is known as the Red Planet?",
-                answer: "Mars"
+                question: "How are the crostinis prepared and served?",
+                answer: "Toasted Sliced Baguettes with light olive oil and salt and pepper"
             },
             {
-                question: "What is the largest mammal in the world?",
-                answer: "Blue whale"
+                question: "Can I get more crostinis?",
+                answer: "Yes"
             },
             {
-                question: "In which year did World War II end?",
-                answer: "1945"
+                question: "Is the Steak Tartare be gluten free?",
+                answer: "Yes, with gluten free bread instead of crostinis."
             },
             {
-                question: "What is the chemical symbol for gold?",
-                answer: "Au"
+                question: "What does the Hamachi come with?",
+                answer: "Sashimi sliced yellowtail, shishito puree, orange miso sauce, sliced fresno chili, charred pineapple, and microcilantro."
             },
             {
-                question: "Who painted the Mona Lisa?",
-                answer: "Leonardo da Vinci"
+                question: "How much fish comes with the Hamachi?",
+                answer: "6 ounces."
             },
             {
-                question: "What is the tallest mountain in the world?",
-                answer: "Mount Everest"
+                question: "Why is it called Boise Vertical Farms salad?",
+                answer: "We get our supply from Boise Vertical Farms who do hyrdroponics instead of soil. They also help rehabilitate felons to help rentigrate them back into the society."
             },
             {
-                question: "Which country is home to the kangaroo?",
-                answer: "Australia"
+                question: "What kind of greens are in the Boise Vertical Farms salad?",
+                answer: "It's like spring mix of greens."
             },
             {
-                question: "What is the largest ocean on Earth?",
-                answer: "Pacific Ocean"
+                question: "What is all on the Boise Vertical Farms salad?",
+                answer: "It's dressed with a lemon champagne vinaigrette with a pinch of dijon mustard, acme garlic croutons, and julienned radish. "
             },
             {
-                question: "Who wrote 'Romeo and Juliet'?",
-                answer: "William Shakespeare"
+                question: "What's the Caviar like?",
+                answer: "We source our caviar from Idaho Springs' local sturgeon, and it comes with potato chips, capers, red onions, hardboiled egg whites and egg yolk, parsley and creme fresh."
             },
+            {
+                question: "Where is the caviar sourced?",
+                answer: "It's sourced from Idaho Springs about 45 minutes from here, just outside of Hagerman."
+            },
+            {
+                question: "Which language has the most native speakers?",
+                answer: "Mandarin Chinese"
+            },
+            {
+                question: "What is the main component of the Sun?",
+                answer: "Hydrogen"
+            },
+            {
+                question: "Which language has the most native speakers?",
+                answer: "Mandarin Chinese"
+            },
+            
+            {
+                question: "What is the main component of the Sun?",
+                answer: "Hydrogen"
+            },
+            {
+                question: "Which language has the most native speakers?",
+                answer: "Mandarin Chinese"
+            },
+            
+            {
+                question: "What is the main component of the Sun?",
+                answer: "Hydrogen"
+            },
+            {
+                question: "Which language has the most native speakers?",
+                answer: "Mandarin Chinese"
+            },
+            
+            {
+                question: "What is the main component of the Sun?",
+                answer: "Hydrogen"
+            },
+            {
+                question: "Which language has the most native speakers?",
+                answer: "Mandarin Chinese"
+            },
+            
+            {
+                question: "What is the main component of the Sun?",
+                answer: "Hydrogen"
+            },
+            {
+                question: "Which language has the most native speakers?",
+                answer: "Mandarin Chinese"
+            },
+            
             {
                 question: "What is the main component of the Sun?",
                 answer: "Hydrogen"
@@ -504,7 +557,7 @@
                 userAnswers[currentQuestionIndex].isCorrect = true;
             } 
             // Fuzzy match (similarity > 0.8)
-            else if (similarity(userAnswerLower, correctAnswerLower) > 0.8) {
+            else if (similarity(userAnswerLower, correctAnswerLower) > 0.3) {
                 feedback.textContent = `Almost! The correct answer is "${correctAnswer}". We accepted "${userAnswer}" as close enough.`;
                 feedback.className = 'feedback partial';
                 score += 0.5; // Give half point for close answers
