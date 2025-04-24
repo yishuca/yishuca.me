@@ -1,2736 +1,655 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Menu Training Quiz</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      --card-bg: rgba(255, 255, 255, 0.08);
-      --card-border: rgba(255, 255, 255, 0.1);
-      --primary: #6c5ce7;
-      --secondary: #a29bfe;
-      --accent: #fd79a8;
-      --text: rgba(255, 255, 255, 0.92);
-      --text-muted: rgba(255, 255, 255, 0.6);
-      --correct: #00b894;
-      --incorrect: #d63031;
-      --correct-bg: rgba(0, 184, 148, 0.2);
-      --incorrect-bg: rgba(214, 48, 49, 0.2);
-      --blur: blur(12px);
-      --explanation-bg: rgba(255, 255, 255, 0.05);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --primary-color: #bb86fc;
+            --secondary-color: #03dac6;
+            --error-color: #cf6679;
+            --success-color: #4caf50;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      padding: 2rem;
-      line-height: 1.6;
-    }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            touch-action: pan-y;
+        }
 
-    h1, h2, h3 {
-      margin-top: 0;
-      font-weight: 600;
-      color: var(--text);
-    }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-    }
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-    }
+        .quiz-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+            position: relative;
+            user-select: none;
+        }
 
-    .card {
-      background: var(--card-bg);
-      backdrop-filter: var(--blur);
-      -webkit-backdrop-filter: var(--blur);
-      border: 1px solid var(--card-border);
-      border-radius: 1rem;
-      padding: 1.75rem;
-      text-align: center;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 160px;
-    }
+        .question-container {
+            margin-bottom: 1.5rem;
+        }
 
-    .card:hover {
-      background: rgba(255, 255, 255, 0.12);
-    }
+        .question-number {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
 
-    .btn {
-      background: var(--primary);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 0.75rem;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 1rem;
-      transition: all 0.2s;
-    }
+        .question-text {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
 
-    .btn:hover {
-      background: var(--secondary);
-      transform: translateY(-1px);
-    }
+        .answer-input {
+            width: 100%;
+            padding: 16px 15px;
+            background-color: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: var(--border-radius);
+            color: var(--text-color);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            transition: border 0.3s;
+        }
 
-    .btn:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.5);
-    }
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
 
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.1);
-    }
+        .answer-input:focus::placeholder {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
 
-    .btn-next {
-      display: none; /* Initially hidden */
-      margin-top: 1.5rem;
-    }
+        .feedback {
+            padding: 12px;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            display: none;
+        }
 
-    .quiz-box {
-      background: var(--card-bg);
-      backdrop-filter: var(--blur);
-      -webkit-backdrop-filter: var(--blur);
-      border: 1px solid var(--card-border);
-      border-radius: 1rem;
-      padding: 2rem;
-      margin-top: 2rem;
-    }
+        .feedback.correct {
+            background-color: rgba(76, 175, 80, 0.2);
+            border-left: 4px solid var(--success-color);
+            display: block;
+        }
 
-    .answer-btn {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 1rem 1.25rem;
-      border-radius: 0.75rem;
-      margin-top: 0.75rem;
-      width: 100%;
-      text-align: left;
-      cursor: pointer;
-      color: var(--text);
-      font-size: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.2s;
-    }
+        .feedback.incorrect {
+            background-color: rgba(207, 102, 121, 0.2);
+            border-left: 4px solid var(--error-color);
+            display: block;
+        }
 
-    .answer-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--primary);
-    }
+        .feedback.partial {
+            background-color: rgba(255, 193, 7, 0.2);
+            border-left: 4px solid #FFC107;
+            display: block;
+        }
 
-    .answer-btn:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.3);
-    }
+        .button {
+            background-color: var(--primary-color);
+            color: #000;
+            border: none;
+            padding: 16px 24px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            min-height: 54px;
+        }
 
-    .answer-btn.correct {
-      background: var(--correct-bg);
-      border-color: var(--correct);
-    }
+        .button:hover {
+            background-color: #a370d8;
+        }
 
-    .answer-btn.incorrect {
-      background: var(--incorrect-bg);
-      border-color: var(--incorrect);
-    }
+        .button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
 
-    .answer-btn:disabled {
-      cursor: not-allowed;
-      opacity: 0.8;
-    }
+        .next-button {
+            display: none;
+            margin-left: auto;
+        }
 
-    .progress-bar {
-      height: 6px;
-      background: var(--primary);
-      border-radius: 9999px;
-      width: 0%;
-      margin: 1.5rem 0 2rem 0;
-      transition: width 0.4s ease;
-    }
+        .results-container {
+            text-align: center;
+            display: none;
+        }
 
-    .muted {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-      display: block;
-    }
+        .results-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
 
-    #confetti-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1000;
-      display: none;
-    }
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
 
-    .stats {
-      margin-top: 0.75rem;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
+        .restart-button {
+            background-color: var(--secondary-color);
+            color: #000;
+        }
 
-    .question-text {
-      font-size: 1.25rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
-    }
+        .restart-button:hover {
+            background-color: #00b9a6;
+        }
 
-    .button-group {
-      display: flex;
-      gap: 0.75rem;
-      margin-top: 1.5rem;
-    }
+        .progress-container {
+            width: 100%;
+            background-color: #2d2d2d;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            height: 8px;
+        }
 
-    .explanation {
-      background: var(--explanation-bg);
-      padding: 1rem;
-      border-radius: 0.75rem;
-      margin-top: 1rem;
-      border-left: 3px solid var(--primary);
-      display: none;
-      animation: fadeIn 0.3s ease-out;
-    }
+        .progress-bar {
+            height: 100%;
+            border-radius: var(--border-radius);
+            background-color: var(--primary-color);
+            transition: width 0.4s ease;
+        }
 
-    .explanation-title {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: var(--secondary);
-    }
+        .quit-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--error-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 8px;
+        }
 
-    .correct-answer {
-      font-weight: 600;
-      color: var(--correct);
-      margin-top: 0.5rem;
-      display: none;
-    }
+        .review-container {
+            display: none;
+            margin-top: 2rem;
+            width: 100%;
+        }
 
-    .next-button-container {
-      display: flex;
-      justify-content: flex-end;
-    }
+        .review-item {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--box-shadow);
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        .review-question {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
 
-    @media (max-width: 768px) {
-      body {
-        padding: 1.25rem;
-      }
-      
-      h1 {
-        font-size: 2rem;
-      }
-      
-      .grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .quiz-box {
-        padding: 1.5rem;
-      }
-      
-      .button-group {
-        flex-direction: column;
-      }
-      
-      .btn {
-        width: 100%;
-      }
-    }
-  </style>
+        .review-answer {
+            margin-bottom: 0.5rem;
+        }
+
+        .review-correct {
+            color: var(--success-color);
+        }
+
+        .review-incorrect {
+            color: var(--error-color);
+        }
+
+        .review-partial {
+            color: #FFC107;
+        }
+
+        @media (max-width: 600px) {
+            .quiz-card {
+                padding: 1.5rem;
+            }
+            
+            .question-text {
+                font-size: 1.1rem;
+            }
+            
+            .button {
+                width: 100%;
+                padding: 18px 24px;
+                font-size: 1.1rem;
+            }
+
+            .answer-input {
+                padding: 18px 15px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Menu Training Quiz</h1>
-    <div id="categoryGrid" class="grid"></div>
+    <div class="container">
+        <header>
+            <h1>Interactive Quiz</h1>
+            <p>Test your knowledge by answering these questions</p>
+        </header>
 
-    <div id="quizSection" class="quiz-box" style="display:none;">
-      <h2 id="quizTitle"></h2>
-      <div class="progress-bar" id="progressBar"></div>
-      <div class="muted" id="progressText"></div>
-      <div id="questionContainer"></div>
-      <div class="next-button-container">
-        <button id="nextButton" class="btn btn-next">Next Question →</button>
-      </div>
-      <button id="submitButton" class="btn" style="display:none;">Submit</button>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div class="quiz-card" id="quiz-card">
+            <button class="quit-button" id="quit-button">Quit Quiz</button>
+            <div class="question-container">
+                <div class="question-number" id="question-number">Question 1</div>
+                <div class="question-text" id="question-text"></div>
+            </div>
+
+            <input type="text" class="answer-input" id="answer-input" placeholder="Type your answer here..." autocomplete="off">
+            
+            <div class="feedback" id="feedback"></div>
+            
+            <div style="display: flex;">
+                <button class="button" id="submit-button">Submit</button>
+                <button class="button next-button" id="next-button">Next Question</button>
+            </div>
+        </div>
+
+        <div class="results-container" id="results-container">
+            <h2>Quiz Completed!</h2>
+            <div class="score" id="score">You scored 5/10</div>
+            <button class="button restart-button" id="restart-button">Restart Quiz</button>
+            
+            <div class="review-container" id="review-container">
+                <h3>Question Review</h3>
+                <div id="review-questions"></div>
+            </div>
+        </div>
     </div>
 
-    <div id="resultsBox" class="quiz-box" style="display:none;"></div>
-  </div>
+    <script>
+        // =============================================
+        // EDITABLE QUIZ CONTENT - MODIFY THIS SECTION
+        // Add as many questions as you want - the quiz will randomly select 10
+        // =============================================
+        const allQuizQuestions = [
+            {
+                question: "What is the capital of France?",
+                answer: "Paris"
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                answer: "Mars"
+            },
+            {
+                question: "What is the largest mammal in the world?",
+                answer: "Blue whale"
+            },
+            {
+                question: "In which year did World War II end?",
+                answer: "1945"
+            },
+            {
+                question: "What is the chemical symbol for gold?",
+                answer: "Au"
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                answer: "Leonardo da Vinci"
+            },
+            {
+                question: "What is the tallest mountain in the world?",
+                answer: "Mount Everest"
+            },
+            {
+                question: "Which country is home to the kangaroo?",
+                answer: "Australia"
+            },
+            {
+                question: "What is the largest ocean on Earth?",
+                answer: "Pacific Ocean"
+            },
+            {
+                question: "Who wrote 'Romeo and Juliet'?",
+                answer: "William Shakespeare"
+            },
+            {
+                question: "What is the main component of the Sun?",
+                answer: "Hydrogen"
+            },
+            {
+                question: "Which language has the most native speakers?",
+                answer: "Mandarin Chinese"
+            }
+        ];
+        // =============================================
+        // END OF EDITABLE SECTION
+        // =============================================
 
-  <!-- Audio elements -->
-  <audio preload="auto" id="correctSound" src="https://assets.mixkit.co/active_storage/sfx/947/947-preview.mp3"></audio>
-  <audio preload="auto" id="wrongSound" src="https://assets.mixkit.co/active_storage/sfx/1491/1491-preview.mp3"></audio>
-  <audio preload="auto" id="celebrationSound" src="https://assets.mixkit.co/active_storage/sfx/866/866-preview.mp3"></audio>
+        // DOM Elements
+        const quizCard = document.getElementById('quiz-card');
+        const questionNumber = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const answerInput = document.getElementById('answer-input');
+        const feedback = document.getElementById('feedback');
+        const submitButton = document.getElementById('submit-button');
+        const nextButton = document.getElementById('next-button');
+        const resultsContainer = document.getElementById('results-container');
+        const scoreElement = document.getElementById('score');
+        const restartButton = document.getElementById('restart-button');
+        const progressBar = document.getElementById('progress-bar');
+        const quitButton = document.getElementById('quit-button');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewQuestions = document.getElementById('review-questions');
 
-  <!-- Confetti will be added dynamically when needed -->
-  
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script>
-    // Cache frequently used DOM elements
-    const DOM = {
-      categoryGrid: document.getElementById("categoryGrid"),
-      quizSection: document.getElementById("quizSection"),
-      quizTitle: document.getElementById("quizTitle"),
-      questionContainer: document.getElementById("questionContainer"),
-      progressText: document.getElementById("progressText"),
-      progressBar: document.getElementById("progressBar"),
-      resultsBox: document.getElementById("resultsBox"),
-      submitButton: document.getElementById("submitButton"),
-      nextButton: document.getElementById("nextButton"),
-      correctSound: document.getElementById("correctSound"),
-      wrongSound: document.getElementById("wrongSound"),
-      celebrationSound: document.getElementById("celebrationSound")
-    };
+        // Quiz state
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let quizCompleted = false;
+        let quizQuestions = [];
+        let userAnswers = [];
+        let touchStartX = 0;
+        let touchEndX = 0;
 
-    // Quiz data structure - EASY TO EDIT
-    const quizData = {
-"Starters": [
-  // ================== BOISE VERTICAL FARM'S LETTUCES (5) ==================
-  {
-    id: "boise_croutons",
-    question: "What type of croutons accompany the Boise lettuces?",
-    answers: ["Acme Garlic Croutons", "Sourdough Croutons", "Parmesan Crisps", "Brioche Cubes"],
-    correct: 0,
-    explanation: "The Boise lettuces feature Acme Garlic Croutons, which are artisan-made with fresh garlic and high-quality bread for the perfect crunch. These croutons are specially selected to complement the delicate greens without overpowering them."
-  },
-  {
-    id: "boise_garnish",
-    question: "What vegetable is shaved over the Boise lettuces?",
-    answers: ["Radish", "Carrot", "Fennel", "Zucchini"],
-    correct: 0,
-    explanation: "Paper-thin radish slices add a crisp, peppery note to the salad. The radishes are shaved to order for maximum freshness and provide a beautiful visual contrast against the greens."
-  },
-  {
-    id: "boise_dressing",
-    question: "What is the dressing for the Boise lettuces?",
-    answers: ["Lemon-Champagne Vinaigrette", "Ranch", "Blue Cheese", "Green Goddess"],
-    correct: 0,
-    explanation: "Our signature Lemon-Champagne Vinaigrette is light yet flavorful, featuring fresh lemon juice, champagne vinegar, and a touch of Dijon mustard. This dressing enhances the lettuces without weighing them down."
-  },
-  {
-    id: "boise_price",
-    question: "What is the price of Boise Vertical Farm's Lettuces?",
-    answers: ["$11", "$13", "$15", "$17"],
-    correct: 1,
-    explanation: "Priced at $13, this salad reflects our commitment to premium local ingredients. The price accounts for the vertical farming techniques that ensure year-round freshness and sustainability."
-  },
-  {
-    id: "boise_origin",
-    question: "Where is Boise Vertical Farm located?",
-    answers: ["Idaho", "California", "Oregon", "Washington"],
-    correct: 0,
-    explanation: "Boise Vertical Farm operates in downtown Boise, Idaho, using cutting-edge hydroponic technology to grow greens with minimal water and no pesticides, delivering the freshest product possible."
-  },
-
-  // ================== YELLOWTAIL (5) ==================
-  {
-    id: "yellowtail_fish",
-    question: "What type of fish is used in the Yellowtail starter?",
-    answers: ["Hamachi", "Tuna", "Salmon", "Branzino"],
-    correct: 0,
-    explanation: "We use premium Hamachi (Japanese yellowtail) known for its buttery texture and rich flavor. Sourced from sustainable fisheries, it's hand-selected by our chefs for optimal quality."
-  },
-  {
-    id: "yellowtail_fruit",
-    question: "What fruit accompanies the Yellowtail?",
-    answers: ["Charred Pineapple", "Mango", "Peach", "Apple"],
-    correct: 0,
-    explanation: "Charred pineapple adds a caramelized sweetness that balances the yellowtail's richness. We grill the pineapple to enhance its natural sugars while maintaining acidity."
-  },
-  {
-    id: "yellowtail_pepper",
-    question: "Which pepper is used in the Yellowtail dish?",
-    answers: ["Fresno Chile", "Jalapeño", "Habanero", "Poblano"],
-    correct: 0,
-    explanation: "Thinly sliced Fresno chiles provide mild heat and vibrant color. Their fruity flavor profile complements rather than overwhelms the delicate fish."
-  },
-  {
-    id: "yellowtail_sauce",
-    question: "What is the base of the Yellowtail sauce?",
-    answers: ["Orange Miso", "Soy Ginger", "Ponzu", "Wasabi Aioli"],
-    correct: 0,
-    explanation: "Our house-made orange miso sauce combines white miso paste with fresh orange juice and zest, creating a perfect balance of sweet, salty, and umami flavors."
-  },
-  {
-    id: "yellowtail_price",
-    question: "What is the price of the Yellowtail starter?",
-    answers: ["$17", "$19", "$21", "$23"],
-    correct: 1,
-    explanation: "At $19, this dish offers excellent value considering the premium quality Hamachi and artisanal preparation techniques we use to create this signature starter."
-  },
-
-  // ================== STEAK TARTARE (5) ==================
-  {
-    id: "tartare_beef",
-    question: "What type of beef is used in the Steak Tartare?",
-    answers: ["Snake River Farms American Wagyu", "USDA Prime", "Grass-fed Angus", "Dry-aged Ribeye"],
-    correct: 0,
-    explanation: "Snake River Farms American Wagyu provides exceptional marbling and flavor for our tartare. This premium beef is hand-cut to order for optimal texture and freshness."
-  },
-  {
-    id: "tartare_egg",
-    question: "How is the egg prepared for Steak Tartare?",
-    answers: ["Cured Egg Yolk", "Poached", "Scrambled", "Fried"],
-    correct: 0,
-    explanation: "We cure egg yolks for 48 hours in a salt-sugar mixture, then grate them over the tartare. This technique creates luxurious texture and concentrated flavor without raw egg concerns."
-  },
-  {
-    id: "tartare_spice",
-    question: "Which spicy element accompanies the Steak Tartare?",
-    answers: ["Sriracha Sauce", "Tabasco", "Chili Oil", "Harissa"],
-    correct: 0,
-    explanation: "Our house-made sriracha adds balanced heat with garlic undertones. It's served on the side so guests can adjust the spice level to their preference."
-  },
-  {
-    id: "tartare_garnish",
-    question: "What briny garnish comes with Steak Tartare?",
-    answers: ["Capers", "Olives", "Pickled Onions", "Anchovies"],
-    correct: 0,
-    explanation: "Italian capers provide the perfect briny counterpoint to the rich beef. We rinse them lightly to control saltiness while preserving their distinctive pop of flavor."
-  },
-  {
-    id: "tartare_price",
-    question: "What is the price of Steak Tartare?",
-    answers: ["$15", "$17", "$19", "$21"],
-    correct: 1,
-    explanation: "Priced at $17, our tartare represents excellent value considering the premium Wagyu beef and artisanal preparation that goes into this classic dish."
-  },
-
-  // ================== POTATO BISQUE (5) ==================
-  {
-    id: "bisque_fish",
-    question: "What smoked fish is in the Potato Bisque?",
-    answers: ["Hagerman Trout", "Salmon", "Cod", "Sablefish"],
-    correct: 0,
-    explanation: "Hagerman Valley trout adds delicate smoky notes to the bisque. Cold-smoked in-house using applewood, it provides depth without overpowering the potato flavor."
-  },
-  {
-    id: "bisque_garnish",
-    question: "What unique garnish is on the Potato Bisque?",
-    answers: ["Spirulina Agrumato", "Crème Fraîche", "Bacon Bits", "Chives"],
-    correct: 0,
-    explanation: "Spirulina agrumato (cold-pressed with citrus) adds vibrant color and bright flavor. This innovative garnish provides antioxidant benefits while enhancing the dish visually."
-  },
-  {
-    id: "bisque_style",
-    question: "What style is the Potato Bisque?",
-    answers: ["Creamy Purée", "Chunky Stew", "Clear Broth", "Cold Soup"],
-    correct: 0,
-    explanation: "Our bisque is silky-smooth, achieved by passing the soup through a fine chinois after blending. The velvety texture showcases the quality of our ingredients."
-  },
-  {
-    id: "bisque_price",
-    question: "What is the price of Potato Bisque?",
-    answers: ["$7", "$9", "$11", "$13"],
-    correct: 1,
-    explanation: "At $9, this starter offers comforting sophistication. The price reflects the labor-intensive preparation and premium ingredients like smoked trout and organic potatoes."
-  },
-  {
-    id: "bisque_origin",
-    question: "Where is Hagerman Trout sourced from?",
-    answers: ["Idaho", "Alaska", "Norway", "Scotland"],
-    correct: 0,
-    explanation: "Hagerman Trout comes from the mineral-rich springs of Idaho's Hagerman Valley, known for producing exceptionally clean, flavorful fish through sustainable aquaculture."
-  },
-
-  // ================== GRILLED SPANISH OCTOPUS (5) ==================
-  {
-    id: "octopus_origin",
-    question: "Where is the octopus sourced from?",
-    answers: ["Spain", "Japan", "Mediterranean", "Mexico"],
-    correct: 0,
-    explanation: "Our octopus comes directly from Galician waters in Spain, prized for their superior texture and flavor. It's flash-frozen at sea to preserve quality."
-  },
-  {
-    id: "octopus_ragu",
-    question: "What is in the Sunset Butte Bean & Chorizo Ragú?",
-    answers: ["Beans + Chorizo", "Lentils + Bacon", "Peas + Pancetta", "Corn + Sausage"],
-    correct: 0,
-    explanation: "The ragú features heirloom beans from local Sunset Butte Farm and house-made chorizo, creating a hearty base that complements the tender octopus."
-  },
-  {
-    id: "octopus_sauce",
-    question: "What sauce accompanies the Grilled Octopus?",
-    answers: ["Romesco Sauce", "Aioli", "Mojo Verde", "Chimichurri"],
-    correct: 0,
-    explanation: "Traditional Spanish romesco sauce - made with roasted tomatoes, peppers, almonds, and sherry vinegar - provides the perfect smoky, nutty complement to the octopus."
-  },
-  {
-    id: "octopus_price",
-    question: "What is the price of Grilled Spanish Octopus?",
-    answers: ["$21", "$23", "$25", "$27"],
-    correct: 1,
-    explanation: "Priced at $23, this dish reflects the premium quality Spanish octopus and the labor-intensive preparation required to achieve its perfect tenderness."
-  },
-  {
-    id: "octopus_cooking",
-    question: "How is the octopus prepared before grilling?",
-    answers: ["Slow-poached", "Raw", "Fried", "Smoked"],
-    correct: 0,
-    explanation: "We slow-poach the octopus in a court bouillon for several hours to ensure tenderness, then finish it on the grill for smoky char and crisp texture."
-  },
-
-  // ================== NONNA ANNA'S MEATBALLS (5) ==================
-  {
-    id: "meatballs_cheese",
-    question: "Which cheese is used in Nonna Anna's Meatballs?",
-    answers: ["Pecorino", "Parmigiano", "Ricotta", "Mozzarella"],
-    correct: 0,
-    explanation: "Pecorino Romano adds a distinctive salty, tangy flavor to our meatballs. Aged for 8 months, it provides depth that younger cheeses can't match."
-  },
-  {
-    id: "meatballs_gremolata",
-    question: "What is in the rosemary gremolata?",
-    answers: ["Rosemary + Lemon + Garlic", "Parsley + Lemon", "Basil + Pine Nuts", "Mint + Garlic"],
-    correct: 0,
-    explanation: "Our rosemary gremolata combines fresh rosemary, lemon zest, and garlic - a modern twist on the classic that cuts through the richness of the meatballs beautifully."
-  },
-  {
-    id: "meatballs_oil",
-    question: "What oil is drizzled on Nonna Anna's Meatballs?",
-    answers: ["Extra Virgin Olive Oil", "Truffle Oil", "Chili Oil", "Avocado Oil"],
-    correct: 0,
-    explanation: "We finish the dish with premium Italian extra virgin olive oil, cold-pressed from early harvest olives for its peppery finish and antioxidant properties."
-  },
-  {
-    id: "meatballs_price",
-    question: "What is the price of Nonna Anna's Meatballs?",
-    answers: ["$13", "$15", "$17", "$19"],
-    correct: 1,
-    explanation: "At $15, these meatballs represent authentic Italian craftsmanship, made with heritage pork, premium cheeses, and artisanal breadcrumbs."
-  },
-  {
-    id: "meatballs_count",
-    question: "How many meatballs are typically served?",
-    answers: ["3", "5", "7", "Market count"],
-    correct: 0,
-    explanation: "Three substantial meatballs make the perfect starter portion, each weighing about 2 ounces to ensure proper cooking and ideal texture."
-  },
-
-  // ================== FOIE GRAS TORCHON (5) ==================
-  {
-    id: "foie_prep",
-    question: "How is the foie gras prepared?",
-    answers: ["Torchon", "Seared", "Mousse", "Pâté"],
-    correct: 0,
-    explanation: "Prepared as a torchon, the foie gras is wrapped in cheesecloth and poached, resulting in an incredibly smooth texture that melts on the tongue."
-  },
-  {
-    id: "foie_accompaniment",
-    question: "What fruit butter accompanies the Foie Gras Torchon?",
-    answers: ["Spiced Apple Butter", "Pear Jam", "Fig Compote", "Berry Coulis"],
-    correct: 0,
-    explanation: "Our spiced apple butter balances the foie gras' richness with warm cinnamon and allspice notes, made from locally sourced heirloom apples."
-  },
-  {
-    id: "foie_garnish",
-    question: "What green is served with the Foie Gras Torchon?",
-    answers: ["Arugula", "Frisée", "Spinach", "Mizuna"],
-    correct: 0,
-    explanation: "Baby arugula provides a peppery contrast to the rich foie gras. We select the most tender leaves and dress them lightly with lemon to cut through the fat."
-  },
-  {
-    id: "foie_salt",
-    question: "What type of salt garnishes the Foie Gras Torchon?",
-    answers: ["Fleur de Sel", "Himalayan Pink", "Smoked Sea Salt", "Black Lava"],
-    correct: 0,
-    explanation: "French fleur de sel adds the perfect finishing touch - its delicate flakes provide subtle crunch and clean salinity without overpowering the foie gras."
-  },
-  {
-    id: "foie_price",
-    question: "What is the price of Foie Gras Torchon?",
-    answers: ["$15", "$17", "$19", "$21"],
-    correct: 1,
-    explanation: "Priced at $17, this luxurious starter reflects the premium quality of the foie gras and the skilled preparation required for this classic French technique."
-  },
-
-  // ================== UN-TRADITIONAL CAVIAR SERVICE (5) ==================
-  {
-    id: "caviar_type",
-    question: "What type of caviar is served?",
-    answers: ["Idaho Springs Local Sturgeon", "Beluga", "Osetra", "Salmon Roe"],
-    correct: 0,
-    explanation: "We source sustainable sturgeon caviar from Idaho Springs Aquaculture, known for its buttery texture and clean, briny flavor with nutty undertones."
-  },
-  {
-    id: "caviar_unit",
-    question: "How is the caviar priced?",
-    answers: ["Per Ounce", "Per 50g", "Per Jar", "Per Serving"],
-    correct: 0,
-    explanation: "Our caviar is priced per ounce to accommodate different party sizes and preferences. We recommend starting with one ounce for two guests as an appetizer."
-  },
-  {
-    id: "caviar_price",
-    question: "What is the price of the caviar service?",
-    answers: ["$125/oz", "$150/oz", "$100/oz", "$175/oz"],
-    correct: 0,
-    explanation: "At $125 per ounce, our domestic caviar offers exceptional quality at a more accessible price point than imported varieties, while supporting sustainable aquaculture."
-  },
-  {
-    id: "caviar_accompaniments",
-    question: "Which is NOT a traditional caviar accompaniment?",
-    answers: ["Potato Chips", "Crème Fraîche", "Blini", "Chopped Egg"],
-    correct: 0,
-    explanation: "While we offer traditional accompaniments, our signature potato chips add a playful, local twist - made from Idaho potatoes fried in duck fat for extra richness."
-  },
-  {
-    id: "caviar_region",
-    question: "Where is the caviar sourced from?",
-    answers: ["Idaho", "Caspian Sea", "France", "China"],
-    correct: 0,
-    explanation: "Our caviar comes from sustainable sturgeon farms in Idaho's pristine waters, where careful aquaculture practices produce world-class roe with minimal environmental impact."
-  }
-],
-"Entrees": [
-  // ================== STRAWBERRY BALSAMIC LETTUCE (5) ==================
-  {
-    id: "strawberry_protein",
-    question: "What protein is in the Strawberry Balsamic Lettuce entree?",
-    answers: ["Grilled Chicken", "Seared Salmon", "Grilled Shrimp", "Tofu"],
-    correct: 0,
-    explanation: "The entree features tender grilled chicken breast, marinated in herbs and olive oil, then grilled to perfection. This lean protein balances the sweetness of the strawberries."
-  },
-  {
-    id: "strawberry_cheese",
-    question: "Which cheese is featured in Strawberry Balsamic Lettuce?",
-    answers: ["Goat Cheese", "Parmigiano", "Blue Cheese", "Feta"],
-    correct: 0,
-    explanation: "Creamy goat cheese crumbles add tangy richness that complements the sweet strawberries. We use locally sourced chèvre for its fresh, mild flavor."
-  },
-  {
-    id: "strawberry_nut",
-    question: "What nut is included in Strawberry Balsamic Lettuce?",
-    answers: ["Almonds", "Walnuts", "Pecans", "Pine Nuts"],
-    correct: 0,
-    explanation: "Toasted almond slices provide satisfying crunch and nutty flavor. We toast them in-house daily to ensure maximum freshness and aroma."
-  },
-  {
-    id: "strawberry_dressing",
-    question: "What is the dressing for Strawberry Balsamic Lettuce?",
-    answers: ["Strawberry Vinaigrette", "Balsamic Glaze", "Ranch", "Honey Mustard"],
-    correct: 0,
-    explanation: "Our signature strawberry vinaigrette blends fresh strawberry purée with aged balsamic and extra virgin olive oil for a perfectly balanced sweet-tart dressing."
-  },
-  {
-    id: "strawberry_price",
-    question: "What is the price of Strawberry Balsamic Lettuce?",
-    answers: ["$21", "$23", "$25", "$27"],
-    correct: 1,
-    explanation: "Priced at $23, this entree salad offers excellent value considering the premium ingredients including organic greens, seasonal strawberries, and antibiotic-free chicken."
-  },
-
-  // ================== OVEN ROASTED ALASKAN BLACK COD (5) ==================
-  {
-    id: "cod_fish",
-    question: "What type of fish is used in the Black Cod entree?",
-    answers: ["Alaskan Black Cod", "Atlantic Salmon", "Chilean Sea Bass", "Halibut"],
-    correct: 0,
-    explanation: "Also known as sablefish, Alaskan black cod has an exceptionally buttery texture due to its high oil content. We source it sustainably from cold Alaskan waters."
-  },
-  {
-    id: "cod_relish",
-    question: "What relish accompanies the Black Cod?",
-    answers: ["Preserved Fennel Relish", "Tomato Jam", "Onion Marmalade", "Cucumber Pickles"],
-    correct: 0,
-    explanation: "Our preserved fennel relish adds bright acidity and crunch, balancing the fish's richness. The fennel is pickled in-house with citrus and spices."
-  },
-  {
-    id: "cod_potatoes",
-    question: "How are the potatoes prepared for Black Cod?",
-    answers: ["Glazed Yukon Potatoes", "Mashed Potatoes", "Roasted Fingerlings", "French Fries"],
-    correct: 0,
-    explanation: "Yukon gold potatoes are glazed in a light butter sauce with herbs, creating a tender yet structured accompaniment that doesn't overpower the delicate fish."
-  },
-  {
-    id: "cod_sauce",
-    question: "What sauce is served with Black Cod?",
-    answers: ["Bouillabaisse Sauce", "Beurre Blanc", "Hollandaise", "Lemon Butter"],
-    correct: 0,
-    explanation: "A refined bouillabaisse sauce adds depth with its saffron-infused seafood stock base, complementing the cod's natural flavors without overwhelming them."
-  },
-  {
-    id: "cod_price",
-    question: "What is the price of Oven Roasted Alaskan Black Cod?",
-    answers: ["$29", "$31", "$33", "$35"],
-    correct: 1,
-    explanation: "At $31, this dish represents excellent value for premium wild-caught black cod, which is more labor-intensive to harvest than many other fish varieties."
-  },
-
-  // ================== ½ ROASTED CHICKEN (5) ==================
-  {
-    id: "chicken_mushrooms",
-    question: "What mushrooms are served with the ½ Roasted Chicken?",
-    answers: ["Shiitake Mushrooms", "Cremini", "Morels", "Chanterelles"],
-    correct: 0,
-    explanation: "Meaty shiitake mushrooms add umami depth to the dish. We sauté them with thyme and garlic to enhance their natural savory qualities."
-  },
-  {
-    id: "chicken_potatoes",
-    question: "How are the potatoes prepared for ½ Roasted Chicken?",
-    answers: ["Pommes Purée", "Duck Fat Potatoes", "Gratin", "Roasted Wedges"],
-    correct: 0,
-    explanation: "Silky pommes purée (French-style mashed potatoes) provide comforting richness. We use a 2:1 ratio of butter to potatoes for exceptional creaminess."
-  },
-  {
-    id: "chicken_vinegar",
-    question: "What vinegar is used in the ½ Roasted Chicken dish?",
-    answers: ["Spanish Sherry Vinegar", "Balsamic", "Red Wine Vinegar", "Champagne Vinegar"],
-    correct: 0,
-    explanation: "Aged Spanish sherry vinegar adds nuanced acidity with nutty undertones. We reduce it slightly to mellow the sharpness while preserving complexity."
-  },
-  {
-    id: "chicken_portion",
-    question: "What portion of chicken is served?",
-    answers: ["½ Chicken", "Whole Chicken", "Chicken Breast", "Chicken Thighs"],
-    correct: 0,
-    explanation: "The dish includes a half chicken (breast, wing, thigh and leg) from small farms where birds are raised with ample space and natural feed."
-  },
-  {
-    id: "chicken_price",
-    question: "What is the price of ½ Roasted Chicken?",
-    answers: ["$29", "$31", "$33", "$35"],
-    correct: 1,
-    explanation: "Priced at $31, this entree reflects the quality of our pasture-raised chickens and the classic French technique used in its preparation."
-  },
-
-  // ================== LOCAL ANGUS SKIRT STEAK (5) ==================
-  {
-    id: "steak_cut",
-    question: "What cut is used in the Local Angus Skirt Steak?",
-    answers: ["6oz Roulade", "8oz Filet", "12oz Ribeye", "16oz T-Bone"],
-    correct: 0,
-    explanation: "We use a 6oz skirt steak roulade - the meat is butterflied, rolled with herbs, and tied for even cooking. This preparation maximizes flavor from this traditionally tough cut."
-  },
-  {
-    id: "steak_potatoes",
-    question: "How are the potatoes prepared for Skirt Steak?",
-    answers: ["Duck Fat Potatoes", "Pommes Purée", "Gratin", "Steak Fries"],
-    correct: 0,
-    explanation: "Duck fat potatoes are roasted until crisp outside and creamy inside. The rendered duck fat adds incredible richness that stands up to the bold steak flavors."
-  },
-  {
-    id: "steak_sauce",
-    question: "What sauce accompanies the Skirt Steak?",
-    answers: ["Persillade Sauce", "Béarnaise", "Peppercorn", "Red Wine Reduction"],
-    correct: 0,
-    explanation: "Bright persillade sauce (chopped parsley, garlic, lemon and olive oil) cuts through the steak's richness. We prepare it fresh for each order."
-  },
-  {
-    id: "steak_origin",
-    question: "Where is the beef sourced for Skirt Steak?",
-    answers: ["Local Angus", "Wagyu", "Grass-fed", "Prime"],
-    correct: 0,
-    explanation: "We source from a local Angus ranch known for exceptional marbling and flavor. The cattle are pasture-raised and finished on a special grain blend."
-  },
-  {
-    id: "steak_price",
-    question: "What is the price of Local Angus Skirt Steak?",
-    answers: ["$45", "$47", "$49", "$51"],
-    correct: 1,
-    explanation: "At $47, this steak offers great value considering the labor-intensive roulade preparation and premium local sourcing."
-  },
-
-  // ================== SIDES (5) ==================
-  {
-    id: "sides_puree",
-    question: "What is Pommes Purée?",
-    answers: ["Mashed Potatoes", "Roasted Potatoes", "Potato Gratin", "French Fries"],
-    correct: 0,
-    explanation: "Pommes purée is the French version of mashed potatoes - ultra-smooth with generous butter and cream. We pass ours through a fine tamis for velvety texture."
-  },
-  {
-    id: "sides_mushrooms",
-    question: "How are the mushrooms prepared as a side?",
-    answers: ["Roasted", "Sautéed", "Grilled", "Fried"],
-    correct: 0,
-    explanation: "Seasonal mushrooms are roasted to concentrate their flavors. This dry-heat method preserves their meaty texture better than sautéing."
-  },
-  {
-    id: "sides_salad",
-    question: "What greens are in the Arugula Salad side?",
-    answers: ["Arugula", "Romaine", "Spinach", "Kale"],
-    correct: 0,
-    explanation: "Baby arugula is the base for this salad - its peppery bite stands up to rich dishes. We source organic arugula for optimal flavor and texture."
-  },
-  {
-    id: "sides_cheese",
-    question: "Which cheese is on the Arugula Salad?",
-    answers: ["Parmigiano", "Goat Cheese", "Blue Cheese", "Feta"],
-    correct: 0,
-    explanation: "Shaved Parmigiano-Reggiano adds salty, nutty complexity. We use authentic 24-month aged Parmigiano for its crystalline texture and umami depth."
-  },
-  {
-    id: "sides_price",
-    question: "What is the price for individual sides?",
-    answers: ["$7", "$9", "$11", "$13"],
-    correct: 1,
-    explanation: "At $9 per side, our portions are generous enough to share and made with the same premium ingredients as our main dishes."
-  },
-
-  // ================== CÔTE DE BOEUF (5) ==================
-  {
-    id: "cote_cut",
-    question: "What cut is Côte de Boeuf?",
-    answers: ["Ribeye on the bone", "Tenderloin", "Strip Steak", "Brisket"],
-    correct: 0,
-    explanation: "Côte de Boeuf is a magnificent bone-in ribeye, typically 28-32oz. The bone adds flavor during cooking and makes for dramatic presentation."
-  },
-  {
-    id: "cote_serving",
-    question: "How is Côte de Boeuf typically served?",
-    answers: ["For two (bone-in)", "Single portion", "As sliders", "Chopped salad"],
-    correct: 0,
-    explanation: "This majestic cut is designed for sharing - perfect for two guests. We present it whole tableside before carving."
-  },
-  {
-    id: "cote_price",
-    question: "Why does Côte de Boeuf have a market price?",
-    answers: ["Based on weight/availability", "Chef's whim", "Seasonal garnish cost", "Special order only"],
-    correct: 0,
-    explanation: "The price varies based on the exact weight of each primal cut and market fluctuations for premium dry-aged beef. We update it daily."
-  },
-  {
-    id: "cote_accompaniment",
-    question: "What likely accompanies Côte de Boeuf?",
-    answers: ["Duck Fat Potatoes", "Pommes Purée", "Truffle Fries", "All of the above"],
-    correct: 3,
-    explanation: "All these sides complement the rich steak beautifully. Our servers often recommend a combination for the ultimate steak experience."
-  },
-  {
-    id: "cote_sauce",
-    question: "Which sauce would pair best with Côte de Boeuf?",
-    answers: ["Béarnaise", "Persillade", "Red Wine Reduction", "All are appropriate"],
-    correct: 3,
-    explanation: "Each sauce offers a different way to enjoy this premium cut - béarnaise for richness, persillade for freshness, or red wine reduction for depth."
-  },
-
-  // ================== SNAKE RIVER FARMS COULOTTE (5) ==================
-  {
-    id: "srf_coulotte_cut",
-    question: "What is Coulotte steak?",
-    answers: ["Top sirloin cap", "Ribeye", "Filet mignon", "Flank steak"],
-    correct: 0,
-    explanation: "The coulotte is the flavorful cap of the top sirloin. Its coarse grain and fat marbling make it exceptionally juicy when cooked properly."
-  },
-  {
-    id: "srf_coulotte_origin",
-    question: "Why is Snake River Farms beef special?",
-    answers: ["American Wagyu hybrid", "Dry-aged 60 days", "Grass-fed only", "Wild game"],
-    correct: 0,
-    explanation: "SRF raises American Wagyu cattle - a cross between Japanese Wagyu and Angus breeds. This produces exceptional marbling and buttery texture."
-  },
-  {
-    id: "srf_coulotte_weight",
-    question: "What is the standard portion size for Coulotte?",
-    answers: ["8oz", "10oz", "12oz", "Market weight"],
-    correct: 0,
-    explanation: "We serve an 8oz portion - substantial enough to satisfy but not overwhelm, allowing the rich marbling to shine."
-  },
-  {
-    id: "srf_coulotte_price",
-    question: "What is the price of Snake River Farms Coulotte?",
-    answers: ["$49", "$53", "$57", "$61"],
-    correct: 1,
-    explanation: "At $53, this represents excellent value for SRF's premium American Wagyu beef, which typically scores 6-8 on the USDA marbling scale."
-  },
-  {
-    id: "srf_coulotte_prep",
-    question: "How is Coulotte typically cooked?",
-    answers: ["Medium-rare", "Well-done", "Sous vide only", "Chopped for salad"],
-    correct: 0,
-    explanation: "Medium-rare (130-135°F internal) allows the marbling to properly render while keeping the coulotte juicy and tender."
-  },
-
-  // ================== SNAKE RIVER FARMS TENDERLOIN (5) ==================
-  {
-    id: "srf_tenderloin_cut",
-    question: "What is another name for tenderloin?",
-    answers: ["Filet mignon", "Strip steak", "Hanger steak", "Flat iron"],
-    correct: 0,
-    explanation: "Filet mignon comes from the small end of the tenderloin - the most tender cut of beef with subtle flavor that benefits from premium quality."
-  },
-  {
-    id: "srf_tenderloin_price",
-    question: "What is the price of Snake River Farms Tenderloin?",
-    answers: ["$70", "$75", "$80", "$85"],
-    correct: 1,
-    explanation: "Priced at $75, this reflects the exceptional quality of SRF's American Wagyu tenderloin, known for its buttery texture and mild beef flavor."
-  },
-  {
-    id: "srf_tenderloin_farm",
-    question: "Where is Snake River Farms located?",
-    answers: ["Idaho", "Colorado", "Texas", "Nebraska"],
-    correct: 0,
-    explanation: "Based in Idaho, SRF raises cattle in ideal conditions at high elevation, which contributes to the beef's exceptional quality."
-  },
-  {
-    id: "srf_tenderloin_marble",
-    question: "What makes Snake River Farms beef distinctive?",
-    answers: ["High marbling score", "Extra lean", "Gamey flavor", "Pre-sliced"],
-    correct: 0,
-    explanation: "SRF beef is prized for its intense marbling (intramuscular fat) which creates unparalleled tenderness and rich flavor."
-  },
-  {
-    id: "srf_tenderloin_pairing",
-    question: "What classic accompaniment comes with the tenderloin?",
-    answers: ["Pommes Purée", "Arugula Salad", "Roasted Mushrooms", "All of the above"],
-    correct: 3,
-    explanation: "All these accompaniments complement the tenderloin beautifully - the creamy potatoes, peppery arugula, and earthy mushrooms create a perfect balance."
-  },
-
-  // ================== HANDMADE PASTA RAVIOLO (5) ==================
-  {
-    id: "raviolo_filling",
-    question: "What is special about the Raviolo's filling?",
-    answers: ["Contains an egg yolk", "Three-cheese blend", "Lobster filling", "Truffle-infused"],
-    correct: 0,
-    explanation: "Each giant raviolo contains a whole egg yolk that creates luxurious sauce when cut. The yolk is carefully placed in a ricotta and parmesan nest."
-  },
-  {
-    id: "raviolo_cheese",
-    question: "Which cheese flavors the Raviolo?",
-    answers: ["Smoked Pecorino", "Parmigiano-Reggiano", "Gorgonzola", "Ricotta"],
-    correct: 0,
-    explanation: "Grated smoked pecorino adds depth to the filling and as a garnish. The smoking process gives it a distinctive aroma that elevates the dish."
-  },
-  {
-    id: "raviolo_sauce",
-    question: "What sauce accompanies the Raviolo?",
-    answers: ["Butter Sauce", "Tomato Basil", "Pesto Cream", "Bolognese"],
-    correct: 0,
-    explanation: "Simple brown butter sauce allows the raviolo's rich filling to shine. We finish it with lemon juice to cut through the richness."
-  },
-  {
-    id: "raviolo_guanciale",
-    question: "What is guanciale?",
-    answers: ["Cured pork cheek", "Duck breast", "Beef bacon", "Lamb belly"],
-    correct: 0,
-    explanation: "Guanciale is cured pork cheek with more flavor than pancetta. We crisp it as garnish, adding salty crunch to contrast the creamy raviolo."
-  },
-  {
-    id: "raviolo_price",
-    question: "What is the price of Handmade Pasta Raviolo?",
-    answers: ["$17", "$19", "$21", "$23"],
-    correct: 1,
-    explanation: "At $19, this handmade pasta dish offers excellent value considering the artisanal preparation and premium ingredients in each component."
-  },
-
-  // ================== BOLOGNESE (5) ==================
-  {
-    id: "bolognese_meat",
-    question: "What meats are traditional in Bolognese sauce?",
-    answers: ["Beef + Pork + Pancetta", "Chicken only", "Lamb", "Veal"],
-    correct: 0,
-    explanation: "Authentic Bolognese uses a trio of meats: ground beef for richness, pork for sweetness, and pancetta for depth. We grind ours in-house daily."
-  },
-  {
-    id: "bolognese_pasta",
-    question: "What pasta shape is typically used for Bolognese?",
-    answers: ["Pappardelle", "Spaghetti", "Penne", "Farfalle"],
-    correct: 0,
-    explanation: "Wide pappardelle noodles are ideal - their broad surface area catches the chunky sauce. We make ours fresh with semolina and eggs."
-  },
-  {
-    id: "bolognese_cheese",
-    question: "Which cheese garnishes the Bolognese?",
-    answers: ["Smoked Pecorino Romano", "Parmigiano-Reggiano", "Asiago", "Gorgonzola"],
-    correct: 0,
-    explanation: "Grated smoked pecorino adds salty, tangy complexity. The smoking process gives it a distinctive flavor that enhances the meaty sauce."
-  },
-  {
-    id: "bolognese_cooktime",
-    question: "How long should proper Bolognese sauce simmer?",
-    answers: ["3+ hours", "30 minutes", "1 hour", "10 minutes"],
-    correct: 0,
-    explanation: "True Bolognese requires slow cooking - we simmer ours for 4 hours to develop deep flavors and melt the meats into the sauce."
-  },
-  {
-    id: "bolognese_price",
-    question: "What is the price of Bolognese?",
-    answers: ["$25", "$27", "$29", "$31"],
-    correct: 1,
-    explanation: "Priced at $27, this reflects the labor-intensive process and premium ingredients in our authentic, slow-cooked Bolognese."
-  }
-],
-"Wine Basics": [
-  // ================== WINE BASICS (20) ==================
-  {
-    id: "wine_components",
-    question: "What are the main components of wine?",
-    answers: ["Water, alcohol, acids, tannins", "Sugar, yeast, colorants", "Fruit juice, preservatives", "Grapes, water, sulfites"],
-    correct: 0,
-    explanation: "Wine primarily consists of water (80-90%), alcohol (ethanol, 10-15%), acids (tartaric, malic), and tannins (from skins/seeds). These elements create balance and structure."
-  },
-  {
-    id: "tannins_define",
-    question: "What are tannins in wine?",
-    answers: ["Polyphenols from skins/seeds/oak", "Sugar crystals", "Acid compounds", "Sediment particles"],
-    correct: 0,
-    explanation: "Tannins are natural polyphenols that create dryness/astringency. They come from grape skins, seeds, and oak aging. Important for structure and aging potential, especially in reds."
-  },
-  {
-    id: "dry_wine_meaning",
-    question: "What does 'dry' wine mean?",
-    answers: ["Contains minimal residual sugar", "Has no fruit flavors", "High in acidity", "Feels rough on the palate"],
-    correct: 0,
-    explanation: "Dry means most sugar has been converted to alcohol during fermentation. Technically <1% residual sugar, though some may perceive fruitiness as sweetness."
-  },
-  {
-    id: "abv_meaning",
-    question: "What does ABV stand for?",
-    answers: ["Alcohol By Volume", "Aged Barrel Vintage", "Acid Balance Value", "Aromatic Bouquet Varietal"],
-    correct: 0,
-    explanation: "ABV measures alcohol content as a percentage of total volume. Table wines typically range from 12-15% ABV, with fortified wines higher."
-  },
-  {
-    id: "vintage_meaning",
-    question: "What does 'vintage' indicate?",
-    answers: ["Year grapes were harvested", "Wine's expiration date", "Barrel aging duration", "Bottling date"],
-    correct: 0,
-    explanation: "The vintage year reflects growing conditions that affected grape quality. Non-vintage (NV) blends multiple years for consistency."
-  },
-  {
-    id: "terroir_definition",
-    question: "What is 'terroir'?",
-    answers: ["Environmental factors affecting grapes", "Wine aging process", "Tasting technique", "Blending method"],
-    correct: 0,
-    explanation: "Terroir encompasses soil, climate, topography and tradition that give wine unique sense of place. Fundamental to Old World winemaking philosophy."
-  },
-  {
-    id: "sulfites_purpose",
-    question: "Why are sulfites added to wine?",
-    answers: ["Preservative and antioxidant", "Enhance sweetness", "Increase alcohol content", "Improve color extraction"],
-    correct: 0,
-    explanation: "Sulfites (SO₂) prevent oxidation and microbial spoilage. All wines contain some naturally; added amounts are minimal (<350ppm) and rarely cause headaches."
-  },
-  {
-    id: "malolactic_fermentation",
-    question: "What is malolactic fermentation?",
-    answers: ["Conversion of malic to lactic acid", "Secondary alcohol fermentation", "Sugar concentration process", "Color stabilization technique"],
-    correct: 0,
-    explanation: "MLF softens acidity by converting sharper malic acid (like green apples) to creamier lactic acid (like milk). Common in reds and buttery Chardonnays."
-  },
-  {
-    id: "residual_sugar",
-    question: "What is residual sugar in wine?",
-    answers: ["Unfermented grape sugars remaining", "Added sweeteners", "Sugar from oak aging", "Natural grape sweetness"],
-    correct: 0,
-    explanation: "RS is sugar left after fermentation stops. Ranges from bone dry (<1g/L) to sweet dessert wines (>120g/L). Balance with acidity prevents cloying sweetness."
-  },
-  {
-    id: "tannin_sources",
-    question: "Where do wine tannins come from?",
-    answers: ["Grape skins, seeds, and oak", "Added powder", "Fermentation byproduct", "Acid conversion"],
-    correct: 0,
-    explanation: "Primary tannins come from grape solids during maceration; secondary from oak aging. White wines have minimal tannins unless oak-aged."
-  },
-  {
-    id: "decanting_purpose",
-    question: "Why decant wine?",
-    answers: ["Aerate and separate sediment", "Increase alcohol content", "Sweeten the wine", "Change serving temperature"],
-    correct: 0,
-    explanation: "Decanting exposes wine to oxygen (beneficial for young tannic reds) and removes sediment in aged wines. Not typically needed for whites or most modern reds."
-  },
-  {
-    id: "cork_taint",
-    question: "What causes 'corked' wine?",
-    answers: ["TCA contamination", "Oxidation", "Overaging", "Poor storage"],
-    correct: 0,
-    explanation: "2,4,6-trichloroanisole (TCA) from mold interacting with chlorine creates musty, wet cardboard aromas. Affects 3-5% of natural corks."
-  },
-  {
-    id: "serving_temp_reds",
-    question: "What's ideal serving temperature for full-bodied reds?",
-    answers: ["60-65°F (15-18°C)", "Room temperature", "Chilled like whites", "Warm (70°F+)"],
-    correct: 0,
-    explanation: "Slightly cooler than room temp preserves aromatics and prevents alcohol heat. Light reds (Beaujolais) can be served cooler (55°F)."
-  },
-  {
-    id: "serving_temp_whites",
-    question: "What's ideal serving temperature for white wines?",
-    answers: ["45-50°F (7-10°C)", "Room temperature", "Ice cold", "Warm like reds"],
-    correct: 0,
-    explanation: "Chilled but not ice-cold preserves aromas and acidity. Sweet wines often served colder to balance sweetness; complex whites slightly warmer."
-  },
-  {
-    id: "glassware_importance",
-    question: "Why use proper wine glasses?",
-    answers: ["Direct aromas to nose", "Decorative presentation", "Increase alcohol perception", "Speed up oxidation"],
-    correct: 0,
-    explanation: "Tulip-shaped glasses concentrate aromas. Larger bowls allow swirling for aeration. Thin rims direct wine to optimal palate zones."
-  },
-  {
-    id: "breathing_myth",
-    question: "Does wine need to 'breathe'?",
-    answers: ["Some benefit from aeration", "All wines require hours", "Only cheap wines", "Never beneficial"],
-    correct: 0,
-    explanation: "Young, tannic reds benefit most from air exposure. Most modern wines are ready to drink upon opening. Surface area exposure matters more than time."
-  },
-  {
-    id: "organic_wine",
-    question: "What defines organic wine?",
-    answers: ["Grapes grown without synthetic inputs", "No added sulfites", "Vegan production", "Low alcohol content"],
-    correct: 0,
-    explanation: "Organic certification varies by country. USDA requires organic grapes and minimal added sulfites (<100ppm). Many quality producers follow organic practices without certification."
-  },
-  {
-    id: "biodynamic_wine",
-    question: "What's biodynamic winemaking?",
-    answers: ["Holistic farming following lunar cycles", "Wild yeast fermentation", "No oak aging", "Carbon-neutral production"],
-    correct: 0,
-    explanation: "Biodynamics views vineyard as self-sustaining ecosystem. Uses preparations like horn manure and follows astrological calendar. Demeter certification required."
-  },
-  {
-    id: "old_vs_new_world",
-    question: "What distinguishes Old World vs New World wines?",
-    answers: ["Traditional vs innovative styles", "Age of vineyards", "Grape varieties used", "Oak treatment methods"],
-    correct: 0,
-    explanation: "Old World (Europe) emphasizes terroir and tradition; New World (Americas, Oceania) focuses on fruit expression and innovation. Styles are converging today."
-  },
-  {
-    id: "wine_storage",
-    question: "How should wine be stored long-term?",
-    answers: ["55°F, 70% humidity, dark", "Room temperature", "In refrigerator", "Anywhere upright"],
-    correct: 0,
-    explanation: "Ideal conditions prevent premature aging: constant cool temp (55°F), moderate humidity (keeps corks moist), darkness (prevents light strike), and sideways storage (keeps corks wet)."
-
-  // ================== GRAPE VARIETALS (20) ==================
-  },
-  {
-    id: "cabernet_profile",
-    question: "What best describes Cabernet Sauvignon?",
-    answers: ["Full-bodied with blackcurrant notes", "Light-bodied with strawberry", "Aromatic with floral notes", "Herbaceous with green pepper"],
-    correct: 0,
-    explanation: "Cabernet Sauvignon is full-bodied with classic blackcurrant/cassis flavors, firm tannins, and often oak-derived vanilla/cedar notes. Ages exceptionally well."
-  },
-  {
-    id: "pinot_noir_profile",
-    question: "What's characteristic of Pinot Noir?",
-    answers: ["Light-bodied, red fruits, earthy", "Bold, jammy, high tannin", "Grassy, citrusy", "Floral, sweet"],
-    correct: 0,
-    explanation: "Pinot Noir shows delicate red fruit (strawberry, cherry) with earthy/forest floor notes. Thin-skinned grapes make lighter-colored, lower-tannin wines that are terroir-expressive."
-  },
-  {
-    id: "merlot_profile",
-    question: "What describes Merlot?",
-    answers: ["Medium-bodied, plummy, soft tannins", "Light, herbal, tart", "Full-bodied, peppery", "Aromatic, sweet"],
-    correct: 0,
-    explanation: "Merlot offers approachable plum and black cherry flavors with velvety texture. Important in Bordeaux blends (Right Bank) and popular as varietal wine."
-  },
-  {
-    id: "syrah_shiraz",
-    question: "What's typical of Syrah/Shiraz?",
-    answers: ["Dark fruit, pepper, full-bodied", "Light, floral, crisp", "Herbal, green notes", "Sweet, jammy, low tannin"],
-    correct: 0,
-    explanation: "Syrah (Old World) shows blackberry, olive, and pepper; Shiraz (Australia) is riper and jammier. Both have significant tannins and ageability."
-  },
-  {
-    id: "chardonnay_profile",
-    question: "What defines Chardonnay?",
-    answers: ["Versatile, ranges from crisp to buttery", "Always oaky and buttery", "Light and sweet", "Herbal and tart"],
-    correct: 0,
-    explanation: "Chardonnay's style depends on climate and winemaking. Cool climate = crisp apple/pear; warm climate = tropical fruit. Oak aging adds vanilla/butter (Burgundy, California)."
-  },
-  {
-    id: "sauvignon_blanc_profile",
-    question: "How would you describe Sauvignon Blanc?",
-    answers: ["High acid, herbaceous, citrus", "Buttery, oaky", "Sweet, floral", "Full-bodied, tropical"],
-    correct: 0,
-    explanation: "Sauvignon Blanc is crisp with pronounced acidity. Shows grassy/herbal notes (New Zealand), grapefruit (Sancerre), or tropical fruit (warmer regions). Rarely oaked."
-  },
-  {
-    id: "riesling_profile",
-    question: "What's characteristic of Riesling?",
-    answers: ["High acid, aromatic, ranges dry-sweet", "Always sweet", "Neutral, low acid", "Buttery texture"],
-    correct: 0,
-    explanation: "Riesling makes dry to sweet wines with piercing acidity and floral/apricot notes. Excellent with spice. Ages remarkably well, developing petrol notes."
-  },
-  {
-    id: "pinot_grigio_gris",
-    question: "What's the difference between Pinot Grigio/Gris?",
-    answers: ["Style: light/crisp vs rich/textured", "Different grapes", "Sweet vs dry", "Red vs white wine"],
-    correct: 0,
-    explanation: "Same grape (Pinot Gris). Italian Pinot Grigio is light, crisp, neutral. French Pinot Gris (Alsace) is richer, more aromatic, sometimes slightly sweet."
-  },
-  {
-    id: "nebbiolo_profile",
-    question: "What describes Nebbiolo?",
-    answers: ["High tannin, tar/rose aromas, ages well", "Light, fruity, early-drinking", "Sweet, sparkling", "Herbal, low alcohol"],
-    correct: 0,
-    explanation: "Nebbiolo makes Barolo/Barbaresco - powerfully tannic with complex tar, rose, and cherry flavors. Requires extensive aging to soften."
-  },
-  {
-    id: "sangiovese_profile",
-    question: "What's typical of Sangiovese?",
-    answers: ["High acid, cherry, herbal notes", "Jammy, low acid", "Buttery, oaky", "Sweet, floral"],
-    correct: 0,
-    explanation: "Chianti's primary grape shows tart cherry, tomato leaf, and earthy notes. Firm acidity makes it food-friendly. Brunello is its most prestigious expression."
-  },
-  {
-    id: "tempranillo_profile",
-    question: "How would you describe Tempranillo?",
-    answers: ["Medium-bodied, red fruit, leather", "Light, herbal", "Very tannic, black fruit", "Sweet, jammy"],
-    correct: 0,
-    explanation: "Spain's flagship red offers strawberry, tobacco, and leather notes. Rioja versions often show vanilla from American oak. Ages well but approachable young."
-  },
-  {
-    id: "malbec_profile",
-    question: "What describes Malbec?",
-    answers: ["Plummy, velvety, dark-fruited", "Light, tart", "Herbal, green", "Sweet, sparkling"],
-    correct: 0,
-    explanation: "Originally from France (Cahors), now Argentina's star. Deep purple color with plum, chocolate, and soft tannins. Great value."
-  },
-  {
-    id: "zinfandel_profile",
-    question: "What's typical of Zinfandel?",
-    answers: ["Jammy, brambly, high alcohol", "Light, tart", "Herbal, green", "Sweet, low tannin"],
-    correct: 0,
-    explanation: "California's heritage grape makes robust, spicy reds with blackberry and pepper notes. Prone to high alcohol (15%+). White Zin is sweet rosé from same grape."
-  },
-  {
-    id: "grenache_profile",
-    question: "How would you describe Grenache?",
-    answers: ["Red fruit, spicy, medium tannin", "Black fruit, high tannin", "Herbal, tart", "Sweet, low alcohol"],
-    correct: 0,
-    explanation: "Grenache offers strawberry, white pepper, and warmth. Key in Rhône blends (GSM) and Spanish Garnacha. Drought-resistant, thrives in hot climates."
-  },
-  {
-    id: "viognier_profile",
-    question: "What defines Viognier?",
-    answers: ["Aromatic, floral, stone fruit", "Neutral, crisp", "Buttery, oaky", "Sweet, sparkling"],
-    correct: 0,
-    explanation: "Viognier is intensely perfumed with apricot, peach, and violet notes. Low acidity makes it prone to flabbiness. Best from Condrieu (Rhône) and California."
-  },
-  {
-    id: "chenin_blanc_profile",
-    question: "What's characteristic of Chenin Blanc?",
-    answers: ["High acid, versatile styles", "Always sweet", "Buttery, oaky", "Neutral, light"],
-    correct: 0,
-    explanation: "Chenin makes dry to sweet wines with apple/honey flavors. Loire Valley benchmark (Vouvray, Savennières). South Africa's most planted white ('Steen')."
-  },
-  {
-    id: "gewurztraminer_profile",
-    question: "How would you describe Gewürztraminer?",
-    answers: ["Lychee, rose, spicy", "Citrus, crisp", "Buttery, oaky", "Neutral, light"],
-    correct: 0,
-    explanation: "Gewürz is intensely aromatic with lychee, rose, and ginger notes. Low acidity, slightly bitter finish. Pairs well with Asian cuisine and strong cheeses."
-  },
-  {
-    id: "carmenere_profile",
-    question: "What describes Carménère?",
-    answers: ["Herbal, dark fruit, medium tannin", "Light, tart", "Sweet, jammy", "Very tannic, black fruit"],
-    correct: 0,
-    explanation: "Originally from Bordeaux, now Chile's signature grape. Shows blackberry, green pepper, and cocoa. Softer tannins than Cabernet Sauvignon."
-  },
-  {
-    id: "gruner_profile",
-    question: "What's typical of Grüner Veltliner?",
-    answers: ["Pepper, citrus, high acid", "Buttery, oaky", "Sweet, floral", "Neutral, low acid"],
-    correct: 0,
-    explanation: "Austria's flagship white offers white pepper, grapefruit, and lentil notes. Crisp acidity makes it versatile with food. Ages surprisingly well."
-  },
-  {
-    id: "albarino_profile",
-    question: "How would you describe Albariño?",
-    answers: ["High acid, citrus, saline", "Buttery, oaky", "Sweet, floral", "Neutral, light"],
-    correct: 0,
-    explanation: "Spain's Rías Baixas specialty shows lemon, peach, and sea spray minerality. Refreshing acidity perfect for seafood. Portugal calls it Alvarinho."
-
-  // ================== WINE REGIONS (20) ==================
-  },
-  {
-    id: "bordeaux_region",
-    question: "What's Bordeaux known for?",
-    answers: ["Cabernet/Merlot blends", "Pinot Noir", "Riesling", "Sangiovese"],
-    correct: 0,
-    explanation: "Bordeaux's Left Bank focuses on Cabernet-dominant blends (with Merlot/Cab Franc), while Right Bank emphasizes Merlot. Famous for age-worthy, structured reds and sweet Sauternes."
-  },
-  {
-    id: "burgundy_region",
-    question: "What grapes dominate Burgundy?",
-    answers: ["Pinot Noir (red), Chardonnay (white)", "Syrah, Viognier", "Tempranillo, Albariño", "Nebbiolo, Barbera"],
-    correct: 0,
-    explanation: "Burgundy is the spiritual home of Pinot Noir (red) and Chardonnay (white). The region emphasizes terroir expression through single-varietal wines."
-  },
-  {
-    id: "rhone_region",
-    question: "What's the Rhône Valley known for?",
-    answers: ["Syrah/GSM blends (red), Viognier (white)", "Pinot Noir", "Cabernet Sauvignon", "Riesling"],
-    correct: 0,
-    explanation: "Northern Rhône specializes in Syrah (red) and Viognier (white). Southern Rhône produces Grenache-based blends like Châteauneuf-du-Pape."
-  },
-  {
-    id: "champagne_region",
-    question: "What grapes are used in Champagne?",
-    answers: ["Chardonnay, Pinot Noir, Pinot Meunier", "Only Chardonnay", "Riesling, Gewürztraminer", "Sauvignon Blanc, Sémillon"],
-    correct: 0,
-    explanation: "Champagne blends these three grapes: Chardonnay (finesse), Pinot Noir (body), Pinot Meunier (fruitiness). Blanc de Blancs = 100% Chardonnay; Blanc de Noirs = black grapes only."
-  },
-  {
-    id: "tuscany_region",
-    question: "What's Tuscany's most famous wine?",
-    answers: ["Sangiovese-based Chianti", "Nebbiolo-based Barolo", "Corvina-based Amarone", "Tempranillo-based Rioja"],
-    correct: 0,
-    explanation: "Chianti Classico (black rooster label) is Sangiovese-dominant. Brunello di Montalcino is 100% Sangiovese. Super Tuscans often blend Sangiovese with international varieties."
-  },
-  {
-    id: "piedmont_region",
-    question: "What are Piedmont's signature wines?",
-    answers: ["Barolo/Barbaresco (Nebbiolo)", "Chianti", "Rioja", "Bordeaux blends"],
-    correct: 0,
-    explanation: "Piedmont's 'King of Wines' Barolo and 'Queen' Barbaresco are both 100% Nebbiolo. The region also produces Barbera, Dolcetto, and sparkling Moscato d'Asti."
-  },
-  {
-    id: "napa_region",
-    question: "What's Napa Valley's flagship wine?",
-    answers: ["Cabernet Sauvignon", "Pinot Noir", "Riesling", "Sangiovese"],
-    correct: 0,
-    explanation: "Napa excels with powerful, oak-aged Cabernet Sauvignon. The region's warm days/cool nights create ideal ripening conditions. Also known for Chardonnay and Meritage blends."
-  },
-  {
-    id: "sonoma_region",
-    question: "What's Sonoma best known for?",
-    answers: ["Diverse styles from cool-climate Pinot to robust Zin", "Only Cabernet", "Sweet wines", "Budget wines"],
-    correct: 0,
-    explanation: "Sonoma's varied microclimates produce excellent Pinot Noir (Russian River Valley), Chardonnay, Zinfandel (Dry Creek), and sparkling wines. More diverse than neighboring Napa."
-  },
-  {
-    id: "alsace_region",
-    question: "What's unique about Alsace wines?",
-    answers: ["Aromatic whites in tall bottles", "Big reds", "Sparkling only", "Sweet wines only"],
-    correct: 0,
-    explanation: "Alsace specializes in aromatic whites (Riesling, Gewürztraminer, Pinot Gris) in flute bottles. Mostly dry despite Germanic influence. Only French region listing varietal on label."
-  },
-  {
-    id: "loire_region",
-    question: "What wines come from the Loire Valley?",
-    answers: ["Sauvignon Blanc, Chenin Blanc, Cab Franc", "Syrah, Viognier", "Tempranillo", "Nebbiolo"],
-    correct: 0,
-    explanation: "Loire produces Sancerre/Pouilly-Fumé (Sauvignon Blanc), Vouvray (Chenin), and Chinon (Cabernet Franc). Diverse styles from crisp dry to sweet, still to sparkling."
-  },
-  {
-    id: "rioja_region",
-    question: "What defines Rioja wines?",
-    answers: ["Tempranillo with American oak", "Garnacha only", "No oak aging", "Sweet whites"],
-    correct: 0,
-    explanation: "Rioja reds are Tempranillo-based with Garnacha/Mazuelo/Graciano. Traditional styles show vanilla/dill from American oak. Aging categories: Crianza, Reserva, Gran Reserva."
-  },
-  {
-    id: "riorja_region",
-    question: "What's special about Ribera del Duero?",
-    answers: ["Premium Tempranillo (Tinto Fino)", "White wines only", "Sweet wines", "Light-bodied reds"],
-    correct: 0,
-    explanation: "Ribera produces powerful, concentrated Tempranillo (called Tinto Fino here) at high elevations. More structured than Rioja, often with French oak influence. Vega Sicilia is most famous producer."
-  },
-  {
-    id: "portugal_region",
-    question: "What's Portugal's famous fortified wine?",
-    answers: ["Port", "Sherry", "Marsala", "Madeira"],
-    correct: 0,
-    explanation: "Port is sweet fortified wine from Douro Valley, stopped with brandy during fermentation. Styles: Ruby (young), Tawny (aged), Vintage (exceptional years), LBV (bottle-aged)."
-  },
-  {
-    id: "germany_region",
-    question: "What's Germany's most prestigious wine?",
-    answers: ["Riesling from Mosel", "Pinot Noir from Baden", "Silvaner from Franken", "Dornfelder from Pfalz"],
-    correct: 0,
-    explanation: "Mosel Rieslings are light-bodied with high acidity and slate minerality. Prädikat levels indicate ripeness: Kabinett (lightest) to Trockenbeerenauslese (sweetest)."
-  },
-  {
-    id: "australia_region",
-    question: "What's Australia's signature red?",
-    answers: ["Shiraz", "Pinot Noir", "Cabernet Franc", "Sangiovese"],
-    correct: 0,
-    explanation: "Australian Shiraz is bold and fruity, ranging from Barossa Valley's jammy styles to cooler-climate peppery versions. Often blended with Cabernet Sauvignon ('Cab-Shiraz')."
-  },
-  {
-    id: "new_zealand_region",
-    question: "What's New Zealand's flagship wine?",
-    answers: ["Sauvignon Blanc from Marlborough", "Shiraz from Hawke's Bay", "Riesling from Nelson", "Pinotage from Auckland"],
-    correct: 0,
-    explanation: "Marlborough Sauvignon Blanc put NZ on the map with its explosive passionfruit/gooseberry aromas. Also produces excellent Pinot Noir (Central Otago) and Chardonnay."
-  },
-  {
-    id: "argentina_region",
-    question: "What's Argentina's most famous wine?",
-    answers: ["Malbec from Mendoza", "Torrontés from Salta", "Cabernet from Patagonia", "Chardonnay from Uco Valley"],
-    correct: 0,
-    explanation: "High-altitude Mendoza Malbec shows plush dark fruit with floral notes. Torrontés is the signature white - aromatic like Muscat but dry. Uco Valley excels with premium reds."
-  },
-  {
-    id: "chile_region",
-    question: "What's Chile's signature grape?",
-    answers: ["Carménère", "Malbec", "Tannat", "Touriga Nacional"],
-    correct: 0,
-    explanation: "Once mistaken for Merlot, Carménère is Chile's flagship variety producing herbal, spicy reds. Also known for quality Cabernet Sauvignon from Maipo Valley."
-  },
-  {
-    id: "south_africa_region",
-    question: "What's South Africa's unique grape?",
-    answers: ["Pinotage", "Carménère", "Tempranillo", "Sangiovese"],
-    correct: 0,
-    explanation: "Pinotage is a cross between Pinot Noir and Cinsault, producing earthy, smoky reds. Also known for Chenin Blanc ('Steen') and Bordeaux-style blends."
-  },
-  {
-    id: "oregon_region",
-    question: "What's Oregon's star wine?",
-    answers: ["Pinot Noir from Willamette Valley", "Cabernet Sauvignon", "Zinfandel", "Syrah"],
-    correct: 0,
-    explanation: "Willamette Valley's cool climate produces elegant, earthy Pinot Noir comparable to Burgundy. Also makes excellent Pinot Gris and Chardonnay."
-
-  // ================== FOOD PAIRING PRINCIPLES (20) ==================
-  },
-  {
-    id: "pairing_principle",
-    question: "What's the most important pairing principle?",
-    answers: ["Match weight/intensity", "Same region food/wine", "Always red with meat", "White with fish"],
-    correct: 0,
-    explanation: "Weight matching is key - delicate foods with light wines, rich foods with full-bodied wines. Regional pairing can work but isn't absolute. Many whites pair well with meat (e.g., Chardonnay with chicken)."
-  },
-  {
-    id: "acidic_food_pairing",
-    question: "How to pair high-acid foods?",
-    answers: ["Choose higher acid wine", "Sweet wine only", "Avoid wine pairing", "High tannin reds"],
-    correct: 0,
-    explanation: "Acidic foods (tomato sauce, vinaigrette) need equally high-acid wines (Sangiovese, Sauvignon Blanc) to avoid tasting flat. Sweet wines clash with acidity."
-  },
-  {
-    id: "spicy_food_pairing",
-    question: "What wine with spicy cuisine?",
-    answers: ["Off-dry aromatic white", "High alcohol red", "Oaky Chardonnay", "Tannic Cabernet"],
-    correct: 0,
-    explanation: "Spicy heat amplifies alcohol and tannins. Off-dry Riesling/Gewürztraminer cool the palate. Low-alcohol reds like Beaujolais also work. Avoid high alcohol (>14%)."
-  },
-  {
-    id: "fatty_food_pairing",
-    question: "What cuts through rich, fatty foods?",
-    answers: ["High acid/tannin wines", "Sweet wines", "Low acid wines", "Sparkling only"],
-    correct: 0,
-    explanation: "Acid cuts fat (Chianti with steak); tannins bind protein (Barolo with braised meat). Champagne's bubbles cleanse the palate. Sweet wines overwhelm savory fats."
-  },
-  {
-    id: "salty_food_pairing",
-    question: "What complements salty foods?",
-    answers: ["Sweet or sparkling wines", "High tannin reds", "Oaky whites", "High alcohol wines"],
-    correct: 0,
-    explanation: "Salt loves sweetness (Sauternes with foie gras) or bubbles (Champagne with fries). Avoid high tannins which turn bitter with salt."
-  },
-  {
-    id: "sweet_food_pairing",
-    question: "How to pair dessert?",
-    answers: ["Wine should be sweeter", "Dry wine only", "No pairing needed", "High acid wines"],
-    correct: 0,
-    explanation: "Dessert makes dry wines taste sour. Choose wine with higher sugar than food: Sauternes with crème brûlée, Port with chocolate. Acid balances sweetness."
-  },
-  {
-    id: "umami_pairing",
-    question: "What's challenging about umami pairings?",
-    answers: ["Can make wines taste bitter", "Requires sweet wines", "Needs high alcohol", "Best without wine"],
-    correct: 0,
-    explanation: "Umami-rich foods (mushrooms, aged cheese) amplify tannin bitterness. Pair with fruity, low-tannin reds (Pinot Noir) or aged whites with developed flavors."
-  },
-  {
-    id: "cheese_pairing",
-    question: "What's a universal cheese pairing?",
-    answers: ["Champagne", "Cabernet Sauvignon", "Sweet Riesling", "Oaky Chardonnay"],
-    correct: 0,
-    explanation: "Champagne's acidity and bubbles cut through fat while complementing diverse flavors. Other good options: Sauternes with blue cheese, Port with aged cheddar."
-  },
-  {
-    id: "steak_pairing",
-    question: "What's the classic steak pairing?",
-    answers: ["Cabernet Sauvignon", "Pinot Grigio", "Riesling", "Prosecco"],
-    correct: 0,
-    explanation: "Cab's tannins bind steak's protein, fat softens tannins. Also try Malbec, Syrah, or aged Barolo. For filet mignon (leaner), try Pinot Noir."
-  },
-  {
-    id: "seafood_pairing",
-    question: "What's the safest seafood pairing?",
-    answers: ["Crisp, high-acid white", "Big red wine", "Sweet wine", "No wine"],
-    correct: 0,
-    explanation: "Sauvignon Blanc, Albariño, or Chablis complement most seafood. Avoid tannic reds with fish (metallic taste). Oily fish pairs with richer whites (Chardonnay)."
-  },
-  {
-    id: "sushi_pairing",
-    question: "What's ideal with sushi?",
-    answers: ["Dry Riesling or Champagne", "Cabernet Sauvignon", "Sweet Sherry", "No pairing"],
-    correct: 0,
-    explanation: "Riesling's acidity matches wasabi/vinegar; Champagne's bubbles cleanse. Light, dry rosé also works. Avoid tannic reds that clash with fish and soy."
-  },
-  {
-    id: "pasta_pairing",
-    question: "How to pair wine with pasta?",
-    answers: ["Match sauce weight/intensity", "Always red wine", "Always white wine", "Sparkling only"],
-    correct: 0,
-    explanation: "Light sauces (pesto) = Pinot Grigio; cream sauces = oaked Chardonnay; tomato sauces = Sangiovese; meat sauces = Chianti or Barbera."
-  },
-  {
-    id: "bbq_pairing",
-    question: "What pairs with barbecue?",
-    answers: ["Zinfandel or Shiraz", "Delicate Pinot Noir", "Sweet Riesling", "Light white wine"],
-    correct: 0,
-    explanation: "BBQ's smoky-sweet flavors need bold, fruity wines. Zinfandel's jamminess complements sauce; Shiraz's pepper matches rubs. Rosé also works with pulled pork."
-  },
-  {
-    id: "vegetarian_pairing",
-    question: "How to pair vegetarian dishes?",
-    answers: ["Consider preparation method", "Only white wine", "Only light reds", "No wine"],
-    correct: 0,
-    explanation: "Grilled veggies = smoky red (Syrah); creamy dishes = rich white (Viognier); salads = crisp white (Sauvignon Blanc); mushroom dishes = earthy red (Pinot Noir)."
-  },
-  {
-    id: "chocolate_pairing",
-    question: "What wine with chocolate?",
-    answers: ["Port or Banyuls", "Dry red wine", "Dry white wine", "Champagne"],
-    correct: 0,
-    explanation: "Chocolate needs sweeter wines: Ruby Port with milk chocolate, Tawny with dark, Banyuls with bittersweet. Avoid dry wines which taste bitter."
-  },
-  {
-    id: "oysters_pairing",
-    question: "What's the classic oyster pairing?",
-    answers: ["Chablis or Muscadet", "Cabernet Sauvignon", "Sweet Riesling", "No wine"],
-    correct: 0,
-    explanation: "Chablis' minerality mirrors oyster's brininess; Muscadet's crispness cleanses. Champagne also excellent. Avoid oaky or tannic wines."
-  },
-  {
-    id: "foie_gras_pairing",
-    question: "What pairs with foie gras?",
-    answers: ["Sauternes or late-harvest Riesling", "Dry red wine", "Light white wine", "No pairing"],
-    correct: 0,
-    explanation: "Foie gras' richness needs sweet wine's acidity to cut through. Sauternes' honeyed notes complement; Tokaji or TBA Riesling also work. Savory preparations may pair with Pinot Noir."
-  },
-  {
-    id: "asian_cuisine_pairing",
-    question: "What's versatile with Asian cuisine?",
-    answers: ["Off-dry Riesling or Gewürztraminer", "Big red wine", "Oaky Chardonnay", "No wine"],
-    correct: 0,
-    explanation: "Riesling's sweetness balances spice; Gewürz's lychee notes complement flavors. For less spicy dishes, try Pinot Noir or dry rosé."
-  },
-  {
-    id: "cheese_plate_pairing",
-    question: "How to pair a diverse cheese plate?",
-    answers: ["Offer multiple wine options", "Only red wine", "Only white wine", "No pairing"],
-    correct: 0,
-    explanation: "Soft cheeses = Champagne; aged cheeses = Cabernet; blue cheeses = Sauternes; goat cheese = Sauvignon Blanc. Better to offer 2-3 wines than one compromise."
-  },
-  {
-    id: "brunch_pairing",
-    question: "What's best for brunch?",
-    answers: ["Sparkling wine or rosé", "Big red wine", "Sweet dessert wine", "No alcohol"],
-    correct: 0,
-    explanation: "Champagne's bubbles refresh; dry rosé suits diverse brunch foods. Mimosa (OJ + sparkling) is classic. Avoid heavy reds that overwhelm morning palates."
-
-  // ================== SERVICE KNOWLEDGE (20) ==================
-  },
-  {
-    id: "presenting_bottle",
-    question: "How to properly present a bottle?",
-    answers: ["Show label, state producer/year", "Open immediately", "Only show back label", "Don't let guest see bottle"],
-    correct: 0,
-    explanation: "Present bottle with label facing guest, clearly stating producer and vintage. This confirms they're receiving what they ordered. Hold by base/indent for stability."
-  },
-  {
-    id: "opening_procedure",
-    question: "What's the correct opening procedure?",
-    answers: ["Cut capsule, wipe rim, insert corkscrew", "Twist cork out quickly", "Push cork in", "Break neck of bottle"],
-    correct: 0,
-    explanation: "Use knife to cut capsule below lip. Wipe rim with clean napkin. Insert corkscrew slightly off-center. Pull steadily without jerking. Final 'kiss' sound is ideal."
-  },
-  {
-    id: "decanting_reasons",
-    question: "When should you decant wine?",
-    answers: ["Young tannic reds or aged wines with sediment", "All wines", "Only white wines", "Never"],
-    correct: 0,
-    explanation: "Decant young reds (Barolo, Cabernet) to soften tannins; old wines to separate sediment. Most whites and everyday reds don't need decanting."
-  },
-  {
-    id: "serving_order",
-    question: "What's proper serving order for multiple wines?",
-    answers: ["Light to heavy, dry to sweet", "Whatever's ready first", "Red before white", "Sweet before dry"],
-    correct: 0,
-    explanation: "Progress from light-bodied to full-bodied, dry to sweet. Whites before reds, young before old, simple before complex. Sweet wines always last."
-  },
-  {
-    id: "pour_size",
-    question: "What's standard pour size?",
-    answers: ["5oz for still, 6oz for sparkling", "Fill glass completely", "2oz tasting pour", "No standard"],
-    correct: 0,
-    explanation: "5oz allows proper swirling/aeration. Sparkling gets 6oz to maintain bubbles. 25oz bottle = ~5 glasses. Adjust for oversized/bowled glasses."
-  },
-  {
-    id: "temperature_correction",
-    question: "How to quickly chill wine?",
-    answers: ["Ice water bath (20 mins)", "Freezer (5 mins)", "Add ice cubes", "Refrigerator (hours)"],
-    correct: 0,
-    explanation: "Ice water with salt chills fastest (conduction). Freezer risks expansion/breakage. Never add ice - it dilutes wine. Plan ahead when possible."
-  },
-  {
-    id: "dealing_corked_wine",
-    question: "What to do if wine is corked?",
-    answers: ["Apologize and replace immediately", "Serve anyway", "Charge guest anyway", "Blame guest"],
-    correct: 0,
-    explanation: "Musty wet cardboard aroma = TCA contamination. Politely acknowledge and replace bottle. Never argue - even experts debate fault detection."
-  },
-  {
-    id: "handling_complaints",
-    question: "How to handle wine complaints?",
-    answers: ["Stay calm, assess validity, offer solution", "Argue with guest", "Ignore complaint", "Blame producer"],
-    correct: 0,
-    explanation: "Listen without defensiveness. If wine is flawed (corked, oxidized), replace. For stylistic dislikes, offer alternative. Manager may comp if appropriate."
-  },
-  {
-    id: "by_the_glass_service",
-    question: "How to maintain BTG wine quality?",
-    answers: ["Use preservation system, date bottles", "Leave open indefinitely", "Refrigerate reds", "No special handling"],
-    correct: 0,
-    explanation: "Opened bottles last 3-5 days with argon systems. Label with open date. Keep whites chilled, reds at cellar temp. Never pour from bottle that smells off."
-  },
-  {
-    id: "sommelier_approach",
-    question: "How should a sommelier approach guests?",
-    answers: ["Be knowledgeable but not pretentious", "Show off expertise", "Speak in jargon", "Ignore guests"],
-    correct: 0,
-    explanation: "Read guest cues - some want education, others simplicity. Avoid condescension. Convert technical terms to relatable descriptions ('crisp' vs 'high acid')."
-  },
-  {
-    id: "upselling_technique",
-    question: "What's ethical upselling technique?",
-    answers: ["Suggest better pairings within budget", "Push most expensive", "Ignore budget", "Lie about quality"],
-    correct: 0,
-    explanation: "Recommend genuine upgrades that enhance experience. 'The Chianti Classico would pair beautifully with your steak for $15 more than the house red.'"
-  },
-  {
-    id: "wine_list_navigation",
-    question: "How to help guests navigate the wine list?",
-    answers: ["Ask preferences and budget first", "Start with most expensive", "Recommend your favorite", "Pick randomly"],
-    correct: 0,
-    explanation: "Key questions: 'What style do you enjoy?' and 'Is there a price range you'd like to stay within?' Then suggest 2-3 options at different price points."
-  },
-  {
-    id: "stemware_handling",
-    question: "How to properly handle wine glasses?",
-    answers: ["Hold by stem or base", "Grab bowl with full hand", "Touch rim", "Stack multiple glasses"],
-    correct: 0,
-    explanation: "Holding bowl leaves fingerprints and transfers heat. Carry 3 max for safety. Polish before service - no lint or streaks. Store upside down in clean cellar."
-  },
-  {
-    id: "bucket_usage",
-    question: "When to use an ice bucket?",
-    answers: ["Sparkling and sweet whites", "All wines", "Only red wines", "Never"],
-    correct: 0,
-    explanation: "Champagne and dessert wines benefit from ice buckets. Most whites just need proper fridge temp. Never chill reds below 55°F - it mutes flavors."
-  },
-  {
-    id: "cork_presentation",
-    question: "What to do with the cork?",
-    answers: ["Place on table unless guest inspects", "Give to every guest", "Throw away immediately", "Keep in pocket"],
-    correct: 0,
-    explanation: "Set cork near host unless they examine it. Don't make them smell it - TCA is detectable in wine. Only mention if natural cork (vs synthetic)."
-  },
-  {
-    id: "tasting_pour",
-    question: "Why pour a taste?",
-    answers: ["Confirm wine's condition", "Show off pouring skill", "Give free samples", "No reason"],
-    correct: 0,
-    explanation: "The taste confirms the wine isn't flawed, not whether guest likes it. Pour 1-2oz for host unless they waive. Never pour taste of BTG wine."
-  },
-  {
-    id: "rejecting_wine",
-    question: "Can guests reject wine?",
-    answers: ["Only if flawed, not for dislike", "Always", "Never", "Only expensive bottles"],
-    correct: 0,
-    explanation: "Guests may reject flawed wine (corked, oxidized). Disliking sound wine isn't valid reason, though some restaurants may accommodate politely."
-  },
-  {
-    id: "leftover_wine",
-    question: "What to do with unfinished bottle?",
-    answers: ["Offer to recork for takeaway", "Discard immediately", "Serve to next guest", "Staff drinks"],
-    correct: 0,
-    explanation: "Many states allow recorking for off-premise consumption. Seal tightly and bag. Include receipt showing alcohol for transport laws."
-  },
-  {
-    id: "pairing_questions",
-    question: "What to ask when suggesting pairings?",
-    answers: ["'What flavors are in the dish?'", "'How much do you want to spend?'", "'What's your favorite color?'", "'Do you like wine?'"],
-    correct: 0,
-    explanation: "Key questions: sauce/preparation (butter vs tomato), spice level, protein type. Then suggest options at different price points."
-  },
-  {
-    id: "allergies_concerns",
-    question: "How to handle wine allergy concerns?",
-    answers: ["Know additives (egg whites, etc)", "All wine is allergen-free", "Only red wines have allergens", "Ignore concerns"],
-    correct: 0,
-    explanation: "Common fining agents: egg whites (albumin), milk protein (casein), fish bladders (isinglass). Vegan/natural wines avoid these. Sulfites aren't true allergens for most."
-  },
-  {
-    id: "wine_storage",
-    question: "How to store open bottles overnight?",
-    answers: ["Recork, refrigerate whites, cellar reds", "Leave at room temperature", "Pour down drain", "Give to staff"],
-    correct: 0,
-    explanation: "Recork tightly. Whites in fridge (3-5 days). Red in cool, dark place (1-3 days). Sparkling with specialty stopper (1-2 days). Commercial preservation systems extend further."
-  }
-],
-"WineKnowledge": [
-  // ================== BUBBLES (10) ==================
-  {
-    id: "bubbles_non_alc",
-    question: "Which sparkling wine is non-alcoholic?",
-    answers: ["Good Twin Non-Alcoholic Brut NV", "Adami 'Garbèl' Prosecco", "Paladin Prosecco Rosé", "Veuve Clicquot"],
-    correct: 0,
-    explanation: "Good Twin offers a sophisticated non-alcoholic option with traditional method bubbles, perfect for designated drivers or those avoiding alcohol."
-  },
-  {
-    id: "prosecco_rose",
-    question: "Which Prosecco Rosé is made with Pinot Noir?",
-    answers: ["Paladin Prosecco Rosé 2023", "Adami 'Garbèl'", "Cleto Chiarli Rosé de Noir", "Marie-Pierre Manciat"],
-    correct: 0,
-    explanation: "Paladin's Prosecco Rosé incorporates Pinot Noir (minimum 85% Glera + 10-15% Pinot Noir) giving it delicate salmon color and red berry notes."
-  },
-  {
-    id: "cremant_value",
-    question: "What French sparkling offers Champagne-style at lower price?",
-    answers: ["Marie-Pierre Manciat Crémant NV", "Charles Le Bel 'Inspiration 1818'", "Pol Roger Brut Réserve", "Moët Brut Rosé"],
-    correct: 0,
-    explanation: "Crémant de Bourgogne uses traditional method like Champagne but from Burgundy grapes (Chardonnay/Pinot Noir), offering similar quality at $65 vs $140+."
-  },
-  {
-    id: "prestige_cuvee",
-    question: "Which is a grower-producer Champagne?",
-    answers: ["Charles Le Bel 'Inspiration 1818'", "Veuve Clicquot", "Pol Roger", "Moët Brut Rosé"],
-    correct: 0,
-    explanation: "Charles Le Bel is a récoltant-manipulant (RM) producer growing their own grapes, unlike large houses like Veuve that source fruit widely."
-  },
-  {
-    id: "rose_noir",
-    question: "What does 'Rosé de Noir' indicate?",
-    answers: ["Made from red grapes only", "Blend of red/white wines", "Sweet style rosé", "Aged in oak"],
-    correct: 0,
-    explanation: "Cleto Chiarli's Rosé de Noir is 100% Pinot Noir (no white grapes) using short skin contact for color. Traditional in Emilia-Romagna."
-  },
-  {
-    id: "pol_roger",
-    question: "What makes Pol Roger distinctive?",
-    answers: ["Longer aging on lees", "Sweet dosage", "Blanc de Blancs style", "Non-vintage only"],
-    correct: 0,
-    explanation: "Pol Roger Brut Réserve ages 4 years on lees (vs standard 15-36 months) creating exceptional biscuity complexity for $245."
-  },
-  {
-    id: "moet_rose",
-    question: "What grapes are in Moët Brut Rosé?",
-    answers: ["Pinot Noir/Pinot Meunier/Chardonnay", "Only Pinot Noir", "Glera/Pinot Noir", "Chardonnay only"],
-    correct: 0,
-    explanation: "Moët's rosé blend is 40-50% Pinot Noir, 30-40% Meunier, 10-20% Chardonnay with 12g/L dosage for approachable fruitiness."
-  },
-  {
-    id: "adami_prosecco",
-    question: "What's special about Adami 'Garbèl' Prosecco?",
-    answers: ["Single vineyard designation", "Aged in oak", "Extra dry style", "Col Fondo method"],
-    correct: 0,
-    explanation: "Adami's 'Garbèl' comes from a historic 2.5ha hillside vineyard in Valdobbiadene, showing more minerality than basic Prosecco."
-  },
-  {
-    id: "good_twin",
-    question: "How is Good Twin Non-Alcoholic Brut made?",
-    answers: ["Dealcoholized wine + carbonation", "Grape juice fermented briefly", "Artificial flavors", "Wine diluted with water"],
-    correct: 0,
-    explanation: "Real wine dealcoholized via vacuum distillation, then precision-carbonated to mimic traditional method bubbles. Contains <0.5% ABV."
-  },
-  {
-    id: "cremant_region",
-    question: "Where does Marie-Pierre Manciat Crémant originate?",
-    answers: ["Burgundy", "Champagne", "Loire", "Alsace"],
-    correct: 0,
-    explanation: "Crémant de Bourgogne must use Burgundian grapes (Chardonnay/Pinot Noir here) and traditional method, aged minimum 12 months."
-
-  // ================== CRISP WHITES (15) ==================
-  },
-  {
-    id: "merry_edwards",
-    question: "What's distinctive about Merry Edwards Sauvignon Blanc?",
-    answers: ["Partial barrel fermentation", "100% stainless steel", "Late harvest style", "Blended with Sémillon"],
-    correct: 0,
-    explanation: "Russian River Valley fruit gets 20% barrel fermentation (neutral oak) adding texture while preserving vibrant grapefruit/melon notes."
-  },
-  {
-    id: "sancerre_soil",
-    question: "What soil gives Pascal Jolivet Sancerre its minerality?",
-    answers: ["Kimmeridgian limestone", "Granite", "Volcanic", "Clay"],
-    correct: 0,
-    explanation: "Kimmeridgian limestone (fossilized seabed) imparts flinty/smoky notes to this Sauvignon Blanc, with 6 months sur lie for roundness."
-  },
-  {
-    id: "langlois_vs_jolivet",
-    question: "How does Langlois-Chateau differ from Pascal Jolivet?",
-    answers: ["Blended with Chardonnay", "Higher alcohol", "Sweet style", "Oak aged"],
-    correct: 0,
-    explanation: "Langlois blends 15% Chardonnay with Sauvignon Blanc for softer acidity vs Jolivet's pure SB. Both Loire Valley but different subregions."
-  },
-  {
-    id: "paul_cluver",
-    question: "What makes Paul Cluver Sauvignon Blanc unique?",
-    answers: ["Elgin Valley cool climate", "Barrel fermented", "Late harvest", "Skin contact"],
-    correct: 0,
-    explanation: "From South Africa's highest, coolest vineyards (Elgin) giving razor-sharp acidity and green fig/grass notes at just 12.5% ABV."
-  },
-  {
-    id: "lugana_grape",
-    question: "What grape is Tommasi Lugana 'le Fornaci'?",
-    answers: ["Turbiana", "Garganega", "Pinot Grigio", "Vermentino"],
-    correct: 0,
-    explanation: "Turbiana (local name for Trebbiano di Lugana) makes crisp, almond-scented whites near Lake Garda. 'Le Fornaci' refers to clay soils."
-  },
-  {
-    id: "roero_arneis",
-    question: "How is Vietti Roero Arneis typically styled?",
-    answers: ["Peach/almond with crisp finish", "Buttery and oaky", "Sweet late harvest", "Sparkling"],
-    correct: 0,
-    explanation: "Arneis ('little rascal') nearly went extinct; Vietti helped revive it. Shows white peach, almond blossom, and saline minerality from Roero's sands."
-  },
-  {
-    id: "bordeaux_blanc",
-    question: "What's the blend of Chateau La Gravière Blanc?",
-    answers: ["Sémillon/Sauvignon Blanc", "100% Sémillon", "Sauvignon Blanc/Muscadelle", "Sauvignon Gris dominant"],
-    correct: 0,
-    explanation: "Classic Bordeaux Blanc blend (70% Sémillon for texture, 30% Sauvignon Blanc for acidity) aged in stainless steel to preserve freshness."
-  },
-  {
-    id: "verdejo_style",
-    question: "What does 'sur lies' mean for Familia Torres Verdejo?",
-    answers: ["Aged on spent yeast cells", "Barrel fermented", "Late harvested", "Skin fermented"],
-    correct: 0,
-    explanation: "Sur lie aging adds creamy texture to Rueda Verdejo's citrus/herbal notes. This spends 3 months with lees stirring before bottling."
-  },
-  {
-    id: "cdp_blanc",
-    question: "Which grapes are in E. Guigal Châteauneuf-du-Pape Blanc?",
-    answers: ["Clairette/Roussanne/Bourboulenc", "100% Roussanne", "Grenache Blanc/Viognier", "Marsanne only"],
-    correct: 0,
-    explanation: "Southern Rhône whites blend Clairette (acidity), Roussanne (body), Bourboulenc (aromatics). Guigal's version includes 10% oak fermentation."
-  },
-  {
-    id: "whispering_angel",
-    question: "What grapes are in Whispering Angel Rosé?",
-    answers: ["Grenache/Cinsault/Syrah", "100% Grenache", "Mourvèdre dominant", "Tibouren/Sangiovese"],
-    correct: 0,
-    explanation: "Provence rosé blend: Grenache (fruit), Cinsault (finesse), Syrah (structure) with 5-6 hour skin contact for pale salmon color."
-  },
-  {
-    id: "sancerre_rouge",
-    question: "What red grape is in Daniel Chotard Sancerre?",
-    answers: ["Pinot Noir", "Gamay", "Cabernet Franc", "No red Sancerre exists"],
-    correct: 0,
-    explanation: "While rare (5% of production), Sancerre Rouge is 100% Pinot Noir. Chotard's version is light-bodied with red cherry and earthy notes."
-  },
-  {
-    id: "gris_de_gris",
-    question: "What does 'Gris de Gris' indicate?",
-    answers: ["Made from light-skinned grapes", "Sweet style", "Barrel aged", "Late harvest"],
-    correct: 0,
-    explanation: "Domaine de Fontsainte's rosé uses Grenache Gris (pink-skinned mutation) for pale color and delicate strawberry/peach flavors."
-  },
-  {
-    id: "julias_dazzle",
-    question: "What's unique about 'Julia's Dazzle' Rosé?",
-    answers: ["Saignée method Cabernet", "White Zinfandel style", "Sparkling rosé", "Oak aged"],
-    correct: 0,
-    explanation: "Long Shadows' rosé uses 'saignée' method - bleeding juice from red Cabernet Sauvignon fermentations for deeper color and structure."
-  },
-  {
-    id: "raisins_gaulois",
-    question: "What makes Lapierre 'Raisins Gaulois' unique?",
-    answers: ["Carbonic maceration Gamay", "Oak aged", "Sweet style", "White Gamay"],
-    correct: 0,
-    explanation: "Lapierre's 'natural' Beaujolais uses whole-cluster carbonic maceration for juicy, low-tannin fruitiness. Best served slightly chilled."
-  },
-  {
-    id: "nero_davola",
-    question: "What does 'Lamùri' mean for Tenuta Regaleali?",
-    answers: ["Love in Sicilian dialect", "Sunshine", "Harvest", "Terroir"],
-    correct: 0,
-    explanation: "This Nero d'Avola shows Sicilian warmth (14% ABV) with 'Lamùri' reflecting the care in farming old bush vines at 600m elevation."
-
-  // ================== CHARDONNAY (10) ==================
-  },
-  {
-    id: "stuhlmuller_style",
-    question: "How is Stuhlmuller 'Estate' Chardonnay fermented?",
-    answers: ["Partial oak/partial stainless", "100% new oak", "Concrete eggs only", "No fermentation"],
-    correct: 0,
-    explanation: "Alexander Valley fruit gets 50% barrel fermentation (15% new French oak) and 50% stainless steel for balance of richness and freshness."
-  },
-  {
-    id: "patz_hall",
-    question: "What makes Patz & Hall Sonoma Coast distinctive?",
-    answers: ["Multiple vineyard sources", "Single vineyard", "Sweet style", "Orange wine"],
-    correct: 0,
-    explanation: "Sourced from 4-6 cool Sonoma Coast sites (Dutton Ranch, Gap's Crown) blended for complexity. Full malo adds buttery notes."
-  },
-  {
-    id: "au_bon_climat",
-    question: "What's special about Au Bon Climat's style?",
-    answers: ["Burgundian-inspired", "Buttery California", "Sweet late harvest", "Skin contact"],
-    correct: 0,
-    explanation: "Jim Clendenen's 'ABC' wines emulate Burgundy - native yeast, minimal new oak (20%), and crisp acidity despite Santa Barbara's warmth."
-  },
-  {
-    id: "montelena_history",
-    question: "Why is Chateau Montelena significant?",
-    answers: ["Won 1976 Judgment of Paris", "First Napa Chardonnay", "Organic pioneer", "Sparkling specialist"],
-    correct: 0,
-    explanation: "Montelena's 1973 Chardonnay bested white Burgundies in the famous tasting, putting California on the world wine map. Still iconic at $130."
-  },
-  {
-    id: "rombauer_style",
-    question: "What defines Rombauer Carneros Chardonnay?",
-    answers: ["Rich, tropical fruit style", "Lean and mineral", "Sweet late harvest", "Non-malolactic"],
-    correct: 0,
-    correct: 0,
-    explanation: "Rombauer's signature style features ripe pineapple/butterscotch notes from Carneros fruit, full malo, and 9 months in 40% new French oak."
-  },
-  {
-    id: "thevenet_style",
-    question: "How does Domaine Thévenet Mâcon-Pierreclos differ from California Chards?",
-    answers: ["Unoaked, crisp minerality", "More oak influence", "Higher alcohol", "Sweet style"],
-    correct: 0,
-    explanation: "Burgundian Chablis-like style - stainless steel only, crisp green apple flavors from limestone soils, at just 13% ABV for $50."
-  },
-  {
-    id: "chard_temp",
-    question: "What's ideal serving temp for these Chardonnays?",
-    answers: ["50-55°F depending on style", "Ice cold", "Room temperature", "Warmed"],
-    correct: 0,
-    explanation: "Light styles (Thévenet) at 50°F; richer ones (Rombauer) at 55°F. Too cold mutes flavors; too warm emphasizes alcohol."
-  },
-  {
-    id: "chard_pairing",
-    question: "What food pairs best with oaked Chardonnay?",
-    answers: ["Lobster with butter sauce", "Spicy Asian", "Light salads", "Chocolate"],
-    correct: 0,
-    explanation: "Rich Chards complement butter-poached lobster or roasted chicken. Leaner styles work with seafood or pasta in cream sauce."
-  },
-  {
-    id: "abc_vs_rombauer",
-    question: "How does Au Bon Climat differ from Rombauer?",
-    answers: ["Leaner, more acidic", "Sweeter", "Higher alcohol", "Sparkling"],
-    correct: 0,
-    explanation: "ABC (13.5% ABV, 20% new oak) is Burgundian-leaning; Rombauer (14.5%, 40% new oak) is classic California richness. Both excellent, different styles."
-  },
-  {
-    id: "montelena_pairing",
-    question: "What makes Montelena Chardonnay age-worthy?",
-    answers: ["Acid/mineral structure", "High residual sugar", "Fortification", "Carbonation"],
-    correct: 0,
-    explanation: "Despite its richness, Montelena retains crisp acidity and stony minerality allowing it to develop honeyed complexity over 10+ years."
-
-  // ================== PINOT NOIR (10) ==================
-  },
-  {
-    id: "rusack_style",
-    question: "What's special about Rusack's Santa Barbara Pinot?",
-    answers: ["Ballard Canyon AVA fruit", "Central Coast blend", "High alcohol", "Sweet style"],
-    correct: 0,
-    explanation: "Rusack focuses on Ballard Canyon's cool marine influences for elegant Pinot with raspberry/tea notes. 15 months in 30% new French oak."
-  },
-  {
-    id: "melville_estate",
-    question: "What clones are in Melville 'Estate' Pinot?",
-    answers: ["Pommard, 115, 667", "Only Dijon 777", "No clones used", "Cabernet clones"],
-    correct: 0,
-    explanation: "Sta. Rita Hills' cool climate grows these Burgundian clones (Pommard for structure, 115/667 for aroma) at low yields (2 tons/acre)."
-  },
-  {
-    id: "ken_wright",
-    question: "What soil type dominates Ken Wright's vineyards?",
-    answers: ["Jory volcanic", "Limestone", "Granite", "Sand"],
-    correct: 0,
-    explanation: "Willamette's Jory soil (iron-rich volcanic) gives Wright's Pinots earthy red fruit. Whole-cluster fermentation adds spice complexity."
-  },
-  {
-    id: "evesham_wood",
-    question: "What does 'terroir-driven' mean for Evesham Wood?",
-    answers: ["Minimal intervention to express site", "Heavy oak influence", "Blended from multiple regions", "Sweet style"],
-    correct: 0,
-    explanation: "Organic farming, native yeasts, and neutral oak allow pure expression of Willamette's sub-AVAs. 'Cuvée J' comes from 3 estate vineyards."
-  },
-  {
-    id: "bergstrom_reserve",
-    question: "How does Bergström 'Cumberland Reserve' differ?",
-    answers: ["Blend of 6 vineyards", "Single vineyard", "Sweet style", "Non-alcoholic"],
-    correct: 0,
-    explanation: "Sourced from Dundee Hills, Ribbon Ridge, etc. to represent Willamette Valley's diversity. 10 months in 25% new French oak."
-  },
-  {
-    id: "pinot_temp",
-    question: "How should these Pinots be served?",
-    answers: ["55-60°F", "Room temperature", "Ice cold", "Warmed"],
-    correct: 0,
-    explanation: "Slightly cooler than room temp preserves aromatics. Overchilling mutes flavors; too warm emphasizes alcohol (most are 13-14% ABV)."
-  },
-  {
-    id: "pinot_pairing",
-    question: "What's an ideal pairing for Oregon Pinot?",
-    answers: ["Duck breast", "Spicy curry", "Chocolate cake", "Oysters"],
-    correct: 0,
-    explanation: "Willamette Pinot's acidity cuts through duck fat while earthy notes complement mushrooms. Also excellent with salmon or roasted chicken."
-  },
-  {
-    id: "rusack_vs_melville",
-    question: "How does Rusack differ from Melville?",
-    answers: ["More fruit-forward", "Higher alcohol", "Sweet style", "Less acidic"],
-    correct: 0,
-    explanation: "Rusack (Ballard Canyon) shows riper red fruit; Melville (Sta. Rita Hills) has more savory/tea notes from cooler sites. Both excellent."
-  },
-  {
-    id: "evesham_vs_bergstrom",
-    question: "What distinguishes Evesham Wood from Bergström?",
-    answers: ["Lower oak influence", "Higher alcohol", "Sweet style", "Sparkling"],
-    correct: 0,
-    explanation: "Evesham uses neutral oak for pure fruit; Bergström employs 25% new barrels. Both age-worthy but different stylistic approaches."
-  },
-  {
-    id: "willamette_character",
-    question: "What's typical of Willamette Valley Pinot?",
-    answers: ["Red fruit, earth, bright acid", "Jammy dark fruit", "High tannin", "Sweet finish"],
-    correct: 0,
-    explanation: "Cool climate creates elegant Pinots with cherry/berry fruit, mushroom/forest floor notes, and refreshing acidity at 13-14% ABV."
-
-  // ================== BIG REDS (15) ==================
-  },
-  {
-    id: "longship_grenache",
-    question: "What's unique about Longship Grenache?",
-    answers: ["Columbia Valley AVA", "Rhône-style blend", "Sweet late harvest", "White Grenache"],
-    correct: 0,
-    explanation: "Washington State Grenache from high-elevation vineyards shows red fruit/pepper notes atypical for New World at just 13.9% ABV."
-  },
-  {
-    id: "dunham_trutina",
-    question: "What does 'Trutina' mean for Dunham?",
-    answers: ["Balance in Latin", "Single vineyard", "Sweet style", "Old vines"],
-    correct: 0,
-    explanation: "This Bordeaux-style blend (Cab/Merlot/Cab Franc/Petit Verdot) aims for harmony - 18 months in 35% new French oak."
-  },
-  {
-    id: "fidelitas_m100",
-    question: "What's special about Fidelitas 'M100'?",
-    answers: ["100% Merlot", "Malbec blend", "Sweet style", "Non-alcoholic"],
-    correct: 0,
-    explanation: "Rare Washington Merlot-focused wine from Red Mountain AVA, showing black cherry/chocolate notes with firm tannins for aging."
-  },
-  {
-    id: "daou_paso",
-    question: "What makes Daou Paso Robles Cab unique?",
-    answers: ["Calcareous soils", "Volcanic soils", "Sweet style", "Low alcohol"],
-    correct: 0,
-    explanation: "Daou Mountain's limestone retains acidity in Paso's heat, creating Cabs with Napa-like structure at better value ($60 vs $120+)."
-  },
-  {
-    id: "chapellet_mountain",
-    question: "What's 'Mountain Cuvée' in Chapellet?",
-    answers: ["Blend of Pritchard Hill parcels", "Single vineyard", "Sweet style", "Sparkling"],
-    correct: 0,
-    explanation: "Sourced from 40-year-old vines on Napa's Pritchard Hill (1,000 ft elevation) giving intense black fruit and minerality."
-  },
-  {
-    id: "amavi_cab",
-    question: "How does Amavi Cabernet showcase Walla Walla?",
-    answers: ["Estate fruit from 5 AVAs", "Single vineyard", "Sweet style", "Non-malolactic"],
-    correct: 0,
-    explanation: "Blends fruit from Les Collines, Seven Hills, etc. for Walla Walla typicity - dark fruit with herbal/earthy undertones at 14.5% ABV."
-  },
-  {
-    id: "mark_ryan_dissident",
-    question: "What's the blend in 'Dissident'?",
-    answers: ["Cabernet Sauvignon dominant", "100% Merlot", "Syrah blend", "White wine"],
-    correct: 0,
-    explanation: "Mostly Cabernet Sauvignon with small amounts of Merlot/Cab Franc from Red Mountain, aged 22 months in 50% new French oak."
-  },
-  {
-    id: "bledsoe_family",
-    question: "What's special about Bledsoe Family Cabernet?",
-    answers: ["Double Canyon + Bledsoe fruit", "Single vineyard", "Sweet style", "Low alcohol"],
-    correct: 0,
-    explanation: "Drew Bledsoe (ex-NFL) blends fruit from his estate with Double Canyon Vineyard for layered dark fruit and velvety tannins."
-  },
-  {
-    id: "longshadows_feather",
-    question: "Who consults on Longshadows 'Feather'?",
-    answers: ["Randy Dunn", "Michel Rolland", "Helen Turley", "No consultant"],
-    correct: 0,
-    explanation: "Napa legend Randy Dunn (of Dunn Vineyards) crafts this Columbia Valley Cabernet to mirror his Howell Mountain style - structured yet elegant."
-  },
-  {
-    id: "laird_family",
-    question: "What's Laird Family's vineyard focus?",
-    answers: ["Cold Creek AVA", "Oakville only", "Sonoma Coast", "Willamette Valley"],
-    correct: 0,
-    explanation: "Cold Creek's warm days/cool nights grow concentrated Cabernet aged 20 months in 50% new French oak. Jill Laird pioneered female winemaking in Napa."
-  },
-  {
-    id: "leonetti_legacy",
-    question: "Why is Leonetti Cellar significant?",
-    answers: ["First WA winery with national acclaim", "Organic pioneer", "Sparkling specialist", "Non-alcoholic"],
-    correct: 0,
-    explanation: "Founded 1977, Leonetti put Washington on the fine wine map. Their $275 Cabernet comes from 40-year-old vines in Walla Walla's Loess soils."
-  },
-  {
-    id: "caymus_style",
-    question: "What defines Caymus Napa Cabernet?",
-    answers: ["'Special Selection' quality", "Single vineyard", "Sweet style", "Low alcohol"],
-    correct: 0,
-    explanation: "The Wagner family's signature lush style comes from blending across Napa Valley, with 16 months in 50% new American oak adding vanilla notes."
-  },
-  {
-    id: "cab_temp",
-    question: "How should these Cabs be served?",
-    answers: ["60-65°F", "Room temperature", "Chilled", "Warmed"],
-    correct: 0,
-    explanation: "Slightly cooler than room temp (15-18°C) preserves aromatics and prevents alcohol from dominating. Decant 1-2 hours for young vintages."
-  },
-  {
-    id: "cab_pairing",
-    question: "What's the ultimate Cabernet pairing?",
-    answers: ["Dry-aged ribeye", "Spicy Asian", "Light fish", "Chocolate"],
-    correct: 0,
-    explanation: "Cab's tannins bind to steak's protein and fat. The wine's dark fruit complements char; acidity cuts through richness. Aged cheeses also work."
-  },
-  {
-    id: "washington_vs_napa",
-    question: "How do WA Cabs differ from Napa?",
-    answers: ["Often more acidic", "Higher alcohol", "Sweet style", "Less age-worthy"],
-    correct: 0,
-    explanation: "Washington's cooler nights preserve acidity even at 14.5% ABV, making wines more balanced than some jammy Napa Cabs. Both age well but differ in style."
-
-  // ================== INTERNATIONAL REDS (15) ==================
-  },
-  {
-    id: "muga_blanco",
-    question: "What's the blend in Muga Blanco?",
-    answers: ["Viura/Garnacha Blanca/Malvasia", "100% Verdejo", "Albariño only", "Chardonnay blend"],
-    correct: 0,
-    explanation: "Traditional Rioja Blanco blend - Viura (acidity), Garnacha Blanca (body), Malvasia (aromatics) aged 3 months in oak for texture."
-  },
-  {
-    id: "muga_crianza",
-    question: "How long is Muga Crianza aged?",
-    answers: ["24 months total", "12 months", "6 months", "No aging"],
-    correct: 0,
-    explanation: "Rioja Crianza requires 1 year in oak (Muga uses 70% American/30% French) plus 1 year in bottle before release. Shows bright red fruit."
-  },
-  {
-    id: "muga_seleccion",
-    question: "What makes 'Selección Especial' unique?",
-    answers: ["Extended aging in oak", "Sweet style", "White wine", "Non-alcoholic"],
-    correct: 0,
-    explanation: "Aged 26 months in oak (50/50 American/French) then 12 months in bottle. Tempranillo with Mazuelo/Graciano for structure."
-  },
-  {
-    id: "muga_flor",
-    question: "What's special about 'Flor de Muga'?",
-    answers: ["Fermented in oak barrels", "Stainless steel only", "Sweet style", "Sparkling"],
-    correct: 0,
-    explanation: "Rare 100% Viura fermented and aged 6 months in new French oak, showing tropical fruit and vanilla with crisp acidity."
-  },
-  {
-    id: "muga_prado",
-    question: "What's required for Gran Reserva status?",
-    answers: ["5 years total aging", "3 years", "1 year", "No minimum"],
-    correct: 0,
-    explanation: "Prado Enea spends 3 years in oak (American/French mix) plus 5+ years in bottle before release. Only made in exceptional vintages."
-  },
-  {
-    id: "cannubi_barolo",
-    question: "What's special about Cannubi vineyard?",
-    answers: ["Oldest documented Barolo cru", "Newest plantings", "Sweet style", "White grapes"],
-    correct: 0,
-    explanation: "Michele Chiarlo's Cannubi Barolo comes from this historic 18th-century site - calcareous clay soils produce elegant, perfumed Nebbiolo."
-  },
-  {
-    id: "bussia_barolo",
-    question: "How does Bussia differ from Cannubi?",
-    answers: ["More structured tannins", "Lighter body", "Sweet style", "Less age-worthy"],
-    correct: 0,
-    explanation: "Aldo Conterno's Bussia (also 2019) shows more power with dark fruit and firmer tannins vs Cannubi's rose/tar notes. Both need 10+ years."
-  },
-  {
-    id: "brunello_aging",
-    question: "What's Brunello di Montalcino's aging requirement?",
-    answers: ["4 years total (2 in oak)", "1 year", "No oak", "10 years"],
-    correct: 0,
-    explanation: "Altesino's 2019 spends 3 years in Slavonian oak botti plus 1 year bottle. Sangiovese Grosso shows cherry/leather with firm acidity."
-  },
-  {
-    id: "rosso_montalcino",
-    question: "How is Rosso di Montalcino different?",
-    answers: ["Younger-drinking version of Brunello", "Sweet style", "White wine", "Sparkling"],
-    correct: 0,
-    explanation: "Fanti's 2022 Rosso is essentially declassified Brunello - same grape (Sangiovese) and vineyards but aged only 1 year for earlier drinking."
-  },
-  {
-    id: "le_volte",
-    question: "What's the blend in Ornellaia 'Le Volte'?",
-    answers: ["Merlot/Sangiovese/Cabernet", "100% Sangiovese", "Syrah only", "White grapes"],
-    correct: 0,
-    explanation: "Ornellaia's 'second' wine blends Merlot (softness), Sangiovese (acidity), and Cabernet (structure) aged 12 months in used oak."
-  },
-  {
-    id: "chianti_rufina",
-    question: "What makes Rufina a special Chianti subzone?",
-    answers: ["High elevation vineyards", "Lowest elevation", "Sweet style", "White grapes"],
-    correct: 0,
-    explanation: "Selvapiana's 2023 comes from 300-500m altitude vineyards in Chianti's smallest subregion, known for elegant, aromatic Sangiovese."
-  },
-  {
-    id: "altos_ibericos",
-    question: "What's the aging for Torres 'Altos Ibéricos' Crianza?",
-    answers: ["12 months oak", "24 months", "No oak", "10 years"],
-    correct: 0,
-    explanation: "Rioja Crianza spends 1 year in American oak (vanilla notes) plus bottle aging. 85% Tempranillo with 15% Garnacha for fruitiness."
-  },
-  {
-    id: "clio_jumilla",
-    question: "What's the blend in 'Clio'?",
-    answers: ["Monastrell/Cabernet", "100% Garnacha", "Tempranillo only", "White grapes"],
-    correct: 0,
-    explanation: "Jumilla's old-vine Monastrell (70%) gives dark fruit; Cabernet (30%) adds structure. Aged 18 months in new French oak."
-  },
-  {
-    id: "merit_priorat",
-    question: "What makes Priorat wines unique?",
-    answers: ["Llicorella slate soils", "Volcanic soils", "Clay only", "Sand"],
-    correct: 0,
-    explanation: "Perinet's 2018 comes from 60-year-old vines in black slate (llicorella) that retains heat and reflects light, creating intense wines."
-  },
-  {
-    id: "psi_ribera",
-    question: "What's special about Pingus 'PSI'?",
-    answers: ["Old vine Tempranillo", "Young vines only", "Sweet style", "White wine"],
-    correct: 0,
-    explanation: "Peter Sisseck's project works with 80+ year old bush vines in Ribera del Duero. Aged 18 months in large foudres for elegance."
-
-  // ================== FRANCE REDS (15) ==================
-  },
-  {
-    id: "moulin_a_vent",
-    question: "How is Moulin-à-Vent different from Beaujolais?",
-    answers: ["Granite soils, age-worthy", "Limestone only", "Sweet style", "White wine"],
-    correct: 0,
-    explanation: "Château des Jacques' 2020 comes from pink granite soils that create structured, mineral-driven Gamay (10+ year aging potential)."
-  },
-  {
-    id: "graves_rouge",
-    question: "What's the blend in Château de Janicon?",
-    answers: ["Merlot/Cabernet", "100% Malbec", "Syrah only", "White grapes"],
-    correct: 0,
-    explanation: "Classic Left Bank blend (60% Merlot, 40% Cabernet Sauvignon) aged 12 months in French oak. Graves' gravel soils add minerality."
-  },
-  {
-    id: "saint_sulpice",
-    question: "What makes Saint-Sulpice a value Bordeaux?",
-    answers: ["Early-drinking style", "Long aging potential", "Sweet style", "White wine"],
-    correct: 0,
-    explanation: "This 2022 is 70% Merlot/30% Cabernet Franc from clay-limestone soils, aged 12 months in used oak for approachable fruitiness at $50."
-  },
-  {
-    id: "la_nerthe",
-    question: "What's the blend in Châteauneuf-du-Pape?",
-    answers: ["Grenache/Syrah/Mourvèdre", "100% Syrah", "Cabernet blend", "White grapes"],
-    correct: 0,
-    explanation: "La Nerthe's 2021 is 50% Grenache (fruit), 30% Syrah (structure), 15% Mourvèdre (spice) plus others, aged 18 months in foudres."
-  },
-  {
-    id: "guigal_cotes",
-    question: "How does Guigal Côtes-du-Rhône differ from Gigondas?",
-    answers: ["Lighter-bodied", "Higher alcohol", "Sweet style", "White wine"],
-    correct: 0,
-    explanation: "The Côtes-du-Rhône (2020) is Grenache/Syrah/Mourvèdre blend for early drinking; Gigondas (2019) adds more Syrah and aging potential."
-  },
-  {
-    id: "gigondas_style",
-    question: "What's typical of Gigondas?",
-    answers: ["Powerful, rustic style", "Light and fruity", "Sweet", "Sparkling"],
-    correct: 0,
-    explanation: "Guigal's 2019 Gigondas shows black fruit, garrigue herbs, and firm tannins from 65% Grenache, 25% Syrah, 10% Mourvèdre."
-  },
-  {
-    id: "chauvin_saint_emilion",
-    question: "What's special about Saint-Émilion Grand Cru?",
-    answers: ["Merlot-dominant Right Bank", "Cabernet-dominant", "Sweet style", "White wine"],
-    correct: 0,
-    explanation: "Château Chauvin (2020) is 70% Merlot, 25% Cabernet Franc, 5% Cabernet Sauvignon from clay-limestone soils, aged 16 months in oak."
-  },
-  {
-    id: "cdp_vs_gigondas",
-    question: "How does Châteauneuf-du-Pape differ from Gigondas?",
-    answers: ["More Grenache, rounder", "More Syrah, rustic", "Sweet style", "Less alcohol"],
-    correct: 0,
-    explanation: "CDP (La Nerthe) emphasizes Grenache's fruit; Gigondas (Guigal) highlights Syrah's structure. Both Southern Rhône but different terroirs."
-  },
-  {
-    id: "bordeaux_right_left",
-    question: "What distinguishes Right vs Left Bank Bordeaux?",
-    answers: ["Merlot vs Cabernet dominant", "Sweet vs dry", "White vs red", "Sparkling only"],
-    correct: 0,
-    explanation: "Right Bank (Saint-Émilion/Pomerol) favors Merlot; Left Bank (Pauillac/Margaux) focuses on Cabernet Sauvignon. Different soil types."
-  },
-  {
-    id: "beaujolais_crus",
-    question: "What makes Moulin-à-Vent a 'Cru Beaujolais'?",
-    answers: ["Highest quality designation", "Sweet style", "White wine", "Sparkling"],
-    correct: 0,
-    explanation: "Beaujolais has 10 Crus (like Moulin-à-Vent) that produce serious, terroir-driven Gamay - no Nouveau-style carbonic maceration here."
-  },
-  {
-    id: "rhone_pairing",
-    question: "What pairs best with Châteauneuf-du-Pape?",
-    answers: ["Braised lamb", "Light fish", "Spicy Asian", "Chocolate"],
-    correct: 0,
-    explanation: "CDP's herbal/gamey notes complement lamb's richness. Also great with duck, mushroom dishes, or aged cheeses."
-  },
-  {
-    id: "bordeaux_aging",
-    question: "Which Bordeaux has longest aging potential?",
-    answers: ["Château Chauvin Saint-Émilion", "Château de Janicon", "Château Saint-Sulpice", "None age well"],
-    correct: 0,
-    explanation: "Saint-Émilion Grand Cru (Chauvin) can age 15+ years; basic Bordeaux (Saint-Sulpice) drinks best within 5 years."
-  },
-  {
-    id: "moulin_a_vent_pairing",
-    question: "What food complements Moulin-à-Vent?",
-    answers: ["Roast chicken", "Spicy curry", "Oysters", "Chocolate"],
-    correct: 0,
-    explanation: "Cru Beaujolais' acidity cuts through chicken skin; earthy notes match herbs. Also excellent with charcuterie or mushroom dishes."
-  },
-  {
-    id: "cotes_rhone_value",
-    question: "Why is Guigal Côtes-du-Rhône a good value?",
-    answers: ["Same winemaker as premium wines", "Lower quality", "Sweet style", "Non-alcoholic"],
-    correct: 0,
-    explanation: "At $50, this gets same care as Guigal's $100+ wines. Grenache-dominant blend aged in foudres - perfect for casual bistro fare."
-  },
-  {
-    id: "saint_emilion_terroir",
-    question: "What soil type dominates Saint-Émilion?",
-    answers: ["Clay-limestone", "Granite", "Sand only", "Volcanic"],
-    correct: 0,
-    explanation: "Château Chauvin's vines grow on clay-limestone plateau (great for Merlot) with some sandy areas for earlier-drinking styles."
-
-  // ================== SERVICE SCENARIOS (10) ==================
-  },
-  {
-    id: "non_alc_rec",
-    question: "A guest wants complex non-alcoholic wine - what do you recommend?",
-    answers: ["Good Twin Brut", "Long Shadows Rosé", "Vietti Arneis", "Paul Cluver Sauvignon"],
-    correct: 0,
-    explanation: "Good Twin uses dealcoholized wine for authentic texture/flavor. Its crisp apple/yeast notes mimic traditional method Champagne."
-  },
-  {
-    id: "white_wine_red",
-    question: "A white wine drinker wants to try red - what's approachable?",
-    answers: ["Marcel Lapierre Raisins Gaulois", "Leonetti Cabernet", "Altesino Brunello", "Château La Nerthe"],
-    correct: 0,
-    explanation: "Lapierre's Gamay is light-bodied, low-tannin, and served slightly chilled - an easy transition from whites. Fruit-forward with minimal oak."
-  },
-  {
-    id: "rose_pairings",
-    question: "What are two good pairings for Domaine de Fontsainte Gris de Gris?",
-    answers: ["1) Niçoise salad 2) Grilled shrimp", "1) Steak 2) Chocolate", "1) Oysters 2) Foie gras", "1) Spicy curry 2) BBQ"],
-    correct: 0,
-    explanation: "This dry Provençal-style rosé complements: 1) Salad's olives/tuna 2) Shrimp's delicate sweetness. Serve at 50°F."
-  },
-  {
-    id: "terroir_pinot",
-    question: "How would you describe 'terroir-driven' for Evesham Wood Pinot?",
-    answers: "Express vineyard character through minimal intervention",
-    explanation: "Organic farming, native yeast fermentation, and neutral oak allow pure expression of Willamette Valley's volcanic soils and cool climate."
-  },
-  {
-    id: "julias_dazzle_line",
-    question: "What's your tableside pitch for Long Shadows 'Julia's Dazzle'?",
-    answers: ["'A radiant rosé with vibrant watermelon and citrus notes, made from Columbia Valley Cabernet Sauvignon'", "'Sweet pink wine'", "'Cheap rosé'", "'Like White Zinfandel'"],
-    correct: 0,
-    explanation: "Highlight its unique Cabernet base (unusual for rosé), bright acidity, and food versatility. Name honors vintner Allen Shoup's granddaughter."
-  },
-  {
-    id: "cremant_line",
-    question: "How would you present Marie-Pierre Manciat Crémant?",
-    answers: ["'Elegant Burgundian sparkling with crisp apple notes, traditional method like Champagne at half the price'", "'Cheap Champagne'", "'Sweet bubbly'", "'No different from Prosecco'"],
-    correct: 0,
-    explanation: "Emphasize its quality (same method as Champagne) and value. Mention 24 months aging on lees for added complexity."
-  },
-  {
-    id: "paul_cluver_line",
-    question: "What's your quick descriptor for Paul Cluver Sauvignon Blanc?",
-    answers: ["'Razor-sharp South African Sauvignon with green fig and passionfruit from cool Elgin Valley'", "'Sweet white wine'", "'Oaky Chardonnay alternative'", "'Generic Sauvignon Blanc'"],
-    correct: 0,
-    explanation: "Focus on its cool-climate precision (unlike riper NZ styles) and food-friendly acidity. Mention estate's pioneering role in Elgin."
-  },
-  {
-    id: "raisins_gaulois_line",
-    question: "How would you describe Marcel Lapierre Raisins Gaulois?",
-    answers: ["'Juicy, chillable Beaujolais with wild strawberry notes from natural winemaking traditions'", "'Heavy red wine'", "'Sweet grape juice'", "'Oak-aged Gamay'"],
-    correct: 0,
-    explanation: "Call out its carbonic maceration (bubblegum/fruit-forward), minimal sulfur, and slight chill recommendation. 'Gaulois' references ancestral methods."
-  },
-  {
-    id: "evesham_line",
-    question: "What's your tableside line for Evesham Wood Pinot Noir?",
-    answers: ["'An elegant Oregon Pinot showing red cherry and earthy truffle notes from organic estate vineyards'", "'Big California-style Pinot'", "'Sweet red wine'", "'Generic Pinot'"],
-    correct: 0,
-    explanation: "Highlight its balance (not too fruit-forward, not too lean), food versatility, and Willamette Valley typicity."
-  },
-  {
-    id: "bubbles_celebration",
-    question: "A table celebrates an anniversary - which sparkling shows thoughtfulness without breaking the bank?",
-    answers: ["Charles Le Bel 'Inspiration 1818'", "Good Twin Non-Alcoholic", "Paladin Prosecco Rosé", "Veuve Clicquot"],
-    correct: 0,
-    explanation: "At $95, this grower Champagne offers prestige (1818 references house founding) with artisanal credibility. More distinctive than mass-market Veuve."
-  }
-]
-    };
-
-    // Quiz state
-    const state = {
-      currentCategory: "",
-      currentQuestions: [],
-      currentQuestionIndex: 0,
-      score: 0,
-      answerSelected: false,
-      confettiCanvas: null,
-      userAnswers: [] // Track user answers for review
-    };
-
-    // Load stats from localStorage
-    const stats = JSON.parse(localStorage.getItem("quizStats") || "{}");
-
-    // Fisher-Yates shuffle algorithm
-    function shuffle(array) {
-      const newArray = [...array];
-      for (let i = newArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-      }
-      return newArray;
-    }
-
-    function saveStats() {
-      localStorage.setItem("quizStats", JSON.stringify(stats));
-    }
-
-    function getLastScore(cat) {
-      const catStats = stats[cat];
-      return catStats?.last || 0;
-    }
-
-    function getCategoryStats(cat) {
-      const catStats = stats[cat];
-      if (!catStats) return "";
-      
-      let totalQuestions = 0;
-      let totalCorrect = 0;
-      
-      for (const questionId in catStats) {
-        if (questionId !== "last") {
-          totalQuestions += catStats[questionId].attempts || 0;
-          totalCorrect += catStats[questionId].correct || 0;
+        // Fuzzy string matching function (Levenshtein distance)
+        function similarity(s1, s2) {
+            const longer = s1.length > s2.length ? s1 : s2;
+            const shorter = s1.length > s2.length ? s2 : s1;
+            const longerLength = longer.length;
+            
+            if (longerLength === 0) return 1.0;
+            
+            const distance = levenshteinDistance(longer, shorter);
+            return (longerLength - distance) / longerLength;
         }
-      }
-      
-      if (totalQuestions === 0) return "";
-      
-      const accuracy = Math.round((totalCorrect / totalQuestions) * 100);
-      return `<div class="stats">Overall Accuracy: ${accuracy}%</div>`;
-    }
 
-    function loadCategories() {
-      DOM.categoryGrid.innerHTML = "";
-      DOM.resultsBox.style.display = "none";
-      DOM.quizSection.style.display = "none";
+        function levenshteinDistance(s, t) {
+            if (s.length === 0) return t.length;
+            if (t.length === 0) return s.length;
 
-      for (const cat in quizData) {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.tabIndex = 0;
-        card.innerHTML = `
-          <strong>${cat}</strong><br>
-          <span class="muted">Last Score: ${getLastScore(cat)}%</span>
-          ${getCategoryStats(cat)}
-        `;
-        card.onclick = () => startQuiz(cat);
-        card.onkeydown = (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            startQuiz(cat);
-          }
-        };
-        DOM.categoryGrid.appendChild(card);
-      }
-    }
+            const matrix = [];
+            for (let i = 0; i <= s.length; i++) {
+                matrix[i] = [i];
+            }
+            for (let j = 0; j <= t.length; j++) {
+                matrix[0][j] = j;
+            }
 
-    function startQuiz(category) {
-      if (!quizData[category]) {
-        console.error("Category not found:", category);
-        return;
-      }
+            for (let i = 1; i <= s.length; i++) {
+                for (let j = 1; j <= t.length; j++) {
+                    const cost = s.charAt(i - 1) === t.charAt(j - 1) ? 0 : 1;
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j] + 1,
+                        matrix[i][j - 1] + 1,
+                        matrix[i - 1][j - 1] + cost
+                    );
+                }
+            }
 
-      state.currentCategory = category;
-      state.currentQuestions = shuffle([...quizData[category]]).slice(0, 10);
-      state.currentQuestionIndex = 0;
-      state.score = 0;
-      state.answerSelected = false;
-      state.userAnswers = [];
-      
-      DOM.quizTitle.textContent = category;
-      DOM.questionContainer.innerHTML = "";
-      DOM.progressBar.style.width = "0%";
-      DOM.quizSection.style.display = "block";
-      DOM.resultsBox.style.display = "none";
-      DOM.submitButton.style.display = "none";
-      DOM.nextButton.style.display = "none";
-      
-      showQuestion();
-    }
-
-    function showQuestion() {
-      const q = state.currentQuestions[state.currentQuestionIndex];
-      DOM.questionContainer.innerHTML = `
-        <div class="question-text">${q.question}</div>
-        <div id="answerContainer"></div>
-        <div id="explanationContainer" class="explanation" style="display:none;">
-          <div class="explanation-title">Explanation</div>
-          <div id="explanationText"></div>
-          <div id="correctAnswer" class="correct-answer"></div>
-        </div>
-      `;
-
-      const answerContainer = document.getElementById("answerContainer");
-      const explanationContainer = document.getElementById("explanationContainer");
-      const explanationText = document.getElementById("explanationText");
-      const correctAnswer = document.getElementById("correctAnswer");
-      
-      const answerPairs = q.answers.map((answer, index) => ({ answer, originalIndex: index }));
-      const shuffledAnswers = shuffle([...answerPairs]);
-
-      shuffledAnswers.forEach((item) => {
-        const btn = document.createElement("button");
-        btn.className = "answer-btn";
-        btn.textContent = item.answer;
-        btn.setAttribute("aria-label", `Select answer: ${item.answer}`);
-        btn.onclick = () => handleAnswer(item.originalIndex, btn, answerContainer, explanationContainer, explanationText, correctAnswer);
-        btn.onkeydown = (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            handleAnswer(item.originalIndex, btn, answerContainer, explanationContainer, explanationText, correctAnswer);
-          }
-        };
-        answerContainer.appendChild(btn);
-      });
-
-      const progress = ((state.currentQuestionIndex / state.currentQuestions.length) * 100).toFixed(0);
-      DOM.progressBar.style.width = `${progress}%`;
-      DOM.progressText.textContent = `Question ${state.currentQuestionIndex + 1} of ${state.currentQuestions.length}`;
-      
-      // Show submit button on last question
-      if (state.currentQuestionIndex === state.currentQuestions.length - 1) {
-        DOM.submitButton.style.display = "none"; // Will be shown after last answer
-      }
-    }
-
-    function handleAnswer(selectedOriginalIndex, clickedBtn, container, explanationContainer, explanationText, correctAnswer) {
-      if (state.answerSelected) return;
-      state.answerSelected = true;
-      
-      const q = state.currentQuestions[state.currentQuestionIndex];
-      const answerButtons = container.querySelectorAll(".answer-btn");
-      answerButtons.forEach(btn => btn.disabled = true);
-
-      const isCorrect = selectedOriginalIndex === q.correct;
-
-      // Store user answer for review
-      state.userAnswers.push({
-        question: q.question,
-        userAnswer: q.answers[selectedOriginalIndex],
-        correctAnswer: q.answers[q.correct],
-        isCorrect,
-        explanation: q.explanation
-      });
-
-      // Update stats
-      if (!stats[state.currentCategory]) stats[state.currentCategory] = {};
-      if (!stats[state.currentCategory][q.id]) {
-        stats[state.currentCategory][q.id] = { attempts: 0, correct: 0 };
-      }
-
-      const qStats = stats[state.currentCategory][q.id];
-      qStats.attempts++;
-      
-      if (isCorrect) {
-        state.score++;
-        qStats.correct++;
-        playAudio(DOM.correctSound);
-      } else {
-        playAudio(DOM.wrongSound);
-      }
-      
-      saveStats();
-
-      // Highlight buttons
-      answerButtons.forEach((btn) => {
-        if (btn.textContent === q.answers[q.correct]) {
-          btn.classList.add("correct");
+            return matrix[s.length][t.length];
         }
-        if (btn === clickedBtn && !isCorrect) {
-          btn.classList.add("incorrect");
+
+        // Shuffle array and pick first 10 questions
+        function getRandomQuestions() {
+            // Copy the array
+            const shuffled = [...allQuizQuestions];
+            // Shuffle the array
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            // Return first 10 questions or all if there are less than 10
+            return shuffled.slice(0, 10);
         }
-      });
 
-      // Show explanation and correct answer if wrong
-      if (q.explanation) {
-        explanationText.textContent = q.explanation;
-        explanationContainer.style.display = "block";
-        
-        if (!isCorrect) {
-          correctAnswer.textContent = `Correct Answer: ${q.answers[q.correct]}`;
-          correctAnswer.style.display = "block";
+        // Initialize the quiz
+        function initQuiz() {
+            quizQuestions = getRandomQuestions();
+            currentQuestionIndex = 0;
+            score = 0;
+            quizCompleted = false;
+            userAnswers = [];
+            showQuestion();
+            resultsContainer.style.display = 'none';
+            quizCard.style.display = 'block';
+            reviewContainer.style.display = 'none';
+            updateProgressBar();
         }
-      }
 
-      // Show next button (or submit button if last question)
-      if (state.currentQuestionIndex === state.currentQuestions.length - 1) {
-        DOM.submitButton.style.display = "block";
-      } else {
-        DOM.nextButton.style.display = "block";
-      }
-    }
-
-    function playAudio(audioElement) {
-      audioElement.currentTime = 0;
-      audioElement.play().catch(e => console.log("Audio play failed:", e));
-    }
-
-    function nextQuestion() {
-      state.answerSelected = false;
-      state.currentQuestionIndex++;
-      DOM.nextButton.style.display = "none";
-      DOM.submitButton.style.display = "none";
-      
-      if (state.currentQuestionIndex < state.currentQuestions.length) {
-        showQuestion();
-      } else {
-        showResults();
-      }
-    }
-
-    function showResults() {
-      const percent = Math.round((state.score / state.currentQuestions.length) * 100);
-      
-      // Update stats
-      if (!stats[state.currentCategory]) stats[state.currentCategory] = {};
-      stats[state.currentCategory].last = percent;
-      saveStats();
-
-      // Show confetti for perfect score
-      if (percent === 100) {
-        triggerCelebration();
-      }
-
-      // Generate review section for incorrect answers
-      let reviewSection = '';
-      const incorrectAnswers = state.userAnswers.filter(a => !a.isCorrect);
-      
-      if (incorrectAnswers.length > 0) {
-        reviewSection = `
-          <div style="margin-top: 2rem;">
-            <h3>Review Incorrect Answers</h3>
-            ${incorrectAnswers.map(answer => `
-              <div style="margin-bottom: 1.5rem;">
-                <p><strong>Question:</strong> ${answer.question}</p>
-                <p><strong>Your answer:</strong> <span style="color: var(--incorrect)">${answer.userAnswer}</span></p>
-                <p><strong>Correct answer:</strong> <span style="color: var(--correct)">${answer.correctAnswer}</span></p>
-                ${answer.explanation ? `<div class="explanation" style="margin-top: 0.5rem;">
-                  <div class="explanation-title">Explanation</div>
-                  <div>${answer.explanation}</div>
-                </div>` : ''}
-              </div>
-            `).join('')}
-          </div>
-        `;
-      }
-
-      DOM.resultsBox.innerHTML = `
-        <h2>${state.currentCategory} Complete</h2>
-        <p>You scored <strong>${state.score}</strong> out of <strong>${state.currentQuestions.length}</strong> (${percent}%)</p>
-        ${reviewSection}
-        <div class="button-group">
-          <button class="btn" onclick="loadCategories()">Back to Categories</button>
-          <button class="btn btn-secondary" onclick="startQuiz('${state.currentCategory}')">Restart Quiz</button>
-        </div>
-      `;
-
-      DOM.quizSection.style.display = "none";
-      DOM.resultsBox.style.display = "block";
-    }
-
-    function triggerCelebration() {
-      state.confettiCanvas = document.createElement("canvas");
-      state.confettiCanvas.id = "confetti-canvas";
-      state.confettiCanvas.style.position = "fixed";
-      state.confettiCanvas.style.top = "0";
-      state.confettiCanvas.style.left = "0";
-      state.confettiCanvas.style.width = "100%";
-      state.confettiCanvas.style.height = "100%";
-      state.confettiCanvas.style.pointerEvents = "none";
-      state.confettiCanvas.style.zIndex = "1000";
-      document.body.appendChild(state.confettiCanvas);
-      
-      playAudio(DOM.celebrationSound);
-      
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-      
-      setTimeout(() => {
-        if (state.confettiCanvas && state.confettiCanvas.parentNode) {
-          state.confettiCanvas.parentNode.removeChild(state.confettiCanvas);
-          state.confettiCanvas = null;
+        // Display the current question
+        function showQuestion() {
+            if (currentQuestionIndex < quizQuestions.length) {
+                const question = quizQuestions[currentQuestionIndex];
+                questionNumber.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+                questionText.textContent = question.question;
+                answerInput.value = '';
+                answerInput.disabled = false;
+                feedback.className = 'feedback';
+                feedback.style.display = 'none';
+                submitButton.style.display = 'block';
+                nextButton.style.display = 'none';
+                
+                // Change button text if it's the last question
+                if (currentQuestionIndex === quizQuestions.length - 1) {
+                    nextButton.textContent = 'See Results';
+                } else {
+                    nextButton.textContent = 'Next Question';
+                }
+                
+                answerInput.focus();
+                answerInput.placeholder = "Type your answer here...";
+            } else {
+                showResults();
+            }
         }
-      }, 3000);
-    }
 
-    // Initialize
-    window.onload = loadCategories;
-    DOM.nextButton.onclick = nextQuestion;
-    DOM.submitButton.onclick = showResults;
-  </script>
+        // Check the submitted answer
+        function checkAnswer() {
+            const userAnswer = answerInput.value.trim();
+            const correctAnswer = quizQuestions[currentQuestionIndex].answer;
+            
+            // Store user answer for review
+            userAnswers.push({
+                question: quizQuestions[currentQuestionIndex].question,
+                userAnswer: userAnswer,
+                correctAnswer: correctAnswer,
+                isCorrect: false,
+                isPartial: false
+            });
+            
+            // Case-insensitive comparison
+            const userAnswerLower = userAnswer.toLowerCase();
+            const correctAnswerLower = correctAnswer.toLowerCase();
+            
+            // Exact match
+            if (userAnswerLower === correctAnswerLower) {
+                feedback.textContent = 'Correct! Well done.';
+                feedback.className = 'feedback correct';
+                score++;
+                userAnswers[currentQuestionIndex].isCorrect = true;
+            } 
+            // Fuzzy match (similarity > 0.8)
+            else if (similarity(userAnswerLower, correctAnswerLower) > 0.8) {
+                feedback.textContent = `Almost! The correct answer is "${correctAnswer}". We accepted "${userAnswer}" as close enough.`;
+                feedback.className = 'feedback partial';
+                score += 0.5; // Give half point for close answers
+                userAnswers[currentQuestionIndex].isPartial = true;
+            }
+            // Incorrect
+            else {
+                feedback.textContent = `Incorrect. The correct answer is "${correctAnswer}".`;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            feedback.style.display = 'block';
+            answerInput.disabled = true;
+            submitButton.style.display = 'none';
+            nextButton.style.display = 'block';
+        }
+
+        // Move to the next question
+        function nextQuestion() {
+            currentQuestionIndex++;
+            updateProgressBar();
+            showQuestion();
+        }
+
+        // Show the final results
+        function showResults() {
+            quizCompleted = true;
+            quizCard.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            const percentage = Math.round((score / quizQuestions.length) * 100);
+            scoreElement.textContent = `You scored ${score}/${quizQuestions.length} (${percentage}%)`;
+            
+            // Show review of all questions
+            showQuestionReview();
+            reviewContainer.style.display = 'block';
+        }
+
+        // Show review of all questions and answers
+        function showQuestionReview() {
+            reviewQuestions.innerHTML = '';
+            
+            userAnswers.forEach((item, index) => {
+                const reviewItem = document.createElement('div');
+                reviewItem.className = 'review-item';
+                
+                const questionEl = document.createElement('div');
+                questionEl.className = 'review-question';
+                questionEl.textContent = `${index + 1}. ${item.question}`;
+                
+                const userAnswerEl = document.createElement('div');
+                userAnswerEl.className = 'review-answer';
+                userAnswerEl.textContent = `Your answer: ${item.userAnswer || "(no answer)"}`;
+                
+                const correctAnswerEl = document.createElement('div');
+                correctAnswerEl.className = 'review-answer';
+                correctAnswerEl.textContent = `Correct answer: ${item.correctAnswer}`;
+                
+                if (item.isCorrect) {
+                    userAnswerEl.classList.add('review-correct');
+                } else if (item.isPartial) {
+                    userAnswerEl.classList.add('review-partial');
+                } else {
+                    userAnswerEl.classList.add('review-incorrect');
+                }
+                
+                reviewItem.appendChild(questionEl);
+                reviewItem.appendChild(userAnswerEl);
+                reviewItem.appendChild(correctAnswerEl);
+                reviewQuestions.appendChild(reviewItem);
+            });
+        }
+
+        // Update the progress bar
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex) / quizQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Handle touch events for swipe navigation
+        function handleTouchStart(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }
+
+        function handleTouchEnd(e) {
+            if (quizCompleted) return;
+            
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }
+
+        function handleSwipe() {
+            const difference = touchStartX - touchEndX;
+            const swipeThreshold = 50; // Minimum swipe distance
+            
+            if (difference > swipeThreshold && submitButton.style.display === 'none') {
+                // Swipe left to go next
+                nextQuestion();
+            } else if (difference < -swipeThreshold && submitButton.style.display === 'none') {
+                // Swipe right to go back (if not on first question)
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    updateProgressBar();
+                    showQuestion();
+                }
+            }
+        }
+
+        // Event listeners
+        submitButton.addEventListener('click', checkAnswer);
+        nextButton.addEventListener('click', nextQuestion);
+        restartButton.addEventListener('click', initQuiz);
+        quitButton.addEventListener('click', () => {
+            if (confirm('Are you sure you want to quit the quiz? Your progress will be lost.')) {
+                showResults();
+            }
+        });
+
+        // Touch events for swipe navigation
+        document.addEventListener('touchstart', handleTouchStart, false);
+        document.addEventListener('touchend', handleTouchEnd, false);
+
+        // Allow submitting with Enter key
+        answerInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (submitButton.style.display !== 'none') {
+                    checkAnswer();
+                } else {
+                    nextQuestion();
+                }
+            }
+        });
+
+        // Clear placeholder on focus
+        answerInput.addEventListener('focus', function() {
+            this.placeholder = '';
+        });
+
+        answerInput.addEventListener('blur', function() {
+            if (this.value === '') {
+                this.placeholder = 'Type your answer here...';
+            }
+        });
+
+        // Start the quiz
+        initQuiz();
+    </script>
 </body>
 </html>
