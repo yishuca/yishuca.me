@@ -619,9 +619,9 @@
     <div class="modal" id="confirmationModal">
         <div class="modal-content">
             <h2><i class="fas fa-question-circle"></i> Confirm Post</h2>
-            <p>Are you sure you want to post this message?</p>
+            <p>Are you sure you want to post this?</p>
             <div class="modal-buttons">
-                <button id="confirmPostBtn">Yes, Post It</button>
+                <button id="confirmPostBtn">Yes, post It</button>
                 <button id="cancelPostBtn">Cancel</button>
             </div>
         </div>
@@ -743,7 +743,7 @@
             const note = sanitizeInput(noteInput.value.trim());
             
             if (name === '' || note === '') {
-                showError('Please enter both your name and a message');
+                showError('Please enter both your name and a post');
                 return;
             }
             
@@ -768,12 +768,12 @@
                 confirmationModal.style.display = 'none';
                 
                 // Show success feedback
-                showSuccess('Your note was posted successfully!');
-                showToast('Note posted successfully!');
+                showSuccess('Your post was successful!');
+                showToast('New post added');
                 
             } catch (error) {
                 console.error('Error adding document: ', error);
-                showError('There was an error posting your message. Please check the Firebase security rules.');
+                showError('There was an error posting. Please check the Firebase security rules.');
             } finally {
                 submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Post Message';
                 submitBtn.disabled = false;
@@ -786,7 +786,7 @@
             const note = noteInput.value.trim();
             
             if (name === '' || note === '') {
-                showError('Please enter both your name and a message');
+                showError('Please enter both your name and a post');
                 return;
             }
             
