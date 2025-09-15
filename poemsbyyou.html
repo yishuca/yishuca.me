@@ -550,7 +550,7 @@
     <!-- Full page loader -->
     <div class="full-page-loader" id="fullPageLoader">
         <div class="spinner"></div>
-        <p>Loading your notes...</p>
+        <p>Loading...</p>
     </div>
 
     <div class="container">
@@ -727,7 +727,7 @@
             notesContainer.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-spinner fa-spin"></i>
-                    <p>Loading your notes...</p>
+                    <p>Loading...</p>
                 </div>
             `;
         }
@@ -882,7 +882,7 @@
                     fullPageLoader.style.display = 'none';
                 }, error => {
                     console.error('Error getting documents: ', error);
-                    showError('Error loading messages. Please check the Firebase security rules.');
+                    showError('Error loading. Please check the Firebase security rules.');
                     fullPageLoader.style.display = 'none';
                 });
         }
