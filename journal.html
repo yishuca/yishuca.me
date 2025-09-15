@@ -554,24 +554,24 @@
 
     <div class="container">
         <header>
-            <h1>My Notes <i class="fas fa-book-open"></i></h1>
-            <p class="subtitle">Welp.</p>
+            <h1>poems by you.</h1>
+            <p class="subtitle"></p>
         </header>
 
         <div class="main-content">
             <section class="form-section">
-                <h2><i class="fas fa-pencil-alt"></i> Add Your Note</h2>
+                <h2><i class="fas fa-pencil-alt"></i> Add new post</h2>
                 <div class="form-group">
-                    <label for="name">Your Name</label>
+                    <label for="name">Your name</label>
                     <input type="text" id="name" placeholder="" maxlength="50">
                 </div>
                 <div class="form-group">
-                    <label for="note">Your Message</label>
+                    <label for="note">Type here</label>
                     <textarea id="note" placeholder="" maxlength="10000"></textarea>
                     <div class="character-count"><span id="charCount">0</span>/10000 characters</div>
                 </div>
                 <button id="submitBtn">
-                    <i class="fas fa-paper-plane"></i> Post Message
+                    <i class="fas fa-paper-plane"></i> Post
                 </button>
                 <div id="errorMessage" class="error-message"></div>
                 <div id="successMessage" class="success-message"></div>
@@ -611,7 +611,7 @@
         </div>
 
         <footer>
-            <p><i class="fas fa-heart" style="color: #d64d7c;"></i> My Notes © 2025</p>
+            <p><i class="fas fa-heart" style="color: #d64d7c;"></i> poems by you. © 2025</p>
         </footer>
     </div>
 
@@ -891,8 +891,8 @@
                 notesContainer.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-heart"></i>
-                        <p>No notes found matching your search.</p>
-                        <p>Try different keywords or post a new note!</p>
+                        <p>No poems found matching your search.</p>
+                        <p>Try different keywords or post something new.</p>
                     </div>
                 `;
                 noteCount.textContent = '0';
