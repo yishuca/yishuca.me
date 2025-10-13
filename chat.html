@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Chat</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+
+        header {
+            background: linear-gradient(to right, #4a6ee0, #6e8efb);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .login-section {
+            padding: 30px;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        input {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #6e8efb;
+            box-shadow: 0 0 0 3px rgba(110, 142, 251, 0.2);
+        }
+
+        button {
+            padding: 12px 20px;
+            background: linear-gradient(to right, #4a6ee0, #6e8efb);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-section {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(to right, #4a6ee0, #6e8efb);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 70%;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background: linear-gradient(to right, #4a6ee0, #6e8efb);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background-color: #f1f3f5;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+
+        .message-sender {
+            font-weight: bold;
+        }
+
+        .message-time {
+            opacity: 0.7;
+        }
+
+        .message-content {
+            line-height: 1.4;
+        }
+
+        .chat-input {
+            padding: 15px 20px;
+            border-top: 1px solid #eaeaea;
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+        }
+
+        .send-button {
+            padding: 12px 25px;
+        }
+
+        .typing-indicator {
+            padding: 5px 20px;
+            font-style: italic;
+            color: #6c757d;
+            min-height: 25px;
+        }
+
+        .status {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #28a745;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                height: 90vh;
+            }
+            
+            .message {
+                max-width: 85%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Live Chat</h1>
+            <p class="subtitle">Connect and chat with people in real-time</p>
+        </header>
+        
+        <div class="login-section" id="loginSection">
+            <h2>Join the Conversation</h2>
+            <p>Enter your name to start chatting</p>
+            <form class="login-form" id="loginForm">
+                <input type="text" id="usernameInput" placeholder="Your Name" required>
+                <button type="submit">Start Chatting</button>
+            </form>
+            <div class="status" id="loginStatus"></div>
+        </div>
+        
+        <div class="chat-section" id="chatSection">
+            <div class="chat-header">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="currentUsername">User</span>
+                </div>
+                <button id="logoutButton">Leave Chat</button>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message received">
+                    <div class="message-header">
+                        <span class="message-sender">System</span>
+                        <span class="message-time">Just now</span>
+                    </div>
+                    <div class="message-content">
+                        Welcome to the chat! Start by sending a message.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typingIndicator"></div>
+            
+            <div class="chat-input">
+                <input type="text" class="message-input" id="messageInput" placeholder="Type your message...">
+                <button class="send-button" id="sendButton">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUDHNmu9thRI5dC_4-1IbSOuzD9wwqG-g",
+            authDomain: "chat-5779c.firebaseapp.com",
+            projectId: "chat-5779c",
+            storageBucket: "chat-5779c.firebasestorage.app",
+            messagingSenderId: "1040578045999",
+            appId: "1:1040578045999:web:d0ed8a27808bb339ae7eda"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // DOM elements
+        const loginSection = document.getElementById('loginSection');
+        const chatSection = document.getElementById('chatSection');
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('usernameInput');
+        const loginStatus = document.getElementById('loginStatus');
+        const currentUsername = document.getElementById('currentUsername');
+        const userAvatar = document.getElementById('userAvatar');
+        const logoutButton = document.getElementById('logoutButton');
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // Current user
+        let currentUser = null;
+
+        // Login form submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = usernameInput.value.trim();
+            
+            if (username) {
+                currentUser = username;
+                currentUsername.textContent = username;
+                userAvatar.textContent = username.charAt(0).toUpperCase();
+                
+                // Show chat section and hide login
+                loginSection.style.display = 'none';
+                chatSection.style.display = 'flex';
+                
+                // Load existing messages
+                loadMessages();
+                
+                // Focus on message input
+                messageInput.focus();
+                
+                // Set up real-time listener for new messages
+                setupMessageListener();
+            }
+        });
+
+        // Logout button
+        logoutButton.addEventListener('click', () => {
+            currentUser = null;
+            chatSection.style.display = 'none';
+            loginSection.style.display = 'block';
+            chatMessages.innerHTML = `
+                <div class="message received">
+                    <div class="message-header">
+                        <span class="message-sender">System</span>
+                        <span class="message-time">Just now</span>
+                    </div>
+                    <div class="message-content">
+                        Welcome to the chat! Start by sending a message.
+                    </div>
+                </div>
+            `;
+        });
+
+        // Send message
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const messageText = messageInput.value.trim();
+            
+            if (messageText && currentUser) {
+                // Add message to Firestore
+                db.collection('messages').add({
+                    text: messageText,
+                    sender: currentUser,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                })
+                .then(() => {
+                    // Clear input
+                    messageInput.value = '';
+                })
+                .catch((error) => {
+                    console.error('Error sending message: ', error);
+                });
+            }
+        }
+
+        // Load existing messages
+        function loadMessages() {
+            db.collection('messages')
+                .orderBy('timestamp', 'asc')
+                .get()
+                .then((querySnapshot) => {
+                    chatMessages.innerHTML = '';
+                    querySnapshot.forEach((doc) => {
+                        const message = doc.data();
+                        displayMessage(message);
+                    });
+                    scrollToBottom();
+                })
+                .catch((error) => {
+                    console.error('Error loading messages: ', error);
+                });
+        }
+
+        // Set up real-time listener for new messages
+        function setupMessageListener() {
+            db.collection('messages')
+                .orderBy('timestamp', 'asc')
+                .onSnapshot((querySnapshot) => {
+                    // Only process new messages
+                    querySnapshot.docChanges().forEach((change) => {
+                        if (change.type === 'added') {
+                            const message = change.doc.data();
+                            displayMessage(message);
+                            scrollToBottom();
+                        }
+                    });
+                });
+        }
+
+        // Display a message in the chat
+        function displayMessage(message) {
+            const messageDiv = document.createElement('div');
+            const isSent = message.sender === currentUser;
+            
+            messageDiv.className = `message ${isSent ? 'sent' : 'received'}`;
+            
+            // Format timestamp
+            let timeString = 'Just now';
+            if (message.timestamp) {
+                const date = message.timestamp.toDate();
+                timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="message-header">
+                    <span class="message-sender">${message.sender}</span>
+                    <span class="message-time">${timeString}</span>
+                </div>
+                <div class="message-content">${message.text}</div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+        }
+
+        // Scroll to the bottom of the chat
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Initial setup
+        loginStatus.textContent = "Connected to chat server";
+    </script>
+</body>
+</html>
