@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Live Chat</title>
+    <title>Tick Talk</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
@@ -91,6 +91,10 @@
             align-items: center;
             background: rgba(255, 255, 255, 0.95);
             animation: slideInLeft 0.8s ease-out;
+        }
+
+        .login-section h2 {
+            color: #ff76a6; /* Change this to any color you want */
         }
 
         .chat-section {
@@ -565,8 +569,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>Live Chat</h1>
-            <p class="subtitle">Connect and chat with people in real-time</p>
+            <h1>Tik Talk</h1>
+            <p class="subtitle">Talk to pass time</p>
             
             <!-- Color Customization -->
             <div class="color-customizer">
@@ -612,11 +616,11 @@
         <div class="main-content">
             <div class="login-section" id="loginSection">
                 <h2><i class="fas fa-comments"></i> Join the Conversation</h2>
-                <p>Enter your name to start chatting</p>
+                <p></p>
                 <form class="login-form" id="loginForm">
                     <div class="form-group">
                         <label for="usernameInput">Your Name</label>
-                        <input type="text" id="usernameInput" placeholder="Enter your name" required>
+                        <input type="text" id="usernameInput" placeholder="" required>
                     </div>
                     <button type="submit">
                         <i class="fas fa-sign-in-alt"></i> Start Chatting
