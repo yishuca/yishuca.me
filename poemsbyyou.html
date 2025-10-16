@@ -111,8 +111,32 @@
         }
 
         textarea {
-            min-height: 120px;
+            min-height: 150px;
+            max-height: 400px;
             resize: vertical;
+            overflow-y: auto;
+            line-height: 1.5;
+        }
+
+        /* Improved textarea scrolling */
+        .textarea-container {
+            position: relative;
+        }
+
+        .textarea-scroll-indicator {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff85a2;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        textarea:focus ~ .textarea-scroll-indicator {
+            opacity: 0;
         }
 
         button {
@@ -278,33 +302,21 @@
             cursor: pointer;
         }
 
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-            gap: 10px;
+        /* Lazy loading indicator */
+        .lazy-loading {
+            text-align: center;
+            padding: 20px;
+            grid-column: 1 / -1;
         }
 
-        .pagination button {
-            padding: 8px 15px;
-            background: white;
-            color: #d64d7c;
-            border: 1px solid #ffc2d9;
-        }
-
-        .pagination button.active {
-            background: linear-gradient(to right, #ff85a2, #d64d7c);
-            color: white;
-        }
-
-        .pagination button:hover:not(:disabled) {
-            background: #ffe4ee;
-        }
-
-        .pagination button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .lazy-loading .loader {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 118, 166, 0.3);
+            border-radius: 50%;
+            border-top-color: #ff76a6;
+            animation: spin 1s ease-in-out infinite;
         }
 
         /* Modal */
@@ -569,7 +581,12 @@
                 </div>
                 <div class="form-group">
                     <label for="note">Type here</label>
-                    <textarea id="note" placeholder="" maxlength="10000"></textarea>
+                    <div class="textarea-container">
+                        <textarea id="note" placeholder="" maxlength="10000"></textarea>
+                        <div class="textarea-scroll-indicator">
+                            <i class="fas fa-arrows-alt-v"></i>
+                        </div>
+                    </div>
                     <div class="character-count"><span id="charCount">0</span>/10000 characters</div>
                 </div>
                 <button id="submitBtn">
@@ -604,10 +621,9 @@
                     </div>
                 </div>
                 
-                <div class="pagination">
-                    <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i> Prev</button>
-                    <span id="pageInfo">Page 1 of 1</span>
-                    <button id="nextBtn" disabled>Next <i class="fas fa-chevron-right"></i></button>
+                <div class="lazy-loading" id="lazyLoading" style="display: none;">
+                    <div class="loader"></div>
+                    <p>Loading more posts...</p>
                 </div>
             </section>
         </div>
@@ -655,21 +671,20 @@
         const successMessage = document.getElementById('successMessage');
         const searchInput = document.getElementById('searchInput');
         const filterSelect = document.getElementById('filterSelect');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const pageInfo = document.getElementById('pageInfo');
         const confirmationModal = document.getElementById('confirmationModal');
         const confirmPostBtn = document.getElementById('confirmPostBtn');
         const cancelPostBtn = document.getElementById('cancelPostBtn');
         const fullPageLoader = document.getElementById('fullPageLoader');
+        const lazyLoading = document.getElementById('lazyLoading');
 
         // App state
         let allNotes = [];
         let filteredNotes = [];
-        let currentPage = 1;
-        const notesPerPage = 6;
         let debounceTimer;
         let unsubscribe;
+        let lastVisible = null;
+        let hasMoreData = true;
+        let isLoading = false;
 
         // Character count for textarea
         noteInput.addEventListener('input', () => {
@@ -827,34 +842,8 @@
                 filteredNotes.sort((a, b) => a.timestamp - b.timestamp);
             }
             
-            currentPage = 1;
             displayNotes();
         }
-
-        // Pagination functionality
-        function updatePagination() {
-            const totalPages = Math.ceil(filteredNotes.length / notesPerPage);
-            
-            prevBtn.disabled = currentPage === 1;
-            nextBtn.disabled = currentPage === totalPages || totalPages === 0;
-            
-            pageInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
-        }
-
-        prevBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayNotes();
-            }
-        });
-
-        nextBtn.addEventListener('click', () => {
-            const totalPages = Math.ceil(filteredNotes.length / notesPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                displayNotes();
-            }
-        });
 
         // Real-time listener for notes with debouncing
         function setupNotesListener() {
@@ -864,6 +853,7 @@
             
             unsubscribe = db.collection('notes')
                 .orderBy('timestamp', 'desc')
+                .limit(12)
                 .onSnapshot(snapshot => {
                     allNotes = [];
                     snapshot.forEach(doc => {
@@ -874,6 +864,9 @@
                             timestamp: noteData.timestamp ? noteData.timestamp.toDate() : new Date()
                         });
                     });
+                    
+                    // Store the last visible document for pagination
+                    lastVisible = snapshot.docs[snapshot.docs.length-1];
                     
                     filteredNotes = [...allNotes];
                     displayNotes();
@@ -887,7 +880,49 @@
                 });
         }
 
-        // Display notes in the UI with virtualization
+        // Load more notes for lazy loading
+        async function loadMoreNotes() {
+            if (isLoading || !hasMoreData) return;
+            
+            isLoading = true;
+            lazyLoading.style.display = 'block';
+            
+            try {
+                const next = await db.collection('notes')
+                    .orderBy('timestamp', 'desc')
+                    .startAfter(lastVisible)
+                    .limit(6)
+                    .get();
+                
+                if (next.empty) {
+                    hasMoreData = false;
+                    lazyLoading.style.display = 'none';
+                    return;
+                }
+                
+                next.forEach(doc => {
+                    const noteData = doc.data();
+                    allNotes.push({ 
+                        id: doc.id, 
+                        ...noteData,
+                        timestamp: noteData.timestamp ? noteData.timestamp.toDate() : new Date()
+                    });
+                });
+                
+                lastVisible = next.docs[next.docs.length-1];
+                filteredNotes = [...allNotes];
+                displayNotes();
+                
+            } catch (error) {
+                console.error('Error loading more documents: ', error);
+                showError('Error loading more posts.');
+            } finally {
+                isLoading = false;
+                lazyLoading.style.display = 'none';
+            }
+        }
+
+        // Display notes in the UI
         function displayNotes() {
             if (filteredNotes.length === 0) {
                 notesContainer.innerHTML = `
@@ -898,19 +933,13 @@
                     </div>
                 `;
                 noteCount.textContent = '0';
-                updatePagination();
                 return;
             }
             
             noteCount.textContent = filteredNotes.length;
             
-            // Calculate pagination
-            const startIndex = (currentPage - 1) * notesPerPage;
-            const endIndex = Math.min(startIndex + notesPerPage, filteredNotes.length);
-            const paginatedNotes = filteredNotes.slice(startIndex, endIndex);
-            
-            // Virtualization - only render visible notes
-            notesContainer.innerHTML = paginatedNotes.map(note => `
+            // Render all filtered notes
+            notesContainer.innerHTML = filteredNotes.map(note => `
                 <div class="note-card">
                     <div class="note-header">
                         <span class="author"><i class="fas fa-user"></i> ${sanitizeInput(note.name)}</span>
@@ -919,8 +948,6 @@
                     <div class="note-content">${sanitizeInput(note.note)}</div>
                 </div>
             `).join('');
-            
-            updatePagination();
         }
 
         // Format Firestore timestamp
@@ -943,9 +970,24 @@
             });
         }
 
+        // Lazy loading when scrolling to bottom
+        function handleScroll() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            
+            // If we're near the bottom of the page, load more notes
+            if (scrollTop + windowHeight >= documentHeight - 300 && hasMoreData) {
+                loadMoreNotes();
+            }
+        }
+
         // Initial animation for elements
         document.addEventListener('DOMContentLoaded', () => {
             setupNotesListener();
+            
+            // Add scroll event listener for lazy loading
+            window.addEventListener('scroll', handleScroll);
             
             document.querySelectorAll('.note-card').forEach((card, index) => {
                 card.style.animationDelay = `${index * 0.1}s`;
