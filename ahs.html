@@ -123,12 +123,26 @@
         }
 
         .needle {
-            width: 7px;
+            width: 6px;
             background: linear-gradient(to top, rgba(255,0,40,1), rgba(80, 6, 17, 0.918));
             border-radius: 3px;
             transform-origin: 50% 100%;
             box-shadow: 0 0 15px rgba(255, 0, 51, 0.418);
             z-index: 9999999;
+        }
+
+        .ahs-text {
+            position: absolute;
+            bottom: 30px; /* Adjust this value to position it higher/lower */
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00fff2;
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(0, 255, 242, 0.8);
+            letter-spacing: px;
+            font-family: 'Orbitron', sans-serif;
+            z-index: 10;
         }
 
         .center-cap {
@@ -1587,6 +1601,7 @@
             <div class="needle" id="needle"></div>
             <div class="center-cap"></div>
             <div class="time-display" id="timeDisplay">11:59pm</div>
+            <div class="ahs-text">AHS</div>
         </div>
     </div>
 
@@ -1891,7 +1906,7 @@
                 const needleHeight = size * 0.44;
 
                 needle.style.height = needleHeight + 'px';
-                needle.style.left = '50%';
+                needle.style.left = '49%';
                 needle.style.top = '50%';
                 needle.style.transformOrigin = '50% 100%';
                 needle.style.marginTop = `-${needleHeight}px`;
