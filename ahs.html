@@ -48,6 +48,130 @@
     
     <!-- Main CSS -->
     <style>
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #0a0a0a 40%, #000 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1.5s ease;
+        }
+
+        .loading-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        :root {
+            --size: 360px;
+            --glow-color: rgba(255, 7, 58, 1);
+            --glow-intensity: 0; /* CHANGED: Start with zero glow */
+        }
+
+        .speedometer {
+            position: relative;
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 45%, #111 40%, #000 100%);
+            box-shadow: 0 0 60px rgba(255, 7, 58, var(--glow-intensity)), 
+                        inset 0 0 40px rgba(0, 0, 0, 0.8);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .reflection {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(115deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 40%, transparent 100%);
+            animation: sweep 6s linear infinite;
+            mix-blend-mode: overlay;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @keyframes sweep {
+            0% { transform: rotate(0deg); opacity: 0.4; }
+            50% { opacity: 0.6; }
+            100% { transform: rotate(360deg); opacity: 0.4; }
+        }
+
+        .numbers, .ticks, .needle, .center-cap {
+            position: absolute;
+            inset: 0;
+        }
+
+        .number {
+            position: absolute;
+            color: #00fff2;
+            font-size: 18px;
+            text-shadow: 0 0 8px rgba(255,255,255,0.8);
+            transform: translate(-50%, -50%);
+        }
+
+        .tick {
+            position: absolute;
+            width: 3px;
+            border-radius: 3px;
+            transform-origin: 50% 100%;
+        }
+
+        .needle {
+            width: 7px;
+            background: linear-gradient(to top, rgba(255,0,40,1), rgba(80, 6, 17, 0.918));
+            border-radius: 3px;
+            transform-origin: 50% 100%;
+            box-shadow: 0 0 15px rgba(255, 0, 51, 0.418);
+            z-index: 9999999;
+        }
+
+        .center-cap {
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle, #222 0%, #000 80%);
+            border-radius: 50%;
+            border: 2px solid #555;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 12;
+            box-shadow: 0 0 15px rgba(255,7,58,0.4);
+        }
+
+        .glow-ring {
+            position: absolute;
+            inset: -15px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 7, 58, 0.3) 0%, transparent 70%);
+            z-index: -1;
+            opacity: 0; /* CHANGED: Start with zero opacity */
+            transition: opacity 0.5s ease;
+        }
+
+        .time-display {
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(255, 7, 58, 0.8);
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            text-align: center;
+            width: 100%;
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* Main Website Styles */
         :root {
             --neon-primary: #ff073a;  /* Bright red */
             --neon-secondary: #ff4d00; /* Orange-red */
@@ -78,141 +202,6 @@
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
-        }
-
-        /* Loading Screen Styles */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--darker);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 1.5s ease, visibility 1.5s ease;
-        }
-
-        .loading-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        /* Speedometer Loading Animation */
-        .speedometer-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle at center, #0a0a0a 40%, #000 100%);
-        }
-
-        .speedometer {
-            position: relative;
-            width: 360px;
-            height: 360px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 50% 45%, #111 40%, #000 100%);
-            box-shadow: 0 0 60px rgba(255, 7, 58, var(--glow-intensity)), 
-                        inset 0 0 40px rgba(0, 0, 0, 0.8);
-            transition: box-shadow 0.3s ease;
-            --glow-intensity: 0;
-        }
-
-        .reflection {
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: linear-gradient(115deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 40%, transparent 100%);
-            animation: sweep 6s linear infinite;
-            mix-blend-mode: overlay;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        @keyframes sweep {
-            0% { transform: rotate(0deg); opacity: 0.4; }
-            50% { opacity: 0.6; }
-            100% { transform: rotate(360deg); opacity: 0.4; }
-        }
-
-        .numbers, .ticks, .needle, .center-cap {
-            position: absolute;
-            inset: 0;
-        }
-
-        .number {
-            position: absolute;
-            color: #fff;
-            font-size: 18px;
-            text-shadow: 0 0 8px rgba(255,255,255,0.8);
-            transform: translate(-50%, -50%);
-        }
-
-        .tick {
-            position: absolute;
-            width: 3px;
-            border-radius: 3px;
-            transform-origin: 50% 100%;
-        }
-
-        .needle {
-            width: 3px;
-            background: linear-gradient(to top, rgba(255,0,40,1), rgba(255,0,40,0.1));
-            border-radius: 3px;
-            transform-origin: 50% 100%;
-            z-index: 10;
-        }
-
-        .center-cap {
-            width: 18px;
-            height: 18px;
-            background: radial-gradient(circle, #222 0%, #000 80%);
-            border-radius: 50%;
-            border: 2px solid #555;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 12;
-            box-shadow: 0 0 15px rgba(255,7,58,0.4);
-        }
-
-        .glow-ring {
-            position: absolute;
-            inset: -15px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 7, 58, 0.3) 0%, transparent 70%);
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .time-display {
-            position: absolute;
-            bottom: -70px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #fff;
-            font-size: 24px;
-            font-weight: 700;
-            text-shadow: 0 0 15px rgba(255, 7, 58, 0.8);
-            letter-spacing: 2px;
-            opacity: 0;
-            transition: opacity 1.5s ease;
-            text-align: center;
-            width: 100%;
-            font-family: 'Orbitron', monospace;
-        }
-
-        .fade-out {
-            opacity: 0;
-            transition: opacity 1.5s ease;
         }
 
         /* Skeleton Loading Styles */
@@ -396,12 +385,6 @@
             min-height: 100vh;
             padding-bottom: 80px;
             overflow: hidden;
-            opacity: 0;
-            transition: opacity 1.5s ease;
-        }
-
-        .page-container.fade-in {
-            opacity: 1;
         }
 
         .page {
@@ -453,9 +436,11 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            animation: spin 15s linear infinite; /* Changed from 10s to 15s */
+            animation: spin 15s linear infinite, fadeIn 1s ease-out forwards;/* Changed from 10s to 15s */
             position: relative;
             z-index: 2;
+            opacity: 0;
+            animation-delay: 7s;
         }
 
         /* Logo glow and flicker effect */
@@ -471,8 +456,10 @@
                 0 0 20px rgba(255, 7, 58, 0.6),
                 0 0 40px rgba(255, 7, 58, 0.4),
                 0 0 60px rgba(255, 7, 58, 0.2);
-            animation: logoFlicker 3s infinite alternate;
+            animation: logoFlicker 8s infinite alternate, fadeIn 1s ease-out forwards;
+            animation-delay: 7s;
             z-index: 1;
+            opacity: 0; /* Add this line */
         }
 
         @keyframes logoFlicker {
@@ -551,9 +538,9 @@
 
         .matrix-letter {
             opacity: 0;
-            animation: matrixReveal .1s forwards;
+            animation: matrixReveal 25s forwards;
             display: inline-block;
-            min-width: 20px;
+            min-width: 25px;
             text-align: center;
             text-shadow: 
                 0 0 5px #fff,
@@ -1590,785 +1577,787 @@
     </style>
 </head>
 <body>
-    <!-- Loading Screen with Speedometer -->
+    <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
-        <div class="speedometer-container">
-            <div class="speedometer" id="speedometer">
-                <div class="glow-ring" id="glowRing"></div>
-                <div class="reflection"></div>
-                <div class="ticks" id="ticks"></div>
-                <div class="numbers" id="numbers"></div>
-                <div class="needle" id="needle"></div>
-                <div class="center-cap"></div>
-                <div class="time-display" id="timeDisplay">11:59pm</div>
+        <div class="speedometer">
+            <div class="glow-ring" id="glowRing"></div>
+            <div class="reflection"></div>
+            <div class="ticks" id="ticks"></div>
+            <div class="numbers" id="numbers"></div>
+            <div class="needle" id="needle"></div>
+            <div class="center-cap"></div>
+            <div class="time-display" id="timeDisplay">11:59pm</div>
+        </div>
+    </div>
+
+    <!-- Main Website Content -->
+    <div class="website-content" style="display: none;">
+        <!-- Shooting stars container -->
+        <div class="shooting-star-container" id="starContainer"></div>
+
+        <!-- Animated background element -->
+        <div class="hero-background">
+            <div class="gradient-orb"></div>
+            <div class="gradient-orb"></div>
+        </div>
+
+        <!-- Cookie Consent Banner -->
+        <div id="cookie-consent">
+            <p>This website uses cookies to ensure you get the best experience. By continuing to browse, you agree to our use of cookies.</p>
+            <div class="cookie-buttons">
+                <button id="accept-cookies" class="cookie-btn">Accept</button>
+                <button id="decline-cookies" class="cookie-btn">Decline</button>
             </div>
         </div>
-    </div>
 
-    <!-- Shooting stars container -->
-    <div class="shooting-star-container" id="starContainer"></div>
-
-    <!-- Animated background element -->
-    <div class="hero-background">
-        <div class="gradient-orb"></div>
-        <div class="gradient-orb"></div>
-    </div>
-
-    <!-- Cookie Consent Banner -->
-    <div id="cookie-consent">
-        <p>This website uses cookies to ensure you get the best experience. By continuing to browse, you agree to our use of cookies.</p>
-        <div class="cookie-buttons">
-            <button id="accept-cookies" class="cookie-btn">Accept</button>
-            <button id="decline-cookies" class="cookie-btn">Decline</button>
-        </div>
-    </div>
-
-    <div class="page-container" id="pageContainer">
-        <!-- Home Page (default visible) -->
-        <div class="page active" id="home">
-            <header class="hero">
-                <div class="hero-content">
-                    <div class="logo-container">
-                        <!-- Logo with glow effect -->
-                        <div class="logo-glow"></div>
-                        <!-- Replace with your logo image -->
-                        <img id="club-logo" class="logo-spin" src="./ahs.jpg" alt="After Hours Society Logo" loading="lazy">
-                    </div>
-                    <div class="hero-title">
-                        <div class="title-part" id="after-hours-title">AFTER H<span class="flicker-letter">O</span><span class="flicker-letter">U</span>R<span class="flicker-letter">S</span></div>
-                        <div class="title-part" id="society-title"><span class="flicker-letter">S</span><span class="flicker-letter">O</span><span class="flicker-letter">C</span>I<span class="flicker-letter">E</span>T<span class="flicker-letter">Y</span></div>
-                    </div>
-                    <h2 style="font-size: 20px;">EST. 2025</h2>
-                    <p class="tagline"></p>
-                </div>
-                <div class="scroll-indicator" id="scrollIndicator" aria-hidden="true">
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-            </header>
-
-            <section class="news-updates" id="news">
-                <h2>Club News & Updates</h2>
-                <div class="news-grid">
-                    <div class="news-item">
-                        <div class="news-content">
-                            <div class="news-date">June 15, 2023</div>
-                            <h3 class="news-title">Monthly Meetup This Saturday</h3>
-                            <p class="news-excerpt">Join us this Saturday at 7 PM for our monthly car meet at Downtown Parking Garage. All makes and models welcome! Show off your ride, connect with fellow enthusiasts, and enjoy the automotive community.</p>
+        <div class="page-container">
+            <!-- Home Page (default visible) -->
+            <div class="page active" id="home">
+                <header class="hero">
+                    <div class="hero-content">
+                        <div class="logo-container">
+                            <!-- Logo with glow effect -->
+                            <div class="logo-glow"></div>
+                            <!-- Replace with your logo image -->
+                            <img id="club-logo" class="logo-spin" src="./ahs.jpg" alt="After Hours Society Logo" loading="lazy">
                         </div>
-                    </div>
-                    <div class="news-item">
-                        <div class="news-content">
-                            <div class="news-date">June 10, 2023</div>
-                            <h3 class="news-title">Annual Car Show Announced</h3>
-                            <p class="news-excerpt">Mark your calendars for our annual car show on July 22nd. Trophies, food trucks, and live music! This is our biggest event of the year with categories for imports, domestics, classics, and modified vehicles.</p>
+                        <div class="hero-title">
+                            <div class="title-part" id="after-hours-title">AFTER H<span class="flicker-letter">O</span><span class="flicker-letter">U</span>R<span class="flicker-letter">S</span></div>
+                            <div class="title-part" id="society-title"><span class="flicker-letter">S</span><span class="flicker-letter">O</span><span class="flicker-letter">C</span>I<span class="flicker-letter">E</span>T<span class="flicker-letter">Y</span></div>
                         </div>
+                        <h2 style="font-size: 20px;">EST. 2025</h2>
+                        <p class="tagline"></p>
                     </div>
-                    <div class="news-item">
-                        <div class="news-content">
-                            <div class="news-date">June 5, 2023</div>
-                            <h3 class="news-title">New Club Merchandise Available</h3>
-                            <p class="news-excerpt">Check out our new line of club merchandise including t-shirts, hats, and stickers. Available at our next meetup or through our online store. Show your support for After Hours Society wherever you go!</p>
-                        </div>
+                    <div class="scroll-indicator" id="scrollIndicator" aria-hidden="true">
+                        <i class="fas fa-chevron-down"></i>
                     </div>
-                </div>
-            </section>
-        </div>
+                </header>
 
-        <!-- Portfolio Page (Now Sponsors Page) -->
-        <div class="page" id="portfolio" tabindex="-1">
-            <section class="portfolio-section">
-                <h2>Our <br><span class="flicker-e">Spon</span>sors</h2>
-                <div class="sponsors-grid">
-                    <div class="sponsor-item">
-                        <div class="sponsor-name">esc8perealitydesigns</div>
-                        <a href="https://www.instagram.com/esc8perealitydesigns/" target="_blank" class="instagram-btn">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                    <div class="sponsor-item">
-                        <div class="sponsor-name">208_detailz</div>
-                        <a href="https://www.instagram.com/208_detailz/" target="_blank" class="instagram-btn">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                    <div class="sponsor-item">
-                        <div class="sponsor-name">shaveshoppe</div>
-                        <a href="https://www.instagram.com/shaveshoppe/" target="_blank" class="instagram-btn">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Pricing Page (Now About Page) -->
-        <div class="page" id="pricing" tabindex="-1">
-            <section class="pricing-section">
-                <h2>About After Hours Society</h2>
-                <p class="subtitle">Established in 2015, After Hours Society is a passionate community of automotive enthusiasts dedicated to celebrating car culture. We bring together people who share a love for all things automotive, from classic restorations to modern performance modifications.</p>
-                
-                <div class="pricing-cards">
-                    <div class="pricing-card">
-                        <h3>Our Story</h3>
-                        <p>Founded by a group of friends who loved working on cars after hours, our club has grown into a vibrant community of over 200 members. What started as informal weekend gatherings has evolved into organized events that celebrate automotive passion.</p>
-                        <p>We believe that cars are more than just transportation - they're works of art, engineering marvels, and extensions of our personalities.</p>
-                    </div>
-                    <div class="pricing-card featured">
-                        <h3>What We Do</h3>
-                        <ul>
-                            <li>Weekly meets every Friday night</li>
-                            <li>Monthly cruises through scenic routes</li>
-                            <li>Technical workshops and DIY sessions</li>
-                            <li>Annual charity car show</li>
-                            <li>Track days and autocross events</li>
-                            <li>Community outreach programs</li>
-                        </ul>
-                    </div> 
-                    <div class="pricing-card">
-                        <h3>Join Our Community</h3>
-                        <p>Whether you drive a classic muscle car, a tuned import, a lifted truck, or a stock daily driver, you'll find a welcoming community at After Hours Society.</p>
-                        <p>We're not about exclusivity - we're about passion. If you love cars, you belong here.</p>
-                        <p>Come to one of our meets to experience the community firsthand, or reach out through our contact page with any questions.</p>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Contact Page -->
-        <div class="page" id="contact" tabindex="-1">
-            <section class="contact-section">
-                <div class="contact-container">
-                    <div class="contact-info">
-                        <h2>Get In Touch</h2>
-                        <p>Interested in joining our club, becoming a sponsor, or just want to say hello? We'd love to hear from you.</p>
-                        <div class="contact-methods">
-                            <div class="contact-method">
-                                <i class="fas fa-envelope"></i>
-                                <div>
-                                    <h4>Email</h4>
-                                    <p><a href="mailto:info@afterhourssociety.com">info@afterhourssociety.com</a></p>
-                                </div>
+                <section class="news-updates" id="news">
+                    <h2>Club News & Updates</h2>
+                    <div class="news-grid">
+                        <div class="news-item">
+                            <div class="news-content">
+                                <div class="news-date">June 15, 2023</div>
+                                <h3 class="news-title">Monthly Meetup This Saturday</h3>
+                                <p class="news-excerpt">Join us this Saturday at 7 PM for our monthly car meet at Downtown Parking Garage. All makes and models welcome! Show off your ride, connect with fellow enthusiasts, and enjoy the automotive community.</p>
                             </div>
-                            <div class="contact-method">
+                        </div>
+                        <div class="news-item">
+                            <div class="news-content">
+                                <div class="news-date">June 10, 2023</div>
+                                <h3 class="news-title">Annual Car Show Announced</h3>
+                                <p class="news-excerpt">Mark your calendars for our annual car show on July 22nd. Trophies, food trucks, and live music! This is our biggest event of the year with categories for imports, domestics, classics, and modified vehicles.</p>
+                            </div>
+                        </div>
+                        <div class="news-item">
+                            <div class="news-content">
+                                <div class="news-date">June 5, 2023</div>
+                                <h3 class="news-title">New Club Merchandise Available</h3>
+                                <p class="news-excerpt">Check out our new line of club merchandise including t-shirts, hats, and stickers. Available at our next meetup or through our online store. Show your support for After Hours Society wherever you go!</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Portfolio Page (Now Sponsors Page) -->
+            <div class="page" id="portfolio" tabindex="-1">
+                <section class="portfolio-section">
+                    <h2>Our <br><span class="flicker-e">Spon</span>sors</h2>
+                    <div class="sponsors-grid">
+                        <div class="sponsor-item">
+                            <div class="sponsor-name">esc8perealitydesigns</div>
+                            <a href="https://www.instagram.com/esc8perealitydesigns/" target="_blank" class="instagram-btn">
                                 <i class="fab fa-instagram"></i>
-                                <div>
-                                    <h4>Instagram</h4>
-                                    <p><a href="https://instagram.com/afterhourssociety" target="_blank">@afterhourssociety</a></p>
-                                </div>
-                            </div>
-                            <div class="contact-method">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <div>
-                                    <h4>Meetup Location</h4>
-                                    <p>Downtown Parking Garage<br>Every 3rd Saturday</p>
-                                </div>
-                            </div>
+                            </a>
+                        </div>
+                        <div class="sponsor-item">
+                            <div class="sponsor-name">208_detailz</div>
+                            <a href="https://www.instagram.com/208_detailz/" target="_blank" class="instagram-btn">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                        <div class="sponsor-item">
+                            <div class="sponsor-name">shaveshoppe</div>
+                            <a href="https://www.instagram.com/shaveshoppe/" target="_blank" class="instagram-btn">
+                                <i class="fab fa-instagram"></i>
+                            </a>
                         </div>
                     </div>
+                </section>
+            </div>
 
-                    <form class="contact-form" id="contactForm" action="https://formsubmit.co/your@email.com" method="POST">
-                        <h2>Contact Us</h2>
-                        <div id="successMessage" class="success-message">
-                            Thank you for your message! We will get back to you soon.
+            <!-- Pricing Page (Now About Page) -->
+            <div class="page" id="pricing" tabindex="-1">
+                <section class="pricing-section">
+                    <h2>About After Hours Society</h2>
+                    <p class="subtitle">Established in 2015, After Hours Society is a passionate community of automotive enthusiasts dedicated to celebrating car culture. We bring together people who share a love for all things automotive, from classic restorations to modern performance modifications.</p>
+                    
+                    <div class="pricing-cards">
+                        <div class="pricing-card">
+                            <h3>Our Story</h3>
+                            <p>Founded by a group of friends who loved working on cars after hours, our club has grown into a vibrant community of over 200 members. What started as informal weekend gatherings has evolved into organized events that celebrate automotive passion.</p>
+                            <p>We believe that cars are more than just transportation - they're works of art, engineering marvels, and extensions of our personalities.</p>
                         </div>
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" placeholder="Your Name" required aria-label="Your Name">
-                            <div class="error-message" id="name-error">Please enter your name</div>
+                        <div class="pricing-card featured">
+                            <h3>What We Do</h3>
+                            <ul>
+                                <li>Weekly meets every Friday night</li>
+                                <li>Monthly cruises through scenic routes</li>
+                                <li>Technical workshops and DIY sessions</li>
+                                <li>Annual charity car show</li>
+                                <li>Track days and autocross events</li>
+                                <li>Community outreach programs</li>
+                            </ul>
+                        </div> 
+                        <div class="pricing-card">
+                            <h3>Join Our Community</h3>
+                            <p>Whether you drive a classic muscle car, a tuned import, a lifted truck, or a stock daily driver, you'll find a welcoming community at After Hours Society.</p>
+                            <p>We're not about exclusivity - we're about passion. If you love cars, you belong here.</p>
+                            <p>Come to one of our meets to experience the community firsthand, or reach out through our contact page with any questions.</p>
                         </div>
-                        <div class="form-group">
-                            <input type="text" id="vehicle" name="vehicle" placeholder="Your Vehicle Make/Model" aria-label="Your Vehicle">
+                    </div>
+                </section>
+            </div>
+
+            <!-- Contact Page -->
+            <div class="page" id="contact" tabindex="-1">
+                <section class="contact-section">
+                    <div class="contact-container">
+                        <div class="contact-info">
+                            <h2>Get In Touch</h2>
+                            <p>Interested in joining our club, becoming a sponsor, or just want to say hello? We'd love to hear from you.</p>
+                            <div class="contact-methods">
+                                <div class="contact-method">
+                                    <i class="fas fa-envelope"></i>
+                                    <div>
+                                        <h4>Email</h4>
+                                        <p><a href="mailto:info@afterhourssociety.com">info@afterhourssociety.com</a></p>
+                                    </div>
+                                </div>
+                                <div class="contact-method">
+                                    <i class="fab fa-instagram"></i>
+                                    <div>
+                                        <h4>Instagram</h4>
+                                        <p><a href="https://instagram.com/afterhourssociety" target="_blank">@afterhourssociety</a></p>
+                                    </div>
+                                </div>
+                                <div class="contact-method">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <h4>Meetup Location</h4>
+                                        <p>Downtown Parking Garage<br>Every 3rd Saturday</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" placeholder="Your Email" required aria-label="Your Email">
-                            <div class="error-message" id="email-error">Please enter a valid email</div>
-                        </div>
-                        <div class="form-group">
-                            <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" aria-label="Your Phone Number">
-                            <div class="error-message" id="phone-error">Please enter a valid phone number</div>
-                        </div>
-                        <div class="form-group">
-                            <select id="interest" name="interest" aria-label="Interest">
-                                <option value="">I'm interested in...</option>
-                                <option value="membership">Club Membership</option>
-                                <option value="sponsorship">Sponsorship</option>
-                                <option value="events">Event Information</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" name="message" placeholder="Your Message" rows="5" required aria-label="Your Message"></textarea>
-                            <div class="error-message" id="message-error">Please enter your message</div>
-                        </div>
-                        <!-- FormSubmit hidden fields -->
-                        <input type="hidden" name="_next" value="#contact">
-                        <input type="hidden" name="_captcha" value="false">
-                        <input type="hidden" name="_template" value="table">
-                        <button type="submit" class="btn" id="submitBtn">Send Message</button>
-                    </form>
-                </div>
-            </section>
+
+                        <form class="contact-form" id="contactForm" action="https://formsubmit.co/your@email.com" method="POST">
+                            <h2>Contact Us</h2>
+                            <div id="successMessage" class="success-message">
+                                Thank you for your message! We will get back to you soon.
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="name" name="name" placeholder="Your Name" required aria-label="Your Name">
+                                <div class="error-message" id="name-error">Please enter your name</div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="vehicle" name="vehicle" placeholder="Your Vehicle Make/Model" aria-label="Your Vehicle">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="email" name="email" placeholder="Your Email" required aria-label="Your Email">
+                                <div class="error-message" id="email-error">Please enter a valid email</div>
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" id="phone" name="phone" placeholder="Your Phone Number" aria-label="Your Phone Number">
+                                <div class="error-message" id="phone-error">Please enter a valid phone number</div>
+                            </div>
+                            <div class="form-group">
+                                <select id="interest" name="interest" aria-label="Interest">
+                                    <option value="">I'm interested in...</option>
+                                    <option value="membership">Club Membership</option>
+                                    <option value="sponsorship">Sponsorship</option>
+                                    <option value="events">Event Information</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="message" name="message" placeholder="Your Message" rows="5" required aria-label="Your Message"></textarea>
+                                <div class="error-message" id="message-error">Please enter your message</div>
+                            </div>
+                            <!-- FormSubmit hidden fields -->
+                            <input type="hidden" name="_next" value="#contact">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_template" value="table">
+                            <button type="submit" class="btn" id="submitBtn">Send Message</button>
+                        </form>
+                    </div>
+                </section>
+            </div>
         </div>
-    </div>
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav" aria-label="Main navigation">
-        <div class="nav-indicator"></div>
-        <a href="#home" class="nav-link active" data-target="home" aria-label="Home">
-            <i class="fas fa-home"></i>
-            <span>News</span>
-        </a>
-        <a href="#portfolio" class="nav-link" data-target="portfolio" aria-label="Sponsors">
-            <i class="fas fa-handshake"></i>
-            <span>Sponsors</span>
-        </a>
-        <a href="#pricing" class="nav-link" data-target="pricing" aria-label="About">
-            <i class="fas fa-info-circle"></i>
-            <span>About</span>
-        </a>
-        <a href="#contact" class="nav-link" data-target="contact" aria-label="Contact">
-            <i class="fas fa-envelope"></i>
-            <span>Contact</span>
-        </a>
-    </nav>
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav" aria-label="Main navigation">
+            <div class="nav-indicator"></div>
+            <a href="#home" class="nav-link active" data-target="home" aria-label="Home">
+                <i class="fas fa-home"></i>
+                <span>News</span>
+            </a>
+            <a href="#portfolio" class="nav-link" data-target="portfolio" aria-label="Sponsors">
+                <i class="fas fa-handshake"></i>
+                <span>Sponsors</span>
+            </a>
+            <a href="#pricing" class="nav-link" data-target="pricing" aria-label="About">
+                <i class="fas fa-info-circle"></i>
+                <span>About</span>
+            </a>
+            <a href="#contact" class="nav-link" data-target="contact" aria-label="Contact">
+                <i class="fas fa-envelope"></i>
+                <span>Contact</span>
+            </a>
+        </nav>
+    </div>
 
     <script>
-        // Speedometer Loading Animation
-        (function() {
-            const size = 360;
-            const cx = size / 2;
-            const cy = size / 2;
-            const radius = size * 0.35;
-            const tickRadius = size * 0.48;
-            const numbersEl = document.getElementById('numbers');
-            const ticksEl = document.getElementById('ticks');
-            const glowRing = document.getElementById('glowRing');
-            const timeDisplay = document.getElementById('timeDisplay');
-            const speedometer = document.getElementById('speedometer');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize loading screen
+            initLoadingScreen();
+            
+            function initLoadingScreen() {
+                const size = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--size')) || 360;
+                const cx = size / 2;
+                const cy = size / 2;
+                const radius = size * 0.35;
+                const tickRadius = size * 0.48;
+                const numbersEl = document.getElementById('numbers');
+                const ticksEl = document.getElementById('ticks');
+                const glowRing = document.getElementById('glowRing');
+                const timeDisplay = document.getElementById('timeDisplay');
+                const root = document.documentElement;
 
-            function valueToAngle(value) {
-                return 225 - (value / 180) * 270;
-            }
-
-            // Update glow intensity
-            function updateGlow(intensity) {
-                speedometer.style.setProperty('--glow-intensity', intensity);
-                // Only show glow ring when intensity is above 0.1
-                glowRing.style.opacity = intensity > 0.1 ? (intensity - 0.1) * 3 : 0;
-            }
-
-            // Initialize with zero glow
-            updateGlow(0);
-
-            // ---- Numbers ----
-            for (let v = 0; v <= 180; v += 20) {
-                const angleDeg = valueToAngle(v);
-                const rad = angleDeg * Math.PI / 180;
-                const x = cx + radius * Math.cos(rad);
-                const y = cy - radius * Math.sin(rad);
-
-                const num = document.createElement('div');
-                num.className = 'number';
-                num.style.left = `${x}px`;
-                num.style.top = `${y}px`;
-                num.textContent = v;
-                numbersEl.appendChild(num);
-            }
-
-            // ---- Ticks ----
-            const majorValues = [];
-            for (let v = 60; v <= 240; v += 20) majorValues.push(v);
-
-            for (let v = 60; v <= 240; v += 5) {
-                const angleDeg = valueToAngle(v);
-                const tick = document.createElement('div');
-                tick.className = 'tick';
-                const isMajor = majorValues.includes(v);
-                const length = isMajor ? size * 0.06 : size * 0.03;
-
-                tick.style.height = `${length}px`;
-                tick.style.background = isMajor ? 'rgba(255,7,58,0.95)' : 'rgba(255,255,255,0.05)';
-                tick.style.boxShadow = isMajor ? '0 0 8px rgba(255,7,58,0.8)' : '';
-                tick.style.left = '50%';
-                tick.style.top = '50%';
-                tick.style.transformOrigin = '50% 0%';
-                tick.style.transform = `rotate(${angleDeg}deg) translateY(-${tickRadius}px)`;
-                ticksEl.appendChild(tick);
-            }
-
-            // ---- Needle Animation ----
-            const needle = document.getElementById('needle');
-            const needleHeight = size * 0.44;
-
-            needle.style.height = needleHeight + 'px';
-            needle.style.left = '50%';
-            needle.style.top = '50%';
-            needle.style.transformOrigin = '50% 100%';
-            needle.style.marginTop = `-${needleHeight}px`;
-
-            const startAngle = valueToAngle(0);
-            needle.style.transform = `rotate(${startAngle}deg)`;
-
-            const duration = 4000;
-
-            function easeOutCubic(t) { return 15 + Math.pow(1 - t, 3); }
-
-            function startAnimation() {
-                // Show initial time immediately
-                timeDisplay.style.opacity = '1';
-                
-                const startTime = performance.now();
-                const endValue = 180;
-
-                function step(now) {
-                    const elapsed = now - startTime;
-                    const t = Math.min(1, elapsed / duration);
-                    const eased = easeOutCubic(t);
-                    const currentValue = Math.round(eased * endValue);
-                    const angle = valueToAngle(currentValue);
-
-                    needle.style.transform = `rotate(${angle}deg)`;
-
-                    // Update glow intensity based on progress - starting from 0
-                    const glowIntensity = t * 0.65; // From 0 to 0.65
-                    updateGlow(glowIntensity);
-
-                    // Update time display when animation is almost complete
-                    if (t > 0.95) {
-                        timeDisplay.textContent = "12:00am";
-                    }
-
-                    if (elapsed < duration) {
-                        requestAnimationFrame(step);
-                    } else {
-                        // Animation complete - ensure final time is displayed
-                        timeDisplay.textContent = "12:00am";
-                        
-                        // Fade out loading screen after animation completes
-                        setTimeout(() => {
-                            const loadingScreen = document.getElementById('loadingScreen');
-                            loadingScreen.classList.add('hidden');
-                            
-                            // Fade in the main content after loading screen fades
-                            setTimeout(() => {
-                                const pageContainer = document.getElementById('pageContainer');
-                                pageContainer.classList.add('fade-in');
-                                
-                                // Start main animations after main content fades in
-                                setTimeout(initMainContent, 500);
-                            }, 500);
-                        }, 1000);
-                    }
+                function valueToAngle(value) {
+                    return 225 - (value / 180) * 270;
                 }
 
-                requestAnimationFrame(step);
-            }
-
-            // Start the animation after a brief delay
-            setTimeout(startAnimation, 500);
-        })();
-
-        // Main content initialization
-        function initMainContent() {
-            // Matrix-style title animation with flicker only on specific letters
-            const afterHoursTitle = document.getElementById('after-hours-title');
-            const societyTitle = document.getElementById('society-title');
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-            // Clear existing content
-            afterHoursTitle.innerHTML = '';
-            societyTitle.innerHTML = '';
-
-            // Animate "AFTER HOURS" part with flicker on O, U, R in "HOURS"
-            const afterHoursText = "AFTER HOURS";
-            for (let i = 0; i < afterHoursText.length; i++) {
-                const charSpan = document.createElement('span');
-                
-                // Add flicker class for O, U, R but ONLY in the "HOURS" part
-                // The "R" in "AFTER" should NOT flicker, only the "R" in "HOURS"
-                const isInHoursPart = i >= 6; // "HOURS" starts at position 6
-                const shouldFlicker = (afterHoursText[i] === 'O' || afterHoursText[i] === 'U' || afterHoursText[i] === 'R') && isInHoursPart;
-                
-                if (shouldFlicker) {
-                    charSpan.className = 'matrix-letter flicker-letter';
-                } else {
-                    charSpan.className = 'matrix-letter';
+                // Update glow intensity
+                function updateGlow(intensity) {
+                    root.style.setProperty('--glow-intensity', intensity);
+                    // CHANGED: Only show glow ring when intensity is above 0.1
+                    glowRing.style.opacity = intensity > 0.1 ? (intensity - 0.1) * 3 : 0;
                 }
-                
-                charSpan.textContent = afterHoursText[i] === ' ' ? '\u00A0' : chars[Math.floor(Math.random() * chars.length)];
-                afterHoursTitle.appendChild(charSpan);
-                
-                setTimeout(() => {
-                    animateLetter(charSpan, afterHoursText[i], i);
-                }, i * 100);
-            }
 
-            // Animate "SOCIETY" part with flicker ONLY on C, I, T, Y
-            const societyText = "SOCIETY";
-            for (let i = 0; i < societyText.length; i++) {
-                const charSpan = document.createElement('span');
-                
-                // Add flicker class ONLY for C, I, T, Y
-                if (['C', 'I', 'T', 'Y'].includes(societyText[i])) {
-                    charSpan.className = 'matrix-letter flicker-letter';
-                } else {
-                    charSpan.className = 'matrix-letter';
+                // Initialize with zero glow
+                updateGlow(0);
+
+                // ---- Numbers ----
+                for (let v = 0; v <= 180; v += 20) {
+                    const angleDeg = valueToAngle(v);
+                    const rad = angleDeg * Math.PI / 180;
+                    const x = cx + radius * Math.cos(rad);
+                    const y = cy - radius * Math.sin(rad);
+
+                    const num = document.createElement('div');
+                    num.className = 'number';
+                    num.style.left = `${x}px`;
+                    num.style.top = `${y}px`;
+                    num.textContent = v;
+                    numbersEl.appendChild(num);
                 }
-                
-                charSpan.textContent = societyText[i] === ' ' ? '\u00A0' : chars[Math.floor(Math.random() * chars.length)];
-                societyTitle.appendChild(charSpan);
-                
-                setTimeout(() => {
-                    animateLetter(charSpan, societyText[i], i);
-                }, (afterHoursText.length * 100) + (i * 100));
-            }
 
-            function animateLetter(element, finalChar, index) {
-                let iterations = 0;
-                const interval = setInterval(() => {
-                    element.textContent = chars[Math.floor(Math.random() * chars.length)];
-                    
-                    iterations++;
-                    if (iterations >= 10 + Math.random() * 100) {
-                        clearInterval(interval);
-                        element.textContent = finalChar === ' ' ? '\u00A0' : finalChar;
-                    }
-                }, 80 + Math.random() * 80);
-            }
+                // ---- Ticks ----
+                const majorValues = [];
+                for (let v = 60; v <= 240; v += 20) majorValues.push(v);
 
-            // Function to handle logo upload
-            function setupLogoUpload() {
-                const logoInput = document.createElement('input');
-                logoInput.type = 'file';
-                logoInput.accept = 'image/*';
-                logoInput.style.display = 'none';
-                document.body.appendChild(logoInput);
-                
-                const logoContainer = document.querySelector('.logo-container');
-                const clubLogo = document.getElementById('club-logo');
-                
-                logoContainer.addEventListener('click', function() {
-                    logoInput.click();
-                });
-                
-                logoInput.addEventListener('change', function(e) {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function(event) {
-                            clubLogo.src = event.target.result;
-                            // Store in localStorage for persistence
-                            localStorage.setItem('clubLogo', event.target.result);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-                
-                // Check if logo exists in localStorage
-                const savedLogo = localStorage.getItem('clubLogo');
-                if (savedLogo) {
-                    clubLogo.src = savedLogo;
+                for (let v = 60; v <= 240; v += 5) {
+                    const angleDeg = valueToAngle(v);
+                    const tick = document.createElement('div');
+                    tick.className = 'tick';
+                    const isMajor = majorValues.includes(v);
+                    const length = isMajor ? size * 0.06 : size * 0.03;
+
+                    tick.style.height = `${length}px`;
+                    tick.style.background = isMajor ? 'rgba(255,7,58,0.95)' : 'rgba(255,255,255,0.05)';
+                    tick.style.boxShadow = isMajor ? '0 0 8px rgba(255,7,58,0.8)' : '';
+                    tick.style.left = '50%';
+                    tick.style.top = '50%';
+                    tick.style.transformOrigin = '50% 0%';
+                    tick.style.transform = `rotate(${angleDeg}deg) translateY(-${tickRadius}px)`;
+                    ticksEl.appendChild(tick);
                 }
-            }
-            
-            // Initialize logo upload functionality
-            setupLogoUpload();
 
-            // Cookie Consent
-            const cookieConsent = document.getElementById('cookie-consent');
-            const acceptCookies = document.getElementById('accept-cookies');
-            const declineCookies = document.getElementById('decline-cookies');
-            
-            // Only show if consent hasn't been given
-            if (!localStorage.getItem('cookieConsent')) {
-                setTimeout(() => {
-                    cookieConsent.classList.add('show');
-                }, 1000);
-            }
-            
-            acceptCookies.addEventListener('click', () => {
-                localStorage.setItem('cookieConsent', 'accepted');
-                cookieConsent.classList.remove('show');
-            });
-            
-            declineCookies.addEventListener('click', () => {
-                localStorage.setItem('cookieConsent', 'declined');
-                cookieConsent.classList.remove('show');
-            });
+                // ---- Needle Animation ----
+                const needle = document.getElementById('needle');
+                const needleHeight = size * 0.44;
 
-            // Scroll indicator functionality
-            const scrollIndicator = document.getElementById('scrollIndicator');
-            const newsSection = document.getElementById('news');
-            
-            if (scrollIndicator && newsSection) {
-                // Make arrow clickable to scroll to news
-                scrollIndicator.addEventListener('click', () => {
-                    newsSection.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-                
-                // Show/hide arrow based on scroll position
-                function checkScrollPosition() {
-                    {
-                        scrollIndicator.classList.add('visible');
-                    }
-                }
-                
-                // Initial check
-                checkScrollPosition();
-                
-                // Add scroll event listener
-                window.addEventListener('scroll', checkScrollPosition);
-            }
+                needle.style.height = needleHeight + 'px';
+                needle.style.left = '50%';
+                needle.style.top = '50%';
+                needle.style.transformOrigin = '50% 100%';
+                needle.style.marginTop = `-${needleHeight}px`;
 
-            // Create subtle shooting stars with parallax effect
-            const starContainer = document.getElementById('starContainer');
-            const starCount = 15;
-            
-            function createShootingStars() {
-                starContainer.innerHTML = '';
-                
-                for (let i = 0; i < starCount; i++) {
-                    const star = document.createElement('div');
-                    star.className = 'shooting-star';
-                    
-                    const layer = Math.floor(Math.random() * 3) + 1;
-                    star.classList.add(`star-layer-${layer}`);
-                    
-                    const startX = Math.random() * window.innerWidth;
-                    const startY = Math.random() * window.innerHeight;
-                    
-                    const angle = 30 + Math.random() * 30;
-                    
-                    const distance = 500 + (layer * 300);
-                    
-                    const delay = Math.random() * 10;
-                    
-                    star.style.setProperty('--angle', `${angle}deg`);
-                    star.style.setProperty('--distance', `${distance}px`);
-                    star.style.left = `${startX}px`;
-                    star.style.top = `${startY}px`;
-                    star.style.animationDelay = `${delay}s`;
-                    
-                    const size = 1 + Math.random() * 2;
-                    star.style.width = `${size}px`;
-                    star.style.height = `${size}px`;
-                    
-                    const opacity = 0.5 + Math.random() * 0.5;
-                    star.style.opacity = opacity;
-                    
-                    starContainer.appendChild(star);
-                }
-            }
-            
-            createShootingStars();
-            setInterval(createShootingStars, 15000);
+                const startAngle = valueToAngle(0);
+                needle.style.transform = `rotate(${startAngle}deg)`;
 
-            // Page navigation
-            const navLinks = document.querySelectorAll('.nav-link');
-            const pages = document.querySelectorAll('.page');
-            const navIndicator = document.querySelector('.nav-indicator');
-            
-            const scrollPositions = {};
-            
-            let activePage = document.querySelector('.page.active');
-            let activeNavLink = document.querySelector('.nav-link.active');
-            
-            function updateIndicatorPosition(link) {
-                const linkRect = link.getBoundingClientRect();
-                const navRect = document.querySelector('.bottom-nav').getBoundingClientRect();
-                const indicatorWidth = 60;
-                const indicatorLeft = linkRect.left - navRect.left + (linkRect.width - indicatorWidth) / 2;
-                
-                navIndicator.style.width = `${indicatorWidth}px`;
-                navIndicator.style.transform = `translateX(${indicatorLeft}px)`;
-                
-                if (window.innerWidth <= 768) {
-                    const mobileIndicatorWidth = 40;
-                    const mobileIndicatorLeft = linkRect.left - navRect.left + (linkRect.width - mobileIndicatorWidth) / 2;
-                    navIndicator.style.width = `${mobileIndicatorWidth}px`;
-                    navIndicator.style.transform = `translateX(${mobileIndicatorLeft}px)`;
-                }
-            }
-            
-            updateIndicatorPosition(activeNavLink);
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
+                const duration = 4000;
+
+                function easeOutCubic(t) { return 15 + Math.pow(1 - t, 3); }
+
+                function startAnimation() {
+                    // Show initial time immediately
+                    timeDisplay.style.opacity = '1';
                     
-                    const targetId = this.getAttribute('data-target');
-                    const targetPage = document.getElementById(targetId);
-                    
-                    if (targetPage && targetPage !== activePage) {
-                        scrollPositions[activePage.id] = window.scrollY || activePage.scrollTop;
-                        
-                        activePage.classList.remove('active');
-                        activeNavLink.classList.remove('active');
-                        
-                        targetPage.classList.add('active');
-                        this.classList.add('active');
-                        
-                        activePage = targetPage;
-                        activeNavLink = this;
-                        
-                        updateIndicatorPosition(this);
-                        
-                        if (scrollPositions[targetPage.id]) {
-                            window.scrollTo(0, scrollPositions[targetPage.id]);
-                        } else {
-                            window.scrollTo(0, 0);
+                    const startTime = performance.now();
+                    const endValue = 180;
+
+                    function step(now) {
+                        const elapsed = now - startTime;
+                        const t = Math.min(1, elapsed / duration);
+                        const eased = easeOutCubic(t);
+                        const currentValue = Math.round(eased * endValue);
+                        const angle = valueToAngle(currentValue);
+
+                        needle.style.transform = `rotate(${angle}deg)`;
+
+                        // Update glow intensity based on progress - starting from 0
+                        const glowIntensity = t * 0.65; // CHANGED: From 0 to 0.65
+                        updateGlow(glowIntensity);
+
+                        // Update time display when animation is almost complete
+                        if (t > 0.95) {
+                            timeDisplay.textContent = "12:00am";
                         }
-                        
-                        // Focus the page for keyboard navigation
-                        targetPage.focus();
+
+                        if (elapsed < duration) {
+                            requestAnimationFrame(step);
+                        } else {
+                            // Animation complete - ensure final time is displayed
+                            timeDisplay.textContent = "12:00am";
+                            
+                            // Fade out loading screen and show main content
+                            setTimeout(() => {
+                                const loadingScreen = document.getElementById('loadingScreen');
+                                loadingScreen.classList.add('fade-out');
+                                
+                                setTimeout(() => {
+                                    loadingScreen.style.display = 'none';
+                                    document.querySelector('.website-content').style.display = 'block';
+                                    
+                                    // Initialize main website content
+                                    initMainContent();
+                                }, 1500);
+                            }, 500);
+                        }
                     }
-                });
-            });
-            
-            if (window.location.hash) {
-                const hash = window.location.hash.substring(1);
-                const targetLink = document.querySelector(`.nav-link[data-target="${hash}"]`);
-                
-                if (targetLink) {
-                    targetLink.click();
+
+                    requestAnimationFrame(step);
                 }
+
+                setTimeout(startAnimation, 500);
             }
-            
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    if (this.classList.contains('nav-link')) return;
+
+            function initMainContent() {
+                // Matrix-style title animation with flicker only on specific letters
+                const afterHoursTitle = document.getElementById('after-hours-title');
+                const societyTitle = document.getElementById('society-title');
+                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+                // Clear existing content
+                afterHoursTitle.innerHTML = '';
+                societyTitle.innerHTML = '';
+
+                // Animate "AFTER HOURS" part with flicker on O, U, R in "HOURS"
+                const afterHoursText = "AFTER HOURS";
+                for (let i = 0; i < afterHoursText.length; i++) {
+                    const charSpan = document.createElement('span');
                     
-                    e.preventDefault();
+                    // Add flicker class for O, U, R but ONLY in the "HOURS" part
+                    // The "R" in "AFTER" should NOT flicker, only the "R" in "HOURS"
+                    const isInHoursPart = i >= 6; // "HOURS" starts at position 6
+                    const shouldFlicker = (afterHoursText[i] === 'O' || afterHoursText[i] === 'U' || afterHoursText[i] === 'R') && isInHoursPart;
                     
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
+                    if (shouldFlicker) {
+                        charSpan.className = 'matrix-letter flicker-letter';
+                    } else {
+                        charSpan.className = 'matrix-letter';
+                    }
                     
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 20,
+                    charSpan.textContent = afterHoursText[i] === ' ' ? '\u00A0' : chars[Math.floor(Math.random() * chars.length)];
+                    afterHoursTitle.appendChild(charSpan);
+                    
+                    setTimeout(() => {
+                        animateLetter(charSpan, afterHoursText[i], i);
+                    }, i * 100);
+                }
+
+                // Animate "SOCIETY" part with flicker ONLY on C, I, T, Y
+                const societyText = "SOCIETY";
+                for (let i = 0; i < societyText.length; i++) {
+                    const charSpan = document.createElement('span');
+                    
+                    // Add flicker class ONLY for C, I, T, Y
+                    if (['C', 'I', 'T', 'Y'].includes(societyText[i])) {
+                        charSpan.className = 'matrix-letter flicker-letter';
+                    } else {
+                        charSpan.className = 'matrix-letter';
+                    }
+                    
+                    charSpan.textContent = societyText[i] === ' ' ? '\u00A0' : chars[Math.floor(Math.random() * chars.length)];
+                    societyTitle.appendChild(charSpan);
+                    
+                    setTimeout(() => {
+                        animateLetter(charSpan, societyText[i], i);
+                    }, (afterHoursText.length * 100) + (i * 100));
+                }
+
+                function animateLetter(element, finalChar, index) {
+                    let iterations = 0;
+                    const interval = setInterval(() => {
+                        element.textContent = chars[Math.floor(Math.random() * chars.length)];
+                        
+                        iterations++;
+                        if (iterations >= 10 + Math.random() * 100) {
+                            clearInterval(interval);
+                            element.textContent = finalChar === ' ' ? '\u00A0' : finalChar;
+                        }
+                    }, 50 + Math.random() * 80);
+                }
+
+                // Function to handle logo upload
+                function setupLogoUpload() {
+                    const logoInput = document.createElement('input');
+                    logoInput.type = 'file';
+                    logoInput.accept = 'image/*';
+                    logoInput.style.display = 'none';
+                    document.body.appendChild(logoInput);
+                    
+                    const logoContainer = document.querySelector('.logo-container');
+                    const clubLogo = document.getElementById('club-logo');
+                    
+                    logoContainer.addEventListener('click', function() {
+                        logoInput.click();
+                    });
+                    
+                    logoInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                clubLogo.src = event.target.result;
+                                // Store in localStorage for persistence
+                                localStorage.setItem('clubLogo', event.target.result);
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                    
+                    // Check if logo exists in localStorage
+                    const savedLogo = localStorage.getItem('clubLogo');
+                    if (savedLogo) {
+                        clubLogo.src = savedLogo;
+                    }
+                }
+                
+                // Initialize logo upload functionality
+                setupLogoUpload();
+
+                // Cookie Consent
+                const cookieConsent = document.getElementById('cookie-consent');
+                const acceptCookies = document.getElementById('accept-cookies');
+                const declineCookies = document.getElementById('decline-cookies');
+                
+                // Only show if consent hasn't been given
+                if (!localStorage.getItem('cookieConsent')) {
+                    setTimeout(() => {
+                        cookieConsent.classList.add('show');
+                    }, 1000);
+                }
+                
+                acceptCookies.addEventListener('click', () => {
+                    localStorage.setItem('cookieConsent', 'accepted');
+                    cookieConsent.classList.remove('show');
+                });
+                
+                declineCookies.addEventListener('click', () => {
+                    localStorage.setItem('cookieConsent', 'declined');
+                    cookieConsent.classList.remove('show');
+                });
+
+                // Scroll indicator functionality
+                const scrollIndicator = document.getElementById('scrollIndicator');
+                const newsSection = document.getElementById('news');
+                
+                if (scrollIndicator && newsSection) {
+                    // Make arrow clickable to scroll to news
+                    scrollIndicator.addEventListener('click', () => {
+                        newsSection.scrollIntoView({
                             behavior: 'smooth'
                         });
-                    }
-                });
-            });
-
-            window.addEventListener('resize', function() {
-                updateIndicatorPosition(document.querySelector('.nav-link.active'));
-            });
-
-            // Form submission handling with enhanced validation
-            const contactForm = document.getElementById('contactForm');
-            const submitBtn = document.getElementById('submitBtn');
-            const successMessage = document.getElementById('successMessage');
-            
-            if (contactForm) {
-                contactForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    
-                    // Validate form
-                    let isValid = true;
-                    const name = document.getElementById('name');
-                    const email = document.getElementById('email');
-                    const phone = document.getElementById('phone');
-                    const message = document.getElementById('message');
-                    
-                    // Reset error states
-                    document.querySelectorAll('.form-group').forEach(group => {
-                        group.classList.remove('error');
                     });
                     
-                    // Name validation
-                    if (!name.value.trim()) {
-                        document.getElementById('name-error').textContent = 'Please enter your name';
-                        name.closest('.form-group').classList.add('error');
-                        isValid = false;
+                    // Show/hide arrow based on scroll position
+                    function checkScrollPosition() {
+                        {
+                            scrollIndicator.classList.add('visible');
+                        }
                     }
                     
-                    // Email validation
-                    if (!email.value.trim()) {
-                        document.getElementById('email-error').textContent = 'Please enter your email';
-                        email.closest('.form-group').classList.add('error');
-                        isValid = false;
-                    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-                        document.getElementById('email-error').textContent = 'Please enter a valid email';
-                        email.closest('.form-group').classList.add('error');
-                        isValid = false;
-                    }
+                    // Initial check
+                    checkScrollPosition();
                     
-                    // Phone validation (optional but if provided, validate)
-                    if (phone.value.trim() && !/^[\d\s\-()+]{10,}$/.test(phone.value)) {
-                        document.getElementById('phone-error').textContent = 'Please enter a valid phone number';
-                        phone.closest('.form-group').classList.add('error');
-                        isValid = false;
-                    }
+                    // Add scroll event listener
+                    window.addEventListener('scroll', checkScrollPosition);
+                }
+
+                // Create subtle shooting stars with parallax effect
+                const starContainer = document.getElementById('starContainer');
+                const starCount = 15;
+                
+                function createShootingStars() {
+                    starContainer.innerHTML = '';
                     
-                    // Message validation
-                    if (!message.value.trim()) {
-                        document.getElementById('message-error').textContent = 'Please enter your message';
-                        message.closest('.form-group').classList.add('error');
-                        isValid = false;
-                    }
-                    
-                    if (!isValid) return;
-                    
-                    // Show loading state
-                    submitBtn.classList.add('loading');
-                    submitBtn.disabled = true;
-                    
-                    try {
-                        // Submit the form using FormSubmit
-                        const formData = new FormData(contactForm);
+                    for (let i = 0; i < starCount; i++) {
+                        const star = document.createElement('div');
+                        star.className = 'shooting-star';
                         
-                        const response = await fetch(contactForm.action, {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'Accept': 'application/json'
+                        const layer = Math.floor(Math.random() * 3) + 1;
+                        star.classList.add(`star-layer-${layer}`);
+                        
+                        const startX = Math.random() * window.innerWidth;
+                        const startY = Math.random() * window.innerHeight;
+                        
+                        const angle = 30 + Math.random() * 30;
+                        
+                        const distance = 500 + (layer * 300);
+                        
+                        const delay = Math.random() * 10;
+                        
+                        star.style.setProperty('--angle', `${angle}deg`);
+                        star.style.setProperty('--distance', `${distance}px`);
+                        star.style.left = `${startX}px`;
+                        star.style.top = `${startY}px`;
+                        star.style.animationDelay = `${delay}s`;
+                        
+                        const size = 1 + Math.random() * 2;
+                        star.style.width = `${size}px`;
+                        star.style.height = `${size}px`;
+                        
+                        const opacity = 0.5 + Math.random() * 0.5;
+                        star.style.opacity = opacity;
+                        
+                        starContainer.appendChild(star);
+                    }
+                }
+                
+                createShootingStars();
+                setInterval(createShootingStars, 15000);
+
+                // Page navigation
+                const navLinks = document.querySelectorAll('.nav-link');
+                const pages = document.querySelectorAll('.page');
+                const navIndicator = document.querySelector('.nav-indicator');
+                
+                const scrollPositions = {};
+                
+                let activePage = document.querySelector('.page.active');
+                let activeNavLink = document.querySelector('.nav-link.active');
+                
+                function updateIndicatorPosition(link) {
+                    const linkRect = link.getBoundingClientRect();
+                    const navRect = document.querySelector('.bottom-nav').getBoundingClientRect();
+                    const indicatorWidth = 60;
+                    const indicatorLeft = linkRect.left - navRect.left + (linkRect.width - indicatorWidth) / 2;
+                    
+                    navIndicator.style.width = `${indicatorWidth}px`;
+                    navIndicator.style.transform = `translateX(${indicatorLeft}px)`;
+                    
+                    if (window.innerWidth <= 768) {
+                        const mobileIndicatorWidth = 40;
+                        const mobileIndicatorLeft = linkRect.left - navRect.left + (linkRect.width - mobileIndicatorWidth) / 2;
+                        navIndicator.style.width = `${mobileIndicatorWidth}px`;
+                        navIndicator.style.transform = `translateX(${mobileIndicatorLeft}px)`;
+                    }
+                }
+                
+                updateIndicatorPosition(activeNavLink);
+                
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('data-target');
+                        const targetPage = document.getElementById(targetId);
+                        
+                        if (targetPage && targetPage !== activePage) {
+                            scrollPositions[activePage.id] = window.scrollY || activePage.scrollTop;
+                            
+                            activePage.classList.remove('active');
+                            activeNavLink.classList.remove('active');
+                            
+                            targetPage.classList.add('active');
+                            this.classList.add('active');
+                            
+                            activePage = targetPage;
+                            activeNavLink = this;
+                            
+                            updateIndicatorPosition(this);
+                            
+                            if (scrollPositions[targetPage.id]) {
+                                window.scrollTo(0, scrollPositions[targetPage.id]);
+                            } else {
+                                window.scrollTo(0, 0);
                             }
+                            
+                            // Focus the page for keyboard navigation
+                            targetPage.focus();
+                        }
+                    });
+                });
+                
+                if (window.location.hash) {
+                    const hash = window.location.hash.substring(1);
+                    const targetLink = document.querySelector(`.nav-link[data-target="${hash}"]`);
+                    
+                    if (targetLink) {
+                        targetLink.click();
+                    }
+                }
+                
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function(e) {
+                        if (this.classList.contains('nav-link')) return;
+                        
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 20,
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+
+                window.addEventListener('resize', function() {
+                    updateIndicatorPosition(document.querySelector('.nav-link.active'));
+                });
+
+                // Form submission handling with enhanced validation
+                const contactForm = document.getElementById('contactForm');
+                const submitBtn = document.getElementById('submitBtn');
+                const successMessage = document.getElementById('successMessage');
+                
+                if (contactForm) {
+                    contactForm.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        
+                        // Validate form
+                        let isValid = true;
+                        const name = document.getElementById('name');
+                        const email = document.getElementById('email');
+                        const phone = document.getElementById('phone');
+                        const message = document.getElementById('message');
+                        
+                        // Reset error states
+                        document.querySelectorAll('.form-group').forEach(group => {
+                            group.classList.remove('error');
                         });
                         
-                        if (response.ok) {
-                            // Show success message
-                            successMessage.style.display = 'block';
-                            contactForm.reset();
-                            
-                            // Hide message after 10 seconds
-                            setTimeout(() => {
-                                successMessage.style.display = 'none';
-                            }, 10000);
-                        } else {
-                            throw new Error('Form submission failed');
+                        // Name validation
+                        if (!name.value.trim()) {
+                            document.getElementById('name-error').textContent = 'Please enter your name';
+                            name.closest('.form-group').classList.add('error');
+                            isValid = false;
                         }
-                    } catch (error) {
-                        console.error("Error submitting form:", error);
-                        alert("Error sending message. Please try again later.");
-                    } finally {
-                        submitBtn.classList.remove('loading');
-                        submitBtn.disabled = false;
-                    }
-                });
-                
-                // Real-time validation
-                document.getElementById('email').addEventListener('input', function() {
-                    if (this.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) {
-                        document.getElementById('email-error').textContent = 'Please enter a valid email';
-                        this.closest('.form-group').classList.add('error');
-                    } else {
-                        this.closest('.form-group').classList.remove('error');
-                    }
-                });
-                
-                document.getElementById('phone').addEventListener('input', function() {
-                    if (this.value.trim() && !/^[\d\s\-()+]{10,}$/.test(this.value)) {
-                        document.getElementById('phone-error').textContent = 'Please enter a valid phone number';
-                        this.closest('.form-group').classList.add('error');
-                    } else {
-                        this.closest('.form-group').classList.remove('error');
-                    }
-                });
+                        
+                        // Email validation
+                        if (!email.value.trim()) {
+                            document.getElementById('email-error').textContent = 'Please enter your email';
+                            email.closest('.form-group').classList.add('error');
+                            isValid = false;
+                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                            document.getElementById('email-error').textContent = 'Please enter a valid email';
+                            email.closest('.form-group').classList.add('error');
+                            isValid = false;
+                        }
+                        
+                        // Phone validation (optional but if provided, validate)
+                        if (phone.value.trim() && !/^[\d\s\-()+]{10,}$/.test(phone.value)) {
+                            document.getElementById('phone-error').textContent = 'Please enter a valid phone number';
+                            phone.closest('.form-group').classList.add('error');
+                            isValid = false;
+                        }
+                        
+                        // Message validation
+                        if (!message.value.trim()) {
+                            document.getElementById('message-error').textContent = 'Please enter your message';
+                            message.closest('.form-group').classList.add('error');
+                            isValid = false;
+                        }
+                        
+                        if (!isValid) return;
+                        
+                        // Show loading state
+                        submitBtn.classList.add('loading');
+                        submitBtn.disabled = true;
+                        
+                        try {
+                            // Submit the form using FormSubmit
+                            const formData = new FormData(contactForm);
+                            
+                            const response = await fetch(contactForm.action, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'Accept': 'application/json'
+                                }
+                            });
+                            
+                            if (response.ok) {
+                                // Show success message
+                                successMessage.style.display = 'block';
+                                contactForm.reset();
+                                
+                                // Hide message after 10 seconds
+                                setTimeout(() => {
+                                    successMessage.style.display = 'none';
+                                }, 10000);
+                            } else {
+                                throw new Error('Form submission failed');
+                            }
+                        } catch (error) {
+                            console.error("Error submitting form:", error);
+                            alert("Error sending message. Please try again later.");
+                        } finally {
+                            submitBtn.classList.remove('loading');
+                            submitBtn.disabled = false;
+                        }
+                    });
+                    
+                    // Real-time validation
+                    document.getElementById('email').addEventListener('input', function() {
+                        if (this.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.value)) {
+                            document.getElementById('email-error').textContent = 'Please enter a valid email';
+                            this.closest('.form-group').classList.add('error');
+                        } else {
+                            this.closest('.form-group').classList.remove('error');
+                        }
+                    });
+                    
+                    document.getElementById('phone').addEventListener('input', function() {
+                        if (this.value.trim() && !/^[\d\s\-()+]{10,}$/.test(this.value)) {
+                            document.getElementById('phone-error').textContent = 'Please enter a valid phone number';
+                            this.closest('.form-group').classList.add('error');
+                        } else {
+                            this.closest('.form-group').classList.remove('error');
+                        }
+                    });
+                }
             }
-        }
+        });
     </script>
 </body>
 </html>
