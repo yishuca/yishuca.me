@@ -55,7 +55,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, #0a0a0a 40%, #000 100%);
+            background: radial-gradient(circle at center, #0a0a0a 100%, #000 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -845,11 +845,6 @@
             justify-content: space-between;
             padding: 1.5rem 0;
             transition: var(--transition);
-            border-bottom: 1px solid rgba(255, 7, 58, 0.3);
-        }
-
-        .sponsor-item:last-child {
-            border-bottom: none;
         }
 
         .sponsor-item:hover {
@@ -898,21 +893,6 @@
             color: var(--neon-primary);
             font-family: 'Poppins', sans-serif;
             font-weight: 500;
-        }
-
-        /* Privacy Policy Link */
-        .privacy-link {
-            display: inline-block;
-            margin-top: 2rem;
-            color:#666666;
-            text-decoration: none;
-            transition: var(--transition);
-            font-size: 0.9rem;
-        }
-
-        .privacy-link:hover {
-            color: var(--neon-primary);
-            text-decoration: underline;
         }
 
         .popular-badge {
@@ -1142,56 +1122,13 @@
         .success-message {
             display: none;
             background: rgba(0, 255, 0, 0.1);
-            border: 1px solid var(--neon-accent);
+            border: 1px solid #00ff00;
             padding: 1rem;
             border-radius: 8px;
             text-align: center;
-            color: var(--neon-accent);
+            color: #00ff00;
             margin-bottom: 1rem;
-        }
-
-        /* Cookie Consent Banner CSS */
-        #cookie-consent {
-            position: fixed;
-            bottom: 80px;
-            left: 0;
-            right: 0;
-            background: var(--darker);
-            color: var(--light);
-            padding: 1rem;
-            z-index: 1001;
-            display: none;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-            border-top: 1px solid var(--neon-primary);
-        }
-        
-        #cookie-consent.show {
-            display: block;
-        }
-        
-        .cookie-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .cookie-btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        #accept-cookies {
-            background: var(--neon-primary);
-            color: var(--darker);
-        }
-        
-        #decline-cookies {
-            background: transparent;
-            color: var(--light);
-            border: 1px solid var(--light);
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
         }
 
         /* Scroll indicator arrow */
@@ -1318,13 +1255,7 @@
         }
 
         /* Mobile adjustments */
-        @media (max-width: 768px) {
-            .logo-container {
-                width: 180px;  /* Adjusted for mobile */
-                height: 180px; /* Adjusted for mobile */
-            }
-            
-            .scroll-indicator {
+           .scroll-indicator {
                 bottom: 20vh !important;
                 font-size: 1.8rem;
                 text-shadow: 
@@ -1359,7 +1290,6 @@
                 width: 350px;
                 height: 1rem;
             }
-        }
 
         @media (max-width: 480px) {
             .logo-container {
@@ -1576,15 +1506,6 @@
                 margin-bottom: 3rem;
             }
             
-            #cookie-consent {
-                padding: 0.8rem;
-            }
-            
-            .cookie-buttons {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
             .scroll-indicator {
                 bottom: 80px;
                 font-size: 1.5rem;
@@ -1616,15 +1537,6 @@
         <div class="hero-background">
             <div class="gradient-orb"></div>
             <div class="gradient-orb"></div>
-        </div>
-
-        <!-- Cookie Consent Banner -->
-        <div id="cookie-consent">
-            <p>This website uses cookies to ensure you get the best experience. By continuing to browse, you agree to our use of cookies.</p>
-            <div class="cookie-buttons">
-                <button id="accept-cookies" class="cookie-btn">Accept</button>
-                <button id="decline-cookies" class="cookie-btn">Decline</button>
-            </div>
         </div>
 
         <div class="page-container">
@@ -1684,7 +1596,7 @@
                     <h2>Our <br><span class="flicker-e">Spon</span>sors</h2>
                     <div class="sponsors-grid">
                         <div class="sponsor-item">
-                            <div class="sponsor-name">esc8perealitydesigns</div>
+                            <div class="sponsor-name">Esc8pe Reality Designs</div>
                             <a href="https://www.instagram.com/esc8perealitydesigns/" target="_blank" class="instagram-btn">
                                 <i class="fab fa-instagram"></i>
                             </a>
@@ -1696,8 +1608,14 @@
                             </a>
                         </div>
                         <div class="sponsor-item">
-                            <div class="sponsor-name">shaveshoppe</div>
+                            <div class="sponsor-name">Shave Shoppe Customs</div>
                             <a href="https://www.instagram.com/shaveshoppe/" target="_blank" class="instagram-btn">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                         <div class="sponsor-item">
+                            <div class="sponsor-name">Dubby</div>
+                            <a href="https://www.instagram.com/dubby.gg/" target="_blank" class="instagram-btn">
                                 <i class="fab fa-instagram"></i>
                             </a>
                         </div>
@@ -1709,7 +1627,7 @@
             <div class="page" id="pricing" tabindex="-1">
                 <section class="portfolio-section">
             <h2>About <br> After H<span class="flicker-e">our</span>s<span class="flicker-e">Society</span></h2>
-                    <p class="subtitle">Established in 2025 for people who live and breathe cars. We’re all about rides, real connections, and hanging out with a crew that feels like family.
+                    <p class="subtitle">Established in 2025, we’re all about rides, real connections, and hanging out with a crew that feels like family.
                          Cars brought us together, but the friendships keep us here. No drama, just good cars, good times, and people who get it.</p>
                     </div>
                 </section>
@@ -1740,18 +1658,15 @@
                                 <div class="contact-method">
                                     <i class="fas fa-map-marker-alt"></i>
                                     <div>
-                                        <h4>Meetup Location</h4>
-                                        <p>Downtown Parking Garage<br>Every 3rd Saturday</p>
+                                        <h4>Location</h4>
+                                        <p>Boise, ID</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <form class="contact-form" id="contactForm" action="https://formsubmit.co/your@email.com" method="POST">
+                        <form class="contact-form" id="contactForm" action="https://formsubmit.co/2dbe592043c5fbb7c149c062f5e296dc" method="POST">
                             <h2>Contact Us</h2>
-                            <div id="successMessage" class="success-message">
-                                Thank you for your message! We will get back to you soon.
-                            </div>
                             <div class="form-group">
                                 <input type="text" id="name" name="name" placeholder="Your Name" required aria-label="Your Name">
                                 <div class="error-message" id="name-error">Please enter your name</div>
@@ -1768,17 +1683,11 @@
                                 <div class="error-message" id="phone-error">Please enter a valid phone number</div>
                             </div>
                             <div class="form-group">
-                                <select id="interest" name="interest" aria-label="Interest">
-                                    <option value="">I'm interested in...</option>
-                                    <option value="membership">Club Membership</option>
-                                    <option value="sponsorship">Sponsorship</option>
-                                    <option value="events">Event Information</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
                                 <textarea id="message" name="message" placeholder="Your Message" rows="5" required aria-label="Your Message"></textarea>
                                 <div class="error-message" id="message-error">Please enter your message</div>
+                            </div>
+                            <div id="successMessage" class="success-message">
+                                Thank you for your message! We will get back to you soon.
                             </div>
                             <!-- FormSubmit hidden fields -->
                             <input type="hidden" name="_next" value="#contact">
@@ -2054,28 +1963,6 @@
                 
                 // Initialize logo upload functionality
                 setupLogoUpload();
-
-                // Cookie Consent
-                const cookieConsent = document.getElementById('cookie-consent');
-                const acceptCookies = document.getElementById('accept-cookies');
-                const declineCookies = document.getElementById('decline-cookies');
-                
-                // Only show if consent hasn't been given
-                if (!localStorage.getItem('cookieConsent')) {
-                    setTimeout(() => {
-                        cookieConsent.classList.add('show');
-                    }, 1000);
-                }
-                
-                acceptCookies.addEventListener('click', () => {
-                    localStorage.setItem('cookieConsent', 'accepted');
-                    cookieConsent.classList.remove('show');
-                });
-                
-                declineCookies.addEventListener('click', () => {
-                    localStorage.setItem('cookieConsent', 'declined');
-                    cookieConsent.classList.remove('show');
-                });
 
                 // Scroll indicator functionality
                 const scrollIndicator = document.getElementById('scrollIndicator');
