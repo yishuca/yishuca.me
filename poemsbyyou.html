@@ -319,6 +319,13 @@
             animation: spin 1s ease-in-out infinite;
         }
 
+        .no-more-posts {
+            text-align: center;
+            padding: 20px;
+            grid-column: 1 / -1;
+            color: #ff85a2;
+        }
+
         /* Modal */
         .modal {
             display: none;
@@ -625,6 +632,10 @@
                     <div class="loader"></div>
                     <p>Loading more posts...</p>
                 </div>
+                
+                <div class="no-more-posts" id="noMorePosts" style="display: none;">
+                    <p><i class="fas fa-check-circle"></i> All posts loaded</p>
+                </div>
             </section>
         </div>
 
@@ -676,6 +687,7 @@
         const cancelPostBtn = document.getElementById('cancelPostBtn');
         const fullPageLoader = document.getElementById('fullPageLoader');
         const lazyLoading = document.getElementById('lazyLoading');
+        const noMorePosts = document.getElementById('noMorePosts');
 
         // App state
         let allNotes = [];
@@ -685,6 +697,8 @@
         let lastVisible = null;
         let hasMoreData = true;
         let isLoading = false;
+        let isInitialLoad = true;
+        let scrollThrottleTimer;
 
         // Character count for textarea
         noteInput.addEventListener('input', () => {
@@ -845,7 +859,7 @@
             displayNotes();
         }
 
-        // Real-time listener for notes with debouncing
+        // Real-time listener for initial notes
         function setupNotesListener() {
             if (unsubscribe) unsubscribe(); // Unsubscribe from previous listener
             
@@ -866,59 +880,81 @@
                     });
                     
                     // Store the last visible document for pagination
-                    lastVisible = snapshot.docs[snapshot.docs.length-1];
+                    if (snapshot.docs.length > 0) {
+                        lastVisible = snapshot.docs[snapshot.docs.length - 1];
+                    }
+                    
+                    // Check if there might be more data
+                    hasMoreData = snapshot.docs.length === 12;
                     
                     filteredNotes = [...allNotes];
                     displayNotes();
                     
                     // Hide the full page loader once data is loaded
                     fullPageLoader.style.display = 'none';
+                    isInitialLoad = false;
                 }, error => {
                     console.error('Error getting documents: ', error);
                     showError('Error loading. Please check the Firebase security rules.');
                     fullPageLoader.style.display = 'none';
+                    isInitialLoad = false;
                 });
         }
 
         // Load more notes for lazy loading
         async function loadMoreNotes() {
-            if (isLoading || !hasMoreData) return;
+            if (isLoading || !hasMoreData || isInitialLoad) return;
             
             isLoading = true;
             lazyLoading.style.display = 'block';
             
             try {
-                const next = await db.collection('notes')
+                const nextQuery = db.collection('notes')
                     .orderBy('timestamp', 'desc')
                     .startAfter(lastVisible)
-                    .limit(6)
-                    .get();
+                    .limit(6);
+                    
+                const nextSnapshot = await nextQuery.get();
                 
-                if (next.empty) {
+                if (nextSnapshot.empty) {
                     hasMoreData = false;
                     lazyLoading.style.display = 'none';
+                    noMorePosts.style.display = 'block';
                     return;
                 }
                 
-                next.forEach(doc => {
+                const newNotes = [];
+                nextSnapshot.forEach(doc => {
                     const noteData = doc.data();
-                    allNotes.push({ 
+                    newNotes.push({ 
                         id: doc.id, 
                         ...noteData,
                         timestamp: noteData.timestamp ? noteData.timestamp.toDate() : new Date()
                     });
                 });
                 
-                lastVisible = next.docs[next.docs.length-1];
+                // Add new notes to existing arrays
+                allNotes = [...allNotes, ...newNotes];
                 filteredNotes = [...allNotes];
-                displayNotes();
+                
+                // Update lastVisible for next pagination
+                lastVisible = nextSnapshot.docs[nextSnapshot.docs.length - 1];
+                
+                // Check if there might be more data
+                hasMoreData = nextSnapshot.docs.length === 6;
+                
+                // Reapply filters and display
+                filterNotes();
                 
             } catch (error) {
                 console.error('Error loading more documents: ', error);
                 showError('Error loading more posts.');
+                lazyLoading.style.display = 'none';
             } finally {
                 isLoading = false;
-                lazyLoading.style.display = 'none';
+                if (hasMoreData) {
+                    lazyLoading.style.display = 'none';
+                }
             }
         }
 
@@ -970,19 +1006,25 @@
             });
         }
 
-        // Lazy loading when scrolling to bottom
+        // Improved scroll handler with throttling
         function handleScroll() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
+            if (scrollThrottleTimer) return;
             
-            // If we're near the bottom of the page, load more notes
-            if (scrollTop + windowHeight >= documentHeight - 300 && hasMoreData) {
-                loadMoreNotes();
-            }
+            scrollThrottleTimer = setTimeout(() => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight;
+                
+                // Load more when user scrolls to 90% of the page
+                if (scrollTop + windowHeight >= documentHeight - 100) {
+                    loadMoreNotes();
+                }
+                
+                scrollThrottleTimer = null;
+            }, 200);
         }
 
-        // Initial animation for elements
+        // Initial setup
         document.addEventListener('DOMContentLoaded', () => {
             setupNotesListener();
             
@@ -992,6 +1034,18 @@
             document.querySelectorAll('.note-card').forEach((card, index) => {
                 card.style.animationDelay = `${index * 0.1}s`;
             });
+        });
+
+        // Reset lazy loading when searching/filtering
+        searchInput.addEventListener('input', () => {
+            // When searching, we want to reset pagination since we're working with filtered results
+            hasMoreData = false;
+            noMorePosts.style.display = 'none';
+        });
+
+        filterSelect.addEventListener('change', () => {
+            hasMoreData = false;
+            noMorePosts.style.display = 'none';
         });
     </script>
 </body>
