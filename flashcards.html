@@ -1,1064 +1,3108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>darkflip · minimal flashcards</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    
+    <!-- SEO Stuff - Good for Google and social media -->
+    <meta name="description" content="After Hours Society - A premier car club for enthusiasts based in Boise, Idaho. Join us for meets, events, and automotive community.">
+    <meta name="keywords" content="car club, automotive, car meets, after hours society, car enthusiasts, modified cars, boise, id, idaho, jdm, european, american muscle">
+    <meta name="author" content="After Hours Society">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Helps Google know this is the main page -->
+    <link rel="canonical" href="https://www.afterhourssociety.live">
 
-    body {
-      background: #0a0c10;
-      color: #edf2f9;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.75rem;
-    }
-
-    /* more minimalist container */
-    .app {
-      max-width: 1200px;
-      width: 100%;
-      background: rgba(12, 16, 22, 0.85);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(72, 92, 124, 0.2);
-      border-radius: 2rem;
-      padding: 1.5rem 1.2rem;
-      box-shadow: 0 20px 40px -15px #00000080;
-    }
-
-    /* sleeker typography */
-    h1, h2, h3 {
-      font-weight: 450;
-      letter-spacing: -0.02em;
-    }
-
-    h1 {
-      font-size: clamp(1.8rem, 6vw, 2.4rem);
-      background: linear-gradient(135deg, #e0ecff, #b4ceff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      margin-bottom: 0.15rem;
-    }
-
-    h1 span {
-      font-size: clamp(1.6rem, 5vw, 2rem);
-      filter: drop-shadow(0 0 8px #3f8cff);
-    }
-
-    .subhead {
-      color: #8a9fbc;
-      font-size: clamp(0.8rem, 3.5vw, 0.95rem);
-      margin-bottom: 1.5rem;
-      border-left: 2px solid #3f6b9c;
-      padding-left: 0.8rem;
-    }
-
-    /* compact creator panel */
-    .creator-panel {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      background: #0f1620e0;
-      border-radius: 1.5rem;
-      padding: 1.2rem 1rem;
-      border: 1px solid #27384d;
-    }
-
-    .input-group {
-      flex: 1 1 220px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-    }
-
-    .input-group label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: #9bb4d4;
-      margin-left: 0.6rem;
-    }
-
-    /* cleaner input fields */
-    .field-row {
-      display: flex;
-      align-items: center;
-      background: #131e2a;
-      border-radius: 2.5rem;
-      padding: 0.2rem 0.2rem 0.2rem 1.2rem;
-      border: 1px solid #2c4057;
-      transition: border 0.2s, box-shadow 0.2s;
-    }
-
-    .field-row:focus-within {
-      border-color: #6fa4e0;
-      box-shadow: 0 0 0 2px #1e497aa0;
-    }
-
-    .field-row input, .field-row select {
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 0.95rem;
-      padding: 0.7rem 0.4rem 0.7rem 0;
-      width: 100%;
-      outline: none;
-    }
-
-    .field-row select option {
-      background: #121f2f;
-    }
-
-    .field-row button {
-      background: #274a6b;
-      border: none;
-      color: white;
-      font-weight: 500;
-      padding: 0.5rem 1.2rem;
-      border-radius: 2.5rem;
-      cursor: pointer;
-      font-size: 0.8rem;
-      letter-spacing: 0.3px;
-      transition: 0.15s;
-      border: 1px solid #4f79a5;
-      white-space: nowrap;
-    }
-
-    .field-row button:hover {
-      background: #2f5880;
-    }
-
-    /* category pills - sleeker */
-    .category-cloud {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.5rem 0.8rem;
-      margin: 1.2rem 0 1.8rem 0;
-    }
-
-    .cat-badge {
-      background: #14212e;
-      padding: 0.4rem 1rem 0.4rem 1.4rem;
-      border-radius: 2rem;
-      font-size: 0.85rem;
-      border: 1px solid #314d6b;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      transition: all 0.15s;
-      animation: badgeFade 0.25s ease;
-    }
-
-    @keyframes badgeFade {
-      0% { opacity: 0; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    .cat-badge button {
-      background: none;
-      border: none;
-      color: #ffb4b4;
-      font-size: 1.2rem;
-      line-height: 1;
-      cursor: pointer;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #3a2c2c60;
-    }
-
-    .cat-badge button:hover {
-      background: #c94a4a;
-      color: white;
-    }
-
-    /* card grid - more compact on mobile */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1rem;
-      margin: 1.2rem 0 2rem 0;
-    }
-
-    /* smaller, sleeker cards */
-    .flip-card {
-      background: transparent;
-      aspect-ratio: 3 / 4;
-      perspective: 1800px;
-      cursor: pointer;
-    }
-
-    .flip-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.3, 1);
-      transform-style: preserve-3d;
-      border-radius: 1.2rem;
-      box-shadow: 0 15px 25px -10px #000000d0;
-    }
-
-    .flipped .flip-inner {
-      transform: rotateY(180deg);
-    }
-
-    .flip-front, .flip-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      border-radius: 1.2rem;
-      padding: 0.9rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      word-break: break-word;
-      background: #15232f;
-      border: 1px solid #2d4a6a;
-      font-size: 0.9rem;
-    }
-
-    .flip-front {
-      background: linear-gradient(150deg, #162634, #101c28);
-    }
-
-    .flip-back {
-      background: linear-gradient(150deg, #193047, #102433);
-      transform: rotateY(180deg);
-      border-color: #4f7bb0;
-    }
-
-    .card-category {
-      position: absolute;
-      top: 6px;
-      left: 8px;
-      font-size: 0.6rem;
-      background: #1f3d58;
-      padding: 0.2rem 0.6rem;
-      border-radius: 12px;
-      color: #cee5ff;
-    }
-
-    .delete-card-btn {
-      position: absolute;
-      bottom: 6px;
-      right: 8px;
-      background: #8f3a3a60;
-      border: none;
-      color: #ffcaca;
-      font-size: 1rem;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 20;
-      backdrop-filter: blur(2px);
-    }
-
-    .delete-card-btn:hover {
-      background: #c44;
-      color: white;
-    }
-
-    /* test area - cleaner */
-    .test-area {
-      background: #0e1722c0;
-      border-radius: 1.5rem;
-      padding: 1.2rem 1rem;
-      border: 1px solid #2f4b6e;
-      margin-top: 0.8rem;
-    }
-
-    .test-header {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      gap: 0.8rem;
-    }
-
-    .test-controls {
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
-
-    /* sleeker buttons */
-    .primary-btn {
-      background: #1f3f5c;
-      border: none;
-      padding: 0.6rem 1.4rem;
-      border-radius: 2.5rem;
-      font-weight: 500;
-      color: white;
-      font-size: 0.85rem;
-      letter-spacing: 0.4px;
-      cursor: pointer;
-      border: 1px solid #5685b5;
-      transition: 0.15s;
-      white-space: nowrap;
-    }
-
-    .primary-btn:hover {
-      background: #26527a;
-    }
-
-    .primary-btn:active {
-      transform: scale(0.97);
-    }
-
-    #quizCard {
-      background: #10212e;
-      padding: 1.2rem;
-      border-radius: 1.5rem;
-      margin: 1rem 0 0.5rem;
-      text-align: center;
-      border: 1px solid #3a6088;
-    }
-
-    .quiz-question {
-      font-size: clamp(1.1rem, 5vw, 1.4rem);
-      font-weight: 450;
-      margin-bottom: 0.8rem;
-    }
-
-    .quiz-answer {
-      font-size: clamp(1.2rem, 5.5vw, 1.6rem);
-      color: #d3e5ff;
-      background: #0c1d2e;
-      padding: 0.8rem;
-      border-radius: 1.5rem;
-      border: 1px dashed #5885c2;
-      margin: 0.8rem 0;
-      opacity: 0;
-      transition: 0.2s;
-    }
-
-    .quiz-answer.show-answer {
-      opacity: 1;
-    }
-
-    /* feedback buttons - larger touch target on mobile */
-    .quiz-feedback {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      margin: 1rem 0 0.2rem;
-      flex-wrap: wrap;
-    }
-
-    .feedback-btn {
-      background: #1e3143;
-      border: none;
-      font-size: 2rem;
-      padding: 0.4rem 1.5rem;
-      border-radius: 3rem;
-      cursor: pointer;
-      border: 2px solid transparent;
-      min-width: 110px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-    }
-
-    .feedback-btn.correct:hover {
-      background: #1f6740;
-      border-color: #9effb4;
-    }
-
-    .feedback-btn.wrong:hover {
-      background: #aa3939;
-      border-color: #ffb4b4;
-    }
-
-    /* stats panel - new */
-    .stats-panel {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem 1.5rem;
-      background: #0d1824;
-      border-radius: 1.5rem;
-      padding: 0.8rem 1.2rem;
-      margin: 1rem 0 0.5rem;
-      border: 1px solid #2e4a6b;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9rem;
-      color: #b5cef0;
-    }
-
-    .stat-value {
-      background: #1f344b;
-      padding: 0.2rem 0.8rem;
-      border-radius: 2rem;
-      font-weight: 600;
-      color: white;
-    }
-
-    /* filter row */
-    .filter-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      align-items: center;
-      margin: 1rem 0;
-    }
-
-    .filter-select {
-      background: #14212f;
-      border: 1px solid #3b5e86;
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 2rem;
-      font-size: 0.85rem;
-      outline: none;
-    }
-
-    .import-export {
-      display: flex;
-      gap: 0.6rem;
-      margin-left: auto;
-      flex-wrap: wrap;
-    }
-
-    .icon-btn {
-      background: #1e3146;
-      border: 1px solid #4f75a2;
-      color: white;
-      padding: 0.4rem 1rem;
-      border-radius: 2rem;
-      font-size: 0.8rem;
-      cursor: pointer;
-    }
-
-    .icon-btn:hover {
-      background: #2b4565;
-    }
-
-    hr {
-      border: 0.5px solid #263f59;
-      margin: 1rem 0;
-    }
-
-    .empty-message {
-      color: #5a779b;
-      padding: 1.5rem;
-      text-align: center;
-      grid-column: 1 / -1;
-    }
-
-    /* mobile adjustments */
-    @media (max-width: 500px) {
-      body { padding: 0.4rem; }
-      .app { padding: 1rem 0.8rem; border-radius: 1.5rem; }
-      
-      .field-row { 
-        flex-wrap: wrap; 
-        background: transparent; 
-        padding: 0; 
-        gap: 0.4rem;
-      }
-      .field-row input { 
-        background: #1a232f; 
-        border-radius: 2rem; 
-        padding: 0.7rem 1rem; 
-        width: 100%;
-      }
-      .field-row button { 
-        width: 100%; 
-        margin-top: 0.2rem; 
-        padding: 0.7rem;
-      }
-      
-      .cards-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.7rem;
-      }
-      
-      .flip-front, .flip-back {
-        font-size: 0.8rem;
-        padding: 0.6rem;
-      }
-      
-      .test-controls {
-        width: 100%;
-      }
-      
-      .primary-btn {
-        flex: 1;
-        text-align: center;
-      }
-      
-      .feedback-btn {
-        min-width: 120px;
-        font-size: 1.8rem;
-        padding: 0.5rem;
-      }
-      
-      .import-export {
-        margin-left: 0;
-        width: 100%;
-        justify-content: center;
+    <!-- Favicon - the little icon in browser tabs -->
+    <link rel="icon" type="image/x-icon" href="https://afterhourssociety.live/img/ahs.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://afterhourssociety.live/img/ahs-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://afterhourssociety.live/img/ahs-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://afterhourssociety.live/img/ahs-180x180.png">
+    
+    <!-- Load important stuff first -->
+    <link rel="preload" href="https://afterhourssociety.live/img/ahs.png" as="image" type="image/png">
+    <link rel="preload" href="https://afterhourssociety.live/img/torta.jpg" as="image" type="image/jpeg">
+    
+    <!-- Social media sharing previews -->
+    <meta property="og:title" content="After Hours Society | Premier Car Club">
+    <meta property="og:description" content="After Hours Society - A car club for enthusiasts based in Boise, Idaho.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.afterhourssociety.live">
+    <meta property="og:image" content="https://afterhourssociety.live/img/ahs.png">
+    <meta property="og:image:alt" content="After Hours Society Logo">
+    <meta property="og:site_name" content="After Hours Society">
+    
+    <!-- Twitter card settings -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="After Hours Society | Premier Car Club">
+    <meta name="twitter:description" content="After Hours Society - A car club for enthusiasts based in Boise, Idaho.">
+    <meta name="twitter:image" content="https://afterhourssociety.live/img/ahs.png">
+    <meta name="twitter:creator" content="@after_hours_soc1ety">
+    
+    <!-- Connect to external services early -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    
+    <!-- Load external CSS files efficiently -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" as="style" crossorigin="anonymous">
+    
+    <!-- External stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Structured data for Google - helps with search results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "After Hours Society",
+      "description": "Premier car club community in Boise, Idaho",
+      "url": "https://www.afterhourssociety.live",
+      "logo": "https://www.afterhourssociety.live/img/ahs.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Boise",
+        "addressRegion": "ID",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.instagram.com/after_hours_soc1ety/",
+        "https://www.tiktok.com/@after_hours_society"
+      ],
+      "foundingDate": "2025",
+      "founder": {
+        "@type": "Person",
+        "name": "After Hours Society"
       }
     }
+    </script>
+    
+    <!-- Google Analytics - Replace with your actual tracking ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', {
+        'anonymize_ip': true,
+        'allow_ad_personalization_signals': false,
+        'restricted_data_processing': true
+      });
+    </script>
+    
+    <!-- Main website styles -->
+    <style>
+        /* Loading animation styles - EASY TO TOGGLE: Set showLoadingScreen to false to disable */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #0a0a0a 100%, #000 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1.5s ease;
+        }
 
-    /* small phones */
-    @media (max-width: 360px) {
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .quiz-feedback {
-        flex-direction: column;
-        gap: 0.6rem;
-      }
-      
-      .feedback-btn {
-        width: 100%;
-      }
-    }
+        .loading-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
 
-    /* focus indicators for accessibility */
-    button:focus-visible, input:focus-visible, select:focus-visible {
-      outline: 2px solid #70b0ff;
-      outline-offset: 2px;
-    }
+        :root {
+            --size: 360px;
+            --glow-color: rgba(255, 7, 58, 1);
+            --glow-intensity: 0; /* Start with no glow, builds up during animation */
+            --show-loading-screen: true; /* Set to false to disable loading screen */
+        }
 
-    /* ARIA support */
-    [role="button"], button {
-      cursor: pointer;
-    }
-  </style>
+        .speedometer {
+            position: relative;
+            width: var(--size);
+            height: var(--size);
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 45%, #111 40%, #000 100%);
+            box-shadow: 0 0 60px rgba(255, 7, 58, var(--glow-intensity)), 
+                        inset 0 0 40px rgba(0, 0, 0, 0.8);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .reflection {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(115deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 40%, transparent 100%);
+            animation: sweep 6s linear infinite;
+            mix-blend-mode: overlay;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @keyframes sweep {
+            0% { transform: rotate(0deg); opacity: 0.4; }
+            50% { opacity: 0.6; }
+            100% { transform: rotate(360deg); opacity: 0.4; }
+        }
+
+        .numbers, .ticks, .needle, .center-cap {
+            position: absolute;
+            inset: 0;
+        }
+
+        .number {
+            position: absolute;
+            color: #00fff2;
+            font-size: 18px;
+            text-shadow: 0 0 8px rgba(255,255,255,0.8);
+            transform: translate(-50%, -50%);
+        }
+
+        .tick {
+            position: absolute;
+            width: 3px;
+            border-radius: 3px;
+            transform-origin: 50% 100%;
+        }
+
+        .needle {
+            width: 6px;
+            background: linear-gradient(to top, rgba(255,0,40,1), rgba(80, 6, 17, 0.918));
+            border-radius: 3px;
+            transform-origin: 50% 100%;
+            box-shadow: 0 0 15px rgba(255, 0, 51, 0.418);
+            z-index: 9999999;
+        }
+
+        .ahs-text {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00fff2;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(0, 255, 242, 0.8);
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
+            z-index: 10;
+        }
+
+        .center-cap {
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle, #222 0%, #000 80%);
+            border-radius: 50%;
+            border: 2px solid #555;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 12;
+            box-shadow: 0 0 15px rgba(255,7,58,0.4);
+        }
+
+        .glow-ring {
+            position: absolute;
+            inset: -15px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 7, 58, 0.3) 0%, transparent 70%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .time-display {
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(255, 7, 58, 0.8);
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            text-align: center;
+            width: 100%;
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* Gallery loading indicator - NEW */
+        .gallery-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            color: var(--neon-primary);
+            font-size: 1.2rem;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            border: 1px solid var(--red);
+            display: none;
+        }
+
+        .gallery-loading.active {
+            display: block;
+        }
+
+        .gallery-loading i {
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        /* Main website colors and settings */
+        :root {
+            --neon-primary: #ff0707;  /* Our main red color */
+            --neon-secondary: #ff0000; /* Orange-red for highlights */
+            --neon-accent: #ff0022;   /* Bright red for accents */
+            --neon-cyan: #00fff2;     /* Cyan for text highlights */
+            --dark: #1a1a1a;          /* Dark background */
+            --darker: #0d0d0d;        /* Even darker for some elements */
+            --light: #f8f9fa;         /* Light text color */
+            --gray: #666666;           /* Gray text */
+            --light-gray: #cccccc;     /* Lighter gray */
+            --border-gray: #666666;    /* Border color */
+            
+            --transition: all 0.3s ease;
+            --shadow: 0 0 8px rgba(255, 7, 58, 0.2);
+            --shadow-lg: 0 0 15px rgba(255, 7, 58, 0.3);
+            --text-glow: 0 0 10px rgba(255, 7, 58, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Better focus outlines for accessibility */
+        :focus-visible {
+            outline: 2px solid var(--neon-primary);
+            outline-offset: 3px;
+            border-radius: 2px;
+        }
+
+        /* Loading placeholders for content */
+        .skeleton {
+            background: linear-gradient(90deg, #2a2a2a 25%, #333 50%, #2a2a2a 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* Don't animate for people who prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            
+            .sign-flicker,
+            .flicker-e,
+            .shooting-star,
+            .gradient-orb,
+            .logo-spin {
+                animation: none !important;
+            }
+            
+            .service-card:hover,
+            .portfolio-item:hover .portfolio-image,
+            .pricing-card:hover,
+            .contact-form:hover {
+                transform: none !important;
+            }
+            
+            .matrix-letter {
+                animation: none !important;
+                opacity: 1 !important;
+            }
+            
+            .flicker-letter {
+                animation: none !important;
+            }
+            
+            .logo-glow {
+                animation: none !important;
+            }
+            
+            .skeleton {
+                animation: none !important;
+            }
+        }
+
+        /* Shooting stars background effect */
+        .shooting-star-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: -1;
+            animation: shooting linear;
+            transform-origin: left center;
+            will-change: transform, opacity;
+        }
+
+        @keyframes shooting {
+            0% {
+                transform: translateX(0) translateY(0) rotate(var(--angle));
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(var(--distance)) translateY(calc(var(--distance) * 0.5)) rotate(var(--angle));
+                opacity: 0;
+            }
+        }
+
+        /* Different layers for depth */
+        .star-layer-1 {
+            animation-duration: 1.5s;
+            transform: translateZ(-100px);
+        }
+
+        .star-layer-2 {
+            animation-duration: 3s;
+            transform: translateZ(-200px);
+        }
+
+        .star-layer-3 {
+            animation-duration: 4.5s;
+            transform: translateZ(-300px);
+        }
+
+        /* Page container setup */
+        .page-container {
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 80px;
+            overflow: hidden;
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+            height: calc(100vh);
+            padding-bottom: 100px;
+        }
+
+        .page.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Hero section with logo and title */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            height: 90vh;
+            padding-bottom: 50px;
+        }
+
+        .hero-content {
+            margin-top: -60px;
+        }
+
+        .logo-container {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 1rem;
+        }
+
+        .logo-spin {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            animation: spin 15s linear infinite, fadeIn 1s ease-out forwards;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            animation-delay: 7s;
+        }
+
+        /* Logo glow effect */
+        .logo-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: transparent;
+            box-shadow: 
+                0 0 20px rgba(255, 7, 58, 0.6),
+                0 0 40px rgba(255, 7, 58, 0.4),
+                0 0 60px rgba(255, 7, 58, 0.2);
+            animation: logoFlicker 8s infinite alternate, fadeIn 1s ease-out forwards;
+            animation-delay: 7s;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        @keyframes logoFlicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 72%, 100% {
+                opacity: 1;
+                box-shadow: 
+                    0 0 20px rgba(255, 7, 58, 0.6),
+                    0 0 40px rgba(255, 7, 58, 0.4),
+                    0 0 60px rgba(255, 7, 58, 0.2);
+            }
+            20%, 21.999%, 63%, 63.999%, 65%, 71.999% {        
+                opacity: 0.7;
+                box-shadow: 
+                    0 0 10px rgba(255, 7, 58, 0.4),
+                    0 0 20px rgba(255, 7, 58, 0.3),
+                    0 0 30px rgba(255, 7, 58, 0.2);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+            font-weight: 500;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            font-family: 'Poppins', sans-serif;
+            margin-left: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title-part {
+            display: flex;
+            justify-content: center;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: titleRise 3s ease-out forwards;
+        }
+
+        @keyframes titleRise {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Matrix-style letter animation */
+        .matrix-letter {
+            opacity: 0;
+            animation: matrixReveal 20s forwards;
+            display: inline-block;
+            min-width: 25px;
+            text-align: center;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-primary),
+                0 0 30px var(--neon-primary),
+                0 0 40px var(--neon-primary);
+        }
+
+        @keyframes matrixReveal {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Flickering effect for certain letters */
+        .flicker-letter {
+            display: inline-block;
+            animation: signFlicker 2.5s infinite alternate;
+        }
+
+        @keyframes signFlicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 72%, 100% {
+                opacity: 1;
+                text-shadow: 
+                    0 0 5px #fff,
+                    0 0 10px #fff,
+                    0 0 20px var(--neon-primary),
+                    0 0 30px var(--neon-primary),
+                    0 0 40px var(--neon-primary);
+            }
+            20%, 21.999%, 63%, 63.999%, 65%, 71.999% {        
+                opacity: 0.7;
+                text-shadow: 
+                    0 0 2px #fff,
+                    0 0 5px #fff,
+                    0 0 10px var(--neon-primary),
+                    0 0 15px var(--neon-primary);
+            }
+        }
+
+        .hero-content h2, h3 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 1px;
+            text-shadow: 
+                0 0 5px rgba(255, 255, 255, 0.594),
+                0 0 10px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 7s;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: var(--light-gray);
+            font-family: 'Segoe UI', sans-serif;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 8s;
+        }
+
+        /* Main button styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.8rem;
+            background-color: var(--neon-primary);
+            color: var(--darker);
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            font-family: 'Poppins', sans-serif;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 2.1s;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .portfolio-overlay .btn {
+            background: rgba(255, 7, 58, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 1px solid var(--neon-primary);
+        }
+
+        .portfolio-overlay .btn:hover {
+            background: rgba(255, 7, 58, 0.4);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 7, 58, 0.5);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+            background-color: white;
+            color: var(--darker);
+        }
+
+        /* Loading state for buttons */
+        .btn.loading {
+            position: relative;
+            pointer-events: none;
+            color: transparent;
+        }
+        
+        .btn.loading::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin: -8px 0 0 -8px;
+            border: 2px solid transparent;
+            border-top-color: var(--darker);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Animated background elements */
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(255, 7, 58, 0.15) 0%, 
+                rgba(255, 77, 0, 0.1) 50%, 
+                rgba(0, 0, 0, 0) 70%);
+            filter: blur(60px);
+            animation: orbFloat 15s infinite alternate ease-in-out;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-20px) translateX(20px); }
+        }
+
+        .gradient-orb:nth-child(1) {
+            top: -100px;
+            left: -100px;
+        }
+
+        .gradient-orb:nth-child(2) {
+            bottom: -100px;
+            right: -100px;
+            animation-delay: 2s;
+        }
+
+        /* News section styles */
+        .news-updates {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem 1rem;
+        }
+
+        .news-updates h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-primary),
+                0 0 30px var(--neon-primary),
+                0 0 40px var(--neon-primary);
+            letter-spacing: 1px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-item {
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid var(--neon-primary);
+            transition: var(--transition);
+            padding: 0;
+        }
+
+        .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 7, 58, 0.3);
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-date {
+            color: var(--neon-primary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .news-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            opacity: 1;
+        }
+
+        .news-excerpt {
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            opacity: 1;
+        }
+
+        /* Links in news excerpts */
+        .news-excerpt a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 255, 242, 0.1);
+            border: 1px solid transparent;
+        }
+
+        .news-excerpt a:hover {
+            color: white;
+            background: rgba(0, 255, 242, 0.2);
+            border-color: var(--neon-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 242, 0.3);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 1rem;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .news-item:hover .news-image img {
+            transform: scale(1.05);
+        }
+
+        /* Sponsors section */
+        .portfolio-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .portfolio-section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-primary),
+                0 0 30px var(--neon-primary),
+                0 0 40px var(--neon-primary);
+            letter-spacing: 1px;
+            word-break: keep-all;
+            white-space: nowrap;
+        }
+
+        /* Flicker on the 'e' in Projects and Events */
+        .flicker-e {
+            display: inline-block;
+            animation: flickerE 3s infinite alternate;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-primary),
+                0 0 30px var(--neon-primary),
+                0 0 40px var(--neon-primary);
+        }
+
+        @keyframes flickerE {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 72%, 100% {
+                opacity: 1;
+            }
+            20%, 21.999%, 63%, 63.999%, 65%, 71.999% {        
+                opacity: 0.7;
+            }
+        }
+
+        /* Sponsors list */
+        .sponsors-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .sponsor-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 0;
+            transition: var(--transition);
+        }
+
+        .sponsor-item:hover {
+            transform: translateX(10px);
+        }
+
+        .sponsor-name {
+            font-size: 1.5rem;
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .instagram-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 7, 58, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 1px solid var(--neon-primary);
+            border-radius: 50%;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 1.5rem;
+        }
+
+        .instagram-btn:hover {
+            background: rgba(255, 7, 58, 0.4);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 7, 58, 0.5);
+        }
+
+        /* About section */
+        .subtitle {
+            color: var(--light-gray);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* Events section (renamed from contact) */
+        .events-section {
+            margin-top: 0px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 4rem;
+        }
+
+        .events-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .events-info h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #fff,
+                0 0 20px var(--neon-primary),
+                0 0 30px var(--neon-primary),
+                0 0 40px var(--neon-primary);
+        }
+
+        .events-info p {
+            margin-bottom: 1rem;
+            color: var(--light-gray);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .contact-methods {
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 7, 58, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 3px solid var(--neon-primary);
+            transition: var(--transition);
+        }
+
+        .contact-method:hover {
+            background: rgba(255, 7, 58, 0.1);
+            transform: translateX(5px);
+        }
+
+        .contact-method i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--neon-primary);
+            transition: var(--transition);
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .contact-method:hover i {
+            transform: scale(1.2);
+            color: var(--neon-secondary);
+        }
+
+        .contact-method h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .contact-method a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .contact-method a:hover {
+            color: var(--neon-primary);
+            transform: translateY(-1px);
+        }
+
+        /* Google Drive link style */
+        .drive-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(66, 133, 244, 0.1);
+            border: 1px solid #4285f4;
+            color: #4285f4;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .drive-link:hover {
+            background: rgba(66, 133, 244, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(66, 133, 244, 0.3);
+            color: #3367d6;
+        }
+
+        .drive-link i {
+            font-size: 1.2rem;
+        }
+
+        /* Event registration form (formsubmit style) */
+        .event-form {
+            background: rgba(26, 26, 26, 0.8);
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-gray);
+            transition: var(--transition);
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .event-form:hover {
+            border-color: var(--neon-primary);
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            color: var(--light);
+            font-family: inherit;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--neon-secondary);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255, 77, 0, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        /* Error messages */
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: none;
+            text-shadow: 0 0 3px rgba(255, 107, 107, 0.3);
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        .form-group.error input,
+        .form-group.error textarea {
+            border-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.05);
+        }
+
+        /* Success message */
+        .success-message {
+            display: none;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            padding: 1.2rem;
+            border-radius: 8px;
+            text-align: center;
+            color: #00ff00;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+            font-weight: 500;
+        }
+
+        /* Scroll down arrow */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 2rem;
+            animation: bounce cubic-bezier(0.6, -0.28, 0.735, 0.045) infinite;
+            z-index: 10;
+            opacity: 0.7;
+            cursor: pointer;
+            transition: all .3s ease;
+            display: none;
+            text-shadow: 
+                0 0 0px var(--neon-primary),
+                0 0 5px var(--neon-primary),
+                0 0 8px var(--neon-primary);
+            filter: drop-shadow(0 0 2px var(--neon-primary));
+        }
+
+        .scroll-indicator.visible {
+            display: block;
+            animation: 
+                bounce 5s infinite,
+                glow-pulse 1.5s infinite alternate;
+        }
+
+        @keyframes glow-pulse {
+            0% {
+                opacity: 0.7;
+                text-shadow: 
+                    0 0 0px var(--neon-primary),
+                    0 0 8px var(--neon-primary);
+            }
+            100% {
+                opacity: .8;
+                text-shadow: 
+                    0 0 00px var(--neon-primary),
+                    0 0 20px var(--neon-primary),
+                    0 0 8px var(--neon-primary);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-5px) translateX(-50%);
+            }
+        }
+
+        /* Instagram CTA button - FIXED CENTERING */
+        .instagram-cta {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+            width: 100%;
+        }
+        
+        .instagram-cta .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            white-space: nowrap;
+            min-width: 300px;
+        }
+        
+        /* Gallery collection styles */
+        .collection-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding: 0 0.5rem;
+        }
+        
+        .collection-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid var(--neon-primary);
+            transition: var(--transition);
+            cursor: pointer;
+            aspect-ratio: 4/3;
+        }
+        
+        .collection-item:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 30px rgba(255, 7, 58, 0.4);
+            border-color: var(--neon-secondary);
+        }
+        
+        .collection-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .collection-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .collection-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .collection-item:hover .collection-overlay {
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.95));
+        }
+        
+        .collection-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .collection-count {
+            color: var(--neon-cyan);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Gallery modal popup with description area */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .gallery-modal.active {
+            display: flex;
+        }
+        
+        .gallery-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(rgba(0, 0, 0, 0.9), transparent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2001;
+        }
+        
+        .gallery-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            max-width: 70%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .gallery-close {
+            background: rgba(119, 119, 119, 0);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        
+        .gallery-close:hover {
+            background: rgba(255, 7, 58, 0.9);
+            transform: scale(1.1);
+        }
+        
+        .gallery-container {
+            width: 95%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            padding: 0.5rem;
+        }
+        
+        .gallery-main-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            position: relative;
+            max-height: 70vh;
+        }
+        
+        .gallery-main-image img {
+            max-width: 100%;
+            max-height: 65vh;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 7, 58, 0.5);
+        }
+        
+        /* Gallery description area */
+        .gallery-description {
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-left: 3px solid var(--neon-primary);
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .gallery-description p {
+            color: var(--light-gray);
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .gallery-description a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            transition: var(--transition);
+            display: inline-block;
+            background: rgba(0, 255, 242, 0.1);
+            border: 1px solid transparent;
+            margin: 0.3rem 0;
+        }
+        
+        .gallery-description a:hover {
+            color: white;
+            background: rgba(0, 255, 242, 0.2);
+            border-color: var(--neon-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 242, 0.3);
+        }
+        
+        /* Gallery navigation arrows */
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 7, 58, 0.7);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            z-index: 2002;
+        }
+        
+        .gallery-nav:hover {
+            background: rgba(255, 7, 58, 0.9);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .gallery-prev {
+            left: 20px;
+        }
+        
+        .gallery-next {
+            right: 20px;
+        }
+        
+        /* Gallery thumbnails */
+        .gallery-thumbnails {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            overflow-x: auto;
+            background: rgba(26, 26, 26, 0.5);
+            border-radius: 10px;
+            margin-top: 0.5rem;
+            height: 100px;
+            align-items: center;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 60px;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        
+        .thumbnail:hover,
+        .thumbnail.active {
+            opacity: 1;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 7, 58, 0.7);
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Bottom navigation - ENHANCED FOR MOBILE VISIBILITY */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(13, 13, 13, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+            padding: 0.5rem 0.8rem;
+            transition: var(--transition);
+            flex: 1;
+            text-align: center;
+            margin-bottom: -5px;
+            min-width: 60px;
+        }
+
+        .nav-link i {
+            font-size: 1.5rem; /* Increased from 1.2rem */
+            margin-bottom: 0.4rem;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+
+        .nav-link:hover i {
+            transform: scale(1.2);
+        }
+
+        .nav-link.active {
+            color: var(--neon-primary);
+            transform: translateY(-5px);
+        }
+
+        .nav-link.active i {
+            transform: scale(1.3); /* Increased from 1.3 */
+            color: var(--neon-primary);
+            text-shadow: 0 0 10px rgba(255, 7, 58, 0.4);
+        }
+
+        .nav-link span {
+            display: block;
+            font-size: 0.75rem; /* Slightly increased */
+            margin-top: 3px;
+            font-weight: 500;
+        }
+
+        .nav-link.active span {
+            color: var(--neon-primary);
+            text-shadow: 0 0 5px rgba(255, 7, 58, 0.5);
+        }
+
+        /* Navigation indicator line */
+        .nav-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px; /* Increased from 60px */
+            height: 3px;
+            background: var(--neon-primary);
+            border-radius: 5px;
+            transition: var(--transition);
+            transform: translateX(0);
+            box-shadow: 0 0 10px rgba(255, 7, 58, 0.8);
+        }
+
+        /* Make just the Send Message button text bigger */
+        #submitBtn {
+            font-size: 1rem;
+        }
+
+        /* Responsive design for different screen sizes */
+        @media (max-width: 768px) {
+            .page {
+                padding: 0.5rem;
+            }
+            
+            .hero {
+                padding: 1rem 0.5rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+                letter-spacing: 4px;
+            }
+            
+            .hero-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sponsors-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .portfolio-section h2 {
+                white-space: normal;
+                word-break: normal;
+                font-size: 2rem;
+            }
+            
+            /* Instagram CTA button on mobile */
+            .instagram-cta .btn {
+                min-width: 250px;
+                padding: 0.7rem 1.5rem;
+                font-size: 0.95rem;
+                white-space: normal;
+                text-align: center;
+                line-height: 1.3;
+            }
+            
+            /* Enhanced mobile navbar */
+            .bottom-nav {
+                padding: 12px 3px;
+            }
+            
+            .nav-link {
+                padding: 0.4rem 0.3rem;
+                min-width: 55px;
+            }
+
+            .nav-link i {
+                font-size: 1.4rem; /* Increased for mobile */
+                margin-bottom: 0.3rem;
+            }
+
+            .nav-link span {
+                font-size: 0.7rem; /* Increased for mobile */
+                font-weight: 600;
+            }
+
+            .nav-indicator {
+                width: 55px; /* Increased for mobile */
+                height: 3px;
+            }
+
+            .gradient-orb {
+                width: 400px;
+                height: 400px;
+            }
+
+            .contact-method {
+                flex-direction: row;
+                text-align: left;
+            }
+
+            .contact-method i {
+                margin-right: 1rem;
+                margin-bottom: 0;
+            }
+            
+            .scroll-indicator {
+                bottom: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .events-section {
+                padding: 2rem 0.5rem;
+            }
+            
+            .events-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .event-form {
+                padding: 1.5rem;
+            }
+            
+            .collection-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+                padding: 0;
+            }
+            
+            .gallery-container {
+                width: 98%;
+                height: 95%;
+            }
+            
+            .gallery-main-image {
+                padding: 0.5rem;
+                max-height: 60vh;
+            }
+            
+            .gallery-main-image img {
+                max-height: 55vh;
+            }
+            
+            .gallery-description {
+                padding: 0.8rem 1rem;
+                max-height: 120px;
+                font-size: 0.9rem;
+            }
+            
+            .gallery-header {
+                padding: 0.8rem;
+            }
+            
+            .gallery-close {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .gallery-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .gallery-prev {
+                left: 10px;
+            }
+            
+            .gallery-next {
+                right: 10px;
+            }
+            
+            .thumbnail {
+                width: 60px;
+                height: 45px;
+            }
+            
+            .gallery-thumbnails {
+                height: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 1rem 0.5rem;
+                height: 85vh;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.8rem;
+                letter-spacing: 3px;
+            }
+            
+            .page {
+                padding: 0.5rem;
+            }
+            
+            .logo-container {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .gradient-orb {
+                width: 300px;
+                height: 300px;
+                filter: blur(40px);
+            }
+
+            .contact-method {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-method i {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+            
+            .scroll-indicator {
+                bottom: 80px;
+                font-size: 1.3rem;
+            }
+            
+            /* Instagram CTA button on very small screens */
+            .instagram-cta .btn {
+                min-width: 200px;
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+                white-space: normal;
+                word-wrap: break-word;
+                text-align: center;
+                line-height: 1.4;
+            }
+            
+            .gallery-title {
+                font-size: 1.2rem;
+                max-width: 60%;
+            }
+            
+            .gallery-close {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+            
+            .gallery-nav {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .thumbnail {
+                width: 50px;
+                height: 40px;
+            }
+            
+            .collection-gallery {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .collection-overlay {
+                padding: 1rem;
+            }
+            
+            .collection-title {
+                font-size: 1.2rem;
+            }
+            
+            .gallery-description {
+                padding: 0.7rem 0.9rem;
+                max-height: 100px;
+                font-size: 0.85rem;
+            }
+            
+            /* Extra enhancements for very small screens */
+            .bottom-nav {
+                padding: 10px 2px;
+            }
+            
+            .nav-link {
+                padding: 0.3rem 0.2rem;
+                min-width: 50px;
+            }
+            
+            .nav-link i {
+                font-size: 1.3rem; /* Bigger on small screens */
+            }
+            
+            .nav-link span {
+                font-size: 0.65rem;
+                font-weight: 600;
+            }
+            
+            .nav-indicator {
+                width: 50px;
+                height: 3px;
+            }
+            
+            .gallery-thumbnails {
+                height: 70px;
+            }
+        }
+
+        /* Print styles - hide animations for printing */
+        @media print {
+            .loading-screen,
+            .shooting-star-container,
+            .bottom-nav,
+            .gallery-modal,
+            .scroll-indicator {
+                display: none !important;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .page {
+                position: static;
+                opacity: 1;
+                height: auto;
+            }
+            
+            .collection-item:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="app" role="main">
-  <h1>
-    <span>◈</span> flip.dark
-  </h1>
-  <div class="subhead">minimal · smart · adaptive</div>
-
-  <!-- creator panel - sleeker -->
-  <div class="creator-panel">
-    <div class="input-group">
-      <label for="questionInput">question</label>
-      <div class="field-row">
-        <input type="text" id="questionInput" placeholder="" aria-label="question" value="">
-      </div>
+    <!-- Loading animation screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="speedometer">
+            <div class="glow-ring" id="glowRing"></div>
+            <div class="reflection"></div>
+            <div class="ticks" id="ticks"></div>
+            <div class="numbers" id="numbers"></div>
+            <div class="needle" id="needle"></div>
+            <div class="center-cap"></div>
+            <div class="time-display" id="timeDisplay">11:59pm</div>
+            <div class="ahs-text">Loading...</div>
+        </div>
     </div>
-    <div class="input-group">
-      <label for="answerInput">answer</label>
-      <div class="field-row">
-        <input type="text" id="answerInput" placeholder="" aria-label="answer" value="">
-      </div>
-    </div>
-    <div class="input-group category-selector">
-      <label for="categorySelect">category</label>
-      <div class="field-row">
-        <select id="categorySelect" aria-label="select category"></select>
-        <button id="addCategoryBtn" aria-label="add new category">+ add</button>
-      </div>
-    </div>
-  </div>
 
-  <!-- category cloud & filter -->
-  <div id="categoryList" class="category-cloud" role="list" aria-label="categories"></div>
-  
-  <!-- filter & import/export bar -->
-  <div class="filter-row">
-    <select id="filterCategory" class="filter-select" aria-label="filter by category">
-      <option value="all">all categories</option>
-    </select>
-    <div class="import-export">
-      <button class="icon-btn" id="exportBtn" aria-label="export cards">📤 export</button>
-      <button class="icon-btn" id="importBtn" aria-label="import cards">📥 import</button>
-      <input type="file" id="importFile" accept=".json" style="display: none;">
-    </div>
-  </div>
+    <!-- Main website content -->
+    <div class="website-content" style="display: none;">
+        <!-- Shooting stars background -->
+        <div class="shooting-star-container" id="starContainer"></div>
 
-  <!-- stats -->
-  <div class="stats-panel">
-    <div class="stat-item"><span>📇 total</span><span class="stat-value" id="cardCount">0</span></div>
-    <div class="stat-item"><span>🏷️ categories</span><span class="stat-value" id="categoryCount">1</span></div>
-    <div class="stat-item"><span>📊 test</span><span class="stat-value" id="testProgress">-</span></div>
-  </div>
+        <!-- Animated background elements -->
+        <div class="hero-background">
+            <div class="gradient-orb"></div>
+            <div class="gradient-orb"></div>
+        </div>
 
-  <!-- flashcard grid -->
-  <h2 id="cards-heading">cards</h2>
-  <div id="cardsContainer" class="cards-grid" role="grid" aria-labelledby="cards-heading"></div>
+        <div class="page-container">
+            <!-- Home page with news -->
+            <div class="page active" id="home" tabindex="-1" role="main">
+                <header class="hero">
+                    <div class="hero-content">
+                        <div class="logo-container">
+                            <!-- Logo glow effect -->
+                            <div class="logo-glow"></div>
+                            <!-- Club logo -->
+                            <img id="club-logo" class="logo-spin" src="https://afterhourssociety.live/img/ahs.png" alt="After Hours Society Logo" loading="lazy">
+                        </div>
+                        <div class="hero-title">
+                            <div class="title-part" id="after-hours-title">AFTER H<span class="flicker-letter">O</span><span class="flicker-letter">U</span>R<span class="flicker-letter">S</span></div>
+                            <div class="title-part" id="society-title"><span class="flicker-letter">S</span><span class="flicker-letter">O</span><span class="flicker-letter">C</span>I<span class="flicker-letter">E</span>T<span class="flicker-letter">Y</span></div>
+                        </div>
+                        <h2 style="font-size: 20px;">EST. 2025</h2>
+                    </div>
+                    <!-- Scroll down arrow -->
+                    <div class="scroll-indicator" id="scrollIndicator" aria-hidden="true">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </header>
 
-  <!-- test module -->
-  <div class="test-area">
-    <div class="test-header">
-      <h3>✧ self test</h3>
-      <div class="test-controls">
-        <button class="primary-btn" id="startTestBtn" aria-label="start test">▶ start</button>
-        <button class="primary-btn" id="revealAnswerBtn" aria-label="reveal answer">🔍 reveal</button>
-        <button class="primary-btn" id="nextCardBtn" aria-label="next card">⏩ next</button>
-      </div>
-    </div>
-    <div id="quizCard" aria-live="polite">
-      <div class="quiz-question" id="quizQuestion">ready?</div>
-      <div class="quiz-answer" id="quizAnswer" aria-label="answer"></div>
-      <div class="quiz-feedback" id="quizFeedback">
-        <button class="feedback-btn correct" id="correctBtn" aria-label="correct">✓ correct</button>
-        <button class="feedback-btn wrong" id="wrongBtn" aria-label="wrong">✗ wrong</button>
-      </div>
-    </div>
-    <div class="stat-item" style="justify-content: center; gap: 1.5rem;">
-      <span>✅ <span id="correctCount">0</span></span>
-      <span>❌ <span id="wrongCount">0</span></span>
-    </div>
-  </div>
-</div>
-
-<script>
-  (function() {
-    // ---------- data ----------
-    let categories = ['general'];
-    let cards = [];
-    let testSession = [];
-    let currentTestIndex = 0;
-    let testStats = { correct: 0, wrong: 0 };
-    let currentFilter = 'all';
-
-    // DOM elements
-    const questionInput = document.getElementById('questionInput');
-    const answerInput = document.getElementById('answerInput');
-    const categorySelect = document.getElementById('categorySelect');
-    const addCategoryBtn = document.getElementById('addCategoryBtn');
-    const categoryListDiv = document.getElementById('categoryList');
-    const cardsContainer = document.getElementById('cardsContainer');
-    const cardCountSpan = document.getElementById('cardCount');
-    const categoryCountSpan = document.getElementById('categoryCount');
-    const testProgressSpan = document.getElementById('testProgress');
-    const correctCountSpan = document.getElementById('correctCount');
-    const wrongCountSpan = document.getElementById('wrongCount');
-    const startTestBtn = document.getElementById('startTestBtn');
-    const revealAnswerBtn = document.getElementById('revealAnswerBtn');
-    const nextCardBtn = document.getElementById('nextCardBtn');
-    const quizQuestion = document.getElementById('quizQuestion');
-    const quizAnswer = document.getElementById('quizAnswer');
-    const correctBtn = document.getElementById('correctBtn');
-    const wrongBtn = document.getElementById('wrongBtn');
-    const filterCategory = document.getElementById('filterCategory');
-    const exportBtn = document.getElementById('exportBtn');
-    const importBtn = document.getElementById('importBtn');
-    const importFile = document.getElementById('importFile');
-
-    // ---------- audio ----------
-    let audioCtx = null;
-    let correctSound = null;
-    let wrongSound = null;
-
-    function initAudio() {
-      if (audioCtx) return;
-      try {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        correctSound = (time) => {
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = 'sine';
-          osc.frequency.value = 880;
-          gain.gain.setValueAtTime(0.15, time);
-          gain.gain.exponentialRampToValueAtTime(0.01, time + 0.25);
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.start(time);
-          osc.stop(time + 0.25);
-        };
-        wrongSound = (time) => {
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.value = 220;
-          gain.gain.setValueAtTime(0.12, time);
-          gain.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.start(time);
-          osc.stop(time + 0.2);
-        };
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-      } catch (e) {}
-    }
-
-    function playCorrect() {
-      initAudio();
-      if (audioCtx && correctSound) {
-        audioCtx.resume().then(() => correctSound(audioCtx.currentTime));
-      }
-    }
-
-    function playWrong() {
-      initAudio();
-      if (audioCtx && wrongSound) {
-        audioCtx.resume().then(() => wrongSound(audioCtx.currentTime));
-      }
-    }
-
-    // ---------- helpers ----------
-    function saveToLocal() {
-      localStorage.setItem('darkflip_data', JSON.stringify({ categories, cards }));
-    }
-
-    function loadFromLocal() {
-      const saved = localStorage.getItem('darkflip_data');
-      if (saved) {
-        try {
-          const data = JSON.parse(saved);
-          categories = data.categories || ['general'];
-          cards = data.cards || [];
-        } catch (e) {}
-      }
-      if (!categories.includes('general')) categories.unshift('general');
-    }
-
-    // filter cards by category
-    function getFilteredCards() {
-      if (currentFilter === 'all') return cards;
-      return cards.filter(c => c.category === currentFilter);
-    }
-
-    // update filter dropdown
-    function updateFilterOptions() {
-      let options = '<option value="all">all categories</option>';
-      categories.forEach(cat => {
-        options += `<option value="${cat}" ${currentFilter === cat ? 'selected' : ''}>${cat}</option>`;
-      });
-      filterCategory.innerHTML = options;
-    }
-
-    // render categories
-    function renderCategories() {
-      let html = '';
-      categories.forEach(cat => {
-        html += `<div class="cat-badge" role="listitem">📁 ${cat} <button class="delete-cat" data-cat="${cat}" aria-label="delete ${cat} category">✕</button></div>`;
-      });
-      categoryListDiv.innerHTML = html;
-
-      categorySelect.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
-
-      document.querySelectorAll('.delete-cat').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const catToDelete = btn.dataset.cat;
-          if (catToDelete === 'general') {
-            alert('general category is protected');
-            return;
-          }
-          if (cards.some(c => c.category === catToDelete)) {
-            if (!confirm(`Delete category "${catToDelete}" and its cards?`)) return;
-            cards = cards.filter(c => c.category !== catToDelete);
-          }
-          categories = categories.filter(c => c !== catToDelete);
-          if (currentFilter === catToDelete) currentFilter = 'all';
-          renderAll();
-          saveToLocal();
-        });
-      });
-
-      categoryCountSpan.innerText = categories.length;
-    }
-
-    // render cards with filter
-    function renderCards() {
-      const filtered = getFilteredCards();
-      
-      if (filtered.length === 0) {
-        cardsContainer.innerHTML = `<div class="empty-message">✨ no cards in this category</div>`;
-        cardCountSpan.innerText = cards.length;
-        return;
-      }
-
-      let gridHtml = '';
-      filtered.forEach((card, idx) => {
-        const originalIndex = cards.findIndex(c => c.question === card.question && c.answer === card.answer && c.category === card.category);
-        gridHtml += `
-          <div class="flip-card" data-card-index="${originalIndex}" role="gridcell">
-            <div class="flip-inner">
-              <div class="flip-front">
-                <span class="card-category">${card.category}</span>
-                ${card.question}
-              </div>
-              <div class="flip-back">
-                ${card.answer}
-                <button class="delete-card-btn" data-card-idx="${originalIndex}" aria-label="delete card">🗑️</button>
-                <button class="edit-card-btn" data-card-idx="${originalIndex}" aria-label="edit card" style="position: absolute; bottom: 6px; left: 8px; background: #3a4f6b; border: none; color: white; width: 26px; height: 26px; border-radius: 50%;">✎</button>
-              </div>
+                <!-- News and updates section -->
+                <section class="news-updates" id="news">
+                    <h2>News & Updates</h2>
+                    <div class="news-grid">
+                        <div class="news-item">
+                            <div class="news-image">
+                                <img src="./img/Season 2026/January/Screenshot_20260121_191458.jpg" alt="Torta Hunt Event - Club members with their cars" loading="lazy">
+                            </div>
+                            <div class="news-content">
+                                <div class="news-date">Posted 1/22/2026</div>
+                                <h3 class="news-title">It's Confirmed</h3>
+                                <p class="news-excerpt">Better fix up that power steering or missing lugnut, because the After Hours Society season opener cruise is officially scheduled for March 15th.
+                                    <br><br>Get the route picture and Google Navigation Links in the <a href="#photography" class="nav-link no-arrow" data-target="photography">Routes</a> Gallery.</p>
+                            </div>
+                        </div>
+                        <div class="news-item">
+                            <div class="news-image">
+                                <img src="https://afterhourssociety.live/img/torta.jpg" alt="Torta Hunt Event - Club members with their cars" loading="lazy">
+                            </div>
+                            <div class="news-content">
+                                <div class="news-date">Posted 1/18/2026</div>
+                                <h3 class="news-title">2026 SEASON DROP: WE'RE LIVE</h3>
+                                <p class="news-excerpt">The wait is over. The engines are warm, the 2026 season is coming up, and we're kicking things off with the launch of our brand-new website. This is your new home for event calendars, behind the scene photos, and exclusive club updates.</p>
+                                <p class="news-excerpt">
+                                    <br>You can check out photos from our Season Gallery <a href="#photography" class="nav-link no-arrow" data-target="photography">Here</a>.
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-          </div>
-        `;
-      });
-      cardsContainer.innerHTML = gridHtml;
-      cardCountSpan.innerText = cards.length;
 
-      // flip listeners
-      document.querySelectorAll('.flip-card').forEach(cardDiv => {
-        cardDiv.addEventListener('click', (e) => {
-          if (e.target.classList.contains('delete-card-btn') || e.target.classList.contains('edit-card-btn')) return;
-          cardDiv.classList.toggle('flipped');
-        });
-      });
+            <!-- Sponsors page -->
+            <div class="page" id="portfolio" tabindex="-1" role="region" aria-label="Sponsors">
+                <section class="portfolio-section">
+                    <h2>Our <br><span class="flicker-e">Spon</span>sors</h2>
+                    <div class="sponsors-grid">
+                        <div class="sponsor-item">
+                            <div class="sponsor-name">Esc8pe Reality Designs</div>
+                            <a href="https://www.instagram.com/esc8perealitydesigns/" target="_blank" class="instagram-btn" aria-label="Visit Esc8pe Reality Designs on Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                        <div class="sponsor-item">
+                            <div class="sponsor-name">Hit List</div>
+                            <a href="https://www.instagram.com/hitlistboise/" target="_blank" class="instagram-btn" aria-label="Visit Hit List on Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                        <div class="sponsor-item">
+                            <div class="sponsor-name">Autolux Detailing</div>
+                            <a href="https://www.instagram.com/autoluxdetailing208/" target="_blank" class="instagram-btn" aria-label="Visit Autolux Detailing on Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
 
-      // delete cards
-      document.querySelectorAll('.delete-card-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const idx = parseInt(btn.dataset.cardIdx);
-          if (!isNaN(idx) && idx >= 0 && idx < cards.length) {
-            cards.splice(idx, 1);
-            if (testSession.length) resetTest();
-            renderAll();
-            saveToLocal();
-          }
-        });
-      });
+            <!-- Photo gallery page -->
+            <div class="page" id="photography" tabindex="-1" role="region" aria-label="Season Gallery">
+                <section class="portfolio-section">
+                    <h2>After Hours <span class="flicker-e">Season Gallery</span></h2>
+                    
+                    <!-- Instagram follow button - NOW CENTERED ON ALL DEVICES -->
+                    <div class="instagram-cta">
+                        <a href="https://www.instagram.com/after.hourssphotography/?igsh=N2YzZGlvajJieG9q#" target="_blank" class="btn">
+                            <i class="fab fa-instagram"></i> Follow After Hours Photography
+                        </a>
+                    </div>
+                    
+                    <!-- Gallery collections - Easy to edit! -->
+                    <div class="collection-gallery" id="collectionGallery">
+                        <!-- Collection 1 - Routes -->
+                        <div class="collection-item" 
+                             data-gallery-title="Routes"
+                             data-gallery-cover="https://afterhourssociety.live/img/Season 2026/January/Screenshot_20260121_191458.jpg"
+                             data-gallery-images='[
+                                "https://afterhourssociety.live/img/Season 2026/January/Screenshot_20260121_191458.jpg"
+                             ]'
+                             data-gallery-descriptions='[
+                                "Season Opener Cruise - March 15th, 2026<br><a href=\"https://maps.app.goo.gl/tUYckrUEct57Ddgr6\" target=\"_blank\" style=\"color: #00fff2; font-weight: bold;\">📌 Click here to navigate to the starting location</a><br><a href=\"https://maps.app.goo.gl/CxZctS94eR2vdRrEA\" target=\"_blank\" style=\"color: #00fff2; font-weight: bold;\">📌 Click here to navigate to the cruise route</a>"
+                             ]'>
+                            <img src="https://afterhourssociety.live/img/Season 2026/January/Screenshot_20260121_191458.jpg" alt="Routes">
+                            <div class="collection-overlay">
+                                <h4 class="collection-title">Routes</h4>
+                                <div class="collection-count">
+                                    <i class="fas fa-images"></i>
+                                    <span>1 photo</span>
+                                </div>
+                            </div>
+                        </div>
 
-      // edit cards
-      document.querySelectorAll('.edit-card-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const idx = parseInt(btn.dataset.cardIdx);
-          if (!isNaN(idx) && idx >= 0 && idx < cards.length) {
-            const card = cards[idx];
-            const newQ = prompt('edit question:', card.question);
-            if (newQ !== null && newQ.trim()) {
-              const newA = prompt('edit answer:', card.answer);
-              if (newA !== null && newA.trim()) {
-                cards[idx] = { ...card, question: newQ.trim(), answer: newA.trim() };
-                renderAll();
-                saveToLocal();
-              }
+                        <!-- Collection 2 -->
+                        <div class="collection-item" 
+                             data-gallery-title="Season 2026 Launch"
+                             data-gallery-cover="https://afterhourssociety.live/img/Season 2026/January/Snapshot_20260119_140122.jpg"
+                             data-gallery-images='[
+                                "https://afterhourssociety.live/img/Season 2026/January/Snapshot_20260119_140122.jpg",
+                                "https://afterhourssociety.live/img/Season 2026/January/Snapshot_20260119_140156.jpg",
+                                "https://afterhourssociety.live/img/Season 2026/January/Snapshot_20260119_140149.jpg",
+                                "https://afterhourssociety.live/img/Season 2026/January/Snapshot_20260119_140173.jpg",
+                                "https://afterhourssociety.live/img/Season 2026/January/Snapshot_20260119_140161.jpg",
+                                "https://afterhourssociety.live/img/Season 2026/January/IMG_20260120_153444_207.jpg"
+                             ]'
+                             data-gallery-descriptions='[
+                                "Group shots of the After Hours Society members for the Season 2026 Launch",
+                                "Group shots of the After Hours Society members for the Season 2026 Launch",
+                                "Group shots of the After Hours Society members for the Season 2026 Launch",
+                                "Group shots of the After Hours Society members for the Season 2026 Launch",
+                                "Group shots of the After Hours Society members for the Season 2026 Launch",
+                                "Group shots of the After Hours Society members for the Season 2026 Launch"
+                             ]'>
+                            <img src="https://afterhourssociety.live/img/Season 2026/January/Snapshot_20260119_140122.jpg" alt="Season 2026 Launch - Club cars lined up">
+                            <div class="collection-overlay">
+                                <h4 class="collection-title">Season 2026 Launch</h4>
+                                <div class="collection-count">
+                                    <i class="fas fa-images"></i>
+                                    <span>6 photos</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+<!-- Collection 3 -->
+<div class="collection-item" 
+     data-gallery-title="Hakeem Prime Music Video Shoot"
+     data-gallery-cover="https://afterhourssociety.live/img/Season 2026/January/IMG_3994.png"
+     data-gallery-images='[
+        "https://afterhourssociety.live/img/Season 2026/January/IMG_3916.png",
+        "https://afterhourssociety.live/img/Season 2026/January/IMG_3994.png",
+        "https://afterhourssociety.live/img/Season 2026/January/lhtsjyryskhgc.jpg",
+        "https://afterhourssociety.live/img/Season 2026/January/IMG_3915.jpg",
+        "https://afterhourssociety.live/img/Season 2026/January/nvdfxdmbd.png"
+     ]'
+     data-gallery-descriptions='[
+        "Hakeem Prime and the After Hours Society crew on set for his music video",
+        "Hakeem Prime and the After Hours Society crew on set for his music video",
+        "Hakeem Prime and the After Hours Society crew on set for his music video",
+        "Hakeem Prime and the After Hours Society crew on set for his music video",
+        "Hakeem Prime and the After Hours Society crew on set for his music video"
+     ]'>
+    <img src="https://afterhourssociety.live/img/Season 2026/January/IMG_3994.png" alt="Hakeem Prime Music Video Shoot - Hakeem and crew">
+    <div class="collection-overlay">
+        <h4 class="collection-title">Hakeem Prime Music Video Shoot</h4>
+        <div class="collection-count">
+            <i class="fas fa-images"></i>
+            <span>5 photos</span>
+        </div>
+    </div>
+</div>
+                        <!-- Collection 4 -->
+
+
+                    </div>
+
+                    <!-- Google Drive link for photo submissions -->
+                    <div style="margin-top: 1.5rem; text-align: center;">
+                        <p><strong>More pictures to come <br>Share your photos with us to add to our Season Gallery!</strong></p>
+                        <a href="https://drive.google.com/drive/folders/1IN29jurCr17ZSt-A5q8zm-H6UV7NaHCQ?usp=sharing" 
+                           target="_blank" 
+                           class="drive-link" 
+                           style="display: inline-flex; margin-top: 0.5rem;">
+                            <i class="fab fa-google-drive"></i> Add your pictures here!
+                        </a>
+                    <p>(Sign into Google through the link to upload)</p>
+                </section>
+                <br><br>
+            </div>
+
+            <!-- About page -->
+            <div class="page" id="pricing" tabindex="-1" role="region" aria-label="About Us">
+                <section class="portfolio-section">
+                    <h2>About <br> After H<span class="flicker-e">our</span>s <br><span class="flicker-e">Society</span></h2>
+                    <p class="subtitle">Established in 2025, After Hours Society isn't just about cars—it's about the people who drive them.
+                        We're a crew built on late nights, open roads, and real connections that go deeper than the chrome and paint.
+                        Cars brought us together, but the friendships, laughs, and loyalty keep us rolling. No drama. No fakes. 
+                        Just a family that lives for the ride and has each other's backs always.</p>
+                </section>
+            </div>
+
+            <!-- Events page (was Contact) - with glowing title and flickering S -->
+            <div class="page" id="events" tabindex="-1" role="region" aria-label="Events">
+                <section class="events-section">
+                    <div class="events-container">
+                        <div class="events-info">
+                            <div style="text-align: center; width: 100%; margin: 0 auto 1.5rem auto;">
+                            <h1 style="display: inline-block; text-align: center;">
+                            <h2>E<span class="flicker-e">v</span>ent<span class="flicker-e">s</span></h2>
+                            </div>
+
+                            <div class="contact-methods">
+                                <div class="contact-method">
+                                    <i class="fab fa-instagram"></i>
+                                    <div>
+                                        <h4>Instagram</h4>
+                                        <p><a href="https://instagram.com/after_hours_soc1ety" target="_blank">@after_hours_soc1ety</a></p>
+                                    </div>
+                                </div>
+                                <div class="contact-method">
+                                    <i class="fab fa-tiktok"></i>
+                                    <div>
+                                        <h4>TikTok</h4>
+                                        <p><a href="https://www.tiktok.com/@after_hours_society" target="_blank">@after_hours_society</a></p>
+                                    </div>
+                                </div>
+                                <div class="contact-method">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <h4>Location</h4>
+                                        <p>Boise, ID</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Event registration form (FormSubmit style) -->
+                        <form class="event-form" id="eventForm" action="https://formsubmit.co/2dbe592043c5fbb7c149c062f5e296dc" method="POST">
+                            <br>
+                        <div style="text-align: center; width: 100%; margin: 0 auto 1.5rem auto;">
+                            <h1 style="display: inline-block; text-align: center;">
+                                <span class="flicker-e">S t r e e t s & S k i e s</span>
+                            </h1><br><br>
+                            <h2>Event Registration</h2>
+                            <p style="color:var(--neon-cyan)">Municipal Airport · Nampa</p>
+                            <p style="color:var(--neon-cyan)">April 26th · 11 am</p>
+                            <p style="color:var(--neon-cyan)">$10/driver ·$10/spectator</p><br>
+                        </div>
+                            <div class="form-group">
+                                <input type="text" id="event-name" name="name" placeholder="Your Name" required aria-label="Your Name">
+                                <div class="error-message">Please enter your name</div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="car-specs" name="Car Specs" placeholder="Car Specs (engine, mods)" required aria-label="Car Specs">
+                                <div class="error-message">Please enter your car specs</div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="car-color" name="Color" placeholder="Car Color" required aria-label="Car Color">
+                                <div class="error-message">Please enter your car color</div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="car-model" name="Year_Make_Model" placeholder="Year / Make / Model" required aria-label="Year Make Model">
+                                <div class="error-message">Please enter year, make, model</div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="instagram-tag" name="Instagram" placeholder="@instagram" required aria-label="Spectators">
+                                <div class="error-message">How many spectators if any?</div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="instagram-tag" name="Instagram" placeholder="@instagram" required aria-label="Instagram handle">
+                                <div class="error-message">Please enter your Instagram tag</div>
+                            </div>
+                            
+                            <!-- FormSubmit settings -->
+                            <input type="hidden" name="_next" value="#events">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_template" value="table">
+                            <input type="hidden" name="_subject" value="New Event Registration - After Hours Society">
+                            <div id="eventSuccessMessage" class="success-message">
+                                Thanks! See you at the meet. 🚗
+                            </div>
+                            <button type="submit" class="btn" id="eventSubmitBtn">Register Now</button>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <br>
+
+        <!-- Bottom navigation menu -->
+        <nav class="bottom-nav" aria-label="Main navigation">
+            <div class="nav-indicator"></div>
+            <a href="#home" class="nav-link active" data-target="home" aria-label="Home">
+                <i class="fas fa-home"></i>
+                <span>News</span>
+            </a>
+            <a href="#portfolio" class="nav-link" data-target="portfolio" aria-label="Sponsors">
+                <i class="fas fa-handshake"></i>
+                <span>Sponsors</span>
+            </a>
+            <a href="#photography" class="nav-link" data-target="photography" aria-label="Photography">
+                <i class="fas fa-camera"></i>
+                <span>Photos</span>
+            </a>
+            <a href="#pricing" class="nav-link" data-target="pricing" aria-label="About">
+                <i class="fas fa-info-circle"></i>
+                <span>About</span>
+            </a>
+            <a href="#events" class="nav-link" data-target="events" aria-label="Events">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </a>
+        </nav>
+        
+        <!-- Gallery popup modal - UPDATED WITH DESCRIPTION AREA -->
+        <div class="gallery-modal" id="galleryModal">
+            <div class="gallery-header">
+                <h3 class="gallery-title" id="galleryTitle">Gallery</h3>
+                <button class="gallery-close" onclick="closeGallery()">&times;</button>
+            </div>
+            <div class="gallery-container">
+                <!-- Gallery loading indicator -->
+                <div class="gallery-loading" id="galleryLoading">
+                    <i class="fas fa-spinner"></i> Loading images...
+                </div>
+                
+                <div class="gallery-main-image">
+                    <button class="gallery-nav gallery-prev" onclick="prevImage()" aria-label="Previous image">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <img id="galleryMainImage" src="" alt="">
+                    <button class="gallery-nav gallery-next" onclick="nextImage()" aria-label="Next image">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <!-- Gallery description area -->
+                <div class="gallery-description" id="galleryDescription">
+                    <!-- Descriptions load here -->
+                </div>
+                
+                <div class="gallery-thumbnails" id="galleryThumbnails">
+                    <!-- Thumbnails load here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+// Main website JavaScript
+// ============================================
+
+// EASY LOADING SCREEN TOGGLE FEATURE
+// Set this variable to true to enable loading screen, false to disable it
+const SHOW_LOADING_SCREEN = false; // Change to false to disable loading screen
+
+// Fix for making sure things run smoothly
+(function() {
+    'use strict';
+    
+    // Gallery loading indicator setup
+    const galleryLoading = document.getElementById('galleryLoading');
+    
+    // Throttle function to prevent too many calls
+    function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
             }
-          }
+        };
+    }
+    
+    // Track which images are loaded
+    const loadedImages = new Set();
+    
+    // Load gallery from HTML data with descriptions
+    function loadGalleryFromHTML() {
+        const collectionItems = document.querySelectorAll('.collection-item');
+        const collections = [];
+        
+        collectionItems.forEach((item, index) => {
+            try {
+                const title = item.getAttribute('data-gallery-title') || `Collection ${index + 1}`;
+                const cover = item.getAttribute('data-gallery-cover') || '';
+                const imagesJson = item.getAttribute('data-gallery-images') || '[]';
+                const descriptionsJson = item.getAttribute('data-gallery-descriptions') || '[]';
+                
+                let images = [];
+                let descriptions = [];
+                try {
+                    images = JSON.parse(imagesJson);
+                    descriptions = JSON.parse(descriptionsJson);
+                } catch (e) {
+                    console.log('Could not parse data for', title, e);
+                    images = [];
+                    descriptions = [];
+                }
+                
+                // Ensure we have a description for each image (or empty string)
+                while (descriptions.length < images.length) {
+                    descriptions.push('');
+                }
+                
+                collections.push({
+                    id: index + 1,
+                    title: title,
+                    cover: cover,
+                    images: images,
+                    descriptions: descriptions
+                });
+            } catch (error) {
+                console.log('Error with gallery item', error);
+            }
         });
-      });
+        
+        return collections;
     }
-
-    function renderAll() {
-      updateFilterOptions();
-      renderCategories();
-      renderCards();
-      updateTestDisplay();
-    }
-
-    // test functions
-    function resetTest() {
-      testSession = [];
-      currentTestIndex = 0;
-      testStats = { correct: 0, wrong: 0 };
-      updateTestDisplay();
-      quizQuestion.innerText = 'ready?';
-      quizAnswer.innerText = '';
-      quizAnswer.classList.remove('show-answer');
-    }
-
-    function startTest() {
-      initAudio();
-      const filtered = getFilteredCards();
-      if (filtered.length === 0) {
-        quizQuestion.innerText = 'no cards to test';
-        return;
-      }
-      testSession = [...filtered].sort(() => Math.random() - 0.5);
-      currentTestIndex = 0;
-      testStats = { correct: 0, wrong: 0 };
-      showCurrentTestCard();
-      updateTestDisplay();
-    }
-
-    function showCurrentTestCard() {
-      if (!testSession.length || currentTestIndex >= testSession.length) {
-        quizQuestion.innerText = '✓ test complete!';
-        quizAnswer.innerText = '';
-        quizAnswer.classList.remove('show-answer');
-        correctBtn.disabled = true;
-        wrongBtn.disabled = true;
-        testProgressSpan.innerText = 'done';
-        return;
-      }
-      const card = testSession[currentTestIndex];
-      quizQuestion.innerText = `[${card.category}] ${card.question}`;
-      quizAnswer.innerText = card.answer;
-      quizAnswer.classList.remove('show-answer');
-      correctBtn.disabled = false;
-      wrongBtn.disabled = false;
-      testProgressSpan.innerText = `${currentTestIndex + 1}/${testSession.length}`;
-    }
-
-    function revealAnswer() {
-      if (testSession.length && currentTestIndex < testSession.length) {
-        quizAnswer.classList.add('show-answer');
-      }
-    }
-
-    function nextCard() {
-      if (testSession.length && currentTestIndex < testSession.length - 1) {
-        currentTestIndex++;
-        showCurrentTestCard();
-      } else if (testSession.length && currentTestIndex === testSession.length - 1) {
-        currentTestIndex++;
-        showCurrentTestCard();
-      }
-    }
-
-    function handleCorrect() {
-      if (testSession.length && currentTestIndex < testSession.length) {
-        playCorrect();
-        testStats.correct++;
-        currentTestIndex++;
-        showCurrentTestCard();
-        updateTestDisplay();
-      }
-    }
-
-    function handleWrong() {
-      if (testSession.length && currentTestIndex < testSession.length) {
-        playWrong();
-        testStats.wrong++;
-        quizAnswer.classList.add('show-answer');
-        updateTestDisplay();
-      }
-    }
-
-    function updateTestDisplay() {
-      correctCountSpan.innerText = testStats.correct;
-      wrongCountSpan.innerText = testStats.wrong;
-    }
-
-    // add card
-    function addCard() {
-      const question = questionInput.value.trim();
-      const answer = answerInput.value.trim();
-      const category = categorySelect.value;
-      if (!question || !answer) {
-        alert('fill both fields');
-        return;
-      }
-      cards.push({ question, answer, category });
-      renderAll();
-      saveToLocal();
-      questionInput.value = '';
-      answerInput.value = '';
-    }
-
-    // add category
-    function addCategory() {
-      const newCat = prompt('category name:');
-      if (newCat && newCat.trim() && !categories.includes(newCat.trim())) {
-        categories.push(newCat.trim());
-        renderAll();
-        saveToLocal();
-      } else if (newCat) {
-        alert('category exists or invalid');
-      }
-    }
-
-    // export/import
-    function exportData() {
-      const dataStr = JSON.stringify({ categories, cards }, null, 2);
-      const blob = new Blob([dataStr], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `darkflip-${new Date().toISOString().slice(0,10)}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function importFromFile(file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const data = JSON.parse(e.target.result);
-          if (data.categories && Array.isArray(data.categories) && data.cards && Array.isArray(data.cards)) {
-            categories = [...new Set([...categories, ...data.categories])];
-            cards = [...cards, ...data.cards];
-            renderAll();
-            saveToLocal();
-            alert('import successful');
-          } else {
-            alert('invalid file format');
-          }
-        } catch (err) {
-          alert('error parsing file');
+    
+    // Set up gallery when page loads
+    function initCollectionGallery() {
+        const collectionGallery = document.getElementById('collectionGallery');
+        if (!collectionGallery) return;
+        
+        const collections = loadGalleryFromHTML();
+        
+        // Show message if no galleries
+        if (collections.length === 0) {
+            collectionGallery.innerHTML = `
+                <div style="text-align: center; grid-column: 1 / -1; padding: 3rem;">
+                    <i class="fas fa-images" style="font-size: 3rem; color: var(--neon-primary); margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--light); margin-bottom: 1rem;">No Collections Yet</h3>
+                    <p style="color: var(--light-gray);">Check back soon for gallery updates!</p>
+                </div>
+            `;
+            return;
         }
-      };
-      reader.readAsText(file);
+        
+        // Add click handlers to gallery items
+        const collectionItems = document.querySelectorAll('.collection-item');
+        collectionItems.forEach((item, index) => {
+            if (index < collections.length) {
+                item.addEventListener('click', () => {
+                    openGallery(collections[index]);
+                });
+            }
+        });
     }
-
-    // ---------- event listeners ----------
-    document.addEventListener('click', function firstClick() {
-      initAudio();
-      document.removeEventListener('click', firstClick);
-    }, { once: true });
-
-    addCategoryBtn.addEventListener('click', addCategory);
-
-    document.querySelector('.field-row button')?.addEventListener('click', addCard);
-
-    startTestBtn.addEventListener('click', startTest);
-    revealAnswerBtn.addEventListener('click', revealAnswer);
-    nextCardBtn.addEventListener('click', nextCard);
-    correctBtn.addEventListener('click', handleCorrect);
-    wrongBtn.addEventListener('click', handleWrong);
-
-    filterCategory.addEventListener('change', (e) => {
-      currentFilter = e.target.value;
-      renderCards();
-      resetTest();
+    
+    // Gallery state
+    let currentGallery = null;
+    let currentImageIndex = 0;
+    
+    // Preload images for better performance
+    function preloadGalleryImages(images) {
+        images.forEach(src => {
+            if (!loadedImages.has(src)) {
+                const img = new Image();
+                img.src = src;
+                img.onload = function() {
+                    loadedImages.add(src);
+                };
+            }
+        });
+    }
+    
+    // Open gallery with loading indicator
+    function openGallery(collection) {
+        currentGallery = collection;
+        currentImageIndex = 0;
+        
+        const modal = document.getElementById('galleryModal');
+        const title = document.getElementById('galleryTitle');
+        const thumbnails = document.getElementById('galleryThumbnails');
+        const description = document.getElementById('galleryDescription');
+        
+        title.textContent = collection.title;
+        
+        // Show loading indicator
+        if (galleryLoading) {
+            galleryLoading.classList.add('active');
+        }
+        
+        // Preload all images in background
+        preloadGalleryImages(collection.images);
+        
+        // Load first image and description
+        loadGalleryImage(collection.images[0], function() {
+            // Hide loading indicator once first image loads
+            if (galleryLoading) {
+                galleryLoading.classList.remove('active');
+            }
+        });
+        
+        // Set first description
+        updateGalleryDescription();
+        
+        // Create thumbnails
+        thumbnails.innerHTML = '';
+        collection.images.forEach((image, index) => {
+            const thumbnail = document.createElement('div');
+            thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+            thumbnail.innerHTML = `<img src="${image}" alt="Thumbnail ${index + 1}" loading="lazy">`;
+            
+            thumbnail.addEventListener('click', () => {
+                currentImageIndex = index;
+                updateMainImage();
+                updateActiveThumbnail();
+                updateGalleryDescription();
+            });
+            
+            thumbnails.appendChild(thumbnail);
+        });
+        
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // Load image with callback
+    function loadGalleryImage(src, callback) {
+        const mainImage = document.getElementById('galleryMainImage');
+        
+        // Show loading if image isn't cached
+        if (!loadedImages.has(src) && galleryLoading) {
+            galleryLoading.classList.add('active');
+        }
+        
+        mainImage.onload = function() {
+            if (galleryLoading) {
+                galleryLoading.classList.remove('active');
+            }
+            if (callback) callback();
+            loadedImages.add(src);
+        };
+        
+        mainImage.onerror = function() {
+            if (galleryLoading) {
+                galleryLoading.classList.remove('active');
+            }
+            mainImage.alt = 'Image failed to load';
+        };
+        
+        mainImage.src = src;
+        mainImage.alt = `${currentGallery.title} - Image ${currentImageIndex + 1}`;
+    }
+    
+    // Update gallery description
+    function updateGalleryDescription() {
+        if (!currentGallery || !currentGallery.descriptions) return;
+        
+        const description = document.getElementById('galleryDescription');
+        const descText = currentGallery.descriptions[currentImageIndex] || '';
+        
+        if (descText) {
+            description.innerHTML = `<p>${descText}</p>`;
+            description.style.display = 'block';
+            
+            // Make links clickable
+            const links = description.querySelectorAll('a');
+            links.forEach(link => {
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener noreferrer');
+            });
+        } else {
+            description.style.display = 'none';
+        }
+    }
+    
+    // Close gallery
+    function closeGallery() {
+        const modal = document.getElementById('galleryModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        currentGallery = null;
+        
+        // Hide loading indicator
+        if (galleryLoading) {
+            galleryLoading.classList.remove('active');
+        }
+    }
+    
+    // Next image
+    function nextImage() {
+        if (currentGallery) {
+            currentImageIndex = (currentImageIndex + 1) % currentGallery.images.length;
+            updateMainImage();
+            updateActiveThumbnail();
+            updateGalleryDescription();
+        }
+    }
+    
+    // Previous image
+    function prevImage() {
+        if (currentGallery) {
+            currentImageIndex = (currentImageIndex - 1 + currentGallery.images.length) % currentGallery.images.length;
+            updateMainImage();
+            updateActiveThumbnail();
+            updateGalleryDescription();
+        }
+    }
+    
+    // Update main gallery image
+    function updateMainImage() {
+        if (currentGallery && currentGallery.images[currentImageIndex]) {
+            loadGalleryImage(currentGallery.images[currentImageIndex]);
+        }
+    }
+    
+    // Update active thumbnail
+    function updateActiveThumbnail() {
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        thumbnails.forEach((thumb, index) => {
+            thumb.classList.toggle('active', index === currentImageIndex);
+        });
+    }
+    
+    // Keyboard controls for gallery
+    document.addEventListener('keydown', function(e) {
+        const modal = document.getElementById('galleryModal');
+        if (!modal.classList.contains('active') || !currentGallery) return;
+        
+        if (e.key === 'Escape') {
+            closeGallery();
+        } else if (e.key === 'ArrowRight') {
+            nextImage();
+        } else if (e.key === 'ArrowLeft') {
+            prevImage();
+        }
     });
-
-    exportBtn.addEventListener('click', exportData);
-
-    importBtn.addEventListener('click', () => importFile.click());
-
-    importFile.addEventListener('change', (e) => {
-      if (e.target.files[0]) {
-        importFromFile(e.target.files[0]);
-        importFile.value = '';
-      }
+    
+    // Touch swipe for mobile
+    let touchStartX = 0;
+    document.addEventListener('touchstart', function(e) {
+        const modal = document.getElementById('galleryModal');
+        if (modal.classList.contains('active')) {
+            touchStartX = e.touches[0].clientX;
+        }
     });
-
-    questionInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addCard(); });
-    answerInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addCard(); });
-
-    // init
-    loadFromLocal();
-    renderAll();
-    resetTest();
-  })();
-</script>
+    
+    document.addEventListener('touchend', function(e) {
+        const modal = document.getElementById('galleryModal');
+        if (!modal.classList.contains('active') || !currentGallery) return;
+        
+        const touchEndX = e.changedTouches[0].clientX;
+        const diff = touchStartX - touchEndX;
+        const threshold = 50;
+        
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                // Swiped left - next image
+                nextImage();
+            } else {
+                // Swiped right - previous image
+                prevImage();
+            }
+        }
+    });
+    
+    // Wait for page to load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if loading screen should be shown
+        if (SHOW_LOADING_SCREEN) {
+            // Start loading animation
+            initLoadingScreen();
+        } else {
+            // Skip loading screen entirely
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.querySelector('.website-content').style.display = 'block';
+            initMainContent();
+        }
+        
+        function initLoadingScreen() {
+            const size = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--size')) || 360;
+            const cx = size / 2;
+            const cy = size / 2;
+            const radius = size * 0.35;
+            const tickRadius = size * 0.48;
+            const numbersEl = document.getElementById('numbers');
+            const ticksEl = document.getElementById('ticks');
+            const glowRing = document.getElementById('glowRing');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const root = document.documentElement;
+    
+            function valueToAngle(value) {
+                return 225 - (value / 180) * 270;
+            }
+    
+            // Update glow effect
+            function updateGlow(intensity) {
+                root.style.setProperty('--glow-intensity', intensity);
+                glowRing.style.opacity = intensity > 0.1 ? (intensity - 0.1) * 3 : 0;
+            }
+    
+            // Start with no glow
+            updateGlow(0);
+    
+            // Add numbers to speedometer
+            for (let v = 0; v <= 180; v += 20) {
+                const angleDeg = valueToAngle(v);
+                const rad = angleDeg * Math.PI / 180;
+                const x = cx + radius * Math.cos(rad);
+                const y = cy - radius * Math.sin(rad);
+    
+                const num = document.createElement('div');
+                num.className = 'number';
+                num.style.left = `${x}px`;
+                num.style.top = `${y}px`;
+                num.textContent = v;
+                numbersEl.appendChild(num);
+            }
+    
+            // Add ticks to speedometer
+            const majorValues = [];
+            for (let v = 60; v <= 240; v += 20) majorValues.push(v);
+    
+            for (let v = 60; v <= 240; v += 5) {
+                const angleDeg = valueToAngle(v);
+                const tick = document.createElement('div');
+                tick.className = 'tick';
+                const isMajor = majorValues.includes(v);
+                const length = isMajor ? size * 0.06 : size * 0.03;
+    
+                tick.style.height = `${length}px`;
+                tick.style.background = isMajor ? 'rgba(255,7,58,0.95)' : 'rgba(255,255,255,0.05)';
+                tick.style.boxShadow = isMajor ? '0 0 8px rgba(255,7,58,0.8)' : '';
+                tick.style.left = '50%';
+                tick.style.top = '50%';
+                tick.style.transformOrigin = '50% 0%';
+                tick.style.transform = `rotate(${angleDeg}deg) translateY(-${tickRadius}px)`;
+                ticksEl.appendChild(tick);
+            }
+    
+            // Needle animation
+            const needle = document.getElementById('needle');
+            const needleHeight = size * 0.44;
+    
+            needle.style.height = needleHeight + 'px';
+            needle.style.left = '49%';
+            needle.style.top = '50%';
+            needle.style.transformOrigin = '50% 100%';
+            needle.style.marginTop = `-${needleHeight}px`;
+    
+            const startAngle = valueToAngle(0);
+            needle.style.transform = `rotate(${startAngle}deg)`;
+    
+            const duration = 4000;
+    
+            function easeOutCubic(t) { return 15 + Math.pow(1 - t, 3); }
+    
+            function startAnimation() {
+                timeDisplay.style.opacity = '1';
+                
+                const startTime = performance.now();
+                const endValue = 180;
+    
+                function step(now) {
+                    const elapsed = now - startTime;
+                    const t = Math.min(1, elapsed / duration);
+                    const eased = easeOutCubic(t);
+                    const currentValue = Math.round(eased * endValue);
+                    const angle = valueToAngle(currentValue);
+    
+                    needle.style.transform = `rotate(${angle}deg)`;
+    
+                    const glowIntensity = t * 0.65;
+                    updateGlow(glowIntensity);
+    
+                    if (t > 0.95) {
+                        timeDisplay.textContent = "12:00am";
+                    }
+    
+                    if (elapsed < duration) {
+                        requestAnimationFrame(step);
+                    } else {
+                        timeDisplay.textContent = "12:00am";
+                        
+                        // Hide loading screen and show website
+                        setTimeout(() => {
+                            const loadingScreen = document.getElementById('loadingScreen');
+                            loadingScreen.classList.add('fade-out');
+                            
+                            setTimeout(() => {
+                                loadingScreen.style.display = 'none';
+                                document.querySelector('.website-content').style.display = 'block';
+                                
+                                // Initialize main website
+                                initMainContent();
+                            }, 500);
+                        }, 500);
+                    }
+                }
+    
+                requestAnimationFrame(step);
+            }
+    
+            setTimeout(startAnimation, 500);
+        }
+        
+        function initMainContent() {
+            // Make news visible immediately
+            const newsTitles = document.querySelectorAll('.news-title');
+            const newsExcerpts = document.querySelectorAll('.news-excerpt');
+            
+            newsTitles.forEach(title => {
+                title.style.opacity = '1';
+            });
+            
+            newsExcerpts.forEach(excerpt => {
+                excerpt.style.opacity = '1';
+            });
+    
+            // Title animation with matrix effect
+            const afterHoursTitle = document.getElementById('after-hours-title');
+            const societyTitle = document.getElementById('society-title');
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    
+            afterHoursTitle.innerHTML = '';
+            societyTitle.innerHTML = '';
+    
+            // Animate "AFTER HOURS"
+            const afterHoursText = "AFTER HOURS";
+            for (let i = 0; i < afterHoursText.length; i++) {
+                const charSpan = document.createElement('span');
+                
+                // Add flicker to O, U, R in "HOURS"
+                const isInHoursPart = i >= 6;
+                const shouldFlicker = (afterHoursText[i] === 'O' || afterHoursText[i] === 'U' || afterHoursText[i] === 'R') && isInHoursPart;
+                
+                if (shouldFlicker) {
+                    charSpan.className = 'matrix-letter flicker-letter';
+                } else {
+                    charSpan.className = 'matrix-letter';
+                }
+                
+                charSpan.textContent = afterHoursText[i] === ' ' ? '\u00A0' : chars[Math.floor(Math.random() * chars.length)];
+                afterHoursTitle.appendChild(charSpan);
+                
+                setTimeout(() => {
+                    animateLetter(charSpan, afterHoursText[i], i);
+                }, i * 50);
+            }
+    
+            // Animate "SOCIETY" with flicker on C, I, T, Y
+            const societyText = "SOCIETY";
+            for (let i = 0; i < societyText.length; i++) {
+                const charSpan = document.createElement('span');
+                
+                if (['C', 'I', 'T', 'Y'].includes(societyText[i])) {
+                    charSpan.className = 'matrix-letter flicker-letter';
+                } else {
+                    charSpan.className = 'matrix-letter';
+                }
+                
+                charSpan.textContent = societyText[i] === ' ' ? '\u00A0' : chars[Math.floor(Math.random() * chars.length)];
+                societyTitle.appendChild(charSpan);
+                
+                setTimeout(() => {
+                    animateLetter(charSpan, societyText[i], i);
+                }, (afterHoursText.length * 50) + (i * 50));
+            }
+    
+            function animateLetter(element, finalChar, index) {
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    element.textContent = chars[Math.floor(Math.random() * chars.length)];
+                    
+                    iterations++;
+                    if (iterations >= 10 + Math.random() * 50) {
+                        clearInterval(interval);
+                        element.textContent = finalChar === ' ' ? '\u00A0' : finalChar;
+                    }
+                }, 200 + Math.random() * 30);
+            }
+    
+            // Scroll down arrow functionality
+            const scrollIndicator = document.getElementById('scrollIndicator');
+            const newsSection = document.getElementById('news');
+            
+            if (scrollIndicator && newsSection) {
+                scrollIndicator.addEventListener('click', () => {
+                    newsSection.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+                
+                // Show arrow after a moment
+                setTimeout(() => {
+                    scrollIndicator.classList.add('visible');
+                }, 5000);
+                
+                // Hide arrow when scrolling
+                window.addEventListener('scroll', throttle(() => {
+                    if (window.scrollY > 100) {
+                        scrollIndicator.classList.remove('visible');
+                    }
+                }, 200));
+            }
+    
+            // Shooting stars background
+            const starContainer = document.getElementById('starContainer');
+            const starCount = 15;
+            
+            function createShootingStars() {
+                starContainer.innerHTML = '';
+                
+                for (let i = 0; i < starCount; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'shooting-star';
+                    
+                    const layer = Math.floor(Math.random() * 3) + 1;
+                    star.classList.add(`star-layer-${layer}`);
+                    
+                    const startX = Math.random() * window.innerWidth;
+                    const startY = Math.random() * window.innerHeight;
+                    
+                    const angle = 30 + Math.random() * 30;
+                    const distance = 500 + (layer * 300);
+                    const delay = Math.random() * 10;
+                    
+                    star.style.setProperty('--angle', `${angle}deg`);
+                    star.style.setProperty('--distance', `${distance}px`);
+                    star.style.left = `${startX}px`;
+                    star.style.top = `${startY}px`;
+                    star.style.animationDelay = `${delay}s`;
+                    
+                    const size = 1 + Math.random() * 2;
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    
+                    const opacity = 0.5 + Math.random() * 0.5;
+                    star.style.opacity = opacity;
+                    
+                    starContainer.appendChild(star);
+                }
+            }
+            
+            createShootingStars();
+            setInterval(createShootingStars, 15000);
+    
+            // Initialize gallery
+            initCollectionGallery();
+    
+            // Page navigation setup
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+            const navIndicator = document.querySelector('.nav-indicator');
+            
+            const scrollPositions = {};
+            
+            let activePage = document.querySelector('.page.active');
+            let activeNavLink = document.querySelector('.nav-link.active');
+            
+            function updateIndicatorPosition(link) {
+                const linkRect = link.getBoundingClientRect();
+                const navRect = document.querySelector('.bottom-nav').getBoundingClientRect();
+                const indicatorWidth = 70; // Updated to match CSS
+                const indicatorLeft = linkRect.left - navRect.left + (linkRect.width - indicatorWidth) / 2;
+                
+                navIndicator.style.width = `${indicatorWidth}px`;
+                navIndicator.style.transform = `translateX(${indicatorLeft}px)`;
+                
+                if (window.innerWidth <= 768) {
+                    const mobileIndicatorWidth = 55; // Updated to match CSS
+                    const mobileIndicatorLeft = linkRect.left - navRect.left + (linkRect.width - mobileIndicatorWidth) / 2;
+                    navIndicator.style.width = `${mobileIndicatorWidth}px`;
+                    navIndicator.style.transform = `translateX(${mobileIndicatorLeft}px)`;
+                }
+            }
+            
+            updateIndicatorPosition(activeNavLink);
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('data-target');
+                    const targetPage = document.getElementById(targetId);
+                    
+                    if (targetPage && targetPage !== activePage) {
+                        // Save scroll position
+                        scrollPositions[activePage.id] = window.scrollY || activePage.scrollTop;
+                        
+                        // Switch pages
+                        activePage.classList.remove('active');
+                        activeNavLink.classList.remove('active');
+                        
+                        targetPage.classList.add('active');
+                        this.classList.add('active');
+                        
+                        activePage = targetPage;
+                        activeNavLink = this;
+                        
+                        updateIndicatorPosition(this);
+                        
+                        // Restore scroll position or go to top
+                        if (scrollPositions[targetPage.id]) {
+                            window.scrollTo(0, scrollPositions[targetPage.id]);
+                        } else {
+                            window.scrollTo(0, 0);
+                        }
+                        
+                        targetPage.focus();
+                    }
+                });
+            });
+            
+            // Handle URL hash links
+            if (window.location.hash) {
+                const hash = window.location.hash.substring(1);
+                const targetLink = document.querySelector(`.nav-link[data-target="${hash}"]`);
+                
+                if (targetLink) {
+                    targetLink.click();
+                }
+            }
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    if (this.classList.contains('nav-link')) return;
+                    
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Update indicator on window resize
+            window.addEventListener('resize', throttle(() => {
+                updateIndicatorPosition(document.querySelector('.nav-link.active'));
+            }, 150));
+            
+            // Event registration form handling
+            const eventForm = document.getElementById('eventForm');
+            const eventSubmitBtn = document.getElementById('eventSubmitBtn');
+            const eventSuccessMessage = document.getElementById('eventSuccessMessage');
+            
+            if (eventForm) {
+                // Real-time form validation
+                const formGroups = document.querySelectorAll('#eventForm .form-group');
+                formGroups.forEach(group => {
+                    const input = group.querySelector('input');
+                    if (input) {
+                        input.addEventListener('input', function() {
+                            validateField(this);
+                        });
+                    }
+                });
+                
+                function validateField(field) {
+                    const group = field.closest('.form-group');
+                    group.classList.remove('error');
+                    
+                    if (!field.required && !field.value.trim()) {
+                        return true;
+                    }
+                    
+                    let isValid = true;
+                    let errorMessage = '';
+                    
+                    // simple validation for required fields
+                    if (field.required && !field.value.trim()) {
+                        isValid = false;
+                        errorMessage = field.placeholder ? `Please enter your ${field.placeholder.toLowerCase()}` : 'This field is required';
+                    }
+                    
+                    if (!isValid) {
+                        group.classList.add('error');
+                        const errorEl = group.querySelector('.error-message');
+                        if (errorEl) errorEl.textContent = errorMessage;
+                    }
+                    
+                    return isValid;
+                }
+                
+                // Form submission
+                eventForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    // Validate all fields
+                    let isValid = true;
+                    const requiredFields = eventForm.querySelectorAll('[required]');
+                    
+                    requiredFields.forEach(field => {
+                        if (!validateField(field)) {
+                            isValid = false;
+                        }
+                    });
+                    
+                    if (!isValid) {
+                        // Focus first invalid field
+                        const firstInvalid = eventForm.querySelector('.error');
+                        if (firstInvalid) {
+                            const input = firstInvalid.querySelector('input');
+                            if (input) input.focus();
+                        }
+                        return;
+                    }
+                    
+                    // Show loading state
+                    eventSubmitBtn.classList.add('loading');
+                    eventSubmitBtn.disabled = true;
+                    
+                    try {
+                        const formData = new FormData(eventForm);
+                        
+                        const response = await fetch(eventForm.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            eventSuccessMessage.style.display = 'block';
+                            eventForm.reset();
+                            
+                            // Scroll to success message
+                            eventSuccessMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            
+                            // Hide success message after 10 seconds
+                            setTimeout(() => {
+                                eventSuccessMessage.style.display = 'none';
+                            }, 10000);
+                        } else {
+                            throw new Error('Form submission failed');
+                        }
+                    } catch (error) {
+                        console.log("Error sending form:", error);
+                        alert("Error sending registration. Please try again later or contact us via Instagram.");
+                    } finally {
+                        eventSubmitBtn.classList.remove('loading');
+                        eventSubmitBtn.disabled = false;
+                    }
+                });
+            }
+        }
+    });
+    
+    // Make functions available globally for HTML onclick attributes
+    window.openGallery = openGallery;
+    window.closeGallery = closeGallery;
+    window.prevImage = prevImage;
+    window.nextImage = nextImage;
+})();
+    </script>
 </body>
 </html>
