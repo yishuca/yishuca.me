@@ -1,1 +1,1064 @@
-flashcards
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>darkflip · minimal flashcards</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #0a0c10;
+      color: #edf2f9;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem;
+    }
+
+    /* more minimalist container */
+    .app {
+      max-width: 1200px;
+      width: 100%;
+      background: rgba(12, 16, 22, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(72, 92, 124, 0.2);
+      border-radius: 2rem;
+      padding: 1.5rem 1.2rem;
+      box-shadow: 0 20px 40px -15px #00000080;
+    }
+
+    /* sleeker typography */
+    h1, h2, h3 {
+      font-weight: 450;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 6vw, 2.4rem);
+      background: linear-gradient(135deg, #e0ecff, #b4ceff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.15rem;
+    }
+
+    h1 span {
+      font-size: clamp(1.6rem, 5vw, 2rem);
+      filter: drop-shadow(0 0 8px #3f8cff);
+    }
+
+    .subhead {
+      color: #8a9fbc;
+      font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+      margin-bottom: 1.5rem;
+      border-left: 2px solid #3f6b9c;
+      padding-left: 0.8rem;
+    }
+
+    /* compact creator panel */
+    .creator-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      background: #0f1620e0;
+      border-radius: 1.5rem;
+      padding: 1.2rem 1rem;
+      border: 1px solid #27384d;
+    }
+
+    .input-group {
+      flex: 1 1 220px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .input-group label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #9bb4d4;
+      margin-left: 0.6rem;
+    }
+
+    /* cleaner input fields */
+    .field-row {
+      display: flex;
+      align-items: center;
+      background: #131e2a;
+      border-radius: 2.5rem;
+      padding: 0.2rem 0.2rem 0.2rem 1.2rem;
+      border: 1px solid #2c4057;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+
+    .field-row:focus-within {
+      border-color: #6fa4e0;
+      box-shadow: 0 0 0 2px #1e497aa0;
+    }
+
+    .field-row input, .field-row select {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 0.95rem;
+      padding: 0.7rem 0.4rem 0.7rem 0;
+      width: 100%;
+      outline: none;
+    }
+
+    .field-row select option {
+      background: #121f2f;
+    }
+
+    .field-row button {
+      background: #274a6b;
+      border: none;
+      color: white;
+      font-weight: 500;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2.5rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+      letter-spacing: 0.3px;
+      transition: 0.15s;
+      border: 1px solid #4f79a5;
+      white-space: nowrap;
+    }
+
+    .field-row button:hover {
+      background: #2f5880;
+    }
+
+    /* category pills - sleeker */
+    .category-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 0.8rem;
+      margin: 1.2rem 0 1.8rem 0;
+    }
+
+    .cat-badge {
+      background: #14212e;
+      padding: 0.4rem 1rem 0.4rem 1.4rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      border: 1px solid #314d6b;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: all 0.15s;
+      animation: badgeFade 0.25s ease;
+    }
+
+    @keyframes badgeFade {
+      0% { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .cat-badge button {
+      background: none;
+      border: none;
+      color: #ffb4b4;
+      font-size: 1.2rem;
+      line-height: 1;
+      cursor: pointer;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #3a2c2c60;
+    }
+
+    .cat-badge button:hover {
+      background: #c94a4a;
+      color: white;
+    }
+
+    /* card grid - more compact on mobile */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+      margin: 1.2rem 0 2rem 0;
+    }
+
+    /* smaller, sleeker cards */
+    .flip-card {
+      background: transparent;
+      aspect-ratio: 3 / 4;
+      perspective: 1800px;
+      cursor: pointer;
+    }
+
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.3, 1);
+      transform-style: preserve-3d;
+      border-radius: 1.2rem;
+      box-shadow: 0 15px 25px -10px #000000d0;
+    }
+
+    .flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-front, .flip-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 1.2rem;
+      padding: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      word-break: break-word;
+      background: #15232f;
+      border: 1px solid #2d4a6a;
+      font-size: 0.9rem;
+    }
+
+    .flip-front {
+      background: linear-gradient(150deg, #162634, #101c28);
+    }
+
+    .flip-back {
+      background: linear-gradient(150deg, #193047, #102433);
+      transform: rotateY(180deg);
+      border-color: #4f7bb0;
+    }
+
+    .card-category {
+      position: absolute;
+      top: 6px;
+      left: 8px;
+      font-size: 0.6rem;
+      background: #1f3d58;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      color: #cee5ff;
+    }
+
+    .delete-card-btn {
+      position: absolute;
+      bottom: 6px;
+      right: 8px;
+      background: #8f3a3a60;
+      border: none;
+      color: #ffcaca;
+      font-size: 1rem;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 20;
+      backdrop-filter: blur(2px);
+    }
+
+    .delete-card-btn:hover {
+      background: #c44;
+      color: white;
+    }
+
+    /* test area - cleaner */
+    .test-area {
+      background: #0e1722c0;
+      border-radius: 1.5rem;
+      padding: 1.2rem 1rem;
+      border: 1px solid #2f4b6e;
+      margin-top: 0.8rem;
+    }
+
+    .test-header {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.8rem;
+    }
+
+    .test-controls {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    /* sleeker buttons */
+    .primary-btn {
+      background: #1f3f5c;
+      border: none;
+      padding: 0.6rem 1.4rem;
+      border-radius: 2.5rem;
+      font-weight: 500;
+      color: white;
+      font-size: 0.85rem;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      border: 1px solid #5685b5;
+      transition: 0.15s;
+      white-space: nowrap;
+    }
+
+    .primary-btn:hover {
+      background: #26527a;
+    }
+
+    .primary-btn:active {
+      transform: scale(0.97);
+    }
+
+    #quizCard {
+      background: #10212e;
+      padding: 1.2rem;
+      border-radius: 1.5rem;
+      margin: 1rem 0 0.5rem;
+      text-align: center;
+      border: 1px solid #3a6088;
+    }
+
+    .quiz-question {
+      font-size: clamp(1.1rem, 5vw, 1.4rem);
+      font-weight: 450;
+      margin-bottom: 0.8rem;
+    }
+
+    .quiz-answer {
+      font-size: clamp(1.2rem, 5.5vw, 1.6rem);
+      color: #d3e5ff;
+      background: #0c1d2e;
+      padding: 0.8rem;
+      border-radius: 1.5rem;
+      border: 1px dashed #5885c2;
+      margin: 0.8rem 0;
+      opacity: 0;
+      transition: 0.2s;
+    }
+
+    .quiz-answer.show-answer {
+      opacity: 1;
+    }
+
+    /* feedback buttons - larger touch target on mobile */
+    .quiz-feedback {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin: 1rem 0 0.2rem;
+      flex-wrap: wrap;
+    }
+
+    .feedback-btn {
+      background: #1e3143;
+      border: none;
+      font-size: 2rem;
+      padding: 0.4rem 1.5rem;
+      border-radius: 3rem;
+      cursor: pointer;
+      border: 2px solid transparent;
+      min-width: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .feedback-btn.correct:hover {
+      background: #1f6740;
+      border-color: #9effb4;
+    }
+
+    .feedback-btn.wrong:hover {
+      background: #aa3939;
+      border-color: #ffb4b4;
+    }
+
+    /* stats panel - new */
+    .stats-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      background: #0d1824;
+      border-radius: 1.5rem;
+      padding: 0.8rem 1.2rem;
+      margin: 1rem 0 0.5rem;
+      border: 1px solid #2e4a6b;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: #b5cef0;
+    }
+
+    .stat-value {
+      background: #1f344b;
+      padding: 0.2rem 0.8rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    /* filter row */
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+      margin: 1rem 0;
+    }
+
+    .filter-select {
+      background: #14212f;
+      border: 1px solid #3b5e86;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .import-export {
+      display: flex;
+      gap: 0.6rem;
+      margin-left: auto;
+      flex-wrap: wrap;
+    }
+
+    .icon-btn {
+      background: #1e3146;
+      border: 1px solid #4f75a2;
+      color: white;
+      padding: 0.4rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .icon-btn:hover {
+      background: #2b4565;
+    }
+
+    hr {
+      border: 0.5px solid #263f59;
+      margin: 1rem 0;
+    }
+
+    .empty-message {
+      color: #5a779b;
+      padding: 1.5rem;
+      text-align: center;
+      grid-column: 1 / -1;
+    }
+
+    /* mobile adjustments */
+    @media (max-width: 500px) {
+      body { padding: 0.4rem; }
+      .app { padding: 1rem 0.8rem; border-radius: 1.5rem; }
+      
+      .field-row { 
+        flex-wrap: wrap; 
+        background: transparent; 
+        padding: 0; 
+        gap: 0.4rem;
+      }
+      .field-row input { 
+        background: #1a232f; 
+        border-radius: 2rem; 
+        padding: 0.7rem 1rem; 
+        width: 100%;
+      }
+      .field-row button { 
+        width: 100%; 
+        margin-top: 0.2rem; 
+        padding: 0.7rem;
+      }
+      
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.7rem;
+      }
+      
+      .flip-front, .flip-back {
+        font-size: 0.8rem;
+        padding: 0.6rem;
+      }
+      
+      .test-controls {
+        width: 100%;
+      }
+      
+      .primary-btn {
+        flex: 1;
+        text-align: center;
+      }
+      
+      .feedback-btn {
+        min-width: 120px;
+        font-size: 1.8rem;
+        padding: 0.5rem;
+      }
+      
+      .import-export {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* small phones */
+    @media (max-width: 360px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .quiz-feedback {
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+      
+      .feedback-btn {
+        width: 100%;
+      }
+    }
+
+    /* focus indicators for accessibility */
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid #70b0ff;
+      outline-offset: 2px;
+    }
+
+    /* ARIA support */
+    [role="button"], button {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="app" role="main">
+  <h1>
+    <span>◈</span> flip.dark
+  </h1>
+  <div class="subhead">minimal · smart · adaptive</div>
+
+  <!-- creator panel - sleeker -->
+  <div class="creator-panel">
+    <div class="input-group">
+      <label for="questionInput">question</label>
+      <div class="field-row">
+        <input type="text" id="questionInput" placeholder="" aria-label="question" value="">
+      </div>
+    </div>
+    <div class="input-group">
+      <label for="answerInput">answer</label>
+      <div class="field-row">
+        <input type="text" id="answerInput" placeholder="" aria-label="answer" value="">
+      </div>
+    </div>
+    <div class="input-group category-selector">
+      <label for="categorySelect">category</label>
+      <div class="field-row">
+        <select id="categorySelect" aria-label="select category"></select>
+        <button id="addCategoryBtn" aria-label="add new category">+ add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- category cloud & filter -->
+  <div id="categoryList" class="category-cloud" role="list" aria-label="categories"></div>
+  
+  <!-- filter & import/export bar -->
+  <div class="filter-row">
+    <select id="filterCategory" class="filter-select" aria-label="filter by category">
+      <option value="all">all categories</option>
+    </select>
+    <div class="import-export">
+      <button class="icon-btn" id="exportBtn" aria-label="export cards">📤 export</button>
+      <button class="icon-btn" id="importBtn" aria-label="import cards">📥 import</button>
+      <input type="file" id="importFile" accept=".json" style="display: none;">
+    </div>
+  </div>
+
+  <!-- stats -->
+  <div class="stats-panel">
+    <div class="stat-item"><span>📇 total</span><span class="stat-value" id="cardCount">0</span></div>
+    <div class="stat-item"><span>🏷️ categories</span><span class="stat-value" id="categoryCount">1</span></div>
+    <div class="stat-item"><span>📊 test</span><span class="stat-value" id="testProgress">-</span></div>
+  </div>
+
+  <!-- flashcard grid -->
+  <h2 id="cards-heading">cards</h2>
+  <div id="cardsContainer" class="cards-grid" role="grid" aria-labelledby="cards-heading"></div>
+
+  <!-- test module -->
+  <div class="test-area">
+    <div class="test-header">
+      <h3>✧ self test</h3>
+      <div class="test-controls">
+        <button class="primary-btn" id="startTestBtn" aria-label="start test">▶ start</button>
+        <button class="primary-btn" id="revealAnswerBtn" aria-label="reveal answer">🔍 reveal</button>
+        <button class="primary-btn" id="nextCardBtn" aria-label="next card">⏩ next</button>
+      </div>
+    </div>
+    <div id="quizCard" aria-live="polite">
+      <div class="quiz-question" id="quizQuestion">ready?</div>
+      <div class="quiz-answer" id="quizAnswer" aria-label="answer"></div>
+      <div class="quiz-feedback" id="quizFeedback">
+        <button class="feedback-btn correct" id="correctBtn" aria-label="correct">✓ correct</button>
+        <button class="feedback-btn wrong" id="wrongBtn" aria-label="wrong">✗ wrong</button>
+      </div>
+    </div>
+    <div class="stat-item" style="justify-content: center; gap: 1.5rem;">
+      <span>✅ <span id="correctCount">0</span></span>
+      <span>❌ <span id="wrongCount">0</span></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ---------- data ----------
+    let categories = ['general'];
+    let cards = [];
+    let testSession = [];
+    let currentTestIndex = 0;
+    let testStats = { correct: 0, wrong: 0 };
+    let currentFilter = 'all';
+
+    // DOM elements
+    const questionInput = document.getElementById('questionInput');
+    const answerInput = document.getElementById('answerInput');
+    const categorySelect = document.getElementById('categorySelect');
+    const addCategoryBtn = document.getElementById('addCategoryBtn');
+    const categoryListDiv = document.getElementById('categoryList');
+    const cardsContainer = document.getElementById('cardsContainer');
+    const cardCountSpan = document.getElementById('cardCount');
+    const categoryCountSpan = document.getElementById('categoryCount');
+    const testProgressSpan = document.getElementById('testProgress');
+    const correctCountSpan = document.getElementById('correctCount');
+    const wrongCountSpan = document.getElementById('wrongCount');
+    const startTestBtn = document.getElementById('startTestBtn');
+    const revealAnswerBtn = document.getElementById('revealAnswerBtn');
+    const nextCardBtn = document.getElementById('nextCardBtn');
+    const quizQuestion = document.getElementById('quizQuestion');
+    const quizAnswer = document.getElementById('quizAnswer');
+    const correctBtn = document.getElementById('correctBtn');
+    const wrongBtn = document.getElementById('wrongBtn');
+    const filterCategory = document.getElementById('filterCategory');
+    const exportBtn = document.getElementById('exportBtn');
+    const importBtn = document.getElementById('importBtn');
+    const importFile = document.getElementById('importFile');
+
+    // ---------- audio ----------
+    let audioCtx = null;
+    let correctSound = null;
+    let wrongSound = null;
+
+    function initAudio() {
+      if (audioCtx) return;
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        correctSound = (time) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = 880;
+          gain.gain.setValueAtTime(0.15, time);
+          gain.gain.exponentialRampToValueAtTime(0.01, time + 0.25);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(time);
+          osc.stop(time + 0.25);
+        };
+        wrongSound = (time) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.value = 220;
+          gain.gain.setValueAtTime(0.12, time);
+          gain.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(time);
+          osc.stop(time + 0.2);
+        };
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+      } catch (e) {}
+    }
+
+    function playCorrect() {
+      initAudio();
+      if (audioCtx && correctSound) {
+        audioCtx.resume().then(() => correctSound(audioCtx.currentTime));
+      }
+    }
+
+    function playWrong() {
+      initAudio();
+      if (audioCtx && wrongSound) {
+        audioCtx.resume().then(() => wrongSound(audioCtx.currentTime));
+      }
+    }
+
+    // ---------- helpers ----------
+    function saveToLocal() {
+      localStorage.setItem('darkflip_data', JSON.stringify({ categories, cards }));
+    }
+
+    function loadFromLocal() {
+      const saved = localStorage.getItem('darkflip_data');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          categories = data.categories || ['general'];
+          cards = data.cards || [];
+        } catch (e) {}
+      }
+      if (!categories.includes('general')) categories.unshift('general');
+    }
+
+    // filter cards by category
+    function getFilteredCards() {
+      if (currentFilter === 'all') return cards;
+      return cards.filter(c => c.category === currentFilter);
+    }
+
+    // update filter dropdown
+    function updateFilterOptions() {
+      let options = '<option value="all">all categories</option>';
+      categories.forEach(cat => {
+        options += `<option value="${cat}" ${currentFilter === cat ? 'selected' : ''}>${cat}</option>`;
+      });
+      filterCategory.innerHTML = options;
+    }
+
+    // render categories
+    function renderCategories() {
+      let html = '';
+      categories.forEach(cat => {
+        html += `<div class="cat-badge" role="listitem">📁 ${cat} <button class="delete-cat" data-cat="${cat}" aria-label="delete ${cat} category">✕</button></div>`;
+      });
+      categoryListDiv.innerHTML = html;
+
+      categorySelect.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      document.querySelectorAll('.delete-cat').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const catToDelete = btn.dataset.cat;
+          if (catToDelete === 'general') {
+            alert('general category is protected');
+            return;
+          }
+          if (cards.some(c => c.category === catToDelete)) {
+            if (!confirm(`Delete category "${catToDelete}" and its cards?`)) return;
+            cards = cards.filter(c => c.category !== catToDelete);
+          }
+          categories = categories.filter(c => c !== catToDelete);
+          if (currentFilter === catToDelete) currentFilter = 'all';
+          renderAll();
+          saveToLocal();
+        });
+      });
+
+      categoryCountSpan.innerText = categories.length;
+    }
+
+    // render cards with filter
+    function renderCards() {
+      const filtered = getFilteredCards();
+      
+      if (filtered.length === 0) {
+        cardsContainer.innerHTML = `<div class="empty-message">✨ no cards in this category</div>`;
+        cardCountSpan.innerText = cards.length;
+        return;
+      }
+
+      let gridHtml = '';
+      filtered.forEach((card, idx) => {
+        const originalIndex = cards.findIndex(c => c.question === card.question && c.answer === card.answer && c.category === card.category);
+        gridHtml += `
+          <div class="flip-card" data-card-index="${originalIndex}" role="gridcell">
+            <div class="flip-inner">
+              <div class="flip-front">
+                <span class="card-category">${card.category}</span>
+                ${card.question}
+              </div>
+              <div class="flip-back">
+                ${card.answer}
+                <button class="delete-card-btn" data-card-idx="${originalIndex}" aria-label="delete card">🗑️</button>
+                <button class="edit-card-btn" data-card-idx="${originalIndex}" aria-label="edit card" style="position: absolute; bottom: 6px; left: 8px; background: #3a4f6b; border: none; color: white; width: 26px; height: 26px; border-radius: 50%;">✎</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      cardsContainer.innerHTML = gridHtml;
+      cardCountSpan.innerText = cards.length;
+
+      // flip listeners
+      document.querySelectorAll('.flip-card').forEach(cardDiv => {
+        cardDiv.addEventListener('click', (e) => {
+          if (e.target.classList.contains('delete-card-btn') || e.target.classList.contains('edit-card-btn')) return;
+          cardDiv.classList.toggle('flipped');
+        });
+      });
+
+      // delete cards
+      document.querySelectorAll('.delete-card-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = parseInt(btn.dataset.cardIdx);
+          if (!isNaN(idx) && idx >= 0 && idx < cards.length) {
+            cards.splice(idx, 1);
+            if (testSession.length) resetTest();
+            renderAll();
+            saveToLocal();
+          }
+        });
+      });
+
+      // edit cards
+      document.querySelectorAll('.edit-card-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = parseInt(btn.dataset.cardIdx);
+          if (!isNaN(idx) && idx >= 0 && idx < cards.length) {
+            const card = cards[idx];
+            const newQ = prompt('edit question:', card.question);
+            if (newQ !== null && newQ.trim()) {
+              const newA = prompt('edit answer:', card.answer);
+              if (newA !== null && newA.trim()) {
+                cards[idx] = { ...card, question: newQ.trim(), answer: newA.trim() };
+                renderAll();
+                saveToLocal();
+              }
+            }
+          }
+        });
+      });
+    }
+
+    function renderAll() {
+      updateFilterOptions();
+      renderCategories();
+      renderCards();
+      updateTestDisplay();
+    }
+
+    // test functions
+    function resetTest() {
+      testSession = [];
+      currentTestIndex = 0;
+      testStats = { correct: 0, wrong: 0 };
+      updateTestDisplay();
+      quizQuestion.innerText = 'ready?';
+      quizAnswer.innerText = '';
+      quizAnswer.classList.remove('show-answer');
+    }
+
+    function startTest() {
+      initAudio();
+      const filtered = getFilteredCards();
+      if (filtered.length === 0) {
+        quizQuestion.innerText = 'no cards to test';
+        return;
+      }
+      testSession = [...filtered].sort(() => Math.random() - 0.5);
+      currentTestIndex = 0;
+      testStats = { correct: 0, wrong: 0 };
+      showCurrentTestCard();
+      updateTestDisplay();
+    }
+
+    function showCurrentTestCard() {
+      if (!testSession.length || currentTestIndex >= testSession.length) {
+        quizQuestion.innerText = '✓ test complete!';
+        quizAnswer.innerText = '';
+        quizAnswer.classList.remove('show-answer');
+        correctBtn.disabled = true;
+        wrongBtn.disabled = true;
+        testProgressSpan.innerText = 'done';
+        return;
+      }
+      const card = testSession[currentTestIndex];
+      quizQuestion.innerText = `[${card.category}] ${card.question}`;
+      quizAnswer.innerText = card.answer;
+      quizAnswer.classList.remove('show-answer');
+      correctBtn.disabled = false;
+      wrongBtn.disabled = false;
+      testProgressSpan.innerText = `${currentTestIndex + 1}/${testSession.length}`;
+    }
+
+    function revealAnswer() {
+      if (testSession.length && currentTestIndex < testSession.length) {
+        quizAnswer.classList.add('show-answer');
+      }
+    }
+
+    function nextCard() {
+      if (testSession.length && currentTestIndex < testSession.length - 1) {
+        currentTestIndex++;
+        showCurrentTestCard();
+      } else if (testSession.length && currentTestIndex === testSession.length - 1) {
+        currentTestIndex++;
+        showCurrentTestCard();
+      }
+    }
+
+    function handleCorrect() {
+      if (testSession.length && currentTestIndex < testSession.length) {
+        playCorrect();
+        testStats.correct++;
+        currentTestIndex++;
+        showCurrentTestCard();
+        updateTestDisplay();
+      }
+    }
+
+    function handleWrong() {
+      if (testSession.length && currentTestIndex < testSession.length) {
+        playWrong();
+        testStats.wrong++;
+        quizAnswer.classList.add('show-answer');
+        updateTestDisplay();
+      }
+    }
+
+    function updateTestDisplay() {
+      correctCountSpan.innerText = testStats.correct;
+      wrongCountSpan.innerText = testStats.wrong;
+    }
+
+    // add card
+    function addCard() {
+      const question = questionInput.value.trim();
+      const answer = answerInput.value.trim();
+      const category = categorySelect.value;
+      if (!question || !answer) {
+        alert('fill both fields');
+        return;
+      }
+      cards.push({ question, answer, category });
+      renderAll();
+      saveToLocal();
+      questionInput.value = '';
+      answerInput.value = '';
+    }
+
+    // add category
+    function addCategory() {
+      const newCat = prompt('category name:');
+      if (newCat && newCat.trim() && !categories.includes(newCat.trim())) {
+        categories.push(newCat.trim());
+        renderAll();
+        saveToLocal();
+      } else if (newCat) {
+        alert('category exists or invalid');
+      }
+    }
+
+    // export/import
+    function exportData() {
+      const dataStr = JSON.stringify({ categories, cards }, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `darkflip-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importFromFile(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (data.categories && Array.isArray(data.categories) && data.cards && Array.isArray(data.cards)) {
+            categories = [...new Set([...categories, ...data.categories])];
+            cards = [...cards, ...data.cards];
+            renderAll();
+            saveToLocal();
+            alert('import successful');
+          } else {
+            alert('invalid file format');
+          }
+        } catch (err) {
+          alert('error parsing file');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ---------- event listeners ----------
+    document.addEventListener('click', function firstClick() {
+      initAudio();
+      document.removeEventListener('click', firstClick);
+    }, { once: true });
+
+    addCategoryBtn.addEventListener('click', addCategory);
+
+    document.querySelector('.field-row button')?.addEventListener('click', addCard);
+
+    startTestBtn.addEventListener('click', startTest);
+    revealAnswerBtn.addEventListener('click', revealAnswer);
+    nextCardBtn.addEventListener('click', nextCard);
+    correctBtn.addEventListener('click', handleCorrect);
+    wrongBtn.addEventListener('click', handleWrong);
+
+    filterCategory.addEventListener('change', (e) => {
+      currentFilter = e.target.value;
+      renderCards();
+      resetTest();
+    });
+
+    exportBtn.addEventListener('click', exportData);
+
+    importBtn.addEventListener('click', () => importFile.click());
+
+    importFile.addEventListener('change', (e) => {
+      if (e.target.files[0]) {
+        importFromFile(e.target.files[0]);
+        importFile.value = '';
+      }
+    });
+
+    questionInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addCard(); });
+    answerInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addCard(); });
+
+    // init
+    loadFromLocal();
+    renderAll();
+    resetTest();
+  })();
+</script>
+</body>
+</html>
