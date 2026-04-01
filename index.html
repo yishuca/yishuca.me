@@ -495,7 +495,6 @@
         .portfolio-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
             backdrop-filter: blur(0px);
             display: flex;
             flex-direction: column;
@@ -506,7 +505,7 @@
         }
         
         .portfolio-item:hover .portfolio-overlay { opacity: 1; backdrop-filter: blur(5px);}
-        .portfolio-item:hover .portfolio-img { transform: scale(1.06); }
+        .portfolio-item:hover .portfolio-img { transform: scale(2.06); transition: transform 100s var(--ease-out); }
         
         .portfolio-category { 
             font-family: var(--font-mono); 
