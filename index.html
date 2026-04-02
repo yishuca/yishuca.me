@@ -424,7 +424,7 @@
         .marquee-section { padding: 24px 0; background: var(--black); overflow: hidden; }
         .marquee-track { display: flex; white-space: nowrap; animation: marquee 30s linear infinite; width: fit-content; }
         .marquee-item { display: inline-flex; align-items: center; gap: 32px; padding: 0 32px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-gold); }
-        .marquee-dot { width: 4px; height: 4px; background: var(--dark-gray); border-radius: 50%; }
+        .marquee-dot { width: 4px; height: 4px; background: var(--accent-gold); border-radius: 50%; }
         @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
         /* Services */
@@ -948,7 +948,7 @@
         // Marquee items
         const marqueeTrack = document.getElementById('marqueeTrack');
         if(marqueeTrack){ 
-            const items=['Web Development','UI/UX Design','Brand Identity','Responsive Design','Ongoing Support','SEO', 'Bookings'];
+            const items=['minimalistic','stylish','detailed','interactive', 'artistic','100/month'];
             const frag=document.createDocumentFragment(); 
             for(let i=0;i<2;i++) {
                 items.forEach(item=>{ 
