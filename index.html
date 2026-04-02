@@ -59,7 +59,7 @@
         /* Custom cursor (fallback) */
         @media (max-width: 768px) {
             body.custom-cursor-active {
-                cursor: hide;
+                cursor: auto;
             }
         }
 
@@ -264,7 +264,7 @@
             display: none;
             flex-direction: column;
             gap: 5px;
-            cursor: hide;
+            cursor: pointer;
             background: none;
             border: none;
             padding: 4px;
@@ -434,7 +434,7 @@
         .section-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 300; line-height: 1.05; color: var(--charcoal); }
         .section-desc { max-width: 360px; color: var(--dark-gray); font-size: 0.95rem; line-height: 1.8; align-self: flex-end; }
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--light-gray); border-radius: var(--radius-md); overflow: hidden; }
-        .service-card { background: rgba(13, 13, 13, 0.144); border-radius: var(--radius-md); margin: 10px; backdrop-filter: blur(5px); padding: 48px 40px; position: relative; transition: background 6s ease; cursor: hide; }
+        .service-card { background: rgba(13, 13, 13, 0.144); border-radius: var(--radius-md); margin: 10px; backdrop-filter: blur(5px); padding: 48px 40px; position: relative; transition: background 6s ease; cursor: pointer; }
         .service-number, .service-name, .service-icon { transition: color 0.4s var(--ease-out); }
         .service-card::after { content: ''; position: absolute; inset: 0; background: var(--black); border-radius: var(--radius-md); opacity: 0; transition: opacity 0.4s var(--ease-out); z-index: 0; }
         .service-card:hover::after { opacity: .3; }
@@ -466,7 +466,7 @@
             background: rgba(13, 13, 13, 0.2);
             backdrop-filter: blur(2px);
             transition: all 0.5s var(--ease-out);
-            cursor: hide;
+            cursor: pointer;
         }
         
         .portfolio-img {
@@ -592,7 +592,7 @@
         .form-group { margin-bottom: 20px; }
         .form-input, .form-textarea, .form-select { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: var(--radius-sm); padding: 14px 18px; color: var(--charcoal); font-family: var(--font-body); font-size: 0.9rem; transition: all 1s ease; }
         .form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: var(--accent-gold); background: rgba(255,255,255,0.1); }
-        .form-submit { width: 100%; padding: 16px; background: var(--accent-gold); color: var(--black); border: none; border-radius: var(--radius-full); cursor: hide; font-weight: 500; font-size: 1rem; position: relative; overflow: hidden; transition: all 0.35s var(--ease-out); }
+        .form-submit { width: 100%; padding: 16px; background: var(--accent-gold); color: var(--black); border: none; border-radius: var(--radius-full); cursor: pointer; font-weight: 500; font-size: 1rem; position: relative; overflow: hidden; transition: all 0.35s var(--ease-out); }
         .form-submit::before { content: ''; position: absolute; inset: 0; background: rgb(214, 214, 214); transform: scaleX(0); transform-origin: right; transition: transform 0.4s var(--ease-out); border-radius: inherit; }
         .form-submit:hover::before { transform: scaleX(1); transform-origin: left; }
         .form-submit span { position: relative; z-index: 1; }
