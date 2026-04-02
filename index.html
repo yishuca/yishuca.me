@@ -78,23 +78,6 @@
             opacity: 0;
         }
 
-        .cursor-ring {
-            position: fixed;
-            width: 36px;
-            height: 36px;
-            border: 1px solid var(--charcoal);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99998;
-            transform: translate(-50%, -50%);
-            transition: all 0.12s ease;
-            mix-blend-mode: difference;
-            opacity: 0;
-        }
-
-        .cursor.hover { width: 20px; height: 20px; background: var(--dark-gray); }
-        .cursor-ring.hover { width: 56px; height: 56px; opacity: 0.5; }
-
         /* Floating Blobs - Static version */
         .blob-container {
             position: fixed;
@@ -966,7 +949,7 @@
         }
     })();
 
-  const NUM_DOTS = 5;
+  const NUM_DOTS = 10;
   const dots = [];
 
   let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
