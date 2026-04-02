@@ -635,6 +635,19 @@
             .footer { flex-direction: column; text-align: center; }
             .section-header { flex-direction: column; margin-bottom: 48px; }
         }
+
+          .dot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: white;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
@@ -995,6 +1008,56 @@
             }); 
         }
     })();
+
+  const NUM_DOTS = 15;
+  const dots = [];
+
+  let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+  // Create dots
+  for (let i = 0; i < NUM_DOTS; i++) {
+    const dot = document.createElement("div");
+    dot.classList.add("dot");
+    document.body.appendChild(dot);
+
+    dots.push({
+      el: dot,
+      x: mouse.x,
+      y: mouse.y
+    });
+  }
+
+  // Track mouse
+  document.addEventListener("mousemove", e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  function animate() {
+    let x = mouse.x;
+    let y = mouse.y;
+
+    dots.forEach((dot, index) => {
+      // Smooth follow
+      dot.x += (x - dot.x) * 0.25;
+      dot.y += (y - dot.y) * 0.25;
+
+      dot.el.style.left = dot.x + "px";
+      dot.el.style.top = dot.y + "px";
+
+      // Scale & fade trail
+      const scale = (NUM_DOTS - index) / NUM_DOTS;
+      dot.el.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      dot.el.style.opacity = scale;
+
+      x = dot.x;
+      y = dot.y;
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
     </script>
 </body>
 </html>
