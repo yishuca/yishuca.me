@@ -702,9 +702,12 @@
 .form-textarea:not(:placeholder-shown) ~ label,
 .form-select:focus ~ label,
 .form-select:not([value=""]):not(:placeholder-shown) ~ label {
-    top: 6px;
-    transform: translateY(0);
-    font-size: 0.6rem;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
     color: var(--charcoal);
     background: rgba(255, 0, 0, 0);
     padding: 0 4px;
