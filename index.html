@@ -54,6 +54,7 @@
             font-weight: 300;
             line-height: 1.6;
             overflow-x: hidden;
+            cursor: none;
         }
 
         /* Custom cursor (fallback) */
@@ -70,7 +71,7 @@
             background: var(--light-gray);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 99999;
+            z-index: 9999999999999;
             transform: translate(-50%, -50%);
             transition: transform 0.1s ease, width 0.3s var(--ease-out), height 0.3s var(--ease-out), background 0.3s ease;
             mix-blend-mode: difference;
@@ -264,7 +265,7 @@
             display: none;
             flex-direction: column;
             gap: 5px;
-            cursor: pointer;
+            cursor: none;
             background: none;
             border: none;
             padding: 4px;
@@ -434,7 +435,7 @@
         .section-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 300; line-height: 1.05; color: var(--charcoal); }
         .section-desc { max-width: 360px; color: var(--dark-gray); font-size: 0.95rem; line-height: 1.8; align-self: flex-end; }
         .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--light-gray); border-radius: var(--radius-md); overflow: hidden; }
-        .service-card { background: rgba(13, 13, 13, 0.144); border-radius: var(--radius-md); margin: 10px; backdrop-filter: blur(5px); padding: 48px 40px; position: relative; transition: background 6s ease; cursor: pointer; }
+        .service-card { background: rgba(13, 13, 13, 0.144); border-radius: var(--radius-md); margin: 10px; backdrop-filter: blur(5px); padding: 48px 40px; position: relative; transition: background 6s ease; cursor: none; }
         .service-number, .service-name, .service-icon { transition: color 0.4s var(--ease-out); }
         .service-card::after { content: ''; position: absolute; inset: 0; background: var(--black); border-radius: var(--radius-md); opacity: 0; transition: opacity 0.4s var(--ease-out); z-index: 0; }
         .service-card:hover::after { opacity: .3; }
@@ -466,7 +467,7 @@
             background: rgba(13, 13, 13, 0.2);
             backdrop-filter: blur(2px);
             transition: all 0.5s var(--ease-out);
-            cursor: pointer;
+            cursor: none;
         }
         
         .portfolio-img {
@@ -592,7 +593,7 @@
         .form-group { margin-bottom: 20px; }
         .form-input, .form-textarea, .form-select { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: var(--radius-sm); padding: 14px 18px; color: var(--charcoal); font-family: var(--font-body); font-size: 0.9rem; transition: all 1s ease; }
         .form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: var(--accent-gold); background: rgba(255,255,255,0.1); }
-        .form-submit { width: 100%; padding: 16px; background: var(--accent-gold); color: var(--black); border: none; border-radius: var(--radius-full); cursor: pointer; font-weight: 500; font-size: 1rem; position: relative; overflow: hidden; transition: all 0.35s var(--ease-out); }
+        .form-submit { width: 100%; padding: 16px; background: var(--accent-gold); color: var(--black); border: none; border-radius: var(--radius-full); cursor: none; font-weight: 500; font-size: 1rem; position: relative; overflow: hidden; transition: all 0.35s var(--ease-out); }
         .form-submit::before { content: ''; position: absolute; inset: 0; background: rgb(214, 214, 214); transform: scaleX(0); transform-origin: right; transition: transform 0.4s var(--ease-out); border-radius: inherit; }
         .form-submit:hover::before { transform: scaleX(1); transform-origin: left; }
         .form-submit span { position: relative; z-index: 1; }
@@ -646,7 +647,8 @@
             background: white;
             pointer-events: none;
             transform: translate(-50%, -50%);
-            opacity: 0.8;
+            opacity: 1;
+            z-index: 99999999;
         }
     </style>
 </head>
@@ -840,51 +842,6 @@
 
     <script>
     (function(){
-        // Custom cursor for non-touch devices
-        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        if (!isTouchDevice) {
-            document.body.classList.add('custom-cursor-active');
-            const cursor = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
-            if(cursor && ring) { 
-                let mx=0, my=0, rx=0, ry=0; 
-                cursor.style.opacity='1'; 
-                ring.style.opacity='1';
-                document.addEventListener('mousemove', e=>{ 
-                    mx=e.clientX; 
-                    my=e.clientY; 
-                    cursor.style.left=mx+'px'; 
-                    cursor.style.top=my+'px'; 
-                });
-                function animateRing(){ 
-                    rx+=(mx-rx)*0.12; 
-                    ry+=(my-ry)*0.12; 
-                    ring.style.left=rx+'px'; 
-                    ring.style.top=ry+'px'; 
-                    requestAnimationFrame(animateRing); 
-                } 
-                animateRing();
-                const interactiveEls = document.querySelectorAll('a, button, .service-card, .portfolio-item, input, select, textarea, .btn-primary, .btn-ghost');
-                interactiveEls.forEach(el=>{ 
-                    el.addEventListener('mouseenter',()=>{ 
-                        cursor.classList.add('hover'); 
-                        ring.classList.add('hover'); 
-                    }); 
-                    el.addEventListener('mouseleave',()=>{ 
-                        cursor.classList.remove('hover'); 
-                        ring.classList.remove('hover'); 
-                    }); 
-                });
-                document.addEventListener('mouseleave',()=>{ 
-                    cursor.style.opacity='0'; 
-                    ring.style.opacity='0'; 
-                }); 
-                document.addEventListener('mouseenter',()=>{ 
-                    cursor.style.opacity='1'; 
-                    ring.style.opacity='1'; 
-                }); 
-            } 
-        }
-
         // Marquee items
         const marqueeTrack = document.getElementById('marqueeTrack');
         if(marqueeTrack){ 
@@ -1009,7 +966,7 @@
         }
     })();
 
-  const NUM_DOTS = 15;
+  const NUM_DOTS = 5;
   const dots = [];
 
   let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
@@ -1039,8 +996,8 @@
 
     dots.forEach((dot, index) => {
       // Smooth follow
-      dot.x += (x - dot.x) * 0.25;
-      dot.y += (y - dot.y) * 0.25;
+      dot.x += (x - dot.x) * 0.1;
+      dot.y += (y - dot.y) * 0.1;
 
       dot.el.style.left = dot.x + "px";
       dot.el.style.top = dot.y + "px";
